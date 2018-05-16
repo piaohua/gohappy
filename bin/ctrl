@@ -1,0 +1,382 @@
+#!/bin/bash
+
+set -e
+
+usage() {
+    echo " ./ctrl cmd "
+    echo " cmd : build (login|gate|dbms|robot) (linux)"
+    echo " cmd : start (gate|robot) -node=1 "
+    echo " cmd : start (dbms|login|...) "
+    echo " cmd : start (niu|...) -node=1"
+    echo " cmd : status (login|gate|dbms|robot) (-node=1)"
+    echo " cmd : stop (login|gate|dbms|robot) (-node=1)"
+    echo " cmd : restart, sync, proto, bb "
+}
+
+appName=gohappy
+
+workDir=$(cd `dirname $0`; pwd)
+
+cd $workDir
+
+GOPATH=$(cd ../../../"$(dirname "$0")"; pwd)
+
+SUI_SRC_DIR="${GOPATH}/src/${appName}"
+
+PROTO_SRC="${SUI_SRC_DIR}/protocol"
+MSGDIR="${SUI_SRC_DIR}/pb"
+LOGFILE="${workDir}/ctrl.log"
+
+PBJS=~/data/js/node_modules/protobufjs/bin/pbjs
+
+get_curr_time() {
+    echo `date +"%Y-%m-%d %H:%M:%S"`
+}
+
+save_log() {
+    echo "" >> ${LOGFILE}
+    echo "Time: "`get_curr_time`"   $1 " >> ${LOGFILE}
+}
+
+get_src_file() {
+    if [[ ! -d ${SUI_SRC_DIR}/$1 ]]; then
+        echo ""
+    else
+        echo ${appName}/$1
+    fi
+}
+
+get_bin_file() {
+    echo ${workDir}/$1-bin
+}
+
+get_pid_file() {
+    nodeid=`get_nodeid $2`
+    if [[ ${nodeid} == '' ]]; then
+        echo ${workDir}/$1-bin.pid
+    else
+        #echo ${workDir}/$1${nodeid}-bin.pid
+        echo ${workDir}/$1-bin.pid
+    fi
+}
+
+get_pid() {
+    binFile=`get_bin_file $1`
+    if [[ ${binFile} == '' ]]; then
+        return 1
+    fi
+    nodeid=`get_nodeid $2`
+    if [[ ${nodeid} == '' ]]; then
+        ps aux | grep '${binFile}' | grep -v grep | awk '{print $2}' | head -1
+    else
+        ps aux | grep '${binFile}' | grep 'node=${nodeid}' | grep -v grep | awk '{print $2}' | head -1
+    fi
+}
+
+get_nodeid() {
+    # $1=-node=1
+    if [[ ${1} == '-node='* ]]; then
+        echo ${1:0-1:1}
+    fi
+}
+
+get_logfile() {
+    # $2=-node=1
+    if [[ ${2} == '-node='* ]]; then
+        #echo ${1}${2:0-1:1}.log
+        echo ${1}.log
+    else
+        echo ${1}.log
+    fi
+}
+
+# 生成协议
+proto() {
+    if [[ ! -d ${PROTO_SRC} ]]; then
+        echo "协议文件路径不存在"
+        exit 1
+    fi
+    export GOPATH=${GOPATH}
+    cd ${PROTO_SRC}
+    protoc -I=. -I=${GOPATH}/src --gogoslick_out=plugins=grpc:${MSGDIR} *.proto
+    cd ${SUI_SRC_DIR}/tool
+    go run gen.go
+}
+
+# 生成协议
+protojson() {
+    if [[ ! -d ${PROTO_SRC} ]]; then
+        echo "协议文件路径不存在"
+        exit 1
+    fi
+    cd ${PROTO_SRC}
+    #
+    ${PBJS} -t json \
+        game_buy.proto game_chat.proto \
+        game_login.proto game_user.proto \
+        game_pub.proto \
+        game_code.proto \
+        > ../pbjson/game-bundle.json
+    ${PBJS} -t json \
+        niu_room.proto niu_coin.proto niu_free.proto \
+        niu_vote.proto niu_pub.proto \
+        game_code.proto \
+        > ../pbjson/niu-bundle.json
+    ${PBJS} -t json \
+        san_room.proto san_coin.proto san_free.proto \
+        san_vote.proto san_pub.proto \
+        game_code.proto \
+        > ../pbjson/san-bundle.json
+    #
+    cp game_*.proto ../pbjson/
+    cp niu_*.proto ../pbjson/
+    cp san_*.proto ../pbjson/
+    #
+    cd ${SUI_SRC_DIR}/tool
+    go run gen.go
+    #
+    mv ../tool/*.lua ../pbjson/
+    mv ../tool/*.js ../pbjson/
+    mv ../tool/*.json ../pbjson/
+    #
+    cd ../
+    zip -r pbjson.zip pbjson/
+}
+
+build() {
+    export GOPATH=${GOPATH}
+    binFile=`get_bin_file $1`
+    srcFile=`get_src_file $1`
+    if [[ ${binFile} == '' ]]; then
+        echo "未指定输出文件"
+        exit 1
+    fi
+    if [[ ! -d ${GOPATH}/src/${srcFile} ]]; then
+        echo "目录不存在"
+        exit 1
+    fi
+    case $2 in
+        linux)
+            export CGO_ENABLED=0
+            export GOOS=linux
+            export GOARCH=amd64
+            export GOPATH=${GOPATH}
+            echo -n "LINUX版本 ... "
+            save_log "LINUX版本 ... "
+            ;;
+        windows)
+            export CGO_ENABLED=0
+            export GOOS=windows
+            export GOARCH=amd64
+            export GOPATH=${GOPATH}
+            echo -n "WINDOWS版本 ... "
+            save_log "WINDOWS版本 ... "
+            ;;
+    esac
+    echo "${srcFile}编译中 ... "
+    save_log "${srcFile}编译中 ... "
+    go build -o ${binFile} -ldflags "-w -s" ${srcFile}
+}
+
+start() {
+    pidFile=`get_pid_file $1 $2`
+    if [[ -e ${pidFile} ]]; then
+        pid=`cat ${pidFile}`
+    else
+        pid=`get_pid $1 $2`
+        if [[ $? -gt 0 ]]; then
+            echo "失败, 执行文件不存在"
+            exit 1
+        fi
+    fi
+    if [ "$pid" != '' ]; then
+        echo "服务正在运行中, 进程ID为${pid}"
+    else
+        binFile=`get_bin_file $1`
+        if [[ ! -e ${binFile} ]]; then
+            echo "执行BIN文件不存在"
+            exit 1
+        fi
+        if [[ ${pidFile} == '' ]]; then
+            echo "未指定输出PID文件"
+            exit 1
+        fi
+        if [[ ${1} == '' ]]; then
+            echo "未指定输出日志文件"
+            exit 1
+        fi
+        echo -n "正在启动 ... "
+        save_log "正在启动 ${binFile} ${2} ... "
+        # $2 as -node="1"
+        #ulimit -HSn 65535
+        ulimit -HSn 1024
+        logFile=`get_logfile $1 $2`
+        ${binFile} $2 -log_dir="logs" -stderrthreshold="DEBUG" >& ${logFile} &
+        echo $! > ${pidFile}
+        pid=`cat ${pidFile}`
+        save_log "${binFile} started ${pid} ... "
+        sleep 3s
+        status $1 $2
+    fi
+}
+
+status() {
+    pidFile=`get_pid_file $1 $2`
+    if [[ -e ${pidFile} ]]; then
+        pid=`cat ${pidFile}`
+    else
+        pid=`get_pid $1 $2`
+        if [[ $? -gt 0 ]]; then
+            echo "失败, 执行文件不存在"
+            exit 1
+        fi
+    fi
+    if [[ -z "$pid" ]]; then
+        echo "服务不在运行状态"
+        exit 1
+    fi
+    exists=$(ps -ef | grep $pid | grep -v grep | wc -l)
+    if [[ $exists -gt 0 ]]; then
+        echo "服务正在运行中, 进程ID为${pid}"
+    else
+        echo "服务不在运行状态, 但进程ID文件存在"
+    fi
+}
+
+stop() {
+    pidFile=`get_pid_file $1 $2`
+    if [[ -e ${pidFile} ]]; then
+        pid=`cat ${pidFile}`
+        #rm -f $pidFile
+        mv -f $pidFile $pidFile"_bak"
+    else
+        pid=`get_pid $1 $2`
+        if [[ $? -gt 0 ]]; then
+            echo "失败, 执行文件不存在"
+            exit 1
+        fi
+    fi
+    if [ "$pid" != '' ]; then
+        echo -n "正在停止 ... "
+        save_log "${pidFile} 正在停止 ${pid} ... "
+        #kill -9 $PID
+        kill -2 $pid
+        sleep 15s
+        echo "$pid killed!"
+        save_log "${pid} killed! "
+    else
+        echo "服务不在运行状态"
+    fi
+}
+
+restart() {
+    echo -n "正在重启 ... "
+    stop $1 $2
+    sleep 1s
+    start $1 $2
+}
+
+# 同步更新
+sync2() {
+    binFile=`get_bin_file $1`
+    ~/data/ssh scp-up 8 ${binFile} /data/
+}
+
+# 同步更新
+sync3() {
+    binFile=`get_bin_file $1`
+    ~/data/ssh scp-up 11 ${binFile} /home/
+}
+
+sync() {
+    sync2 login
+    sync2 dbms
+    sync2 gate
+    sync2 robot
+}
+
+ss() {
+    sync3 login
+    sync3 dbms
+    sync3 gate
+    sync3 niu
+    sync3 robot
+    sync3 web
+}
+
+# 编译
+bb() {
+    case $1 in
+        linux)
+            build login linux
+            build dbms linux
+            build gate linux
+            #build niu linux
+            build robot linux
+            #build web linux
+            ;;
+        *)
+            build login
+            build dbms
+            build gate
+            #build niu
+            build robot
+            #build web
+            ;;
+    esac
+}
+
+start_all() {
+    start dbms
+    start gate -node=1
+    start niu -node=1
+    start login
+    start robot -node=1
+}
+
+stop_all() {
+    stop robot -node=1
+    stop login
+    stop niu -node=1
+    stop gate -node=1
+    stop dbms
+}
+
+show() {
+    ps -ef | grep -v grep | grep robot-bin
+    #ps -ef | grep -v grep | grep login-bin
+    ps -ef | grep -v grep | grep niu1-bin
+    ps -ef | grep -v grep | grep gate1-bin
+    ps -ef | grep -v grep | grep dbms-bin
+}
+
+case $1 in
+    build)
+        build $2 $3;;
+    bb)
+        bb $2;;
+    start)
+        start $2 $3;;
+    status)
+        status $2 $3;;
+    show)
+        show;;
+    stop)
+        stop $2 $3;;
+    restart)
+        restart $2 $3;;
+    sync)
+        sync;;
+    ss)
+        ss;;
+    send)
+        sync3 $2;;
+    proto)
+        proto;;
+    protojson)
+        protojson;;
+    startall)
+        start_all;;
+    *)
+        usage;;
+esac
