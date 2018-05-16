@@ -1,0 +1,48 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "l11sW80A+vpUWKQ3sVrl6uqAxD0=",
+			"path": "github.com/AsynkronIT/protoactor-go",
+			"revision": "3992780c0af683deb5ec3746f4ec5845139c6e42",
+			"revisionTime": "2018-04-11T02:50:28Z",
+			"tree": true
+		},
+		{
+			"checksumSHA1": "T5h4jSEzVIJ5hfgu0tSydDi7EN8=",
+			"path": "github.com/globalsign/mgo",
+			"revision": "f76e4f9da92ecd56e3be26f5ba92580af1ef97b4",
+			"revisionTime": "2018-04-03T08:58:42Z",
+			"tree": true
+		},
+		{
+			"checksumSHA1": "50J+ClsLONoc78uu+sDrdJ6IWPA=",
+			"path": "github.com/json-iterator/go",
+			"revision": "96fcb84835b0447f3de9d7addb313c5487071533",
+			"revisionTime": "2017-12-23T02:52:17Z"
+		},
+		{
+			"checksumSHA1": "3HdhaqMqoMSbUVly/J0iYnhS2MI=",
+			"path": "github.com/valyala/fasthttp",
+			"revision": "70ceaddfae639b5f0eca290382de18f64d5aa62d",
+			"revisionTime": "2017-10-18T12:53:05Z",
+			"tree": true
+		},
+		{
+			"checksumSHA1": "iIPLRivULNiSmO0MJ0VtvcKUBoo=",
+			"path": "google.golang.org/grpc",
+			"revision": "a62701e4aa1d276bec70311251d62a478404d63f",
+			"revisionTime": "2017-11-28T22:41:43Z",
+			"tree": true
+		},
+		{
+			"checksumSHA1": "P1k/rRZQcNOL007S73GRLXUdQIU=",
+			"path": "gopkg.in/ini.v1",
+			"revision": "6529cf7c58879c08d927016dde4477f18a0634cb",
+			"revisionTime": "2018-04-20T14:56:02Z",
+			"tree": true
+		}
+	],
+	"rootPath": "gohappy"
+}
