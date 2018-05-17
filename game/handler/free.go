@@ -99,3 +99,23 @@ func PackNNCreateMsg(d *data.DeskData) *pb.SNNCreateRoom {
 	msg.Data = PackNNCoinRoom(d)
 	return msg
 }
+
+//PackNNRoomList 房间列表数据
+func PackNNRoomList(arg *pb.GetRoomList,
+	desks map[string]*data.DeskBase) *pb.SNNRoomList {
+	msg := new(pb.SNNRoomList)
+	for _, v := range desks {
+		switch arg.Rtype {
+		case int32(pb.ROOM_TYPE1): //私人
+			if v.DeskData.Cid != arg.Userid {
+				continue
+			}
+		}
+		if v.DeskData.Gtype == arg.Gtype &&
+			v.DeskData.Rtype == arg.Rtype {
+			msg2 := PackNNCoinRoom(v.DeskData)
+			msg.List = append(msg.List, msg2)
+		}
+	}
+	return msg
+}

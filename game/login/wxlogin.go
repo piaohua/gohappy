@@ -21,6 +21,8 @@ func WxLogin(ctos *pb.WxLogin, user *data.User) (stoc *pb.WxLogined) {
 	user.Nickname = nickname
 	user.Photo = photo
 	user.Sex = sex
+	stoc.IsRegist = false
+	stoc.Userid = user.Userid
 	return
 }
 

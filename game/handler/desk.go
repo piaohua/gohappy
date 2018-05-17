@@ -63,10 +63,10 @@ func NewDeskData(d *data.Game) *data.DeskData {
 }
 
 //NewFreeGameData 百人房间桌子数据
-func NewFreeGameData(node string) *data.Game {
+func NewFreeGameData(node string, gtype int32) *data.Game {
 	return &data.Game{
 		Id:     bson.NewObjectId().Hex(),
-		Gtype:  int32(pb.NIU),
+		Gtype:  gtype,
 		Rtype:  int32(pb.ROOM_TYPE2),
 		Status: 1,
 		Count:  100,
@@ -82,12 +82,12 @@ func NewFreeGameData(node string) *data.Game {
 }
 
 //NewCoinGameData 自由房间桌子数据
-func NewCoinGameData(node string, ltype int32) *data.Game {
+func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 	g := &data.Game{
 		Id:     bson.NewObjectId().Hex(),
-		Gtype:  int32(pb.NIU),
+		Gtype:  gtype,
 		Rtype:  int32(pb.ROOM_TYPE0),
-		Dtype:  int32(pb.DESK_TYPE1),
+		Dtype:  dtype,
 		Ltype:  ltype,
 		Status: 1,
 		Count:  5,
@@ -134,6 +134,7 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 		Count:   arg.Count,
 		Round:   arg.Round,
 		Payment: arg.Payment,
+		Cost:    arg.Cost,
 		Cid:     arg.Cid,
 		Expire:  utils.Timestamp() + 600,
 		Deal:    true,

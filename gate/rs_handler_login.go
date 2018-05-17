@@ -84,7 +84,7 @@ func (rs *RoleActor) handlerLogin(msg interface{}, ctx actor.Context) {
 func (rs *RoleActor) loginElse() {
 	arg := new(pb.SLoginOut)
 	glog.Debugf("SLoginOut %s", rs.User.Userid)
-	arg.Rtype = 1 //别处登录
+	arg.Rtype = int32(pb.LOGOUT_TYPE4) //别处登录
 	rs.Send(arg)
 	//已经断开
 	if !rs.online {
@@ -99,7 +99,7 @@ func (rs *RoleActor) loginElse() {
 	//登出日志
 	msg3 := &pb.LogLogout{
 		Userid: rs.User.Userid,
-		Event:  4, //别处登录
+		Event:  int32(pb.LOGOUT_TYPE4), //别处登录
 	}
 	rs.loggerPid.Tell(msg3)
 	//表示已经断开

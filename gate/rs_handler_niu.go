@@ -5,7 +5,6 @@ import (
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"github.com/gogo/protobuf/proto"
 )
 
 //牛牛请求处理
@@ -86,7 +85,7 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 	case *pb.CNNRoomList:
 		arg := msg.(*pb.CNNRoomList)
 		glog.Debugf("CNNRoomList %#v", arg)
-		//TODO
+		rs.getRoomList(arg, ctx)
 	case *pb.CNNEnterRoom:
 		arg := msg.(*pb.CNNEnterRoom)
 		glog.Debugf("CNNEnterRoom %#v", arg)
@@ -169,11 +168,12 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case proto.Message:
-		//响应消息
-		rs.Send(msg)
+	//case proto.Message:
+	//	//响应消息
+	//	rs.Send(msg)
 	default:
-		glog.Errorf("unknown message %v", msg)
+		//glog.Errorf("unknown message %v", msg)
+		rs.handlerSan(msg, ctx)
 	}
 }
 
@@ -181,7 +181,7 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 func (rs *RoleActor) enterGame(ctx actor.Context) bool {
 	if rs.gamePid != nil {
 		msg := new(pb.EnterDesk)
-		if !rs.enterDesk(msg, ctx) {
+		if !rs.enterDeskMsg(msg, ctx) {
 			glog.Errorf("userid %s enter faild %s",
 				rs.User.GetUserid(), rs.gamePid.String())
 		}
@@ -215,7 +215,7 @@ func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
 	if msg != nil {
 		msg.Rtype = int32(pb.ROOM_TYPE0) //自由
 		msg.Roomid = arg.Id              //房间id
-		//msg.Dtype = int32(pb.DESK_TYPE1)  //玩法类型
+		msg.Dtype = int32(pb.DESK_TYPE1) //玩法类型
 		//TODO 计算出匹配房间等级,算法一致
 		msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
 		rs.selectDesk(msg, ctx)
@@ -234,6 +234,19 @@ func (rs *RoleActor) enterMatchDesk(ctx actor.Context) *pb.MatchDesk {
 	msg.Name = cfg.Section("game.niu").Name()
 	msg.Gtype = int32(pb.NIU) //牛牛
 	return msg
+}
+
+//进入或匹配桌子
+func (rs *RoleActor) getRoomList(arg *pb.CNNRoomList, ctx actor.Context) {
+	//获取游戏服节点或者房间进程
+	msg := new(pb.GetRoomList)
+	msg.Rtype = arg.Rtype
+	msg.Userid = rs.User.GetUserid()
+	msg.Sender = ctx.Self()
+	//TODO 优化查找规则
+	msg.Name = cfg.Section("game.niu").Name()
+	msg.Gtype = int32(pb.NIU) //牛牛
+	rs.dbmsPid.Request(msg, ctx.Self())
 }
 
 //百人场下注
@@ -284,6 +297,8 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 		Round:   arg.Round,
 		Payment: arg.Payment,
 		Count:   arg.Count,
+		//TODO 消耗
+		Cost: 100,
 	}
 	msg.Name = cfg.Section("game.niu").Name()
 	msg.Gtype = int32(pb.NIU) //牛牛

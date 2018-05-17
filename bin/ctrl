@@ -127,10 +127,16 @@ protojson() {
         san_vote.proto san_pub.proto \
         game_code.proto \
         > ../pbjson/san-bundle.json
+    ${PBJS} -t json \
+        hua_room.proto hua_coin.proto hua_free.proto \
+        hua_vote.proto hua_pub.proto \
+        game_code.proto \
+        > ../pbjson/hua-bundle.json
     #
     cp game_*.proto ../pbjson/
     cp niu_*.proto ../pbjson/
     cp san_*.proto ../pbjson/
+    cp hua_*.proto ../pbjson/
     #
     cd ${SUI_SRC_DIR}/tool
     go run gen.go
@@ -346,6 +352,7 @@ show() {
     ps -ef | grep -v grep | grep robot-bin
     #ps -ef | grep -v grep | grep login-bin
     ps -ef | grep -v grep | grep niu1-bin
+    ps -ef | grep -v grep | grep san1-bin
     ps -ef | grep -v grep | grep gate1-bin
     ps -ef | grep -v grep | grep dbms-bin
 }

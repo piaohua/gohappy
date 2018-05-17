@@ -39,6 +39,10 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CreateDesk)
 		glog.Debugf("CreateDesk %#v", arg)
 		a.createDesk(arg, ctx)
+	case *pb.GetRoomList:
+		arg := msg.(*pb.GetRoomList)
+		glog.Debugf("GetRoomList %#v", arg)
+		a.getRoomList(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -76,6 +80,21 @@ func (a *DBMSActor) createDesk(msg *pb.CreateDesk, ctx actor.Context) {
 		}
 	}
 	rsp := new(pb.CreatedDesk)
+	rsp.Rtype = msg.Rtype
+	rsp.Gtype = msg.Gtype
+	rsp.Error = pb.Failed
+	ctx.Respond(rsp)
+}
+
+//获取房间列表
+func (a *DBMSActor) getRoomList(msg *pb.GetRoomList, ctx actor.Context) {
+	for k, v := range a.serve {
+		if strings.Contains(k, msg.Name) {
+			v.Tell(msg)
+			return
+		}
+	}
+	rsp := new(pb.GotRoomList)
 	rsp.Rtype = msg.Rtype
 	rsp.Gtype = msg.Gtype
 	rsp.Error = pb.Failed

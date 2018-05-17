@@ -24,7 +24,7 @@ func (rs *RoleActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.ServeClose:
 		glog.Debugf("rs ServeClose %s", ctx.Self().String())
 		arg := new(pb.SLoginOut)
-		arg.Rtype = 2 //停服
+		arg.Rtype = int32(pb.LOGOUT_TYPE2) //停服
 		rs.Send(arg)
 		//断开连接
 		rs.CloseWs()
@@ -110,7 +110,7 @@ func (rs *RoleActor) stop(ctx actor.Context) {
 	//登出日志
 	msg2 := &pb.LogLogout{
 		Userid: rs.User.Userid,
-		Event:  1, //正常断开
+		Event:  int32(pb.LOGOUT_TYPE1), //正常断开
 	}
 	rs.loggerPid.Tell(msg2)
 	//断开处理
