@@ -82,6 +82,26 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CNNFreeWiners:
+		arg := msg.(*pb.CNNFreeWiners)
+		glog.Debugf("CNNFreeWiners %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SNNFreeWiners)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CNNFreeRoles:
+		arg := msg.(*pb.CNNFreeRoles)
+		glog.Debugf("CNNFreeRoles %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SNNFreeRoles)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
 	case *pb.CNNRoomList:
 		arg := msg.(*pb.CNNRoomList)
 		glog.Debugf("CNNRoomList %#v", arg)

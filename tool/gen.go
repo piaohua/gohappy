@@ -82,6 +82,8 @@ var protosUnpack = map[string][]proto{
 		{code: 2015, name: "CNNGameRecord"},
 		{code: 2016, name: "CNNLaunchVote"},
 		{code: 2017, name: "CNNVote"},
+		{code: 2018, name: "CNNFreeWiners"},
+		{code: 2019, name: "CNNFreeRoles"},
 	},
 	//san
 	"san": {
@@ -103,6 +105,8 @@ var protosUnpack = map[string][]proto{
 		{code: 3015, name: "CSGGameRecord"},
 		{code: 3016, name: "CSGLaunchVote"},
 		{code: 3017, name: "CSGVote"},
+		{code: 3018, name: "CSGFreeWiners"},
+		{code: 3019, name: "CSGFreeRoles"},
 	},
 	//hua
 	"hua": {
@@ -124,6 +128,8 @@ var protosUnpack = map[string][]proto{
 		{code: 4015, name: "CJHGameRecord"},
 		{code: 4016, name: "CJHLaunchVote"},
 		{code: 4017, name: "CJHVote"},
+		{code: 4018, name: "CJHFreeWiners"},
+		{code: 4019, name: "CJHFreeRoles"},
 	},
 }
 
@@ -184,6 +190,8 @@ var protosPacket = map[string][]proto{
 		{code: 2525, name: "SNNVote"},
 		{code: 2526, name: "SNNVoteResult"},
 		{code: 2527, name: "SNNPushState"},
+		{code: 2528, name: "SNNFreeWiners"},
+		{code: 2529, name: "SNNFreeRoles"},
 	},
 	//san
 	"san": {
@@ -215,6 +223,8 @@ var protosPacket = map[string][]proto{
 		{code: 3525, name: "SSGVote"},
 		{code: 3526, name: "SSGVoteResult"},
 		{code: 3527, name: "SSGPushState"},
+		{code: 3528, name: "SSGFreeWiners"},
+		{code: 3529, name: "SSGFreeRoles"},
 	},
 	//hua
 	"hua": {
@@ -246,6 +256,8 @@ var protosPacket = map[string][]proto{
 		{code: 4525, name: "SJHVote"},
 		{code: 4526, name: "SJHVoteResult"},
 		{code: 4527, name: "SJHPushState"},
+		{code: 4528, name: "SJHFreeWiners"},
+		{code: 4529, name: "SJHFreeRoles"},
 	},
 }
 

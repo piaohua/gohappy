@@ -29,23 +29,9 @@ const (
 	Gong3 //大三公
 )
 
-//Point 求点数
-func Point(cs []uint32) (i uint32) {
-	//牛牛点数
-	if len(cs) == 5 {
-		return Algo(cs)
-	}
-	//三公点数
-	if len(cs) == 3 {
-		return San(cs)
-	}
-	return
-}
-
 //San 三公点数
 func San(cs []uint32) (i uint32) {
 	if len(cs) != 3 {
-		i = 0
 		return
 	}
 	r0 := Rank(cs[0])
