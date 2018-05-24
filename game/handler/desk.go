@@ -43,22 +43,24 @@ func Data2Desk(deskDataStr []byte) *data.DeskData {
 func NewDeskData(d *data.Game) *data.DeskData {
 	//TODO 新加字段
 	return &data.DeskData{
-		Unique: d.Id,
-		Gtype:  d.Gtype,
-		Rtype:  d.Rtype,
-		Dtype:  d.Dtype,
-		Ltype:  d.Ltype,
-		Rname:  d.Name,
-		Count:  d.Count,
-		Ante:   d.Ante,
-		Cost:   d.Cost,
-		Vip:    d.Vip,
-		Chip:   d.Chip,
-		Deal:   d.Deal,
-		Carry:  d.Carry,
-		Down:   d.Down,
-		Top:    d.Top,
-		Sit:    d.Sit,
+		Unique:  d.Id,
+		Gtype:   d.Gtype,
+		Rtype:   d.Rtype,
+		Dtype:   d.Dtype,
+		Ltype:   d.Ltype,
+		Rname:   d.Name,
+		Count:   d.Count,
+		Ante:    d.Ante,
+		Cost:    d.Cost,
+		Vip:     d.Vip,
+		Chip:    d.Chip,
+		Deal:    d.Deal,
+		Carry:   d.Carry,
+		Down:    d.Down,
+		Top:     d.Top,
+		Sit:     d.Sit,
+		Minimum: d.Minimum,
+		Maximum: d.Maximum,
 	}
 }
 
@@ -103,22 +105,32 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 		g.Ante = 1
 		g.Chip = 2000
 		g.Sit = 2000
+		g.Minimum = 2000
+		g.Maximum = 5000
 	case int32(pb.ROOM_LEVEL1):
 		g.Ante = 2
 		g.Chip = 5000
 		g.Sit = 5000
+		g.Minimum = 5000
+		g.Maximum = 50000
 	case int32(pb.ROOM_LEVEL2):
 		g.Ante = 5
 		g.Chip = 20000
 		g.Sit = 20000
+		g.Minimum = 20000
+		g.Maximum = 200000
 	case int32(pb.ROOM_LEVEL3):
 		g.Ante = 10
 		g.Chip = 200000
 		g.Sit = 200000
+		g.Minimum = 200000
+		g.Maximum = 2000000
 	case int32(pb.ROOM_LEVEL4):
 		g.Ante = 20
 		g.Chip = 2000000
 		g.Sit = 2000000
+		g.Minimum = 2000000
+		g.Maximum = 0
 	}
 	return g
 }
@@ -129,6 +141,7 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 		Unique:  bson.NewObjectId().Hex(),
 		Gtype:   arg.Gtype,
 		Rtype:   arg.Rtype,
+		Dtype:   arg.Dtype,
 		Rname:   arg.Rname,
 		Ante:    arg.Ante,
 		Count:   arg.Count,

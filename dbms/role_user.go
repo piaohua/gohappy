@@ -107,6 +107,14 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		rsp.Code = arg.Code
 		a.handlerWeb(arg, rsp, ctx)
 		ctx.Respond(rsp)
+	case *pb.BankGive:
+		arg := msg.(*pb.BankGive)
+		glog.Debugf("BankGive %#v", arg)
+		a.offlineBank(arg, ctx)
+	case *pb.BankChange:
+		arg := msg.(*pb.BankChange)
+		glog.Debugf("BankChange %#v", arg)
+		a.syncBank(arg.Coin, arg.Type, arg.Userid)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -358,6 +366,57 @@ func (a *RoleActor) syncCurrency(diamond, coin, card, chip int64,
 	}
 	if chip != 0 {
 		msg1 := handler.LogChipMsg(chip, ltype, user)
+		loggerPid.Tell(msg1)
+	}
+}
+
+//离线同步数据
+func (a *RoleActor) offlineBank(arg *pb.BankGive, ctx actor.Context) {
+	rsp := new(pb.BankGiven)
+	rsp.Userid = arg.Userid
+	rsp.Type = arg.Type
+	rsp.Coin = arg.Coin
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("BankGive err userid %s", arg.Userid)
+		rsp.Error = pb.Failed
+		ctx.Respond(rsp)
+		return
+	}
+	if v, ok := a.roles[arg.Userid]; ok && v != nil {
+		v.Pid.Tell(arg)
+		ctx.Respond(rsp)
+		return
+	}
+	a.syncBank(arg.Coin, arg.Type, arg.Userid)
+	ctx.Respond(rsp)
+}
+
+//银行变更
+func (a *RoleActor) syncBank(coin int64, ltype int32, userid string) {
+	//日志记录
+	user := a.getUserById(userid)
+	if user == nil {
+		glog.Errorf("syncBank err userid %s, type %d, coin %d",
+			userid, ltype, coin)
+		return
+	}
+	if coin < 0 && ((coin + user.GetBank()) < 0) {
+		coin = 0 - user.GetBank()
+	}
+	//更新操作
+	user.AddBank(coin)
+	//更新状态
+	//a.states[userid] = true
+	//暂时实时写入, TODO 异步数据更新
+	user.UpdateBank()
+	//TODO 机器人不写日志
+	//if user.GetRobot() {
+	//	return
+	//}
+	//日志记录
+	if coin != 0 {
+		msg1 := handler.LogBankMsg(coin, ltype, user)
 		loggerPid.Tell(msg1)
 	}
 }

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
@@ -43,6 +45,18 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		//响应
 		rsp := handler.Shop(arg, rs.User)
 		rs.Send(rsp)
+	case *pb.BankGive:
+		arg := msg.(*pb.BankGive)
+		glog.Debugf("BankGive %#v", arg)
+		rs.addBank(arg.Coin, arg.Type)
+	case *pb.CBank:
+		arg := msg.(*pb.CBank)
+		glog.Debugf("CBank %#v", arg)
+		rs.bank(arg)
+	case *pb.CRank:
+		arg := msg.(*pb.CRank)
+		glog.Debugf("CRank %#v", arg)
+		rs.dbmsPid.Request(arg, ctx.Self())
 	case *pb.CUserData:
 		arg := msg.(*pb.CUserData)
 		glog.Debugf("CUserData %#v", arg)
@@ -165,4 +179,85 @@ func (rs *RoleActor) syncUser() {
 	}
 	msg.Data = result
 	rs.rolePid.Tell(msg)
+}
+
+//银行发放
+func (rs *RoleActor) addBank(coin int64, ltype int32) {
+	if rs.User == nil {
+		glog.Errorf("add addBank user err: %d", ltype)
+		return
+	}
+	//日志记录
+	if coin < 0 && ((rs.User.GetBank() + coin) < 0) {
+		coin = 0 - rs.User.GetBank()
+	}
+	rs.User.AddBank(coin)
+	//银行变动及时同步
+	msg2 := handler.BankChangeMsg(coin,
+		ltype, rs.User.GetUserid())
+	rs.rolePid.Tell(msg2)
+}
+
+//1存入,2取出,3赠送
+func (rs *RoleActor) bank(arg *pb.CBank) {
+	msg := &pb.SBank{}
+	rtype := arg.GetRtype()
+	amount := int64(arg.GetAmount())
+	userid := arg.GetUserid()
+	coin := rs.User.GetCoin()
+	switch rtype {
+	case pb.BankDeposit: //存入
+		if (coin - amount) < data.BANKRUPT {
+			msg.Error = pb.NotEnoughCoin
+		} else if amount <= 0 {
+			msg.Error = pb.DepositNumberError
+		} else {
+			rs.addCurrency(0, -1*amount, 0, 0, int32(pb.LOG_TYPE12))
+			rs.addBank(amount, int32(pb.LOG_TYPE12))
+		}
+	case pb.BankDraw: //取出
+		if amount < data.DRAW_MONEY || amount > rs.User.GetBank() {
+			msg.Error = pb.DrawMoneyNumberError
+		} else {
+			rs.addCurrency(0, amount, 0, 0, int32(pb.LOG_TYPE13))
+			rs.addBank(-1*amount, int32(pb.LOG_TYPE13))
+		}
+	case pb.BankGift: //赠送
+		if amount < data.DRAW_MONEY || amount > rs.User.GetBank() {
+			msg.Error = pb.GiveNumberError
+		} else if userid == "" {
+			msg.Error = pb.GiveUseridError
+		} else {
+			msg1 := handler.GiveBankMsg(amount, int32(pb.LOG_TYPE15), userid)
+			if rs.bank2give(msg1) {
+				rs.addBank(-1*amount, int32(pb.LOG_TYPE15))
+			} else {
+				msg.Error = pb.GiveUseridError
+			}
+		}
+	case pb.BankSelect: //查询
+	}
+	msg.Rtype = rtype
+	msg.Amount = arg.GetAmount()
+	msg.Userid = userid
+	msg.Balance = rs.User.GetBank()
+	rs.Send(msg)
+}
+
+//银行赠送
+func (rs *RoleActor) bank2give(msg1 interface{}) bool {
+	timeout := 3 * time.Second
+	res1, err1 := rs.rolePid.RequestFuture(msg1, timeout).Result()
+	if err1 != nil {
+		glog.Errorf("logined GetUser failed: %v", err1)
+		return false
+	}
+	if response1, ok := res1.(*pb.BankGiven); ok {
+		if response1.Error == pb.OK {
+			return true
+		}
+		glog.Errorf("BankGiven err %#v", response1)
+		return false
+	}
+	return false
 }

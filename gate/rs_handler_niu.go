@@ -197,19 +197,6 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 	}
 }
 
-//已经在游戏中,直接加入
-func (rs *RoleActor) enterGame(ctx actor.Context) bool {
-	if rs.gamePid != nil {
-		msg := new(pb.EnterDesk)
-		if !rs.enterDeskMsg(msg, ctx) {
-			glog.Errorf("userid %s enter faild %s",
-				rs.User.GetUserid(), rs.gamePid.String())
-		}
-		return true
-	}
-	return false
-}
-
 //进入百人房间
 func (rs *RoleActor) enterNNFree(arg *pb.CNNFreeEnterRoom, ctx actor.Context) {
 	msg := rs.enterMatchDesk(ctx)
@@ -312,7 +299,7 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 	//TODO 验证
 	msg := &pb.CreateDesk{
 		Rname:   arg.Rname,
-		Rtype:   arg.Rtype,
+		Dtype:   arg.Dtype,
 		Ante:    arg.Ante,
 		Round:   arg.Round,
 		Payment: arg.Payment,
@@ -320,8 +307,16 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 		//TODO 消耗
 		Cost: 100,
 	}
+	switch msg.Dtype {
+	case int32(pb.DESK_TYPE0):
+	case int32(pb.DESK_TYPE1):
+	case int32(pb.DESK_TYPE2):
+	default:
+		msg.Dtype = int32(pb.DESK_TYPE0)
+	}
 	msg.Name = cfg.Section("game.niu").Name()
-	msg.Gtype = int32(pb.NIU) //牛牛
+	msg.Gtype = int32(pb.NIU)        //牛牛
+	msg.Rtype = int32(pb.ROOM_TYPE1) //私人
 	msg.Cid = rs.User.GetUserid()
 	msg.Sender = ctx.Self()
 	//节点中匹配

@@ -3,6 +3,7 @@ package handler
 import (
 	"gohappy/data"
 	"gohappy/game/config"
+	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
 )
@@ -180,5 +181,55 @@ func UserDataMsg(p *pb.GotUserData) (stoc *pb.SUserData) {
 	//基本数据
 	stoc.Data = p.GetData()
 	stoc.Info = p.GetInfo()
+	return
+}
+
+//PackRankMsg 获取排行榜信息
+func PackRankMsg() (msg *pb.SRank) {
+	msg = new(pb.SRank)
+	list, err := data.GetRank()
+	if err != nil {
+		glog.Errorf("GetRank err %v", err)
+	}
+	glog.Debugf("rank list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.Rank)
+		if val, ok := v["coin"]; ok {
+			msg2.Coin = val.(int64)
+		}
+		if val, ok := v["_id"]; ok {
+			msg2.Userid = val.(string)
+		}
+		if val, ok := v["nickname"]; ok {
+			msg2.Nickname = val.(string)
+		}
+		if val, ok := v["photo"]; ok {
+			msg2.Photo = val.(string)
+		}
+		if msg2.Userid == "" {
+			continue
+		}
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
+//GiveBankMsg 银行变动消息
+func GiveBankMsg(coin int64,
+	ltype int32, userid string) (msg *pb.BankGive) {
+	msg = new(pb.BankGive)
+	msg.Type = ltype
+	msg.Coin = coin
+	msg.Userid = userid
+	return
+}
+
+//BankChangeMsg 银行变动消息
+func BankChangeMsg(coin int64,
+	ltype int32, userid string) (msg *pb.BankChange) {
+	msg = new(pb.BankChange)
+	msg.Type = ltype
+	msg.Coin = coin
+	msg.Userid = userid
 	return
 }

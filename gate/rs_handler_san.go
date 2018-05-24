@@ -279,7 +279,7 @@ func (rs *RoleActor) createSGRoom(arg *pb.CSGCreateRoom, ctx actor.Context) {
 	//TODO 验证
 	msg := &pb.CreateDesk{
 		Rname:   arg.Rname,
-		Rtype:   arg.Rtype,
+		Dtype:   arg.Dtype,
 		Ante:    arg.Ante,
 		Round:   arg.Round,
 		Payment: arg.Payment,
@@ -287,8 +287,16 @@ func (rs *RoleActor) createSGRoom(arg *pb.CSGCreateRoom, ctx actor.Context) {
 		//TODO 消耗
 		Cost: 100,
 	}
+	switch msg.Dtype {
+	case int32(pb.DESK_TYPE0):
+	case int32(pb.DESK_TYPE1):
+	case int32(pb.DESK_TYPE2):
+	default:
+		msg.Dtype = int32(pb.DESK_TYPE0)
+	}
 	msg.Name = cfg.Section("game.san").Name()
-	msg.Gtype = int32(pb.SAN) //三公
+	msg.Gtype = int32(pb.SAN)        //三公
+	msg.Rtype = int32(pb.ROOM_TYPE1) //私人
 	msg.Cid = rs.User.GetUserid()
 	msg.Sender = ctx.Self()
 	//节点中匹配

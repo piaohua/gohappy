@@ -115,36 +115,6 @@ func (rs *RoleActor) handlerHua(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CJHDealer:
-		arg := msg.(*pb.CJHDealer)
-		glog.Debugf("CJHDealer %#v", arg)
-		if rs.gamePid == nil {
-			rsp := new(pb.SJHDealer)
-			rsp.Error = pb.NotInRoom
-			rs.Send(rsp)
-			return
-		}
-		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CJHBet:
-		arg := msg.(*pb.CJHBet)
-		glog.Debugf("CJHBet %#v", arg)
-		if rs.gamePid == nil {
-			rsp := new(pb.SJHBet)
-			rsp.Error = pb.NotInRoom
-			rs.Send(rsp)
-			return
-		}
-		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CJHiu:
-		arg := msg.(*pb.CJHiu)
-		glog.Debugf("CJHiu %#v", arg)
-		if rs.gamePid == nil {
-			rsp := new(pb.SJHiu)
-			rsp.Error = pb.NotInRoom
-			rs.Send(rsp)
-			return
-		}
-		rs.gamePid.Request(arg, ctx.Self())
 	case *pb.CJHGameRecord:
 		arg := msg.(*pb.CJHGameRecord)
 		glog.Debugf("CJHGameRecord %#v", arg)
@@ -164,6 +134,56 @@ func (rs *RoleActor) handlerHua(msg interface{}, ctx actor.Context) {
 		glog.Debugf("CJHVote %#v", arg)
 		if rs.gamePid == nil {
 			rsp := new(pb.SJHVote)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinSee:
+		arg := msg.(*pb.CJHCoinSee)
+		glog.Debugf("CJHCoinSee %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinSee)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinCall:
+		arg := msg.(*pb.CJHCoinCall)
+		glog.Debugf("CJHCoinCall %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinCall)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinRaise:
+		arg := msg.(*pb.CJHCoinRaise)
+		glog.Debugf("CJHCoinRaise %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinRaise)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinFold:
+		arg := msg.(*pb.CJHCoinFold)
+		glog.Debugf("CJHCoinFold %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinFold)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinBi:
+		arg := msg.(*pb.CJHCoinBi)
+		glog.Debugf("CJHCoinBi %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinBi)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
@@ -279,7 +299,7 @@ func (rs *RoleActor) createJHRoom(arg *pb.CJHCreateRoom, ctx actor.Context) {
 	//TODO 验证
 	msg := &pb.CreateDesk{
 		Rname:   arg.Rname,
-		Rtype:   arg.Rtype,
+		Dtype:   arg.Dtype,
 		Ante:    arg.Ante,
 		Round:   arg.Round,
 		Payment: arg.Payment,
@@ -287,8 +307,16 @@ func (rs *RoleActor) createJHRoom(arg *pb.CJHCreateRoom, ctx actor.Context) {
 		//TODO 消耗
 		Cost: 100,
 	}
+	switch msg.Dtype {
+	case int32(pb.DESK_TYPE0):
+	case int32(pb.DESK_TYPE1):
+	case int32(pb.DESK_TYPE2):
+	default:
+		msg.Dtype = int32(pb.DESK_TYPE0)
+	}
 	msg.Name = cfg.Section("game.hua").Name()
-	msg.Gtype = int32(pb.HUA) //金花
+	msg.Gtype = int32(pb.HUA)        //金花
+	msg.Rtype = int32(pb.ROOM_TYPE1) //私人
 	msg.Cid = rs.User.GetUserid()
 	msg.Sender = ctx.Self()
 	//节点中匹配

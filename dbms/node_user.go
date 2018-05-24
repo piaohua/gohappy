@@ -43,6 +43,11 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.GetRoomList)
 		glog.Debugf("GetRoomList %#v", arg)
 		a.getRoomList(arg, ctx)
+	case *pb.CRank:
+		arg := msg.(*pb.CRank)
+		glog.Debugf("CRank %#v", arg)
+		rsp := handler.PackRankMsg()
+		ctx.Respond(rsp)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

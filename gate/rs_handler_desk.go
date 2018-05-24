@@ -161,6 +161,20 @@ func (rs *RoleActor) matchedDesk(arg *pb.MatchedDesk, ctx actor.Context) {
 	arg.Desk.Request(msg, ctx.Self())
 }
 
+//已经在游戏中,直接加入
+func (rs *RoleActor) enterGame(ctx actor.Context) bool {
+	if rs.gamePid != nil {
+		msg := new(pb.EnterDesk)
+		if !rs.enterDeskMsg(msg, ctx) {
+			glog.Errorf("userid %s enter faild %s",
+				rs.User.GetUserid(), rs.gamePid.String())
+		}
+		rs.gamePid.Request(msg, ctx.Self())
+		return true
+	}
+	return false
+}
+
 //加入房间消息
 func (rs *RoleActor) enterDeskMsg(msg *pb.EnterDesk, ctx actor.Context) bool {
 	result4, err4 := json.Marshal(rs.User)
