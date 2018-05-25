@@ -92,6 +92,22 @@ func SyncConfig(arg *pb.SyncConfig) (err error) {
 				config.SetVip(v)
 			}
 		}
+	case pb.CONFIG_TASK: //任务
+		b := make(map[string]data.Task)
+		err = jsoniter.Unmarshal(arg.Data, &b)
+		glog.Debugf("Sync Task %#v", b)
+		if err != nil {
+			glog.Errorf("syncConfig Unmarshal err %v, data %#v", err, arg.Data)
+			return
+		}
+		for k, v := range b {
+			switch arg.Atype {
+			case pb.CONFIG_DELETE:
+				config.DelTask(k)
+			case pb.CONFIG_UPSERT:
+				config.SetTask(v)
+			}
+		}
 	default:
 		glog.Errorf("syncConfig unknown type %s", arg.Type)
 		err = fmt.Errorf("type not exist %d", arg.Type)
@@ -134,6 +150,8 @@ func GetSyncConfig2(ctype pb.ConfigType) (msg *pb.SyncConfig, err error) {
 		msg.Data, err = syncConfigMsg(config.GetGames2())
 	case pb.CONFIG_VIP: //vip列表
 		msg.Data, err = syncConfigMsg(config.GetVips2())
+	case pb.CONFIG_TASK: //任务列表
+		msg.Data, err = syncConfigMsg(config.GetTasks2())
 	default:
 		err = fmt.Errorf("type not exist %d", ctype)
 	}

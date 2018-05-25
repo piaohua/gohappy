@@ -68,6 +68,7 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	//TODO 设置测试数据,正式后台配置
 	//handler.SetGameList()
 	//handler.SetShopList()
+	handler.SetTaskList()
 	//启动
 	go a.ticker(ctx)
 }

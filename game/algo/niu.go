@@ -229,6 +229,9 @@ func descSortHands(cards []hands) {
 //Compare 比较 a >= b (先比较牌值,牌值相同再比较花)
 //同等牛的比其中牌值最大的一个,如果最大的一个牌值一样,则比花色(相同牌花色永远不同)
 func Compare(a, b []uint32) bool {
+	if len(a) == 0 || len(b) == 0 {
+		return false
+	}
 	if len(a) != len(b) {
 		return false
 	}

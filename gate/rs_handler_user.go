@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"gohappy/data"
+	"gohappy/game/config"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
@@ -57,6 +58,18 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CRank)
 		glog.Debugf("CRank %#v", arg)
 		rs.dbmsPid.Request(arg, ctx.Self())
+	case *pb.TaskUpdate:
+		arg := msg.(*pb.TaskUpdate)
+		glog.Debugf("TaskUpdate %#v", arg)
+		rs.taskUpdate(arg)
+	case *pb.CTask:
+		arg := msg.(*pb.CTask)
+		glog.Debugf("CTask %#v", arg)
+		rs.task()
+	case *pb.CTaskPrize:
+		arg := msg.(*pb.CTaskPrize)
+		glog.Debugf("CTaskPrize %#v", arg)
+		rs.taskPrize(arg.Type)
 	case *pb.CUserData:
 		arg := msg.(*pb.CUserData)
 		glog.Debugf("CUserData %#v", arg)
@@ -200,7 +213,7 @@ func (rs *RoleActor) addBank(coin int64, ltype int32) {
 
 //1存入,2取出,3赠送
 func (rs *RoleActor) bank(arg *pb.CBank) {
-	msg := &pb.SBank{}
+	msg := new(pb.SBank)
 	rtype := arg.GetRtype()
 	amount := int64(arg.GetAmount())
 	userid := arg.GetUserid()
@@ -216,14 +229,18 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			rs.addBank(amount, int32(pb.LOG_TYPE12))
 		}
 	case pb.BankDraw: //取出
-		if amount < data.DRAW_MONEY || amount > rs.User.GetBank() {
+		if amount > rs.User.GetBank() {
+			msg.Error = pb.NotEnoughCoin
+		} else if amount < data.DRAW_MONEY {
 			msg.Error = pb.DrawMoneyNumberError
 		} else {
 			rs.addCurrency(0, amount, 0, 0, int32(pb.LOG_TYPE13))
 			rs.addBank(-1*amount, int32(pb.LOG_TYPE13))
 		}
 	case pb.BankGift: //赠送
-		if amount < data.DRAW_MONEY || amount > rs.User.GetBank() {
+		if amount > rs.User.GetBank() {
+			msg.Error = pb.NotEnoughCoin
+		} else if amount < data.DRAW_MONEY {
 			msg.Error = pb.GiveNumberError
 		} else if userid == "" {
 			msg.Error = pb.GiveUseridError
@@ -260,4 +277,133 @@ func (rs *RoleActor) bank2give(msg1 interface{}) bool {
 		return false
 	}
 	return false
+}
+
+//任务信息,TODO next任务不显示和重置当日任务
+func (rs *RoleActor) task() {
+	msg := new(pb.STask)
+	list := config.GetOrderTasks()
+	m := make(map[int32]bool)
+	for _, v := range list {
+		if val, ok := rs.User.Task[v.Type]; ok {
+			if val.Prize {
+				continue
+			}
+			if val.Taskid != v.Taskid {
+				continue
+			}
+		}
+		if _, ok := m[v.Type]; ok {
+			continue
+		}
+		msg2 := &pb.Task{
+			Taskid:  v.Taskid,
+			Type:    v.Type,
+			Name:    v.Name,
+			Count:   v.Count,
+			Coin:    v.Coin,
+			Diamond: v.Diamond,
+		}
+		if val, ok := rs.User.Task[v.Type]; ok {
+			msg2.Num = val.Num
+		}
+		m[v.Type] = true
+		msg.List = append(msg.List, msg2)
+	}
+	rs.Send(msg)
+}
+
+//任务奖励领取
+func (rs *RoleActor) taskPrize(taskType int32) {
+	msg := new(pb.STaskPrize)
+	if val, ok := rs.User.Task[taskType]; ok {
+		task := config.GetTask(val.Taskid)
+		if val.Num < task.Count || task.Taskid != val.Taskid {
+			msg.Error = pb.AwardFaild
+			rs.Send(msg)
+			return
+		}
+		//奖励发放
+		rs.addCurrency(task.Diamond, task.Coin,
+			0, 0, int32(pb.LOG_TYPE46))
+		val.Prize = true
+		//响应消息
+		msg.Type = taskType
+		msg.Coin = task.Coin
+		msg.Diamond = task.Diamond
+		//添加新任务
+		rs.nextTask(taskType, task.Nextid, msg)
+	} else {
+		msg.Error = pb.AwardFaild
+	}
+	rs.Send(msg)
+}
+
+func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
+	if nextid == 0 {
+		return
+	}
+	//存在下个任务
+	delete(rs.User.Task, taskType) //移除
+	//TODO 任务完成日志
+	msg2 := handler.TaskUpdateMsg(0, pb.TaskType(taskType),
+		rs.User.GetUserid())
+	msg2.Prize = true //移除标识
+	rs.rolePid.Tell(msg2)
+	//查找
+	task := config.GetTask(nextid)
+	if task.Taskid != nextid {
+		return
+	}
+	msg.Next = &pb.Task{
+		Taskid:  task.Taskid,
+		Type:    task.Type,
+		Name:    task.Name,
+		Count:   task.Count,
+		Coin:    task.Coin,
+		Diamond: task.Diamond,
+	}
+	//添加新任务
+	taskInfo := data.TaskInfo{
+		Taskid: task.Taskid,
+		Utime:  time.Now(),
+	}
+	rs.User.Task[int32(task.Type)] = taskInfo
+	msg3 := handler.TaskUpdateMsg(0, pb.TaskType(task.Type),
+		rs.User.GetUserid())
+	msg3.Taskid = task.Taskid
+	rs.rolePid.Tell(msg3)
+}
+
+//更新任务数据
+func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
+	if val, ok := rs.User.Task[int32(arg.Type)]; ok {
+		if val.Prize {
+			return
+		}
+		//TODO 数值超出不再更新
+		//task := config.GetTask(val.Taskid)
+		//if val.Num >= task.Count {
+		//	return
+		//}
+		val.Num += arg.Num
+		val.Utime = time.Now()
+		rs.User.Task[int32(arg.Type)] = val
+		rs.rolePid.Tell(arg)
+	} else {
+		list := config.GetOrderTasks()
+		for _, v := range list {
+			if v.Type != int32(arg.Type) {
+				continue
+			}
+			taskInfo := data.TaskInfo{
+				Taskid: v.Taskid,
+				Num:    arg.Num,
+				Utime:  time.Now(),
+			}
+			rs.User.Task[int32(arg.Type)] = taskInfo
+			rs.rolePid.Tell(arg)
+			break
+		}
+	}
 }

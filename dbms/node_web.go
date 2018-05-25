@@ -65,6 +65,16 @@ func (a *DBMSActor) handlerWeb(arg *pb.WebRequest,
 		}
 		//广播所有节点,主动通知同步配置,只同步修改数据
 		a.broadcast(msg2, ctx)
+	case pb.WebTask:
+		//更新配置
+		msg2 := handler.SyncConfig2(pb.CONFIG_TASK, arg.Atype, arg.Data)
+		err1 := handler.SyncConfig(msg2)
+		if err1 != nil {
+			rsp.ErrMsg = fmt.Sprintf("msg err: %v", err1)
+			return
+		}
+		//广播所有节点,主动通知同步配置,只同步修改数据
+		a.broadcast(msg2, ctx)
 	default:
 		glog.Errorf("unknown message %v", arg)
 	}

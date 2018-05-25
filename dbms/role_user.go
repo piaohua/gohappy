@@ -1,6 +1,8 @@
 package main
 
 import (
+	"time"
+
 	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
@@ -115,6 +117,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.BankChange)
 		glog.Debugf("BankChange %#v", arg)
 		a.syncBank(arg.Coin, arg.Type, arg.Userid)
+	case *pb.TaskUpdate:
+		arg := msg.(*pb.TaskUpdate)
+		glog.Debugf("TaskUpdate %#v", arg)
+		a.taskUpdate(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -419,4 +425,30 @@ func (a *RoleActor) syncBank(coin int64, ltype int32, userid string) {
 		msg1 := handler.LogBankMsg(coin, ltype, user)
 		loggerPid.Tell(msg1)
 	}
+}
+
+//同步任务数据
+func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("taskUpdate err userid %#v", arg)
+		return
+	}
+	if val, ok := user.Task[int32(arg.Type)]; ok {
+		if arg.Prize {
+			delete(user.Task, int32(arg.Type))
+		} else {
+			val.Num += arg.Num
+			val.Utime = time.Now()
+		}
+	} else {
+		taskInfo := data.TaskInfo{
+			Taskid: int32(arg.Taskid),
+			Num:    arg.Num,
+			Utime:  time.Now(),
+		}
+		user.Task[int32(arg.Type)] = taskInfo
+	}
+	//暂时实时写入, TODO 异步数据更新
+	user.UpdateTask()
 }

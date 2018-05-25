@@ -6,6 +6,7 @@ func ConfigInit() {
 	InitShop()   //商城服务
 	InitEnv()    //变量服务
 	InitGame()   //游戏服务
+	InitTask()   //任务服务
 }
 
 //节点变量初始化, 节点连接时同步数据
@@ -14,6 +15,7 @@ func Init2Gate(id, secret, key, machid, pattern, notifyUrl string) {
 	InitShop2()   //商城服务
 	InitEnv2()    //变量服务
 	InitGame2()   //游戏服务
+	InitTask2()   //任务服务
 
 	WxLoginInit(id, secret) //微信登录
 
@@ -26,4 +28,5 @@ func Init2Game() {
 	InitShop2()   //商城服务
 	InitEnv2()    //变量服务
 	InitGame2()   //游戏服务
+	InitTask2()   //任务服务
 }
