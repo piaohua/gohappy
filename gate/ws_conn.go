@@ -144,7 +144,6 @@ func (ws *WSConn) write(mt int, msg interface{}) error {
 		return errors.New("msg channel closed")
 	case WSPING:
 		mt = websocket.PingMessage
-		message = nil
 	case []byte:
 		message = msg.([]byte)
 	default:
