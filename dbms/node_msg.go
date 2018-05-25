@@ -137,4 +137,5 @@ func (a *DBMSActor) syncConfig2(pid *actor.PID) {
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_NOTICE))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_SHOP))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_GAMES))
+	pid.Tell(handler.GetSyncConfig(pb.CONFIG_TASK))
 }
