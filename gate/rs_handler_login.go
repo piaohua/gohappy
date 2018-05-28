@@ -234,7 +234,8 @@ func (rs *RoleActor) setHeadImag(isRegist bool, ctx actor.Context) {
 //登录成功日志处理
 func (rs *RoleActor) loginedLog(arg *pb.LoginSuccess) {
 	rs.User.LoginIp = arg.Ip
-	rs.User.LoginTime = utils.BsonNow()
+	//连续登录
+	rs.loginPrizeInit()
 	if arg.IsRegist {
 		//注册ip
 		rs.User.RegistIp = arg.Ip

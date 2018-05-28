@@ -50,6 +50,9 @@ type User struct {
 	//
 	Bank int64              `bson:"bank" json:"bank"` // 个人银行
 	Task map[int32]TaskInfo `bson:"task" json:"task"` // 已经完成或者还在继续的任务
+	//
+	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
+	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
 }
 
 // 数据库操作
@@ -72,6 +75,13 @@ func (this *User) UpdateBank() bool {
 func (this *User) UpdateTask() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"task": this.Task}})
+}
+
+func (this *User) UpdateLogin() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"login_times": this.LoginTimes,
+			"login_prize": this.LoginPrize, "login_time": this.LoginTime,
+			"login_ip": this.LoginIp}})
 }
 
 func (this *User) Get() {
@@ -274,11 +284,11 @@ func (this *User) GetAgent() string {
 
 func (this *User) SetRecord(value int32) {
 	if value > 0 {
-		this.Win += 1
+		this.Win++
 	} else if value < 0 {
-		this.Lost += 1
+		this.Lost++
 	} else {
-		this.Ping += 1
+		this.Ping++
 	}
 }
 

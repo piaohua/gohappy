@@ -69,6 +69,7 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	//handler.SetGameList()
 	//handler.SetShopList()
 	handler.SetTaskList()
+	handler.SetLoginPrizeList()
 	//启动
 	go a.ticker(ctx)
 }
@@ -138,4 +139,5 @@ func (a *DBMSActor) syncConfig2(pid *actor.PID) {
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_SHOP))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_GAMES))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_TASK))
+	pid.Tell(handler.GetSyncConfig(pb.CONFIG_LOGIN))
 }

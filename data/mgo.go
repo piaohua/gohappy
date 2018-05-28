@@ -43,6 +43,7 @@ var Envs *mgo.Collection
 var Games *mgo.Collection
 var Vips *mgo.Collection
 var Tasks *mgo.Collection
+var LoginPrizes *mgo.Collection
 
 // 初始化时连接数据库
 func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
@@ -101,6 +102,7 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	Vips = Session.DB(dbName).C("col_vip")
 	Games = Session.DB(dbName).C("col_game")
 	Tasks = Session.DB(dbName).C("col_task")
+	LoginPrizes = Session.DB(dbName).C("col_login_prize")
 }
 
 func Close() {

@@ -8,6 +8,7 @@ import (
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
+	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 )
@@ -70,6 +71,10 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CTaskPrize)
 		glog.Debugf("CTaskPrize %#v", arg)
 		rs.taskPrize(arg.Type)
+	case *pb.CLoginPrize:
+		arg := msg.(*pb.CLoginPrize)
+		glog.Debugf("CLoginPrize %#v", arg)
+		rs.loginPrize(arg)
 	case *pb.CUserData:
 		arg := msg.(*pb.CUserData)
 		glog.Debugf("CUserData %#v", arg)
@@ -281,6 +286,7 @@ func (rs *RoleActor) bank2give(msg1 interface{}) bool {
 
 //任务信息,TODO next任务不显示和重置当日任务
 func (rs *RoleActor) task() {
+	rs.taskInit()
 	msg := new(pb.STask)
 	list := config.GetOrderTasks()
 	m := make(map[int32]bool)
@@ -315,6 +321,7 @@ func (rs *RoleActor) task() {
 
 //任务奖励领取
 func (rs *RoleActor) taskPrize(taskType int32) {
+	rs.taskInit()
 	msg := new(pb.STaskPrize)
 	if val, ok := rs.User.Task[taskType]; ok {
 		task := config.GetTask(val.Taskid)
@@ -343,6 +350,7 @@ func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
 	if nextid == 0 {
 		return
 	}
+	rs.taskInit()
 	//存在下个任务
 	delete(rs.User.Task, taskType) //移除
 	//TODO 任务完成日志
@@ -377,6 +385,7 @@ func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
 
 //更新任务数据
 func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
+	rs.taskInit()
 	if val, ok := rs.User.Task[int32(arg.Type)]; ok {
 		if val.Prize {
 			return
@@ -406,4 +415,40 @@ func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 			break
 		}
 	}
+}
+
+func (rs *RoleActor) taskInit() {
+	if rs.User.Task == nil {
+		rs.User.Task = make(map[int32]data.TaskInfo)
+	}
+}
+
+//更新连续登录奖励
+func (rs *RoleActor) loginPrizeInit() {
+	//连续登录
+	handler.SetLoginPrize(rs.User)
+	rs.User.LoginTime = utils.BsonNow()
+	msg := handler.LoginPrizeUpdateMsg(rs.User)
+	rs.rolePid.Tell(msg)
+}
+
+//连续登录奖励处理
+func (rs *RoleActor) loginPrize(arg *pb.CLoginPrize) {
+	msg := new(pb.SLoginPrize)
+	msg.Type = arg.Type
+	switch arg.Type {
+	case pb.LoginPrizeSelect:
+		msg.List = handler.LoginPrizeInfo(rs.User)
+	case pb.LoginPrizeDraw:
+		coin, diamond, ok := handler.GetLoginPrize(arg.Day, rs.User)
+		msg.Error = ok
+		if ok == pb.OK {
+			//奖励发放
+			rs.addCurrency(diamond, coin, 0, 0, int32(pb.LOG_TYPE47))
+			msg.List = handler.LoginPrizeInfo(rs.User)
+			msg := handler.LoginPrizeUpdateMsg(rs.User)
+			rs.rolePid.Tell(msg)
+		}
+	}
+	rs.Send(msg)
 }

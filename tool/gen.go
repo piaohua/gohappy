@@ -65,6 +65,7 @@ var protosUnpack = map[string][]proto{
 		{code: 1018, name: "CRank"},
 		{code: 1019, name: "CTask"},
 		{code: 1020, name: "CTaskPrize"},
+		{code: 1021, name: "CLoginPrize"},
 	},
 	//niu
 	"niu": {
@@ -173,6 +174,7 @@ var protosPacket = map[string][]proto{
 		{code: 1521, name: "SRank"},
 		{code: 1522, name: "STask"},
 		{code: 1523, name: "STaskPrize"},
+		{code: 1524, name: "SLoginPrize"},
 	},
 	//niu
 	"niu": {

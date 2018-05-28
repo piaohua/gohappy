@@ -2,6 +2,7 @@ package main
 
 import (
 	"time"
+	"utils"
 
 	"gohappy/data"
 	"gohappy/game/handler"
@@ -121,6 +122,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.TaskUpdate)
 		glog.Debugf("TaskUpdate %#v", arg)
 		a.taskUpdate(arg)
+	case *pb.LoginPrizeUpdate:
+		arg := msg.(*pb.LoginPrizeUpdate)
+		glog.Debugf("LoginPrizeUpdate %#v", arg)
+		a.loginPrizeUpdate(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -434,6 +439,9 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 		glog.Errorf("taskUpdate err userid %#v", arg)
 		return
 	}
+	if user.Task == nil {
+		user.Task = make(map[int32]data.TaskInfo)
+	}
 	if val, ok := user.Task[int32(arg.Type)]; ok {
 		if arg.Prize {
 			delete(user.Task, int32(arg.Type))
@@ -451,4 +459,18 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 	}
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateTask()
+}
+
+func (a *RoleActor) loginPrizeUpdate(arg *pb.LoginPrizeUpdate) {
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("loginPrizeUpdate err userid %#v", arg)
+		return
+	}
+	user.LoginTimes = arg.LoginTimes
+	user.LoginPrize = arg.LoginPrize
+	user.LoginIp = arg.LoginIP
+	user.LoginTime = utils.Stamp2Time(arg.LoginTime)
+	//暂时实时写入, TODO 异步数据更新
+	user.UpdateLogin()
 }
