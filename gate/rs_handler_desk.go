@@ -24,7 +24,7 @@ func (rs *RoleActor) handlerDesk(msg interface{}, ctx actor.Context) {
 		rs.createdDesk(arg, ctx)
 	case *pb.LeftDesk:
 		arg := msg.(*pb.LeftDesk)
-		glog.Debugf("LeftDesk %#v", arg)
+		glog.Debugf("LeftDesk %#v, userid %s", arg, rs.User.GetUserid())
 		if arg.Error == pb.OK {
 			rs.gamePid = nil
 		}

@@ -47,6 +47,8 @@ enum WebCode {
     WebGame     = 7; //游戏列表
     WebVip      = 8; //VIP
     WebNumber   = 9; //在线人数
+    WebTask     =10; //任务列表
+    WebLogin    =11; //登录奖励列表
 }
 
 enum ConfigAtype {
@@ -132,5 +134,13 @@ ErrCode 不为0 或者 ErrMsg 不为空 返回错误
 
 16、WebVip 响应Data数据 (json格式)
     example: {}
+
+17、WebTask 请求Data数据 (json格式)
+    b := make(map[int32]data.Task)
+    example: {1: {xxx}}
+
+18、WebLogin 请求Data数据 (json格式)
+    b := make(map[uint32]data.LoginPrize)
+    example: {1: {xxx}}
 
 ```

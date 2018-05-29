@@ -108,8 +108,9 @@ type ActStatus struct {
 
 //DeskPriv 私人局牌桌当局数据
 type DeskPriv struct {
-	VoteSeat  uint32           //投票发起者座位号
-	PrivScore map[string]int64 //私人局用户战绩积分
+	VoteSeat  uint32            //投票发起者座位号
+	PrivScore map[string]int64  //私人局用户战绩积分
+	Joins     map[string]uint32 //私人局用户参与次数
 	//TODO Record 当局记录
 }
 

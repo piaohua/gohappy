@@ -112,11 +112,11 @@ func (rs *RoleActor) leaveDesk() {
 		return
 	}
 	//离线
-	msg2 := new(pb.OfflineDesk)
-	if rs.User != nil {
-		msg2.Userid = rs.User.GetUserid()
-	}
-	rs.gamePid.Tell(msg2)
+	//msg2 := new(pb.OfflineDesk)
+	//if rs.User != nil {
+	//	msg2.Userid = rs.User.GetUserid()
+	//}
+	//rs.gamePid.Tell(msg2)
 	//下线
 	msg3 := new(pb.LeaveDesk)
 	if rs.User != nil {

@@ -24,10 +24,10 @@ func InitLogin2() {
 }
 
 //GetLogins2 同步时获取列表
-func GetLogins2() map[int32]data.LoginPrize {
-	m := make(map[int32]data.LoginPrize)
+func GetLogins2() map[uint32]data.LoginPrize {
+	m := make(map[uint32]data.LoginPrize)
 	LoginMap.Range(func(k, v interface{}) bool {
-		m[k.(int32)] = v.(data.LoginPrize)
+		m[k.(uint32)] = v.(data.LoginPrize)
 		return true
 	})
 	return m

@@ -75,6 +75,15 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CLoginPrize)
 		glog.Debugf("CLoginPrize %#v", arg)
 		rs.loginPrize(arg)
+	case *pb.CRoomRecord:
+		arg := msg.(*pb.CRoomRecord)
+		glog.Debugf("CRoomRecord %#v", arg)
+		msg1 := &pb.GetRoomRecord{
+			Gtype:  arg.Gtype,
+			Page:   arg.Page,
+			Userid: rs.User.GetUserid(),
+		}
+		rs.dbmsPid.Request(msg1, ctx.Self())
 	case *pb.CUserData:
 		arg := msg.(*pb.CUserData)
 		glog.Debugf("CUserData %#v", arg)

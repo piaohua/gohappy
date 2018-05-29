@@ -7,13 +7,50 @@
  * *******************************************************/
 package handler
 
-/*
 import (
 	"gohappy/data"
 	"gohappy/glog"
 	"gohappy/pb"
 )
 
+//PackRecordMsg 玩家记录
+func PackRecordMsg(arg *pb.GetRoomRecord) (msg *pb.SRoomRecord) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	msg = new(pb.SRoomRecord)
+	msg.Page = arg.Page
+	msg.Gtype = arg.Gtype
+	//RoomRecord, RoundRecord, RoleRecord
+	ls, ds, us, err2 := data.GetRoomRecords(arg.Userid,
+		arg.Gtype, int(arg.Page))
+	if err2 != nil {
+		glog.Errorf("PackRecordMsg err %v, %#v", err2, arg)
+		return
+	}
+	for _, v := range ls {
+		msg2 := new(pb.RoomRecord)
+		msg2.Info = RoomRecordInfoMsg(v)
+		for _, val := range ds {
+			if v.Roomid != val.Roomid {
+				continue
+			}
+			msg3 := RoundRecordMsg(val)
+			msg2.Roundlist = append(msg2.Roundlist, msg3)
+		}
+		for _, val := range us {
+			if v.Roomid != val.Roomid {
+				continue
+			}
+			msg3 := RoleRecordMsg(val)
+			msg2.Rolelist = append(msg2.Rolelist, msg3)
+		}
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
+/*
 //玩家获取官网开奖记录
 func GetPk10Record(arg *pb.CPk10Record) interface{} {
 	msg2 := new(pb.SPk10Record)

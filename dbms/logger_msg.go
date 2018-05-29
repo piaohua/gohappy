@@ -2,6 +2,7 @@ package main
 
 import (
 	"gohappy/data"
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
@@ -32,6 +33,15 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.LogChip:
 		arg := msg.(*pb.LogChip)
 		data.ChipRecord(arg.Userid, arg.Type, arg.Rest, arg.Num)
+	case *pb.RoomRecordInfo:
+		arg := msg.(*pb.RoomRecordInfo)
+		handler.Log2RoomRecord(arg)
+	case *pb.RoleRecord:
+		arg := msg.(*pb.RoleRecord)
+		handler.Log2RoleRecord(arg)
+	case *pb.RoundRecord:
+		arg := msg.(*pb.RoundRecord)
+		handler.Log2RoundRecord(arg)
 	case *pb.ServeStop:
 		//关闭服务
 		a.handlerStop(ctx)

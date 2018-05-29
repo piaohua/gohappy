@@ -34,6 +34,9 @@ var LogChips *mgo.Collection
 var LogExpects *mgo.Collection
 var Trends *mgo.Collection
 var Pk10Records *mgo.Collection
+var RoomRecords *mgo.Collection
+var RoleRecords *mgo.Collection
+var RoundRecords *mgo.Collection
 
 var Agencys *mgo.Collection
 
@@ -93,6 +96,9 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	LogExpects = Session.DB(dbName).C("col_log_expect")
 	Trends = Session.DB(dbName).C("col_trends")
 	Pk10Records = Session.DB(dbName).C("col_pkten")
+	RoomRecords = Session.DB(dbName).C("col_room_record")
+	RoleRecords = Session.DB(dbName).C("col_role_record")
+	RoundRecords = Session.DB(dbName).C("col_round_record")
 	//
 	Agencys = Session.DB(dbName).C("t_user")
 	//

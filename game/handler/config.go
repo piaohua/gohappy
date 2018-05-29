@@ -93,7 +93,7 @@ func SyncConfig(arg *pb.SyncConfig) (err error) {
 			}
 		}
 	case pb.CONFIG_TASK: //任务
-		b := make(map[string]data.Task)
+		b := make(map[int32]data.Task)
 		err = jsoniter.Unmarshal(arg.Data, &b)
 		glog.Debugf("Sync Task %#v", b)
 		if err != nil {
@@ -109,7 +109,7 @@ func SyncConfig(arg *pb.SyncConfig) (err error) {
 			}
 		}
 	case pb.CONFIG_LOGIN: //登录奖励
-		b := make(map[string]data.LoginPrize)
+		b := make(map[uint32]data.LoginPrize)
 		err = jsoniter.Unmarshal(arg.Data, &b)
 		glog.Debugf("Sync LoginPrize %#v", b)
 		if err != nil {

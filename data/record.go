@@ -316,3 +316,132 @@ func GetRank() ([]bson.M, error) {
 	}
 	return list, nil
 }
+
+//RoomRecord 创建房间记录
+type RoomRecord struct {
+	//Id     string    `bson:"_id"`
+	Roomid string `bson:"roomid"` //唯一
+	Gtype  int32  `bson:"gtype"`
+	Rtype  int32  `bson:"rtype"`
+	Dtype  int32  `bson:"dtype"`
+	Rname  string `bson:"rname"`
+	Count  uint32 `bson:"rest"`
+	Ante   uint32 `bson:"rest"`
+	Code   string `bson:"code"`
+	Round  uint32 `bson:"round"`
+	Cid    string `bson:"cid"`
+	Ctime  uint32 `bson:"ctime"`
+}
+
+//Save 保存记录
+func (r *RoomRecord) Save() bool {
+	return Insert(RoomRecords, r)
+}
+
+//RoleRecord 个人房间结果记录
+type RoleRecord struct {
+	//ID       string    `bson:"_id"`
+	//Key      string    `bson:"key"`      //唯一
+	Roomid   string    `bson:"roomid"` //房间id
+	Gtype    int32     `bson:"gtype"`
+	Userid   string    `bson:"userid"`   //玩家id
+	Nickname string    `bson:"nickname"` //
+	Photo    string    `bson:"photo"`    //
+	Score    int64     `bson:"score"`    //输赢数量
+	Rest     int64     `bson:"rest"`     //剩余
+	Joins    uint32    `bson:"joins"`    //参与局数
+	Ctime    time.Time `bson:"ctime"`
+}
+
+//Save 更新记录
+func (r *RoleRecord) Save() bool {
+	r.Ctime = bson.Now()
+	q := bson.M{"roomid": r.Roomid,
+		"userid": r.Userid}
+	return Upsert(RoleRecords, q, r)
+}
+
+//RoundRecord 每局结算详情记录
+//key=(私人场为房间id,匹配场生成唯一id)
+//TODO 添加匹配场记录
+type RoundRecord struct {
+	//ID     string    `bson:"_id"`
+	//Key    string    `bson:"key"`    //唯一
+	Roomid string            `bson:"roomid"` //房间id
+	Round  uint32            `bson:"round"`  //局数
+	Dealer string            `bson:"dealer"` //庄家
+	Roles  []RoundRoleRecord `bson:"roles"`  //局数
+	Ctime  time.Time         `bson:"ctime"`
+}
+
+//RoundRoleRecord 每局详情记录
+type RoundRoleRecord struct {
+	Userid string   `bson:"userid"` //玩家id
+	Cards  []uint32 `bson:"cards"`  //手牌
+	Value  uint32   `bson:"value"`  //牌力
+	Score  int64    `bson:"score"`  //输赢数量
+	Bets   int64    `bson:"bets"`   //下注数量倍数
+}
+
+//Save 保存记录
+func (r *RoundRecord) Save() bool {
+	r.Ctime = bson.Now()
+	return Insert(RoundRecords, r)
+}
+
+//getRoleRecords 获取个人房间结果记录
+func getRoleRecords(userid string, gtype int32,
+	page int) ([]string, error) {
+	pageSize := 10 //TODO 优化数据量过大情况
+	skipNum, sortFieldR := parsePageAndSort(page, pageSize, "ctime", false)
+	var list []bson.M
+	selector := bson.M{"roomid": true}
+	err := RoleRecords.
+		Find(bson.M{"userid": userid, "gtype": gtype}).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		Select(selector).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	in := make([]string, 0)
+	for _, v := range list {
+		if val, ok := v["roomid"]; ok {
+			in = append(in, val.(string))
+		}
+	}
+	if len(in) == 0 {
+		return nil, errors.New("none record")
+	}
+	return in, nil
+}
+
+//GetRoomRecords 获取私人房间记录
+func GetRoomRecords(userid string, gtype int32, page int) ([]*RoomRecord,
+	[]*RoundRecord, []*RoleRecord, error) {
+	in, err := getRoleRecords(userid, gtype, page)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	//
+	var ls = make([]*RoomRecord, 0)
+	ListByQ(RoomRecords, bson.M{"roomid": bson.M{"$in": in}}, &ls)
+	if len(ls) == 0 {
+		return nil, nil, nil, errors.New("query failed")
+	}
+	//
+	var ds = make([]*RoundRecord, 0)
+	ListByQ(RoundRecords, bson.M{"roomid": bson.M{"$in": in}}, &ds)
+	if len(ds) == 0 {
+		return nil, nil, nil, errors.New("query failed")
+	}
+	//
+	var us = make([]*RoleRecord, 0)
+	ListByQ(RoleRecords, bson.M{"roomid": bson.M{"$in": in}}, &us)
+	if len(us) == 0 {
+		return nil, nil, nil, errors.New("query failed")
+	}
+	return ls, ds, us, nil
+}
