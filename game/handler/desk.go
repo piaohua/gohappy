@@ -135,6 +135,20 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 	return g
 }
 
+//MatchLevel 匹配等级
+func MatchLevel(coin int64) int32 {
+	if coin >= 2000000 {
+		return int32(pb.ROOM_LEVEL4)
+	} else if coin >= 200000 {
+		return int32(pb.ROOM_LEVEL3)
+	} else if coin >= 20000 {
+		return int32(pb.ROOM_LEVEL2)
+	} else if coin >= 5000 {
+		return int32(pb.ROOM_LEVEL1)
+	}
+	return int32(pb.ROOM_LEVEL0)
+}
+
 //NewPrivGameData 私人房间桌子数据
 func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 	return &data.DeskData{

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
@@ -223,8 +224,9 @@ func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
 		msg.Rtype = int32(pb.ROOM_TYPE0) //自由
 		msg.Roomid = arg.Id              //房间id
 		msg.Dtype = int32(pb.DESK_TYPE1) //玩法类型
-		//TODO 计算出匹配房间等级,算法一致
-		msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
+		//计算出匹配房间等级,算法一致
+		//msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
+		msg.Ltype = handler.MatchLevel(rs.User.GetCoin())
 		rs.selectDesk(msg, ctx)
 	}
 }
