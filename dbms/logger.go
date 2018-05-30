@@ -56,11 +56,9 @@ func newLoggerActor() actor.Actor {
 //	return pid
 //}
 
-//NewLogger 启动
-func NewLogger() *actor.PID {
-	props := router.NewRoundRobinPool(maxConcurrency).
+//NewLoggerProps 启动
+func NewLoggerProps() *actor.Props {
+	return router.NewRoundRobinPool(maxConcurrency).
 		WithProducer(newLoggerActor).
 		WithMailbox(mailbox.Unbounded())
-	pid := actor.Spawn(props)
-	return pid
 }

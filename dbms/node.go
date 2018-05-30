@@ -95,15 +95,13 @@ func NewRemote(bind, kind, room, role, logger string) {
 	rolePid.Tell(msg)
 	//
 	//remote.Register(logger, actor.FromProducer(newLoggerActor))
-	//loggerProps := actor.FromProducer(newLoggerActor)
-	//remote.Register(logger, loggerProps)
-	//loggerPid, err = actor.SpawnNamed(loggerProps, logger)
-	//if err != nil {
-	//	glog.Fatalf("loggerPid err %v", err)
-	//}
-	//glog.Infof("loggerPid %s", loggerPid.String())
-	//loggerPid.Tell(msg)
-	loggerPid = NewLogger()
+	loggerProps := NewLoggerProps()
+	remote.Register(logger, loggerProps)
+	loggerPid, err = actor.SpawnNamed(loggerProps, logger)
+	if err != nil {
+		glog.Fatalf("loggerPid err %v", err)
+	}
+	glog.Infof("loggerPid %s", loggerPid.String())
 }
 
 //Stop 关闭服务
