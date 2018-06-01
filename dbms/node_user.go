@@ -46,6 +46,7 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.CRank:
 		arg := msg.(*pb.CRank)
 		glog.Debugf("CRank %#v", arg)
+		//TODO 缓存
 		rsp := handler.PackRankMsg()
 		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:

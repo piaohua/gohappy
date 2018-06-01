@@ -101,6 +101,20 @@ func (rs *RoleActor) enterdDeskMsg(msg *pb.EnteredDesk, ctx actor.Context) bool 
 		default:
 			glog.Errorf("enterdDesk match fail %#v", msg)
 		}
+	case int32(pb.HUA):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.CJHCoinEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.CJHEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.CJHFreeEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		default:
+			glog.Errorf("enterdDesk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enterdDesk match fail %#v", msg)
 	}
@@ -112,7 +126,8 @@ func (rs *RoleActor) selectDesk(msg *pb.MatchDesk, ctx actor.Context) {
 	msg.Sender = ctx.Self()
 	switch msg.Gtype {
 	case int32(pb.NIU),
-		int32(pb.SAN):
+		int32(pb.SAN),
+		int32(pb.HUA):
 		switch msg.Rtype {
 		case int32(pb.ROOM_TYPE0): //自由
 			//存在房间id直接查找
@@ -225,6 +240,23 @@ func (rs *RoleActor) enterdDeskErr(msg *pb.EnteredDesk, ctx actor.Context) {
 		default:
 			glog.Errorf("enter Desk match fail %#v", msg)
 		}
+	case int32(pb.HUA):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.SJHCoinEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.SJHEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SJHFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("enter Desk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enter Desk match fail %#v", msg)
 	}
@@ -267,6 +299,23 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 		default:
 			glog.Errorf("matched DeskErr fail %#v", msg)
 		}
+	case int32(pb.HUA):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.SJHCoinEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.SJHEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SJHFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("matched DeskErr fail %#v", msg)
+		}
 	default:
 		glog.Errorf("matched DeskErr fail %#v", msg)
 	}
@@ -292,6 +341,10 @@ func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 			rs.Send(rsp)
 		case int32(pb.SAN):
 			rsp := new(pb.SSGCreateRoom)
+			rsp.Error = pb.CreateRoomFail
+			rs.Send(rsp)
+		case int32(pb.HUA):
+			rsp := new(pb.SJHCreateRoom)
 			rsp.Error = pb.CreateRoomFail
 			rs.Send(rsp)
 		default:

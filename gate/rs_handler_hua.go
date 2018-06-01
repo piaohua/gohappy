@@ -40,11 +40,11 @@ func (rs *RoleActor) handlerHua(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CJHFreeSit:
-		arg := msg.(*pb.CJHFreeSit)
-		glog.Debugf("CJHFreeSit %#v", arg)
+	case *pb.CJHSit:
+		arg := msg.(*pb.CJHSit)
+		glog.Debugf("CJHSit %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SJHFreeSit)
+			rsp := new(pb.SJHSit)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
@@ -211,7 +211,8 @@ func (rs *RoleActor) enterJHFree(arg *pb.CJHFreeEnterRoom, ctx actor.Context) {
 func (rs *RoleActor) enterJHPriv(arg *pb.CJHEnterRoom, ctx actor.Context) {
 	msg := rs.enterJHMatchDesk(ctx)
 	if msg != nil {
-		msg.Rtype = int32(pb.ROOM_TYPE1) //私人
+		//msg.Rtype = int32(pb.ROOM_TYPE1) //私人
+		msg.Rtype = int32(pb.ROOM_TYPE0) //自由
 		msg.Code = arg.Code              //邀请码
 		rs.selectDesk(msg, ctx)
 	}

@@ -114,11 +114,11 @@ ErrCode 不为0 或者 ErrMsg 不为空 返回错误
 10、WebEnv 响应Data数据 (json格式)
     example: {}
 
-11、WebEnv 请求Data数据 (json格式)
+11、WebNotice 请求Data数据 (json格式)
     b := make(map[string]data.Notice)
     example: {"id1": {xxx}}
 
-12、WebEnv 响应Data数据 (json格式)
+12、WebNotice 响应Data数据 (json格式)
     example: {}
 
 13、WebGame 请求Data数据 (json格式)

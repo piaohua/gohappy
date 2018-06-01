@@ -164,7 +164,7 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 		Cost:    arg.Cost,
 		Cid:     arg.Cid,
 		Ctime:   uint32(utils.Timestamp()),
-		Expire:  utils.Timestamp() + 600,
+		Expire:  utils.Timestamp() + 86400,
 		Deal:    true,
 	}
 }

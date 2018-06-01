@@ -39,11 +39,11 @@ func (rs *RoleActor) handlerSan(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CSGFreeSit:
-		arg := msg.(*pb.CSGFreeSit)
-		glog.Debugf("CSGFreeSit %#v", arg)
+	case *pb.CSGSit:
+		arg := msg.(*pb.CSGSit)
+		glog.Debugf("CSGSit %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SSGFreeSit)
+			rsp := new(pb.SSGSit)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return

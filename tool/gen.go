@@ -74,7 +74,7 @@ var protosUnpack = map[string][]proto{
 		{code: 2001, name: "CNNFreeEnterRoom"},
 		{code: 2002, name: "CNNFreeDealer"},
 		{code: 2003, name: "CNNFreeDealerList"},
-		{code: 2004, name: "CNNFreeSit"},
+		//{code: 2004, name: "CNNFreeSit"},
 		{code: 2005, name: "CNNFreeBet"},
 		{code: 2006, name: "CNNFreeTrend"},
 		{code: 2007, name: "CNNRoomList"},
@@ -90,6 +90,7 @@ var protosUnpack = map[string][]proto{
 		{code: 2017, name: "CNNVote"},
 		{code: 2018, name: "CNNFreeWiners"},
 		{code: 2019, name: "CNNFreeRoles"},
+		{code: 2020, name: "CNNSit"},
 	},
 	//san
 	"san": {
@@ -97,7 +98,7 @@ var protosUnpack = map[string][]proto{
 		{code: 3001, name: "CSGFreeEnterRoom"},
 		{code: 3002, name: "CSGFreeDealer"},
 		{code: 3003, name: "CSGFreeDealerList"},
-		{code: 3004, name: "CSGFreeSit"},
+		//{code: 3004, name: "CSGFreeSit"},
 		{code: 3005, name: "CSGFreeBet"},
 		{code: 3006, name: "CSGFreeTrend"},
 		{code: 3007, name: "CSGRoomList"},
@@ -113,6 +114,7 @@ var protosUnpack = map[string][]proto{
 		{code: 3017, name: "CSGVote"},
 		{code: 3018, name: "CSGFreeWiners"},
 		{code: 3019, name: "CSGFreeRoles"},
+		{code: 3020, name: "CSGSit"},
 	},
 	//hua
 	"hua": {
@@ -120,7 +122,7 @@ var protosUnpack = map[string][]proto{
 		{code: 4001, name: "CJHFreeEnterRoom"},
 		{code: 4002, name: "CJHFreeDealer"},
 		{code: 4003, name: "CJHFreeDealerList"},
-		{code: 4004, name: "CJHFreeSit"},
+		//{code: 4004, name: "CJHFreeSit"},
 		{code: 4005, name: "CJHFreeBet"},
 		{code: 4006, name: "CJHFreeTrend"},
 		{code: 4007, name: "CJHRoomList"},
@@ -142,6 +144,7 @@ var protosUnpack = map[string][]proto{
 		{code: 4023, name: "CJHCoinRaise"},
 		{code: 4024, name: "CJHCoinFold"},
 		{code: 4025, name: "CJHCoinBi"},
+		{code: 4026, name: "CJHSit"},
 	},
 }
 
@@ -186,7 +189,7 @@ var protosPacket = map[string][]proto{
 		{code: 2503, name: "SNNFreeCamein"},
 		{code: 2504, name: "SNNFreeDealer"},
 		{code: 2505, name: "SNNFreeDealerList"},
-		{code: 2506, name: "SNNFreeSit"},
+		//{code: 2506, name: "SNNFreeSit"},
 		{code: 2507, name: "SNNFreeBet"},
 		{code: 2508, name: "SNNFreeGamestart"},
 		{code: 2509, name: "SNNFreeGameover"},
@@ -210,6 +213,7 @@ var protosPacket = map[string][]proto{
 		{code: 2527, name: "SNNPushState"},
 		{code: 2528, name: "SNNFreeWiners"},
 		{code: 2529, name: "SNNFreeRoles"},
+		{code: 2530, name: "SNNSit"},
 	},
 	//san
 	"san": {
@@ -219,7 +223,7 @@ var protosPacket = map[string][]proto{
 		{code: 3503, name: "SSGFreeCamein"},
 		{code: 3504, name: "SSGFreeDealer"},
 		{code: 3505, name: "SSGFreeDealerList"},
-		{code: 3506, name: "SSGFreeSit"},
+		//{code: 3506, name: "SSGFreeSit"},
 		{code: 3507, name: "SSGFreeBet"},
 		{code: 3508, name: "SSGFreeGamestart"},
 		{code: 3509, name: "SSGFreeGameover"},
@@ -243,6 +247,7 @@ var protosPacket = map[string][]proto{
 		{code: 3527, name: "SSGPushState"},
 		{code: 3528, name: "SSGFreeWiners"},
 		{code: 3529, name: "SSGFreeRoles"},
+		{code: 3530, name: "SSGSit"},
 	},
 	//hua
 	"hua": {
@@ -252,7 +257,7 @@ var protosPacket = map[string][]proto{
 		{code: 4503, name: "SJHFreeCamein"},
 		{code: 4504, name: "SJHFreeDealer"},
 		{code: 4505, name: "SJHFreeDealerList"},
-		{code: 4506, name: "SJHFreeSit"},
+		//{code: 4506, name: "SJHFreeSit"},
 		{code: 4507, name: "SJHFreeBet"},
 		{code: 4508, name: "SJHFreeGamestart"},
 		{code: 4509, name: "SJHFreeGameover"},
@@ -283,6 +288,7 @@ var protosPacket = map[string][]proto{
 		{code: 4534, name: "SJHCoinRaise"},
 		{code: 4535, name: "SJHCoinFold"},
 		{code: 4536, name: "SJHCoinBi"},
+		{code: 4537, name: "SJHSit"},
 	},
 }
 
