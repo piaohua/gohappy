@@ -36,7 +36,7 @@ func GetNotices2() map[string]data.Notice {
 }
 
 // 客户端获取消息列表
-func GetNotices(atype uint32) []data.Notice {
+func GetNotices(atype int32) []data.Notice {
 	tops := make([]data.Notice, 0)
 	list := make([]data.Notice, 0)
 	NoticeMap.Range(func(k, v interface{}) bool {

@@ -81,6 +81,7 @@ xxxxx     游戏逻辑
 protocol (proto)
     协议文件目录
     Google Protobuf version 3.0
+    前端架构需要区分游戏协议
 
 pb  (package)
     生成协议文件目录

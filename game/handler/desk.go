@@ -9,7 +9,10 @@ package handler
  * *******************************************************/
 
 import (
+	"time"
+
 	"gohappy/data"
+	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
@@ -350,3 +353,31 @@ func SetShopList() {
 	config.SetShop(s3)
 }
 */
+
+//SetShopList 添加商城物品
+func SetShopList() {
+	NewShop("1", 1, 2, 2, 10000, 100, "金币", "金币10000")
+	NewShop("2", 1, 2, 2, 20000, 200, "金币", "金币20000")
+	NewShop("3", 1, 2, 2, 50000, 450, "金币", "金币50000")
+	NewShop("4", 1, 1, 1, 100, 10, "钻石", "钻石100")
+	NewShop("5", 1, 1, 1, 200, 20, "钻石", "钻石200")
+	NewShop("6", 1, 1, 1, 500, 45, "钻石", "钻石500")
+}
+
+//NewShop 添加商品
+func NewShop(id string, status, propid, payway int,
+	number, price uint32, name, info string) {
+	t := data.Shop{
+		Id:     id,
+		Status: status,
+		Propid: propid,
+		Payway: payway,
+		Number: number,
+		Price:  price,
+		Name:   name,
+		Info:   info,
+		Etime:  time.Now().AddDate(0, 0, 100),
+		Ctime:  time.Now(),
+	}
+	config.SetShop(t)
+}

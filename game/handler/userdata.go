@@ -2,7 +2,6 @@ package handler
 
 import (
 	"gohappy/data"
-	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
@@ -90,21 +89,6 @@ func Offline2Change(arg *pb.OfflineCurrency) (msg *pb.ChangeCurrency) {
 func Ping(ctos *pb.CPing) (stoc *pb.SPing) {
 	stoc = new(pb.SPing)
 	stoc.Time = ctos.GetTime()
-	return
-}
-
-//GetNotice 公告列表
-func GetNotice(atype uint32) (stoc *pb.SNotice) {
-	stoc = new(pb.SNotice)
-	list := config.GetNotices(atype)
-	for _, v := range list {
-		body := &pb.Notice{
-			Rtype:   uint32(v.Rtype),
-			Acttype: uint32(v.Acttype),
-			Content: v.Content,
-		}
-		stoc.List = append(stoc.List, body)
-	}
 	return
 }
 

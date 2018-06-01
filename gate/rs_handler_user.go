@@ -24,8 +24,13 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.CNotice:
 		arg := msg.(*pb.CNotice)
 		glog.Debugf("CNotice %#v", arg)
-		rsp := handler.GetNotice(data.NOTICE_TYPE1)
-		rs.Send(rsp)
+		arg.Userid = rs.User.GetUserid()
+		rs.dbmsPid.Request(arg, ctx.Self())
+	case *pb.SNotice:
+		arg := msg.(*pb.SNotice)
+		glog.Debugf("SNotice %#v", arg)
+		handler.PackNotice(arg)
+		rs.Send(arg)
 	case *pb.CGetCurrency:
 		arg := msg.(*pb.CGetCurrency)
 		glog.Debugf("CGetCurrency %#v", arg)
@@ -41,6 +46,13 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		rs.addCurrency(diamond, coin, 0, 0, int32(pb.LOG_TYPE18))
 		//响应
 		rs.Send(rsp)
+		record, msg2 := handler.BuyNotice(coin, rs.User.GetUserid())
+		if record != nil {
+			rs.loggerPid.Tell(record)
+		}
+		if msg2 != nil {
+			rs.Send(msg2)
+		}
 	case *pb.CShop:
 		arg := msg.(*pb.CShop)
 		glog.Debugf("CShop %#v", arg)

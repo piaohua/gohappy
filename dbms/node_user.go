@@ -49,6 +49,12 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		//TODO 缓存
 		rsp := handler.PackRankMsg()
 		ctx.Respond(rsp)
+	case *pb.CNotice:
+		arg := msg.(*pb.CNotice)
+		glog.Debugf("CNotice %#v", arg)
+		//TODO 缓存
+		rsp := handler.PackUserNotice(arg)
+		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

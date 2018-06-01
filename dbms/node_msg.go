@@ -67,7 +67,7 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Infof("dbms start: %v", ctx.Self().String())
 	//TODO 设置测试数据,正式后台配置
 	//handler.SetGameList()
-	//handler.SetShopList()
+	handler.SetShopList()
 	handler.SetTaskList()
 	handler.SetLoginPrizeList()
 	//启动

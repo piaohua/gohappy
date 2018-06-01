@@ -180,6 +180,7 @@ var protosPacket = map[string][]proto{
 		{code: 1523, name: "STaskPrize"},
 		{code: 1524, name: "SLoginPrize"},
 		{code: 1525, name: "SRoomRecord"},
+		{code: 1526, name: "SPushNotice"},
 	},
 	//niu
 	"niu": {
