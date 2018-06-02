@@ -361,6 +361,13 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 		msg.Diamond = task.Diamond
 		//添加新任务
 		rs.nextTask(taskType, task.Nextid, msg)
+		//日志记录
+		record := &pb.LogTask{
+			Userid: rs.User.GetUserid(),
+			Taskid: val.Taskid,
+			Type:   taskType,
+		}
+		rs.loggerPid.Tell(record)
 	} else {
 		msg.Error = pb.AwardFaild
 	}

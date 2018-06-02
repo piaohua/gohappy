@@ -33,6 +33,9 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.LogChip:
 		arg := msg.(*pb.LogChip)
 		data.ChipRecord(arg.Userid, arg.Type, arg.Rest, arg.Num)
+	case *pb.LogTask:
+		arg := msg.(*pb.LogTask)
+		data.TaskRecord(arg.Userid, arg.Taskid, arg.Type)
 	case *pb.LogNotice:
 		arg := msg.(*pb.LogNotice)
 		handler.SaveNotice(arg)

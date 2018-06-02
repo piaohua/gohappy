@@ -66,17 +66,20 @@ func BeSGDealerMsg(state int32, num int64, dealer,
 //PackSGCoinRoom 打包百人房间信息
 func PackSGCoinRoom(d *data.DeskData) *pb.SGRoomData {
 	return &pb.SGRoomData{
-		Roomid: d.Rid,    //牌局id
-		Gtype:  d.Gtype,  //game type
-		Rtype:  d.Rtype,  //room type
-		Dtype:  d.Dtype,  //desk type
-		Rname:  d.Rname,  //room name
-		Count:  d.Count,  //当前房间限制玩家数量
-		Ante:   d.Ante,   //房间底分
-		Round:  d.Round,  //
-		Userid: d.Cid,    //
-		Expire: d.Expire, //
-		Code:   d.Code,   //
+		Roomid:  d.Rid,     //牌局id
+		Gtype:   d.Gtype,   //game type
+		Rtype:   d.Rtype,   //room type
+		Dtype:   d.Dtype,   //desk type
+		Ltype:   d.Ltype,   //level type
+		Rname:   d.Rname,   //room name
+		Count:   d.Count,   //当前房间限制玩家数量
+		Ante:    d.Ante,    //房间底分
+		Round:   d.Round,   //
+		Userid:  d.Cid,     //
+		Expire:  d.Expire,  //
+		Code:    d.Code,    //
+		Minimum: d.Minimum, //
+		Maximum: d.Maximum, //
 	}
 }
 
@@ -114,6 +117,7 @@ func PackSGRoomList(arg *pb.GetRoomList,
 		if v.DeskData.Gtype == arg.Gtype &&
 			v.DeskData.Rtype == arg.Rtype {
 			msg2 := PackSGCoinRoom(v.DeskData)
+			msg2.Number = v.Number
 			msg.List = append(msg.List, msg2)
 		}
 	}

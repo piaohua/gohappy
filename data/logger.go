@@ -315,3 +315,29 @@ func ExpectRecord(expect, codes string, openTimer int64) {
 	}
 	record.Save()
 }
+
+//LogTask 任务日志
+type LogTask struct {
+	//Id       string    `bson:"_id"`
+	Userid string    `bson:"userid"` //账户ID
+	Taskid int32     `bson:"taskid"` //taskid
+	Type   int32     `bson:"type"`   //task type
+	Ctime  time.Time `bson:"ctime"`  //create Time
+}
+
+//Save 保存消息记录
+func (t *LogTask) Save() bool {
+	//t.Id = bson.NewObjectId().String()
+	t.Ctime = bson.Now()
+	return Insert(LogTasks, t)
+}
+
+//TaskRecord 任务记录
+func TaskRecord(userid string, taskid, ttype int32) {
+	record := &LogTask{
+		Userid: userid,
+		Taskid: taskid,
+		Type:   ttype,
+	}
+	record.Save()
+}

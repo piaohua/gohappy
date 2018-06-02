@@ -66,17 +66,20 @@ func BeDealerMsg(state int32, num int64, dealer,
 //PackNNCoinRoom 打包百人房间信息
 func PackNNCoinRoom(d *data.DeskData) *pb.NNRoomData {
 	return &pb.NNRoomData{
-		Roomid: d.Rid,    //牌局id
-		Gtype:  d.Gtype,  //game type
-		Rtype:  d.Rtype,  //room type
-		Dtype:  d.Dtype,  //desk type
-		Rname:  d.Rname,  //room name
-		Count:  d.Count,  //当前房间限制玩家数量
-		Ante:   d.Ante,   //房间底分
-		Round:  d.Round,  //
-		Userid: d.Cid,    //
-		Expire: d.Expire, //
-		Code:   d.Code,   //
+		Roomid:  d.Rid,     //牌局id
+		Gtype:   d.Gtype,   //game type
+		Rtype:   d.Rtype,   //room type
+		Dtype:   d.Dtype,   //desk type
+		Ltype:   d.Ltype,   //level type
+		Rname:   d.Rname,   //room name
+		Count:   d.Count,   //当前房间限制玩家数量
+		Ante:    d.Ante,    //房间底分
+		Round:   d.Round,   //
+		Userid:  d.Cid,     //
+		Expire:  d.Expire,  //
+		Code:    d.Code,    //
+		Minimum: d.Minimum, //
+		Maximum: d.Maximum, //
 	}
 }
 
@@ -114,6 +117,7 @@ func PackNNRoomList(arg *pb.GetRoomList,
 		if v.DeskData.Gtype == arg.Gtype &&
 			v.DeskData.Rtype == arg.Rtype {
 			msg2 := PackNNCoinRoom(v.DeskData)
+			msg2.Number = v.Number
 			msg.List = append(msg.List, msg2)
 		}
 	}
