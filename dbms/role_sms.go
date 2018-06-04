@@ -12,7 +12,7 @@ import (
 //验证验证码
 func (a *RoleActor) findSms(phone, smscode string) pb.ErrCode {
 	//TODO 暂时不限制
-	return pb.OK
+	//return pb.OK
 
 	if phone != a.smscode[smscode] {
 		return pb.SmsCodeWrong

@@ -118,6 +118,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.BankChange)
 		glog.Debugf("BankChange %#v", arg)
 		a.syncBank(arg.Coin, arg.Type, arg.Userid)
+	case *pb.BankCheck:
+		arg := msg.(*pb.BankCheck)
+		glog.Debugf("BankCheck %#v", arg)
+		a.bankCheck(arg, ctx)
 	case *pb.TaskUpdate:
 		arg := msg.(*pb.TaskUpdate)
 		glog.Debugf("TaskUpdate %#v", arg)
@@ -430,6 +434,30 @@ func (a *RoleActor) syncBank(coin int64, ltype int32, userid string) {
 		msg1 := handler.LogBankMsg(coin, ltype, user)
 		loggerPid.Tell(msg1)
 	}
+}
+
+//银行重置密码,银行开放
+func (a *RoleActor) bankCheck(arg *pb.BankCheck, ctx actor.Context) {
+	rsp := new(pb.BankChecked)
+	var smscode string = arg.GetSmscode()
+	var phone string = arg.GetPhone()
+	var password string = arg.GetPassword()
+	errcode := a.findSms(phone, smscode)
+	if errcode != pb.OK {
+		rsp.Error = errcode
+		ctx.Respond(rsp)
+		return
+	}
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		rsp.Error = pb.UserDataNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	user.BankPhone = phone
+	user.BankPassword = password
+	ctx.Respond(rsp)
+	a.delCode(phone, smscode)
 }
 
 //同步任务数据

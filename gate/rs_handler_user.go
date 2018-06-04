@@ -220,6 +220,8 @@ func (rs *RoleActor) syncUser() {
 	rs.rolePid.Tell(msg)
 }
 
+//'银行
+
 //银行发放
 func (rs *RoleActor) addBank(coin int64, ltype int32) {
 	if rs.User == nil {
@@ -246,7 +248,9 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 	coin := rs.User.GetCoin()
 	switch rtype {
 	case pb.BankDeposit: //存入
-		if (coin - amount) < data.BANKRUPT {
+		if rs.User.BankPhone == "" {
+			msg.Error = pb.BankNotOpen
+		} else if (coin - amount) < data.BANKRUPT {
 			msg.Error = pb.NotEnoughCoin
 		} else if amount <= 0 {
 			msg.Error = pb.DepositNumberError
@@ -255,7 +259,11 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			rs.addBank(amount, int32(pb.LOG_TYPE12))
 		}
 	case pb.BankDraw: //取出
-		if amount > rs.User.GetBank() {
+		if rs.User.BankPhone == "" {
+			msg.Error = pb.BankNotOpen
+		} else if arg.GetPassword() != rs.User.BankPassword {
+			msg.Error = pb.PwdError
+		} else if amount > rs.User.GetBank() {
 			msg.Error = pb.NotEnoughCoin
 		} else if amount < data.DRAW_MONEY {
 			msg.Error = pb.DrawMoneyNumberError
@@ -264,7 +272,11 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			rs.addBank(-1*amount, int32(pb.LOG_TYPE13))
 		}
 	case pb.BankGift: //赠送
-		if amount > rs.User.GetBank() {
+		if rs.User.BankPhone == "" {
+			msg.Error = pb.BankNotOpen
+		} else if arg.GetPassword() != rs.User.BankPassword {
+			msg.Error = pb.PwdError
+		} else if amount > rs.User.GetBank() {
 			msg.Error = pb.NotEnoughCoin
 		} else if amount < data.DRAW_MONEY {
 			msg.Error = pb.GiveNumberError
@@ -279,6 +291,31 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			}
 		}
 	case pb.BankSelect: //查询
+		msg.Phone = rs.User.BankPhone
+	case pb.BankOpen: //开通
+		if rs.User.BankPhone != "" {
+			msg.Error = pb.BankAlreadyOpen
+		} else if !utils.PhoneValidate(arg.GetPhone()) {
+			msg.Error = pb.PhoneNumberError
+		} else if len(arg.GetPassword()) != 32 {
+			msg.Error = pb.PwdError
+		} else if len(arg.GetSmscode()) != 6 {
+			msg.Error = pb.SmsCodeWrong
+		} else {
+			msg.Error = rs.bankCheck(arg)
+		}
+	case pb.BankResetPwd: //重置密码
+		if rs.User.BankPhone == "" {
+			msg.Error = pb.BankAlreadyOpen
+		} else if rs.User.BankPhone != arg.GetPhone() {
+			msg.Error = pb.PhoneNumberError
+		} else if len(arg.GetPassword()) != 32 {
+			msg.Error = pb.PwdError
+		} else if len(arg.GetSmscode()) != 6 {
+			msg.Error = pb.SmsCodeWrong
+		} else {
+			msg.Error = rs.bankCheck(arg)
+		}
 	}
 	msg.Rtype = rtype
 	msg.Amount = arg.GetAmount()
@@ -292,7 +329,7 @@ func (rs *RoleActor) bank2give(msg1 interface{}) bool {
 	timeout := 3 * time.Second
 	res1, err1 := rs.rolePid.RequestFuture(msg1, timeout).Result()
 	if err1 != nil {
-		glog.Errorf("logined GetUser failed: %v", err1)
+		glog.Errorf("bank give failed: %v", err1)
 		return false
 	}
 	if response1, ok := res1.(*pb.BankGiven); ok {
@@ -304,6 +341,35 @@ func (rs *RoleActor) bank2give(msg1 interface{}) bool {
 	}
 	return false
 }
+
+//银行重置密码, 银行开通
+func (rs *RoleActor) bankCheck(arg *pb.CBank) pb.ErrCode {
+	msg1 := &pb.BankCheck{
+		Userid:   rs.User.GetUserid(),
+		Phone:    arg.GetPhone(),
+		Password: arg.GetPassword(),
+		Smscode:  arg.GetSmscode(),
+	}
+	timeout := 3 * time.Second
+	res1, err1 := rs.rolePid.RequestFuture(msg1, timeout).Result()
+	if err1 != nil {
+		glog.Errorf("bank check failed: %v", err1)
+		return pb.OperateError
+	}
+	if response1, ok := res1.(*pb.BankChecked); ok {
+		if response1.Error == pb.OK {
+			rs.User.BankPassword = arg.GetPassword()
+			return response1.Error
+		}
+		glog.Errorf("bankCheck err %#v", response1)
+		return response1.Error
+	}
+	return pb.OperateError
+}
+
+//.
+
+//'任务
 
 //任务信息,TODO next任务不显示和重置当日任务
 func (rs *RoleActor) task() {
@@ -451,6 +517,10 @@ func (rs *RoleActor) taskInit() {
 	}
 }
 
+//.
+
+//'签到
+
 //更新连续登录奖励
 func (rs *RoleActor) loginPrizeInit() {
 	//连续登录
@@ -480,3 +550,7 @@ func (rs *RoleActor) loginPrize(arg *pb.CLoginPrize) {
 	}
 	rs.Send(msg)
 }
+
+//.
+
+// vim: set foldmethod=marker foldmarker=//',//.:

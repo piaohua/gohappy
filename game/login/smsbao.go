@@ -14,7 +14,7 @@ func SendSms(phone, code, username, password string) bool {
 }
 
 func sendSms2(phone, code, username, password string, n int) bool {
-	content := fmt.Sprintf("【汇银】你的验证码%s，请勿泄露。", code)
+	content := fmt.Sprintf("【欢乐】你的验证码%s，请勿泄露。", code)
 	err := smsbao.SendSmsbao(phone, content, username, password)
 	if err == nil {
 		glog.Debugf("send sms successfully phone %s, code %s", phone, code)
