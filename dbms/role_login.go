@@ -99,9 +99,10 @@ func (a *RoleActor) resetPwd(arg *pb.CResetPwd, ctx actor.Context) {
 	var password string = arg.GetPassword()
 	errcode := a.findSms(phone, smscode)
 	if errcode != pb.OK {
-		rsp.Error = errcode
-		ctx.Respond(rsp)
-		return
+		//TODO 暂时不验证
+		//rsp.Error = errcode
+		//ctx.Respond(rsp)
+		//return
 	}
 	user := a.getUserByPhone(phone)
 	if user == nil {

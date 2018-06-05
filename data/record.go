@@ -325,8 +325,8 @@ type RoomRecord struct {
 	Rtype  int32  `bson:"rtype"`
 	Dtype  int32  `bson:"dtype"`
 	Rname  string `bson:"rname"`
-	Count  uint32 `bson:"rest"`
-	Ante   uint32 `bson:"rest"`
+	Count  uint32 `bson:"count"`
+	Ante   uint32 `bson:"ante"`
 	Code   string `bson:"code"`
 	Round  uint32 `bson:"round"`
 	Cid    string `bson:"cid"`
