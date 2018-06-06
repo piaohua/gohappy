@@ -123,10 +123,11 @@ func (a *RoleActor) regist(arg *pb.RoleRegist, ctx actor.Context) {
 	var safetycode string = arg.GetSafetycode()
 	errcode := a.findSms(phone, smscode)
 	if errcode != pb.OK {
-		rsp := new(pb.RoleRegisted)
-		rsp.Error = errcode
-		ctx.Respond(rsp)
-		return
+		//TODO 暂时不验证
+		//rsp := new(pb.RoleRegisted)
+		//rsp.Error = errcode
+		//ctx.Respond(rsp)
+		//return
 	}
 	//安全码
 	if !data.ExistAgency(safetycode) {

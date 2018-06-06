@@ -42,7 +42,7 @@ func main() {
 				NewUserName: msg.NewUserName,
 			})
 		default:
-			log.Printf("unknown message %v\n", msg)
+			log.Printf("unknown message %#v\n", msg)
 		}
 	})
 	actor.SpawnNamed(props, "chatserver")

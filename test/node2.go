@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/AsynkronIT/goconsole"
 	"github.com/AsynkronIT/protoactor-go/actor"
@@ -20,12 +21,16 @@ func main() {
 		switch msg := context.Message().(type) {
 		case *messages.Connected:
 			log.Println(msg.Message)
+			context.SetReceiveTimeout(10 * time.Second)
+		case *actor.ReceiveTimeout:
+			log.Printf("ReceiveTimeout: %v", context.Self().String())
+			context.Self().Stop()
 		case *messages.SayResponse:
 			log.Printf("%v: %v", msg.UserName, msg.Message)
 		case *messages.NickResponse:
 			log.Printf("%v is now known as %v", msg.OldUserName, msg.NewUserName)
 		default:
-			log.Printf("unknown message %v\n", msg)
+			log.Printf("unknown message %#v\n", msg)
 		}
 	})
 
@@ -35,7 +40,7 @@ func main() {
 		Sender: client,
 	})
 	log.Println("stoping")
-	client.Stop()
+	//client.Stop()
 	log.Println("stoped")
 
 	//client1 := actor.Spawn(props)

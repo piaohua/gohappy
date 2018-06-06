@@ -380,6 +380,7 @@ type RoundRoleRecord struct {
 	Cards  []uint32 `bson:"cards"`  //手牌
 	Value  uint32   `bson:"value"`  //牌力
 	Score  int64    `bson:"score"`  //输赢数量
+	Rest   int64    `bson:"rest"`   //输赢数量
 	Bets   int64    `bson:"bets"`   //下注数量倍数
 }
 

@@ -3,6 +3,7 @@ package handler
 import (
 	"gohappy/data"
 	"gohappy/pb"
+	"utils"
 )
 
 //LogDiamondMsg 打包钻石日志消息
@@ -129,6 +130,7 @@ func Log2RoundRecord(msg *pb.RoundRecord) {
 			Cards:  v.Cards,
 			Value:  v.Value,
 			Score:  v.Score,
+			Rest:   v.Rest,
 			Bets:   v.Bets,
 		}
 		r.Roles = append(r.Roles, rs)
@@ -160,6 +162,7 @@ func RoundRecordMsg(msg *data.RoundRecord) *pb.RoundRecord {
 		Roomid: msg.Roomid,
 		Round:  msg.Round,
 		Dealer: msg.Dealer,
+		Ctime:  utils.Time2Str(msg.Ctime),
 	}
 	for _, v := range msg.Roles {
 		rs := &pb.RoundRoleRecord{
@@ -167,6 +170,7 @@ func RoundRecordMsg(msg *data.RoundRecord) *pb.RoundRecord {
 			Cards:  v.Cards,
 			Value:  v.Value,
 			Score:  v.Score,
+			Rest:   v.Rest,
 			Bets:   v.Bets,
 		}
 		r.Roles = append(r.Roles, rs)
