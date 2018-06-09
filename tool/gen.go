@@ -215,6 +215,7 @@ var protosPacket = map[string][]proto{
 		{code: 2528, name: "SNNFreeWiners"},
 		{code: 2529, name: "SNNFreeRoles"},
 		{code: 2530, name: "SNNSit"},
+		{code: 2531, name: "SNNPushOffline"},
 	},
 	//san
 	"san": {
@@ -249,6 +250,7 @@ var protosPacket = map[string][]proto{
 		{code: 3528, name: "SSGFreeWiners"},
 		{code: 3529, name: "SSGFreeRoles"},
 		{code: 3530, name: "SSGSit"},
+		{code: 3531, name: "SSGPushOffline"},
 	},
 	//hua
 	"hua": {
@@ -290,6 +292,7 @@ var protosPacket = map[string][]proto{
 		{code: 4535, name: "SJHCoinFold"},
 		{code: 4536, name: "SJHCoinBi"},
 		{code: 4537, name: "SJHSit"},
+		{code: 4538, name: "SJHPushOffline"},
 	},
 }
 

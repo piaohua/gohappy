@@ -162,7 +162,7 @@ func RoundRecordMsg(msg *data.RoundRecord) *pb.RoundRecord {
 		Roomid: msg.Roomid,
 		Round:  msg.Round,
 		Dealer: msg.Dealer,
-		Ctime:  utils.Time2Str(msg.Ctime),
+		Ctime:  utils.String(utils.Time2Stamp(msg.Ctime)),
 	}
 	for _, v := range msg.Roles {
 		rs := &pb.RoundRoleRecord{
