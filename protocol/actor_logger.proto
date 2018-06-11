@@ -1,0 +1,91 @@
+syntax = "proto3";
+package pb;
+
+//日志记录操作
+
+//注册日志
+message LogRegist {
+    string Userid   = 1; //玩家ID
+    string Nickname = 2; //昵称
+    string Ip       = 3; //注册地址
+    uint32 Atype    = 4; //类型
+}
+
+//登录日志
+message LogLogin {
+    string Userid   = 1; //玩家ID
+    string Ip       = 2; //登录地址
+    int32  Event    = 3; //事件
+    uint32 Atype    = 4; //类型
+}
+
+//登出日志
+message LogLogout {
+    string Userid   = 1; //玩家ID
+    int32  Event    = 2; //事件
+}
+
+//钻石日志
+message LogDiamond {
+    string Userid = 1; //玩家ID
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //剩余数量
+}
+
+//金币日志
+message LogCoin {
+    string Userid = 1; //玩家ID
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //剩余数量
+}
+
+//房卡日志
+message LogCard {
+    string Userid = 1; //玩家ID
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //剩余数量
+}
+
+//筹码日志
+message LogChip {
+    string Userid = 1; //玩家ID
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //剩余数量
+}
+
+//绑定日志
+message LogBuildAgency {
+    string Userid = 1; //玩家ID
+    string Agent  = 2; //绑定ID
+}
+
+//在线日志
+message LogOnline {
+    int32 Num = 1; //数量
+}
+
+//期号日志
+message LogExpect {
+    string Expect = 1; //期号
+    string Codes = 2; //开奖号码
+    int64 OpenTimer = 3; //开奖时间
+}
+
+//消息记录
+message LogNotice {
+    string Userid  = 1;//玩家ID
+    int32 Rtype    = 2;//消息类型 0.购买消息
+    int32 Acttype  = 3;//操作类型 1.支付消息
+    string Content = 4;//消息内容
+}
+
+//任务记录
+message LogTask {
+    string Userid = 1;//玩家ID
+    int32 Taskid  = 2;//任务id
+    int32 Type    = 3;//类型
+}

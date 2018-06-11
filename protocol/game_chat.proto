@@ -1,0 +1,69 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+
+// 房间广播文字聊天
+message CChatText
+{
+    string content = 1;
+}
+
+// 广播文字聊天
+message SChatText
+{
+    uint32 seat    = 1;
+    string userid  = 2;
+    string content = 3;
+    ErrCode error   = 4; // 错误码
+}
+
+// 房间广播语音聊天
+message CChatVoice
+{
+    string content = 1;
+}
+
+// 广播语音聊天
+message SChatVoice
+{
+    uint32 seat    = 1;
+    string userid  = 2;
+    string content = 3;
+    ErrCode error   = 4; // 错误码
+}
+
+// 世界广播
+message SBroadcast
+{
+    uint32 rtype   = 1;//消息类型 1.活动公告,2.世界广播
+    uint32 num     = 2;//1=播放1次,2=播放2次
+    string content = 3;//消息内容
+}
+
+// 公告列表
+message CNotice
+{
+    uint32 page = 1; //页数,每页30,默认发1最近30场
+    string userid  = 2;
+}
+
+message SNotice
+{
+    uint32 page = 1; //页数,每页30,默认发1最近30场
+    repeated Notice list = 2;
+    ErrCode error = 3; // 错误码
+}
+
+// 新消息推送
+message SPushNotice
+{
+    Notice info = 1;
+}
+
+message Notice
+{
+    int32 rtype   = 1;//消息类型 0.购买消息
+    int32 acttype = 2;//操作类型 1.支付消息
+    string content = 3;//消息内容
+    string time = 4;//消息时间
+}

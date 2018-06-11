@@ -1,0 +1,28 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "san_pub.proto";
+
+//Coin 自由金币场
+
+// 进入房间
+message CSGCoinEnterRoom
+{
+    string id          = 2;//id为空自由分配
+}
+
+message SSGCoinEnterRoom
+{
+    SGRoomData roominfo = 1;//房间的详细资料
+    repeated SGRoomUser  userinfo = 2;//已在房间的玩家基础信息
+    repeated SGRoomBets  betsinfo = 3;//下注倍数
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 结算广播接口，游戏结束
+message SSGCoinGameover
+{
+    int32  state = 1;//房间状态
+    string dealer = 2;//庄家
+    repeated SGCoinOver data = 3;//结算
+}

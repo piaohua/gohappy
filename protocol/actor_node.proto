@@ -1,0 +1,73 @@
+syntax = "proto3";
+package pb;
+//import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+
+//节点行为操作
+
+//请求响应
+message Request {
+    string UserName = 1;
+    string Message = 2;
+}
+
+message Response {
+    string UserName = 1;
+    string Message = 2;
+}
+
+//连接节点
+message Connect {
+    string Name = 1; //节点名字
+}
+
+message Connected {
+    string Name = 1; //连接上的节点名字
+}
+
+//节点断开
+message Disconnect {
+    string Name = 1; //节点名字
+}
+
+message Disconnected {
+    string Name = 1; //断开的节点名字
+}
+
+//启动服务
+message ServeStart {
+    string Message = 1;
+}
+
+message ServeStarted {
+    string Message = 1;
+}
+
+//停止服务
+message ServeStop {
+    string Message = 1;
+}
+
+message ServeStoped {
+    string Message = 1;
+}
+
+//关闭服务
+message ServeClose {
+    string Message = 1;
+}
+
+////节点获取
+//message GetNode {
+//    string Userid = 1; //玩家id
+//    string Roomid = 2; //房间id
+//    string Name = 3;//节点名称
+//}
+//
+//message GotNode {
+//    string Addr = 1; //地址
+//    actor.PID Sender = 2; //节点进程
+//}
+
+//时钟嘀嗒
+message Tick {
+}

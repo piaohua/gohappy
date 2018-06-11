@@ -1,0 +1,72 @@
+syntax = "proto3";
+package pb;
+//import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+
+//机器人操作
+
+//机器人消息
+message RobotMsg {
+    string Code  = 1;
+    uint32 Num   = 2;
+    int32 Rtype = 3;
+    int32 Ltype = 4;
+    string Roomid = 5;
+	int32 EnvBet = 6; //下注规则
+}
+
+message RobotLogin {
+	string Phone = 1;
+    string Roomid = 2;
+    int32 Ltype = 3;
+}
+
+message RobotReLogin {
+	string Phone = 1;
+	string Code  = 2;
+	int32 Rtype = 3;
+    int32 Ltype = 4;
+    string Roomid = 5;
+	int32 EnvBet = 6; //下注规则
+}
+
+message RobotLogout {
+	string Phone = 1;
+	string Code  = 2;
+	string Roomid = 3;
+	int64 Chip = 4; //下线时筹码
+}
+
+message RobotStop {
+}
+
+message RobotRoomList {
+	int32 Rtype = 1;
+    int32 Ltype = 2;
+    string Roomid = 3;
+}
+
+message RobotEnterRoom {
+	int32 Rtype = 1;
+    int32 Ltype = 2;
+    string Roomid = 3;
+	string Phone = 4;
+}
+
+//分配人数
+message RobotAllot
+{
+	uint32 Type = 1; //规则1,2
+	int32 EnvBet = 2; //下注规则
+    //actor.PID HallPid = 3;
+}
+
+//虚假人数
+message RobotFake
+{
+	string Roomid = 1; //房间ID
+	uint32 RealNum = 2; //真实人数
+	uint32 FakeNum = 3; //机器人人数
+	int32 Ltype = 4; //彩种类型
+	uint32 Type = 5; //类型1添加,2设置
+    //actor.PID RoomPid = 6;
+}

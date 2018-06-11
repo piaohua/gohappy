@@ -1,0 +1,1510 @@
+{
+  "nested": {
+    "pb": {
+      "nested": {
+        "CJHRoomList": {
+          "fields": {
+            "rtype": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "SJHRoomList": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHRoomData",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHEnterRoom": {
+          "fields": {
+            "code": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SJHEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "JHRoomData",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "JHRoomUser",
+              "id": 2
+            },
+            "voteinfo": {
+              "type": "JHRoomVote",
+              "id": 3
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "JHRoomBets",
+              "id": 4
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 5
+            }
+          }
+        },
+        "CJHCreateRoom": {
+          "fields": {
+            "rname": {
+              "type": "string",
+              "id": 1
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 3
+            },
+            "round": {
+              "type": "uint32",
+              "id": 4
+            },
+            "payment": {
+              "type": "uint32",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            }
+          }
+        },
+        "SJHCreateRoom": {
+          "fields": {
+            "data": {
+              "type": "JHRoomData",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "SJHCamein": {
+          "fields": {
+            "userinfo": {
+              "type": "JHRoomUser",
+              "id": 1
+            }
+          }
+        },
+        "CJHLeave": {
+          "fields": {}
+        },
+        "SJHLeave": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SJHPushOffline": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "offline": {
+              "type": "bool",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CJHReady": {
+          "fields": {
+            "ready": {
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "SJHReady": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "ready": {
+              "type": "bool",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SJHDraw": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "state": {
+              "type": "int32",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
+        "SJHPushDealer": {
+          "fields": {
+            "dealerSeat": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SJHPushState": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "SJHGameover": {
+          "fields": {
+            "dealer": {
+              "type": "string",
+              "id": 1
+            },
+            "dealerSeat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "round": {
+              "type": "uint32",
+              "id": 3
+            },
+            "leftRound": {
+              "type": "uint32",
+              "id": 4
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "JHRoomOver",
+              "id": 5
+            }
+          }
+        },
+        "CJHGameRecord": {
+          "fields": {}
+        },
+        "SJHGameRecord": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHRecordList",
+              "id": 1
+            }
+          }
+        },
+        "ErrCode": {
+          "values": {
+            "OK": 0,
+            "NotEnoughDiamond": 1,
+            "NotEnoughCoin": 2,
+            "NotInRoom": 3,
+            "UsernameOrPwdError": 4,
+            "PhoneNumberError": 5,
+            "LoginError": 6,
+            "UsernameEmpty": 7,
+            "NameTooLong": 8,
+            "PhoneNumberEnpty": 9,
+            "PwdEmpty": 10,
+            "PwdFormatError": 11,
+            "PhoneRegisted": 12,
+            "RegistError": 13,
+            "UserDataNotExist": 14,
+            "WechatLoingFailReAuth": 15,
+            "GetWechatUserInfoFail": 16,
+            "PayOrderFail": 17,
+            "PayOrderError": 18,
+            "RoomNotExist": 19,
+            "RoomFull": 20,
+            "CreateRoomFail": 21,
+            "OperateError": 22,
+            "NiuCardError": 23,
+            "NiuValueError": 24,
+            "BetValueError": 25,
+            "GameStarted": 26,
+            "NotInRoomCannotLeave": 27,
+            "GameStartedCannotLeave": 28,
+            "StartedNotKick": 29,
+            "RunningNotVote": 30,
+            "VotingCantLaunchVote": 31,
+            "NotVoteTime": 32,
+            "NotInPrivateRoom": 33,
+            "OtherLoginThisAccount": 34,
+            "BeDealerNotEnough": 35,
+            "SitNotEnough": 36,
+            "SitDownFailed": 37,
+            "BetDealerFailed": 38,
+            "BetNotSeat": 39,
+            "BetTopLimit": 40,
+            "GameNotStart": 41,
+            "StandUpFailed": 42,
+            "DealerSitFailed": 43,
+            "BeDealerAlreadySit": 44,
+            "BeDealerAlready": 45,
+            "DepositNumberError": 46,
+            "DrawMoneyNumberError": 47,
+            "GiveNumberError": 48,
+            "GiveUseridError": 49,
+            "GiveTooMuch": 50,
+            "NotBankrupt": 51,
+            "NotRelieves": 52,
+            "NotPrizeDraw": 53,
+            "NotGotPrizeDraw": 54,
+            "BoxNotYet": 55,
+            "NotBox": 56,
+            "NotTimes": 57,
+            "AppleOrderFail": 58,
+            "MatchClassicFail": 59,
+            "EnterClassicNotEnough": 60,
+            "NotWinning": 61,
+            "AlreadyWinning": 62,
+            "NotVip": 63,
+            "NotVipTimes": 64,
+            "AlreadyInRoom": 65,
+            "NotYourTurn": 66,
+            "ErrorOperateValue": 67,
+            "Failed": 68,
+            "RepeatLogin": 69,
+            "VipTooLow": 70,
+            "ChipNotEnough": 71,
+            "BetSeatWrong": 72,
+            "NotDealerRoom": 73,
+            "SmsCodeEmpty": 74,
+            "SmsCodeWrong": 75,
+            "SmsCodeExpired": 76,
+            "ResetPwdFaild": 77,
+            "PhoneNotRegist": 78,
+            "TouristInoperable": 79,
+            "SafetycodeEmpty": 80,
+            "SafetycodeNotExist": 81,
+            "DealerDownFail": 82,
+            "MatchFail": 83,
+            "EnterFail": 84,
+            "NotReady": 85,
+            "AlreadyFold": 86,
+            "AlreadyAllin": 87,
+            "CallError": 88,
+            "RaiseError": 89,
+            "AlreadyAward": 90,
+            "AwardFaild": 91,
+            "AlreadyPrize": 92,
+            "PwdError": 93,
+            "BankNotOpen": 94,
+            "BankAlreadyOpen": 95,
+            "AlreadySitDown": 96
+          }
+        },
+        "SitType": {
+          "values": {
+            "SitDown": 0,
+            "SitUp": 1
+          }
+        },
+        "JHRoomUser": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "phone": {
+              "type": "string",
+              "id": 3
+            },
+            "sex": {
+              "type": "uint32",
+              "id": 4
+            },
+            "photo": {
+              "type": "string",
+              "id": 5
+            },
+            "coin": {
+              "type": "int64",
+              "id": 6
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 7
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 8
+            },
+            "ready": {
+              "type": "bool",
+              "id": 9
+            },
+            "score": {
+              "type": "int64",
+              "id": 10
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 11
+            },
+            "bet": {
+              "type": "int64",
+              "id": 12
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 13
+            },
+            "num": {
+              "type": "uint32",
+              "id": 14
+            },
+            "niu": {
+              "type": "bool",
+              "id": 15
+            },
+            "offline": {
+              "type": "bool",
+              "id": 16
+            }
+          }
+        },
+        "JHRoomData": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "ltype": {
+              "type": "int32",
+              "id": 5
+            },
+            "rname": {
+              "type": "string",
+              "id": 6
+            },
+            "count": {
+              "type": "uint32",
+              "id": 7
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 8
+            },
+            "expire": {
+              "type": "int64",
+              "id": 9
+            },
+            "code": {
+              "type": "string",
+              "id": 10
+            },
+            "round": {
+              "type": "uint32",
+              "id": 11
+            },
+            "userid": {
+              "type": "string",
+              "id": 12
+            },
+            "state": {
+              "type": "int32",
+              "id": 13
+            },
+            "timer": {
+              "type": "uint32",
+              "id": 14
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 15
+            },
+            "number": {
+              "type": "uint32",
+              "id": 16
+            },
+            "rest": {
+              "type": "uint32",
+              "id": 17
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 18
+            },
+            "minimum": {
+              "type": "int64",
+              "id": 19
+            },
+            "maximum": {
+              "type": "int64",
+              "id": 20
+            }
+          }
+        },
+        "JHRoomBets": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "bets": {
+              "type": "int64",
+              "id": 2
+            }
+          }
+        },
+        "JHFreeUser": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "phone": {
+              "type": "string",
+              "id": 3
+            },
+            "sex": {
+              "type": "uint32",
+              "id": 4
+            },
+            "photo": {
+              "type": "string",
+              "id": 5
+            },
+            "coin": {
+              "type": "int64",
+              "id": 6
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 7
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 8
+            },
+            "bet": {
+              "type": "int64",
+              "id": 9
+            },
+            "bets": {
+              "rule": "repeated",
+              "type": "JHRoomBets",
+              "id": 10
+            }
+          }
+        },
+        "JHFreeRoom": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "rname": {
+              "type": "string",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 7
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 8
+            },
+            "userid": {
+              "type": "string",
+              "id": 9
+            },
+            "photo": {
+              "type": "string",
+              "id": 10
+            },
+            "carry": {
+              "type": "uint32",
+              "id": 11
+            },
+            "state": {
+              "type": "int32",
+              "id": 12
+            },
+            "timer": {
+              "type": "uint32",
+              "id": 13
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 14
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 15
+            }
+          }
+        },
+        "JHRoomOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "total": {
+              "type": "int64",
+              "id": 4
+            },
+            "score": {
+              "type": "int64",
+              "id": 5
+            },
+            "bets": {
+              "type": "int64",
+              "id": 6
+            },
+            "coin": {
+              "type": "int64",
+              "id": 7
+            },
+            "nickname": {
+              "type": "string",
+              "id": 8
+            },
+            "photo": {
+              "type": "string",
+              "id": 9
+            }
+          }
+        },
+        "JHFreeRoomOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "multi": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "JHFreeSeatOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "total": {
+              "type": "int64",
+              "id": 2
+            },
+            "score": {
+              "type": "int64",
+              "id": 3
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "JHRoomScore",
+              "id": 4
+            }
+          }
+        },
+        "JHRoomScore": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "score": {
+              "type": "int64",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "JHCoinOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "value": {
+              "type": "uint32",
+              "id": 4
+            },
+            "bets": {
+              "type": "int64",
+              "id": 5
+            },
+            "score": {
+              "type": "int64",
+              "id": 6
+            },
+            "coin": {
+              "type": "int64",
+              "id": 7
+            },
+            "nickname": {
+              "type": "string",
+              "id": 8
+            },
+            "photo": {
+              "type": "string",
+              "id": 9
+            }
+          }
+        },
+        "JHOverList": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "value": {
+              "type": "uint32",
+              "id": 4
+            },
+            "round": {
+              "type": "uint32",
+              "id": 5
+            },
+            "score": {
+              "type": "int64",
+              "id": 6
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 7
+            },
+            "bets": {
+              "type": "uint32",
+              "id": 8
+            },
+            "nickname": {
+              "type": "string",
+              "id": 9
+            },
+            "photo": {
+              "type": "string",
+              "id": 10
+            }
+          }
+        },
+        "JHRoomVote": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "disagree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
+        "JHDealerList": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "JHFreeTrend": {
+          "fields": {
+            "seat2": {
+              "type": "bool",
+              "id": 1
+            },
+            "seat3": {
+              "type": "bool",
+              "id": 2
+            },
+            "seat4": {
+              "type": "bool",
+              "id": 3
+            },
+            "seat5": {
+              "type": "bool",
+              "id": 4
+            }
+          }
+        },
+        "JHFreeWiner": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "JHFreeRole": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "JHRecordList": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "rname": {
+              "type": "string",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 7
+            },
+            "code": {
+              "type": "string",
+              "id": 8
+            },
+            "round": {
+              "type": "uint32",
+              "id": 9
+            },
+            "userid": {
+              "type": "string",
+              "id": 10
+            },
+            "ctime": {
+              "type": "uint32",
+              "id": 11
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "JHOverList",
+              "id": 12
+            }
+          }
+        },
+        "CJHCoinEnterRoom": {
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SJHCoinEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "JHRoomData",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "JHRoomUser",
+              "id": 2
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "JHRoomBets",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SJHCoinGameover": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "JHCoinOver",
+              "id": 3
+            }
+          }
+        },
+        "SJHPushActState": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "pot": {
+              "type": "int64",
+              "id": 3
+            },
+            "callNum": {
+              "type": "int64",
+              "id": 4
+            },
+            "raiseNum": {
+              "type": "int64",
+              "id": 5
+            }
+          }
+        },
+        "CJHCoinSee": {
+          "fields": {}
+        },
+        "SJHCoinSee": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CJHCoinCall": {
+          "fields": {
+            "value": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SJHCoinCall": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "value": {
+              "type": "int64",
+              "id": 3
+            },
+            "pot": {
+              "type": "int64",
+              "id": 4
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 5
+            }
+          }
+        },
+        "CJHCoinRaise": {
+          "fields": {
+            "value": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SJHCoinRaise": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "value": {
+              "type": "int64",
+              "id": 3
+            },
+            "pot": {
+              "type": "int64",
+              "id": 4
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 5
+            }
+          }
+        },
+        "CJHCoinFold": {
+          "fields": {}
+        },
+        "SJHCoinFold": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "CJHCoinBi": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SJHCoinBi": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "biseat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "winseat": {
+              "type": "uint32",
+              "id": 3
+            },
+            "loseseat": {
+              "type": "uint32",
+              "id": 4
+            },
+            "value": {
+              "type": "int64",
+              "id": 5
+            },
+            "pot": {
+              "type": "int64",
+              "id": 6
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 7
+            }
+          }
+        },
+        "CJHFreeEnterRoom": {
+          "fields": {}
+        },
+        "SJHFreeEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "JHFreeRoom",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "JHFreeUser",
+              "id": 2
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "JHRoomBets",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SJHFreeCamein": {
+          "fields": {
+            "userinfo": {
+              "type": "JHFreeUser",
+              "id": 1
+            }
+          }
+        },
+        "CJHFreeDealer": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "coin": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SJHFreeDealer": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "nickname": {
+              "type": "string",
+              "id": 4
+            },
+            "coin": {
+              "type": "uint32",
+              "id": 5
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 6
+            }
+          }
+        },
+        "CJHFreeDealerList": {
+          "fields": {}
+        },
+        "SJHFreeDealerList": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHDealerList",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHSit": {
+          "fields": {
+            "type": {
+              "type": "SitType",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SJHSit": {
+          "fields": {
+            "type": {
+              "type": "SitType",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userinfo": {
+              "type": "JHRoomUser",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CJHFreeBet": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "value": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SJHFreeBet": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "beseat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "userid": {
+              "type": "string",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "bets": {
+              "type": "int64",
+              "id": 6
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 7
+            }
+          }
+        },
+        "SJHFreeGamestart": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "coin": {
+              "type": "int64",
+              "id": 3
+            },
+            "photo": {
+              "type": "string",
+              "id": 4
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 5
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 6
+            }
+          }
+        },
+        "SJHFreeGameover": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 3
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "JHFreeRoomOver",
+              "id": 6
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "JHRoomScore",
+              "id": 7
+            },
+            "info": {
+              "rule": "repeated",
+              "type": "JHFreeSeatOver",
+              "id": 8
+            }
+          }
+        },
+        "CJHFreeTrend": {
+          "fields": {}
+        },
+        "SJHFreeTrend": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHFreeTrend",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHFreeWiners": {
+          "fields": {}
+        },
+        "SJHFreeWiners": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHFreeWiner",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHFreeRoles": {
+          "fields": {}
+        },
+        "SJHFreeRoles": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "JHFreeRole",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHLaunchVote": {
+          "fields": {}
+        },
+        "SJHLaunchVote": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJHVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SJHVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SJHVoteResult": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

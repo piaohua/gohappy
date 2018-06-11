@@ -1,0 +1,35 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+
+// 私人局,发起投票申请解散房间
+message CNNLaunchVote
+{
+}
+
+message SNNLaunchVote
+{
+    uint32 seat = 1; //发起人玩家座位号
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 私人局,发起投票,投票解散房间
+message CNNVote
+{
+    uint32 vote = 1; //1同意,2不同意
+}
+
+message SNNVote
+{
+    uint32 vote = 1; //1同意,2不同意
+    uint32 seat = 2; //投票玩家座位号
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+// 投票解散房间事件结果,服务器主动推送
+message SNNVoteResult
+{
+    //0半数通过马上解散房间,
+    //1半数以上不通过终止解散房间
+    uint32 vote = 1;
+}

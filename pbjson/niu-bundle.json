@@ -1,0 +1,1433 @@
+{
+  "nested": {
+    "pb": {
+      "nested": {
+        "CNNRoomList": {
+          "fields": {
+            "rtype": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "SNNRoomList": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNRoomData",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNEnterRoom": {
+          "fields": {
+            "code": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SNNEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "NNRoomData",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "NNRoomUser",
+              "id": 2
+            },
+            "voteinfo": {
+              "type": "NNRoomVote",
+              "id": 3
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "NNRoomBets",
+              "id": 4
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 5
+            }
+          }
+        },
+        "CNNCreateRoom": {
+          "fields": {
+            "rname": {
+              "type": "string",
+              "id": 1
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 3
+            },
+            "round": {
+              "type": "uint32",
+              "id": 4
+            },
+            "payment": {
+              "type": "uint32",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            }
+          }
+        },
+        "SNNCreateRoom": {
+          "fields": {
+            "data": {
+              "type": "NNRoomData",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "SNNCamein": {
+          "fields": {
+            "userinfo": {
+              "type": "NNRoomUser",
+              "id": 1
+            }
+          }
+        },
+        "CNNLeave": {
+          "fields": {}
+        },
+        "SNNLeave": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SNNPushOffline": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "offline": {
+              "type": "bool",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CNNReady": {
+          "fields": {
+            "ready": {
+              "type": "bool",
+              "id": 1
+            }
+          }
+        },
+        "SNNReady": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "ready": {
+              "type": "bool",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SNNDraw": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "state": {
+              "type": "int32",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
+        "CNNDealer": {
+          "fields": {
+            "dealer": {
+              "type": "bool",
+              "id": 1
+            },
+            "num": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNDealer": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "bool",
+              "id": 2
+            },
+            "num": {
+              "type": "uint32",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SNNPushDealer": {
+          "fields": {
+            "dealerSeat": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SNNPushState": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "CNNBet": {
+          "fields": {
+            "seatbet": {
+              "type": "uint32",
+              "id": 1
+            },
+            "value": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNBet": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seatbet": {
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CNNiu": {
+          "fields": {
+            "value": {
+              "type": "uint32",
+              "id": 1
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNiu": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "value": {
+              "type": "uint32",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SNNGameover": {
+          "fields": {
+            "dealer": {
+              "type": "string",
+              "id": 1
+            },
+            "dealerSeat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "round": {
+              "type": "uint32",
+              "id": 3
+            },
+            "leftRound": {
+              "type": "uint32",
+              "id": 4
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "NNRoomOver",
+              "id": 5
+            }
+          }
+        },
+        "CNNGameRecord": {
+          "fields": {}
+        },
+        "SNNGameRecord": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNRecordList",
+              "id": 1
+            }
+          }
+        },
+        "ErrCode": {
+          "values": {
+            "OK": 0,
+            "NotEnoughDiamond": 1,
+            "NotEnoughCoin": 2,
+            "NotInRoom": 3,
+            "UsernameOrPwdError": 4,
+            "PhoneNumberError": 5,
+            "LoginError": 6,
+            "UsernameEmpty": 7,
+            "NameTooLong": 8,
+            "PhoneNumberEnpty": 9,
+            "PwdEmpty": 10,
+            "PwdFormatError": 11,
+            "PhoneRegisted": 12,
+            "RegistError": 13,
+            "UserDataNotExist": 14,
+            "WechatLoingFailReAuth": 15,
+            "GetWechatUserInfoFail": 16,
+            "PayOrderFail": 17,
+            "PayOrderError": 18,
+            "RoomNotExist": 19,
+            "RoomFull": 20,
+            "CreateRoomFail": 21,
+            "OperateError": 22,
+            "NiuCardError": 23,
+            "NiuValueError": 24,
+            "BetValueError": 25,
+            "GameStarted": 26,
+            "NotInRoomCannotLeave": 27,
+            "GameStartedCannotLeave": 28,
+            "StartedNotKick": 29,
+            "RunningNotVote": 30,
+            "VotingCantLaunchVote": 31,
+            "NotVoteTime": 32,
+            "NotInPrivateRoom": 33,
+            "OtherLoginThisAccount": 34,
+            "BeDealerNotEnough": 35,
+            "SitNotEnough": 36,
+            "SitDownFailed": 37,
+            "BetDealerFailed": 38,
+            "BetNotSeat": 39,
+            "BetTopLimit": 40,
+            "GameNotStart": 41,
+            "StandUpFailed": 42,
+            "DealerSitFailed": 43,
+            "BeDealerAlreadySit": 44,
+            "BeDealerAlready": 45,
+            "DepositNumberError": 46,
+            "DrawMoneyNumberError": 47,
+            "GiveNumberError": 48,
+            "GiveUseridError": 49,
+            "GiveTooMuch": 50,
+            "NotBankrupt": 51,
+            "NotRelieves": 52,
+            "NotPrizeDraw": 53,
+            "NotGotPrizeDraw": 54,
+            "BoxNotYet": 55,
+            "NotBox": 56,
+            "NotTimes": 57,
+            "AppleOrderFail": 58,
+            "MatchClassicFail": 59,
+            "EnterClassicNotEnough": 60,
+            "NotWinning": 61,
+            "AlreadyWinning": 62,
+            "NotVip": 63,
+            "NotVipTimes": 64,
+            "AlreadyInRoom": 65,
+            "NotYourTurn": 66,
+            "ErrorOperateValue": 67,
+            "Failed": 68,
+            "RepeatLogin": 69,
+            "VipTooLow": 70,
+            "ChipNotEnough": 71,
+            "BetSeatWrong": 72,
+            "NotDealerRoom": 73,
+            "SmsCodeEmpty": 74,
+            "SmsCodeWrong": 75,
+            "SmsCodeExpired": 76,
+            "ResetPwdFaild": 77,
+            "PhoneNotRegist": 78,
+            "TouristInoperable": 79,
+            "SafetycodeEmpty": 80,
+            "SafetycodeNotExist": 81,
+            "DealerDownFail": 82,
+            "MatchFail": 83,
+            "EnterFail": 84,
+            "NotReady": 85,
+            "AlreadyFold": 86,
+            "AlreadyAllin": 87,
+            "CallError": 88,
+            "RaiseError": 89,
+            "AlreadyAward": 90,
+            "AwardFaild": 91,
+            "AlreadyPrize": 92,
+            "PwdError": 93,
+            "BankNotOpen": 94,
+            "BankAlreadyOpen": 95,
+            "AlreadySitDown": 96
+          }
+        },
+        "SitType": {
+          "values": {
+            "SitDown": 0,
+            "SitUp": 1
+          }
+        },
+        "NNRoomUser": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "phone": {
+              "type": "string",
+              "id": 3
+            },
+            "sex": {
+              "type": "uint32",
+              "id": 4
+            },
+            "photo": {
+              "type": "string",
+              "id": 5
+            },
+            "coin": {
+              "type": "int64",
+              "id": 6
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 7
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 8
+            },
+            "ready": {
+              "type": "bool",
+              "id": 9
+            },
+            "score": {
+              "type": "int64",
+              "id": 10
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 11
+            },
+            "bet": {
+              "type": "int64",
+              "id": 12
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 13
+            },
+            "num": {
+              "type": "uint32",
+              "id": 14
+            },
+            "niu": {
+              "type": "bool",
+              "id": 15
+            },
+            "offline": {
+              "type": "bool",
+              "id": 16
+            }
+          }
+        },
+        "NNRoomData": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "ltype": {
+              "type": "int32",
+              "id": 5
+            },
+            "rname": {
+              "type": "string",
+              "id": 6
+            },
+            "count": {
+              "type": "uint32",
+              "id": 7
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 8
+            },
+            "expire": {
+              "type": "int64",
+              "id": 9
+            },
+            "code": {
+              "type": "string",
+              "id": 10
+            },
+            "round": {
+              "type": "uint32",
+              "id": 11
+            },
+            "userid": {
+              "type": "string",
+              "id": 12
+            },
+            "state": {
+              "type": "int32",
+              "id": 13
+            },
+            "timer": {
+              "type": "uint32",
+              "id": 14
+            },
+            "number": {
+              "type": "uint32",
+              "id": 15
+            },
+            "rest": {
+              "type": "uint32",
+              "id": 16
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 17
+            },
+            "minimum": {
+              "type": "int64",
+              "id": 18
+            },
+            "maximum": {
+              "type": "int64",
+              "id": 19
+            }
+          }
+        },
+        "NNRoomBets": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "bets": {
+              "type": "int64",
+              "id": 2
+            }
+          }
+        },
+        "NNFreeUser": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "phone": {
+              "type": "string",
+              "id": 3
+            },
+            "sex": {
+              "type": "uint32",
+              "id": 4
+            },
+            "photo": {
+              "type": "string",
+              "id": 5
+            },
+            "coin": {
+              "type": "int64",
+              "id": 6
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 7
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 8
+            },
+            "bet": {
+              "type": "int64",
+              "id": 9
+            },
+            "bets": {
+              "rule": "repeated",
+              "type": "NNRoomBets",
+              "id": 10
+            }
+          }
+        },
+        "NNFreeRoom": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "rname": {
+              "type": "string",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 7
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 8
+            },
+            "userid": {
+              "type": "string",
+              "id": 9
+            },
+            "photo": {
+              "type": "string",
+              "id": 10
+            },
+            "carry": {
+              "type": "uint32",
+              "id": 11
+            },
+            "state": {
+              "type": "int32",
+              "id": 12
+            },
+            "timer": {
+              "type": "uint32",
+              "id": 13
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 14
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 15
+            }
+          }
+        },
+        "NNRoomOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "total": {
+              "type": "int64",
+              "id": 4
+            },
+            "score": {
+              "type": "int64",
+              "id": 5
+            },
+            "bets": {
+              "type": "int64",
+              "id": 6
+            },
+            "coin": {
+              "type": "int64",
+              "id": 7
+            },
+            "nickname": {
+              "type": "string",
+              "id": 8
+            },
+            "photo": {
+              "type": "string",
+              "id": 9
+            }
+          }
+        },
+        "NNFreeRoomOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "multi": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "NNFreeSeatOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "total": {
+              "type": "int64",
+              "id": 2
+            },
+            "score": {
+              "type": "int64",
+              "id": 3
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "NNRoomScore",
+              "id": 4
+            }
+          }
+        },
+        "NNRoomScore": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "score": {
+              "type": "int64",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "NNCoinOver": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "value": {
+              "type": "uint32",
+              "id": 4
+            },
+            "bets": {
+              "type": "int64",
+              "id": 5
+            },
+            "score": {
+              "type": "int64",
+              "id": 6
+            },
+            "coin": {
+              "type": "int64",
+              "id": 7
+            },
+            "nickname": {
+              "type": "string",
+              "id": 8
+            },
+            "photo": {
+              "type": "string",
+              "id": 9
+            }
+          }
+        },
+        "NNOverList": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            },
+            "value": {
+              "type": "uint32",
+              "id": 4
+            },
+            "round": {
+              "type": "uint32",
+              "id": 5
+            },
+            "score": {
+              "type": "int64",
+              "id": 6
+            },
+            "dealer": {
+              "type": "uint32",
+              "id": 7
+            },
+            "bets": {
+              "type": "uint32",
+              "id": 8
+            },
+            "nickname": {
+              "type": "string",
+              "id": 9
+            },
+            "photo": {
+              "type": "string",
+              "id": 10
+            }
+          }
+        },
+        "NNRoomVote": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "disagree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
+        "NNDealerList": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "NNFreeTrend": {
+          "fields": {
+            "seat2": {
+              "type": "bool",
+              "id": 1
+            },
+            "seat3": {
+              "type": "bool",
+              "id": 2
+            },
+            "seat4": {
+              "type": "bool",
+              "id": 3
+            },
+            "seat5": {
+              "type": "bool",
+              "id": 4
+            }
+          }
+        },
+        "NNFreeWiner": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "NNFreeRole": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "NNRecordList": {
+          "fields": {
+            "roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "rname": {
+              "type": "string",
+              "id": 5
+            },
+            "count": {
+              "type": "uint32",
+              "id": 6
+            },
+            "ante": {
+              "type": "uint32",
+              "id": 7
+            },
+            "code": {
+              "type": "string",
+              "id": 8
+            },
+            "round": {
+              "type": "uint32",
+              "id": 9
+            },
+            "userid": {
+              "type": "string",
+              "id": 10
+            },
+            "ctime": {
+              "type": "uint32",
+              "id": 11
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "NNOverList",
+              "id": 12
+            }
+          }
+        },
+        "CNNCoinEnterRoom": {
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SNNCoinEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "NNRoomData",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "NNRoomUser",
+              "id": 2
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "NNRoomBets",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SNNCoinGameover": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "NNCoinOver",
+              "id": 3
+            }
+          }
+        },
+        "CNNFreeEnterRoom": {
+          "fields": {}
+        },
+        "SNNFreeEnterRoom": {
+          "fields": {
+            "roominfo": {
+              "type": "NNFreeRoom",
+              "id": 1
+            },
+            "userinfo": {
+              "rule": "repeated",
+              "type": "NNFreeUser",
+              "id": 2
+            },
+            "betsinfo": {
+              "rule": "repeated",
+              "type": "NNRoomBets",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SNNFreeCamein": {
+          "fields": {
+            "userinfo": {
+              "type": "NNFreeUser",
+              "id": 1
+            }
+          }
+        },
+        "CNNFreeDealer": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "coin": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNFreeDealer": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "nickname": {
+              "type": "string",
+              "id": 4
+            },
+            "coin": {
+              "type": "uint32",
+              "id": 5
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 6
+            }
+          }
+        },
+        "CNNFreeDealerList": {
+          "fields": {}
+        },
+        "SNNFreeDealerList": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNDealerList",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNSit": {
+          "fields": {
+            "type": {
+              "type": "SitType",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNSit": {
+          "fields": {
+            "type": {
+              "type": "SitType",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userinfo": {
+              "type": "NNRoomUser",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CNNFreeBet": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "value": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SNNFreeBet": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "beseat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "userid": {
+              "type": "string",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "bets": {
+              "type": "int64",
+              "id": 6
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 7
+            }
+          }
+        },
+        "SNNFreeGamestart": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "coin": {
+              "type": "int64",
+              "id": 3
+            },
+            "photo": {
+              "type": "string",
+              "id": 4
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 5
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 6
+            }
+          }
+        },
+        "SNNFreeGameover": {
+          "fields": {
+            "state": {
+              "type": "int32",
+              "id": 1
+            },
+            "dealer": {
+              "type": "string",
+              "id": 2
+            },
+            "dealerNum": {
+              "type": "uint32",
+              "id": 3
+            },
+            "leftDealerNum": {
+              "type": "uint32",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "data": {
+              "rule": "repeated",
+              "type": "NNFreeRoomOver",
+              "id": 6
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "NNRoomScore",
+              "id": 7
+            },
+            "info": {
+              "rule": "repeated",
+              "type": "NNFreeSeatOver",
+              "id": 8
+            }
+          }
+        },
+        "CNNFreeTrend": {
+          "fields": {}
+        },
+        "SNNFreeTrend": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNFreeTrend",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNFreeWiners": {
+          "fields": {}
+        },
+        "SNNFreeWiners": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNFreeWiner",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNFreeRoles": {
+          "fields": {}
+        },
+        "SNNFreeRoles": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "NNFreeRole",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNLaunchVote": {
+          "fields": {}
+        },
+        "SNNLaunchVote": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CNNVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SNNVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SNNVoteResult": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        }
+      }
+    }
+  }
+}

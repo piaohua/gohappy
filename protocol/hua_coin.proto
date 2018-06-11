@@ -1,0 +1,110 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "hua_pub.proto";
+
+//Coin 自由金币场
+
+// 进入房间
+message CJHCoinEnterRoom
+{
+    string id          = 2;//id为空自由分配
+}
+
+message SJHCoinEnterRoom
+{
+    JHRoomData roominfo = 1;//房间的详细资料
+    repeated JHRoomUser  userinfo = 2;//已在房间的玩家基础信息
+    repeated JHRoomBets  betsinfo = 3;//下注倍数
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 结算广播接口，游戏结束
+message SJHCoinGameover
+{
+    int32  state = 1;//房间状态
+    string dealer = 2;//庄家
+    repeated JHCoinOver data = 3;//结算
+}
+
+//推送操作状态
+message SJHPushActState
+{
+    int32 state = 1;  //状态
+    uint32 seat  = 2;  //玩家的座位号
+    int64 pot= 3;  //底池数量
+    int64 callNum= 4; //跟注(暗)数量
+    int64 raiseNum= 5; //最小加注(暗)数量
+}
+
+// 看牌
+message CJHCoinSee
+{
+}
+
+message SJHCoinSee
+{
+    uint32 seat  = 1;  //玩家的座位号
+    string userid = 2;  //下注玩家
+    repeated uint32 cards = 3;  //手牌
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 跟注
+message CJHCoinCall
+{
+    uint32 value= 1;  //提交相应的值
+}
+
+message SJHCoinCall
+{
+    uint32 seat  = 1;  //玩家的座位号
+    string userid = 2;  //下注玩家
+    int64 value= 3;  //下注数量
+    int64 pot= 4;  //底池数量
+    ErrCode error= 5;//错误码 ,0:正常
+}
+
+// 加注
+message CJHCoinRaise
+{
+    uint32 value= 1;  //提交相应的值
+}
+
+message SJHCoinRaise
+{
+    uint32 seat  = 1;  //玩家的座位号
+    string userid = 2;  //下注玩家
+    int64 value= 3;  //下注数量
+    int64 pot= 4;  //底池数量
+    ErrCode error= 5;//错误码 ,0:正常
+}
+
+// 弃牌
+message CJHCoinFold
+{
+}
+
+message SJHCoinFold
+{
+    uint32 seat  = 1;  //玩家的座位号
+    string userid = 2;  //下注玩家
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+// 比牌
+message CJHCoinBi
+{
+    uint32 seat  = 1;  //被比牌玩家的座位号
+}
+
+message SJHCoinBi
+{
+    uint32 seat  = 1;  //被比牌玩家的座位号
+    uint32 biseat = 2; //主动比牌玩家的座位号
+    uint32 winseat = 3; //比牌赢家位置
+    uint32 loseseat = 4; //比牌输家位置
+    int64 value= 5;  //比牌下注数量
+    int64 pot= 6;  //底池数量
+    ErrCode error= 7;//错误码 ,0:正常
+}

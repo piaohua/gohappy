@@ -1,0 +1,1170 @@
+{
+  "nested": {
+    "pb": {
+      "nested": {
+        "CBuy": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SBuy": {
+          "fields": {
+            "result": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CWxpayOrder": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "body": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SWxpayOrder": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "payreq": {
+              "type": "string",
+              "id": 2
+            },
+            "orderid": {
+              "type": "string",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CWxpayQuery": {
+          "fields": {
+            "transid": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SWxpayQuery": {
+          "fields": {
+            "orderid": {
+              "type": "string",
+              "id": 1
+            },
+            "result": {
+              "type": "uint32",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "CApplePay": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "receipt": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SApplePay": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CShop": {
+          "fields": {}
+        },
+        "SShop": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Shop",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "Shop": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "status": {
+              "type": "uint32",
+              "id": 2
+            },
+            "propid": {
+              "type": "uint32",
+              "id": 3
+            },
+            "payway": {
+              "type": "uint32",
+              "id": 4
+            },
+            "number": {
+              "type": "uint32",
+              "id": 5
+            },
+            "price": {
+              "type": "uint32",
+              "id": 6
+            },
+            "name": {
+              "type": "string",
+              "id": 7
+            },
+            "info": {
+              "type": "string",
+              "id": 8
+            }
+          }
+        },
+        "CJtpayOrder": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "body": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SJtpayOrder": {
+          "fields": {
+            "id": {
+              "type": "uint32",
+              "id": 1
+            },
+            "payreq": {
+              "type": "string",
+              "id": 2
+            },
+            "orderid": {
+              "type": "string",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "ErrCode": {
+          "values": {
+            "OK": 0,
+            "NotEnoughDiamond": 1,
+            "NotEnoughCoin": 2,
+            "NotInRoom": 3,
+            "UsernameOrPwdError": 4,
+            "PhoneNumberError": 5,
+            "LoginError": 6,
+            "UsernameEmpty": 7,
+            "NameTooLong": 8,
+            "PhoneNumberEnpty": 9,
+            "PwdEmpty": 10,
+            "PwdFormatError": 11,
+            "PhoneRegisted": 12,
+            "RegistError": 13,
+            "UserDataNotExist": 14,
+            "WechatLoingFailReAuth": 15,
+            "GetWechatUserInfoFail": 16,
+            "PayOrderFail": 17,
+            "PayOrderError": 18,
+            "RoomNotExist": 19,
+            "RoomFull": 20,
+            "CreateRoomFail": 21,
+            "OperateError": 22,
+            "NiuCardError": 23,
+            "NiuValueError": 24,
+            "BetValueError": 25,
+            "GameStarted": 26,
+            "NotInRoomCannotLeave": 27,
+            "GameStartedCannotLeave": 28,
+            "StartedNotKick": 29,
+            "RunningNotVote": 30,
+            "VotingCantLaunchVote": 31,
+            "NotVoteTime": 32,
+            "NotInPrivateRoom": 33,
+            "OtherLoginThisAccount": 34,
+            "BeDealerNotEnough": 35,
+            "SitNotEnough": 36,
+            "SitDownFailed": 37,
+            "BetDealerFailed": 38,
+            "BetNotSeat": 39,
+            "BetTopLimit": 40,
+            "GameNotStart": 41,
+            "StandUpFailed": 42,
+            "DealerSitFailed": 43,
+            "BeDealerAlreadySit": 44,
+            "BeDealerAlready": 45,
+            "DepositNumberError": 46,
+            "DrawMoneyNumberError": 47,
+            "GiveNumberError": 48,
+            "GiveUseridError": 49,
+            "GiveTooMuch": 50,
+            "NotBankrupt": 51,
+            "NotRelieves": 52,
+            "NotPrizeDraw": 53,
+            "NotGotPrizeDraw": 54,
+            "BoxNotYet": 55,
+            "NotBox": 56,
+            "NotTimes": 57,
+            "AppleOrderFail": 58,
+            "MatchClassicFail": 59,
+            "EnterClassicNotEnough": 60,
+            "NotWinning": 61,
+            "AlreadyWinning": 62,
+            "NotVip": 63,
+            "NotVipTimes": 64,
+            "AlreadyInRoom": 65,
+            "NotYourTurn": 66,
+            "ErrorOperateValue": 67,
+            "Failed": 68,
+            "RepeatLogin": 69,
+            "VipTooLow": 70,
+            "ChipNotEnough": 71,
+            "BetSeatWrong": 72,
+            "NotDealerRoom": 73,
+            "SmsCodeEmpty": 74,
+            "SmsCodeWrong": 75,
+            "SmsCodeExpired": 76,
+            "ResetPwdFaild": 77,
+            "PhoneNotRegist": 78,
+            "TouristInoperable": 79,
+            "SafetycodeEmpty": 80,
+            "SafetycodeNotExist": 81,
+            "DealerDownFail": 82,
+            "MatchFail": 83,
+            "EnterFail": 84,
+            "NotReady": 85,
+            "AlreadyFold": 86,
+            "AlreadyAllin": 87,
+            "CallError": 88,
+            "RaiseError": 89,
+            "AlreadyAward": 90,
+            "AwardFaild": 91,
+            "AlreadyPrize": 92,
+            "PwdError": 93,
+            "BankNotOpen": 94,
+            "BankAlreadyOpen": 95,
+            "AlreadySitDown": 96
+          }
+        },
+        "SitType": {
+          "values": {
+            "SitDown": 0,
+            "SitUp": 1
+          }
+        },
+        "CChatText": {
+          "fields": {
+            "content": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SChatText": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "content": {
+              "type": "string",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CChatVoice": {
+          "fields": {
+            "content": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SChatVoice": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "content": {
+              "type": "string",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "SBroadcast": {
+          "fields": {
+            "rtype": {
+              "type": "uint32",
+              "id": 1
+            },
+            "num": {
+              "type": "uint32",
+              "id": 2
+            },
+            "content": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "CNotice": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SNotice": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "Notice",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SPushNotice": {
+          "fields": {
+            "info": {
+              "type": "Notice",
+              "id": 1
+            }
+          }
+        },
+        "Notice": {
+          "fields": {
+            "rtype": {
+              "type": "int32",
+              "id": 1
+            },
+            "acttype": {
+              "type": "int32",
+              "id": 2
+            },
+            "content": {
+              "type": "string",
+              "id": 3
+            },
+            "time": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "CLogin": {
+          "fields": {
+            "phone": {
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SLogin": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CRegist": {
+          "fields": {
+            "nickname": {
+              "type": "string",
+              "id": 1
+            },
+            "phone": {
+              "type": "string",
+              "id": 2
+            },
+            "password": {
+              "type": "string",
+              "id": 3
+            },
+            "smscode": {
+              "type": "string",
+              "id": 4
+            },
+            "safetycode": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "SRegist": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CWxLogin": {
+          "fields": {
+            "wxcode": {
+              "type": "string",
+              "id": 1
+            },
+            "token": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SWxLogin": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "token": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SLoginOut": {
+          "fields": {
+            "rtype": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "CResetPwd": {
+          "fields": {
+            "phone": {
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "type": "string",
+              "id": 2
+            },
+            "smscode": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SResetPwd": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CTourist": {
+          "fields": {
+            "account": {
+              "type": "string",
+              "id": 1
+            },
+            "password": {
+              "type": "string",
+              "id": 2
+            },
+            "time": {
+              "type": "int64",
+              "id": 3
+            }
+          }
+        },
+        "STourist": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CPing": {
+          "fields": {
+            "time": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SPing": {
+          "fields": {
+            "time": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CUserData": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SUserData": {
+          "fields": {
+            "data": {
+              "type": "UserData",
+              "id": 1
+            },
+            "info": {
+              "type": "TopInfo",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "CGetCurrency": {
+          "fields": {}
+        },
+        "SGetCurrency": {
+          "fields": {
+            "data": {
+              "type": "Currency",
+              "id": 1
+            }
+          }
+        },
+        "SPushCurrency": {
+          "fields": {
+            "rtype": {
+              "type": "uint32",
+              "id": 1
+            },
+            "data": {
+              "type": "Currency",
+              "id": 2
+            }
+          }
+        },
+        "BankType": {
+          "values": {
+            "BankSelect": 0,
+            "BankDeposit": 1,
+            "BankDraw": 2,
+            "BankGift": 3,
+            "BankOpen": 4,
+            "BankResetPwd": 5
+          }
+        },
+        "CBank": {
+          "fields": {
+            "rtype": {
+              "type": "BankType",
+              "id": 1
+            },
+            "amount": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "phone": {
+              "type": "string",
+              "id": 4
+            },
+            "password": {
+              "type": "string",
+              "id": 5
+            },
+            "smscode": {
+              "type": "string",
+              "id": 6
+            }
+          }
+        },
+        "SBank": {
+          "fields": {
+            "rtype": {
+              "type": "BankType",
+              "id": 1
+            },
+            "amount": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "phone": {
+              "type": "string",
+              "id": 4
+            },
+            "balance": {
+              "type": "int64",
+              "id": 5
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 6
+            }
+          }
+        },
+        "CRank": {
+          "fields": {}
+        },
+        "SRank": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Rank",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CTask": {
+          "fields": {}
+        },
+        "STask": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Task",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CTaskPrize": {
+          "fields": {
+            "type": {
+              "type": "int32",
+              "id": 1
+            }
+          }
+        },
+        "STaskPrize": {
+          "fields": {
+            "type": {
+              "type": "int32",
+              "id": 1
+            },
+            "coin": {
+              "type": "int64",
+              "id": 2
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 3
+            },
+            "next": {
+              "type": "Task",
+              "id": 4
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 5
+            }
+          }
+        },
+        "LoginPrizeType": {
+          "values": {
+            "LoginPrizeSelect": 0,
+            "LoginPrizeDraw": 1
+          }
+        },
+        "CLoginPrize": {
+          "fields": {
+            "type": {
+              "type": "LoginPrizeType",
+              "id": 1
+            },
+            "day": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SLoginPrize": {
+          "fields": {
+            "type": {
+              "type": "LoginPrizeType",
+              "id": 1
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "LoginPrize",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "CRoomRecord": {
+          "fields": {
+            "gtype": {
+              "type": "int32",
+              "id": 1
+            },
+            "page": {
+              "type": "uint32",
+              "id": 2
+            }
+          }
+        },
+        "SRoomRecord": {
+          "fields": {
+            "gtype": {
+              "type": "int32",
+              "id": 1
+            },
+            "page": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "RoomRecord",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "UserData": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "phone": {
+              "type": "string",
+              "id": 3
+            },
+            "sex": {
+              "type": "uint32",
+              "id": 4
+            },
+            "photo": {
+              "type": "string",
+              "id": 5
+            },
+            "agent": {
+              "type": "string",
+              "id": 6
+            },
+            "coin": {
+              "type": "int64",
+              "id": 7
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 8
+            },
+            "card": {
+              "type": "int64",
+              "id": 9
+            },
+            "chip": {
+              "type": "int64",
+              "id": 10
+            },
+            "vip": {
+              "type": "uint32",
+              "id": 11
+            }
+          }
+        },
+        "Currency": {
+          "fields": {
+            "coin": {
+              "type": "int64",
+              "id": 1
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 2
+            },
+            "card": {
+              "type": "int64",
+              "id": 3
+            },
+            "chip": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "TopInfo": {
+          "fields": {
+            "topchips": {
+              "type": "int64",
+              "id": 1
+            },
+            "topwinchip": {
+              "type": "int64",
+              "id": 2
+            },
+            "registtime": {
+              "type": "string",
+              "id": 3
+            },
+            "logintime": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "Rank": {
+          "fields": {
+            "coin": {
+              "type": "int64",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "photo": {
+              "type": "string",
+              "id": 3
+            },
+            "userid": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "Task": {
+          "fields": {
+            "taskid": {
+              "type": "int32",
+              "id": 1
+            },
+            "type": {
+              "type": "int32",
+              "id": 2
+            },
+            "name": {
+              "type": "string",
+              "id": 3
+            },
+            "count": {
+              "type": "uint32",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 6
+            },
+            "num": {
+              "type": "uint32",
+              "id": 7
+            }
+          }
+        },
+        "LoginPrize": {
+          "fields": {
+            "day": {
+              "type": "uint32",
+              "id": 1
+            },
+            "coin": {
+              "type": "int64",
+              "id": 2
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 3
+            },
+            "status": {
+              "type": "LoginPrizeStatus",
+              "id": 4
+            }
+          },
+          "nested": {
+            "LoginPrizeStatus": {
+              "values": {
+                "LoginPrizeNone": 0,
+                "LoginPrizeDone": 1,
+                "LoginPrizeGot": 2
+              }
+            }
+          }
+        },
+        "RoomRecord": {
+          "fields": {
+            "info": {
+              "type": "RoomRecordInfo",
+              "id": 1
+            },
+            "roundlist": {
+              "rule": "repeated",
+              "type": "RoundRecord",
+              "id": 2
+            },
+            "rolelist": {
+              "rule": "repeated",
+              "type": "RoleRecord",
+              "id": 3
+            }
+          }
+        },
+        "RoomRecordInfo": {
+          "fields": {
+            "Roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "Gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "Rtype": {
+              "type": "int32",
+              "id": 3
+            },
+            "Dtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "Rname": {
+              "type": "string",
+              "id": 5
+            },
+            "Count": {
+              "type": "uint32",
+              "id": 6
+            },
+            "Ante": {
+              "type": "uint32",
+              "id": 7
+            },
+            "Code": {
+              "type": "string",
+              "id": 8
+            },
+            "Round": {
+              "type": "uint32",
+              "id": 9
+            },
+            "Cid": {
+              "type": "string",
+              "id": 10
+            },
+            "Ctime": {
+              "type": "uint32",
+              "id": 11
+            }
+          }
+        },
+        "RoundRecord": {
+          "fields": {
+            "Roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "Round": {
+              "type": "uint32",
+              "id": 2
+            },
+            "Dealer": {
+              "type": "string",
+              "id": 3
+            },
+            "Roles": {
+              "rule": "repeated",
+              "type": "RoundRoleRecord",
+              "id": 4
+            },
+            "Ctime": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "RoundRoleRecord": {
+          "fields": {
+            "Userid": {
+              "type": "string",
+              "id": 1
+            },
+            "Cards": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "Value": {
+              "type": "uint32",
+              "id": 3
+            },
+            "Score": {
+              "type": "int64",
+              "id": 4
+            },
+            "Rest": {
+              "type": "int64",
+              "id": 5
+            },
+            "Bets": {
+              "type": "int64",
+              "id": 6
+            }
+          }
+        },
+        "RoleRecord": {
+          "fields": {
+            "Roomid": {
+              "type": "string",
+              "id": 1
+            },
+            "Gtype": {
+              "type": "int32",
+              "id": 2
+            },
+            "Userid": {
+              "type": "string",
+              "id": 3
+            },
+            "Nickname": {
+              "type": "string",
+              "id": 4
+            },
+            "Photo": {
+              "type": "string",
+              "id": 5
+            },
+            "Score": {
+              "type": "int64",
+              "id": 6
+            },
+            "Rest": {
+              "type": "int64",
+              "id": 7
+            },
+            "Joins": {
+              "type": "uint32",
+              "id": 8
+            }
+          }
+        }
+      }
+    }
+  }
+}

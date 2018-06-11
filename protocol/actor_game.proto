@@ -1,0 +1,27 @@
+syntax = "proto3";
+package pb;
+import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+
+//查询和同步游戏节点
+
+//获取节点
+message GetGames {
+    string Name = 1; //游戏节点名称
+    uint32 Type = 2; //游戏类型
+}
+
+message GotGames {
+    string Name = 1; //游戏节点名称
+    actor.PID GamePid = 2; //游戏节点
+}
+
+//同步节点
+message SyncGames {
+    enum SyncGamesType {
+        TYPE_UPSERT = 0; //插入或更新
+        TYPE_DELETE = 1; //删除
+    }
+    SyncGamesType Type = 1; //操作类型
+    string Name = 2; //游戏节点名称
+    actor.PID GamePid = 3; //游戏节点
+}

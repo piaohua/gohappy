@@ -1,0 +1,146 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "game_pub.proto";
+
+// 心跳
+message CPing
+{
+    uint32 time = 1;//时间截
+}
+
+message SPing
+{
+    uint32 time = 1;//时间截
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 获取玩家的数据
+message CUserData
+{
+    string userid = 1;//用户id
+}
+
+message SUserData
+{
+    UserData data = 1;
+    TopInfo info = 2;
+    //TODO 是否在房间内,多个房间内下注
+    ErrCode error = 3;//错误码
+}
+
+// 获取虚拟货币
+message CGetCurrency
+{
+}
+
+message SGetCurrency
+{
+    Currency data  = 1;//货币数据
+}
+
+// 推送变更
+message SPushCurrency
+{
+    uint32 rtype    = 1;//类型
+    Currency data   = 2;//变更货币数据
+}
+
+enum BankType {
+    BankSelect = 0;//查询
+    BankDeposit = 1;//存款
+    BankDraw = 2;//取款
+    BankGift = 3;//赠送
+    BankOpen = 4;//开通
+    BankResetPwd = 5;//重置密码
+}
+
+// bank
+message CBank
+{
+    BankType rtype = 1;//
+    uint32 amount = 2;//操作金额
+    string userid = 3;//用户id
+    string phone = 4;//手机号
+    string password = 5;//密码(md5)
+    string smscode = 6;//验证码
+}
+
+message SBank
+{
+    BankType rtype = 1;//
+    uint32 amount  = 2;//操作金额
+    string userid  = 3;//用户id
+    string phone   = 4;//手机号
+    int64  balance = 5;//账户余额
+    ErrCode error = 6;//错误码
+}
+
+// rank
+message CRank
+{
+}
+
+message SRank
+{
+    repeated Rank list = 1;//
+    ErrCode error = 2;//错误码
+}
+
+// task
+message CTask
+{
+}
+
+message STask
+{
+    repeated Task list = 1;//
+    ErrCode error = 2;//错误码
+}
+
+message CTaskPrize
+{
+    int32  type  = 1;//unique
+}
+
+message STaskPrize
+{
+    int32  type    = 1;//unique
+    int64  coin    = 2;//金币奖励
+    int64  diamond = 3;//钻石奖励
+    Task   next = 4;//新任务
+    ErrCode error = 5;//错误码
+}
+
+enum LoginPrizeType {
+    LoginPrizeSelect = 0;//查询
+    LoginPrizeDraw = 1;//领取
+}
+
+message CLoginPrize
+{
+    LoginPrizeType type  = 1;//
+    uint32  day  = 2;//0-6
+}
+
+message SLoginPrize
+{
+    LoginPrizeType type  = 1;//
+    repeated LoginPrize list = 2;//
+    ErrCode error = 3;//错误码
+}
+
+// 个人私人场牌局记录,默认最近30场
+message CRoomRecord
+{
+    int32 gtype = 1;//game type
+    uint32 page = 2;//页数,每页30,默认发1最近30场
+}
+
+message SRoomRecord
+{
+    int32 gtype = 1;//game type
+    uint32 page = 2; //页数,每页30,默认发1最近30场
+    repeated RoomRecord list = 3; //
+    ErrCode error = 4;//错误码
+}

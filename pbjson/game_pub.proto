@@ -1,0 +1,127 @@
+syntax = "proto3";
+package pb;
+
+// 玩家的详细数据
+message UserData
+{
+    string userid   = 1;//用户账号
+    string nickname = 2;//昵称
+    string phone    = 3;//电话号码
+    uint32 sex      = 4;//用户性别,男1 女0
+    string photo    = 5;//头像
+    string agent    = 6;//绑定的代理ID
+    int64  coin     = 7;//金币
+    int64  diamond  = 8;//钻石
+    int64  card     = 9;//房卡
+    int64  chip     =10;//筹码
+    uint32 vip      =11;//vip
+}
+
+//货币数据
+message Currency
+{
+    int64 coin     = 1;//金币
+    int64 diamond  = 2;//钻石
+    int64 card     = 3;//房卡
+    int64 chip     = 4;//筹码
+}
+
+// 玩家个人数据
+message TopInfo
+{
+    int64  topchips      = 1;//最高拥有筹码总金额
+    int64  topwinchip    = 2;//单局赢最高筹码金额
+    string registtime    = 3;//加入游戏时间
+    string logintime     = 4;//最后登录时间
+}
+
+// rank
+message Rank
+{
+    int64  coin     = 1;//金额
+    string nickname = 2;//昵称
+    string photo    = 3;//头像
+    string userid   = 4;//用户
+}
+
+// task
+message Task
+{
+    int32  taskid  = 1;//unique
+    int32  type    = 2;//类型
+    string name    = 3;//名称描述
+    uint32 count   = 4;//任务数值
+    int64  coin    = 5;//金币奖励
+    int64  diamond = 6;//钻石奖励
+    uint32 num     = 7;//完成数值
+}
+
+message LoginPrize
+{
+    enum LoginPrizeStatus {
+        LoginPrizeNone = 0;//未完成
+        LoginPrizeDone = 1;//可以领取
+        LoginPrizeGot = 2;//已经领取
+    }
+    uint32 day     = 1;//
+    int64  coin    = 2;//金币奖励
+    int64  diamond = 3;//钻石奖励
+    LoginPrizeStatus status = 4;//状态
+}
+
+//获取玩家的私人房间记录
+message RoomRecord
+{
+    RoomRecordInfo info = 1;//房间信息
+    repeated RoundRecord roundlist = 2;  //房间每局结算详情
+    repeated RoleRecord rolelist = 3;  //房间成员数据
+}
+
+//房间信息
+message RoomRecordInfo {
+    string Roomid=1;
+    int32  Gtype =2;
+    int32  Rtype =3;
+    int32  Dtype =4;
+    string Rname =5;
+    uint32 Count =6;
+    uint32 Ante  =7;
+    string Code  =8;
+    uint32 Round =9;
+    string Cid   =10;
+    uint32 Ctime =11;
+}
+
+// 房间每局结算详情
+message RoundRecord
+{
+    string Roomid   =1;
+    uint32 Round    =2; //第几轮
+    string Dealer   =3; //庄家
+    repeated RoundRoleRecord Roles =4; //
+    string Ctime    =5;
+}
+
+// 房间每局结算详情
+message RoundRoleRecord
+{
+    string Userid   =1; //玩家ID
+    repeated uint32 Cards    =2; //玩家手牌
+    uint32 Value    =3; //牌力
+    int64  Score    =4; //输赢数量
+    int64  Rest     =5; //剩余数量
+    int64  Bets     =6; //下注倍数
+}
+
+// 房间成员数据
+message RoleRecord
+{
+    string Roomid   =1;
+    int32  Gtype    =2;
+    string Userid   =3; //玩家ID
+    string Nickname =4; //
+    string Photo    =5; //
+    int64  Score    =6; //输赢总数量
+    int64  Rest     =7; //剩余数量
+    uint32 Joins    =8; //参与牌局数
+}

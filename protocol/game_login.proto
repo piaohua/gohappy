@@ -1,0 +1,80 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+
+// 登陆
+message CLogin
+{
+    string phone    = 1; //手机
+    string password = 2; //密码 (MD5)
+}
+
+message SLogin
+{
+    string userid   = 1 ;//用户id
+    ErrCode error    = 2 ;//错误码
+}
+
+// 注册
+message CRegist
+{
+    string nickname = 1;//昵称
+    string phone    = 2;//手机号
+    string password = 3;//密码(md5)
+    string smscode  = 4;//验证码
+    string safetycode = 5;//安全码
+}
+
+message SRegist
+{
+    string userid = 1 ;//用户id
+    ErrCode error  = 2 ;//错误码
+}
+
+// 微信登录登陆
+message CWxLogin
+{
+    string wxcode  = 1; //微信code
+    string token   = 2; //token登录
+}
+
+message SWxLogin
+{
+    string userid  = 1 ;// 用户id
+    string token   = 2 ;// 返回access_token
+    ErrCode error   = 3 ;// 错误码
+}
+
+// 登出
+message SLoginOut
+{
+    int32 rtype = 1 ;//1别处登录,2停服
+}
+
+// 重置密码
+message CResetPwd
+{
+    string phone    = 1;//手机号
+    string password = 2;//密码(md5)
+    string smscode  = 3;//验证码
+}
+
+message SResetPwd
+{
+    string userid = 1 ;//用户id
+    ErrCode error  = 2 ;//错误码
+}
+
+// 游客
+message CTourist
+{
+    string account  = 1; //账号
+    string password = 2; //密码 (MD5)
+    int64 time     = 3; //时间截
+}
+
+message STourist
+{
+    string userid   = 1 ;//用户id
+    ErrCode error    = 2 ;//错误码
+}

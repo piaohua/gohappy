@@ -1,0 +1,59 @@
+syntax = "proto3";
+package pb;
+import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+import "game_code.proto";
+
+//登录节点
+message LoginGate {
+    actor.PID Sender = 1;
+    string Userid = 2;
+}
+
+message LoginedGate {
+    string Message = 1;
+}
+
+//登录节点
+message Login2Gate {
+    actor.PID WsPid = 1;
+    string Userid = 2;
+    bytes Data = 3;
+}
+
+message Logined2Gate {
+    actor.PID Role = 1;
+    ErrCode error = 2 ;// 错误码
+}
+
+//查询节点
+message SelectGate {
+    actor.PID WsPid = 1;
+    string Userid = 2;
+}
+
+message SelectedGate {
+    actor.PID Role = 1;
+    ErrCode error = 2 ;// 错误码
+}
+
+//登录成功消息
+message LoginSuccess {
+    actor.PID WsPid = 1;
+    bool IsRegist = 2;
+    string Ip = 3;
+    string Userid = 4;
+}
+
+//登出节点
+message LogoutGate {
+    actor.PID Sender = 1;
+    string Userid = 2;
+}
+
+message LogoutedGate {
+    string Message = 1;
+}
+
+//停止并关闭服务
+message OfflineStop {
+}

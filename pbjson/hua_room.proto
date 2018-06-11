@@ -1,0 +1,178 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "hua_pub.proto";
+
+//房间列表
+message CJHRoomList
+{
+    int32 rtype  = 1;  //房间类型
+}
+
+message SJHRoomList
+{
+    repeated JHRoomData list = 1;  //列表
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 私人场
+
+// 进入房间
+message CJHEnterRoom
+{
+    string code  = 1; //房间邀请码
+}
+
+message SJHEnterRoom
+{
+    JHRoomData roominfo = 1;//房间的详细资料
+    repeated JHRoomUser userinfo = 2;//已在房间的玩家基础信息
+    JHRoomVote voteinfo = 3;//发起投票的信息
+    repeated JHRoomBets betsinfo = 4;//下注倍数
+    ErrCode error= 5;//错误码 ,0:正常
+}
+
+// 创建房间
+message CJHCreateRoom
+{
+    string rname   = 1;  //房间名字
+    int32  dtype   = 2;  //房间类型
+    uint32 ante    = 3;  //底分
+    uint32 round   = 4;  //牌局数
+    uint32 payment = 5;  //付费方式0=房主付费,1=AA付费 
+    uint32 count   = 6;  //人数限制
+}
+
+// 返回房间数据
+message SJHCreateRoom
+{
+    JHRoomData data = 1; //房间数据
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 其他玩家进入房间
+message SJHCamein
+{
+    JHRoomUser userinfo= 1;// 玩家的信息
+}
+
+// 离开房间
+message CJHLeave
+{
+}
+
+message SJHLeave
+{
+    uint32 seat   = 1; //玩家选择的座位号
+    string userid = 2; //玩家id
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+// 离线状态更新
+message SJHPushOffline
+{
+    uint32 seat   = 1; //玩家选择的座位号
+    string userid = 2; //玩家id
+    bool   offline = 3;//是否离线
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+//准备游戏(准备完成开始游戏时状态切为发牌)
+message CJHReady
+{
+    bool ready = 1; //true准备,false取消
+}
+
+message SJHReady
+{
+    uint32 seat = 1; //准备游戏的玩家座位
+    bool   ready= 2; //true准备,false取消
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+//发牌(全部准备后或达到开始条件,发完状态切为抢庄)
+message SJHDraw
+{
+    uint32 seat  = 1;  //位置
+    int32 state = 2;  //房间状态,1抢庄中(发4张),2下注中(发第5张)
+    repeated uint32 cards = 3;  //手牌4张,手牌1张
+}
+
+////开始抢庄(发完第一轮牌后,抢完切为下注)
+//message CJHDealer
+//{
+//    bool   dealer= 1;  //true抢庄,false不抢
+//    uint32 num   = 2;  //抢庄倍数
+//}
+//
+//message SJHDealer
+//{
+//    uint32 seat  = 1;  //位置
+//    bool   dealer= 2;  //true抢庄,false不抢
+//    uint32 num   = 3;  //抢庄倍数
+//    ErrCode error= 4;//错误码 ,0:正常
+//}
+
+//完成抢庄,推送庄家位置
+message SJHPushDealer
+{
+    uint32 dealerSeat = 1;  //庄家位置
+}
+
+//推送状态
+message SJHPushState
+{
+    int32 state = 1;  //状态
+}
+
+////玩家下注(抢庄完成后),下注完成后再步骤2发牌
+//message CJHBet
+//{
+//    uint32 seatbet = 1;  //下注位置
+//    uint32 value= 2;  //提交相应的值
+//}
+//
+//message SJHBet
+//{
+//    uint32 seat  = 1;  //玩家的座位号
+//    uint32 seatbet = 2;  //下注位置
+//    uint32 value = 3;  //值
+//    ErrCode error= 4;//错误码 ,0:正常
+//}
+
+////玩家组合牌提交
+//message CJHiu
+//{
+//    uint32 value= 1; //提交相应的值,0为无
+//    repeated uint32 cards= 2; //手牌5张,前3张为牛,后2张为点
+//}
+//
+////广播提交结果
+//message SJHiu
+//{
+//    uint32 seat  = 1;  //玩家的座位号
+//    uint32 value = 2;  //提交相应的值,0为无
+//    repeated uint32 cards = 3;  //手牌5张,前3张为牛,后2张为点
+//    ErrCode error= 4;//错误码 ,0:正常
+//}
+
+// 结算广播接口，游戏结束
+message SJHGameover
+{
+    string   dealer  = 1;//庄家
+    uint32   dealerSeat = 2; //庄家seat
+    uint32   round    = 3; //第几轮
+    uint32   leftRound   = 4;//剩余牌局数
+    repeated JHRoomOver data    = 5;//结算
+    //repeated JHOverList  list   = 4;//总结算
+}
+
+// 当前房间内的牌局记录
+message CJHGameRecord
+{
+}
+
+message SJHGameRecord
+{
+    repeated JHRecordList list = 1; //
+}

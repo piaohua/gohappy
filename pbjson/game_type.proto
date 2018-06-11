@@ -1,0 +1,199 @@
+syntax = "proto3";
+package pb;
+
+//协议文件名称格式:
+//{gametype}_xxx.proto
+enum GameType {
+    GAME = 0; //大厅 C,S
+    NIU  = 1; //牛牛 CNN,SNN
+    SAN  = 2; //三公 CSG,SSG
+    DOU  = 3; //斗地主 CDZ, SDZ
+    HUA  = 4; //金花 CJH, SJH
+    PAI  = 5; // CBP, SBP
+}
+
+//桌子状态
+enum DeskState {
+    STATE_READY  = 0; //准备状态
+    STATE_DEALER = 1; //抢庄状态
+    STATE_NIU    = 2; //选牛状态
+    STATE_BET    = 3; //下注状态
+    STATE_OVER   = 4; //结算状态
+}
+
+//房间类型
+enum RoomType {
+    ROOM_TYPE0 = 0; //自由
+    ROOM_TYPE1 = 1; //私人
+    ROOM_TYPE2 = 2; //百人
+}
+
+//桌子类型
+enum DeskType {
+    DESK_TYPE0 = 0; //看牌抢庄
+    DESK_TYPE1 = 1; //通比牛牛
+    DESK_TYPE2 = 2; //抢庄看牌
+}
+
+//房间等级
+enum RoomLevel {
+    ROOM_LEVEL0 = 0; //新手场
+    ROOM_LEVEL1 = 1; //初级场
+    ROOM_LEVEL2 = 2; //中级场
+    ROOM_LEVEL3 = 3; //高级场
+    ROOM_LEVEL4 = 4; //大师场
+}
+
+//桌子位置
+enum DeskSeat {
+    DESK_SEAT0 = 0; //无
+    DESK_SEAT1 = 1; //庄
+    DESK_SEAT2 = 2; //天 胜
+    DESK_SEAT3 = 3; //地 胜
+    DESK_SEAT4 = 4; //玄 胜
+    DESK_SEAT5 = 5; //黄 胜
+    DESK_SEAT6 = 6; //天 负
+    DESK_SEAT7 = 7; //地 负
+    DESK_SEAT8 = 8; //玄 负
+    DESK_SEAT9 = 9; //黄 负
+}
+
+//庄家操作类型
+enum DealerType {
+    //房间0下庄 1上庄 2补庄
+    DEALER_DOWN = 0; //下
+    DEALER_UP   = 1; //上
+    DEALER_BU   = 2; //补
+}
+
+//商城物品类型
+enum CurrencyType {
+    CHEAP   = 0; //无
+    DIAMOND = 1; //钻石
+    COIN    = 2; //金币
+    CARD    = 3; //房卡
+    CHIP    = 4; //筹码
+    VIP     = 5; //VIP
+}
+
+//商城支付方式类型
+enum PaymentType {
+    PAY_COIN    = 0; //无
+    PAY_RMB     = 1; //人民币
+    PAY_DIAMOND = 2; //钻石
+}
+
+//支付交易结果类型
+enum TradeType {
+    TradeSuccess = 0; //交易成功
+    TradeFail    = 1; //交易失败
+    Tradeing     = 2; //交易中(下单状态)
+    TradeGoods   = 3; //发货失败
+}
+
+//消息类型
+enum NoticeType {
+    NOTICE_TYPE0 = 0; //购买消息
+    NOTICE_TYPE1 = 1; //公告消息
+    NOTICE_TYPE2 = 2; //广播消息
+}
+
+//消息操作类型
+enum NoticeActType {
+    NOTICE_ACT_TYPE0 = 0; //无操作消息
+    NOTICE_ACT_TYPE1 = 1; //支付消息
+    NOTICE_ACT_TYPE2 = 2; //活动消息
+}
+
+//游戏变量
+enum GameEnv {
+    Regist_diamond  = 0; //注册赠送钻石
+    Regist_coin     = 1; //注册赠送金币
+    Regist_chip     = 2; //注册赠送筹码
+    Regist_card     = 3; //注册赠送房卡
+    Build           = 4; //绑定赠送
+    First_pay_multi = 5; //首充送n倍
+    First_pay_coin  = 6; //首充送金币
+    Relieve         = 7; //救济金次数
+    Prizedraw       = 8; //转盘抽奖次数
+    Bankrupt_coin   = 9; //破产金额
+    Relieve_coin    =10; //救济金额
+    Robot_num       =11; //虚假人数
+    Robot_allot1    =12; //机器人分配规则1
+    Robot_allot2    =13; //机器人分配规则2
+    Robot_bet       =14; //机器人下注AI
+}
+
+//登出类型
+enum LogoutType {
+    LOGOUT_TYPE0 = 0; //无
+    LOGOUT_TYPE1 = 1; //正常断开
+    LOGOUT_TYPE2 = 2; //停服
+    LOGOUT_TYPE3 = 3; //被动断开
+    LOGOUT_TYPE4 = 4; //别处登录
+}
+
+//日志操作类型
+enum LogType {
+    LOG_TYPE0  =  0;//无
+    LOG_TYPE1  =  1;//注册赠送
+    LOG_TYPE2  =  2;//开房消耗
+    LOG_TYPE3  =  3;//房间解散返还
+    LOG_TYPE4  =  4;//充值购买
+    LOG_TYPE5  =  5;//下注
+    LOG_TYPE6  =  6;//百人场输赢
+    LOG_TYPE7  =  7;//上庄
+    LOG_TYPE8  =  8;//下庄
+    LOG_TYPE9  =  9;//后台操作
+    LOG_TYPE10 = 10;//玩家赠送
+    LOG_TYPE11 = 11;//破产补助
+    LOG_TYPE12 = 12;//存款
+    LOG_TYPE13 = 13;//取款
+    LOG_TYPE14 = 14;//取款抽成
+    LOG_TYPE15 = 15;//银行赠送
+    LOG_TYPE18 = 18;//商城购买
+    LOG_TYPE24 = 24;//通比牛牛
+    LOG_TYPE25 = 25;//看牌抢庄
+    LOG_TYPE26 = 26;//牛牛抢庄
+    LOG_TYPE44 = 44;//机器人破产补助
+    LOG_TYPE45 = 45;//结算
+    LOG_TYPE46 = 46;//任务奖励
+    LOG_TYPE47 = 47;//连续登录奖励
+}
+
+// 放看比加跟掩码
+enum ActType {
+    ACT_NUL   = 0; //无
+    ACT_FOLD  = 1; //1 << 0 放弃
+    ACT_SEE   = 2; //1 << 1 看牌
+    ACT_BI    = 4; //1 << 2 比牌
+    ACT_RAISE = 8; //1 << 3 加注
+    ACT_CALL  =16; //1 << 4 跟注
+}
+
+//任务类型
+enum TaskType {
+    TASK_TYPE0  = 0;//完成新手指引
+    TASK_TYPE1  = 1;//连续登录
+
+    TASK_TYPE2  = 2;//百人牛牛赢场次
+    TASK_TYPE3  = 3;//百人牛牛单局赢100000
+    TASK_TYPE4  = 4;//百人牛牛单局赢200000
+    TASK_TYPE5  = 5;//百人牛牛10次单局赢100000
+    TASK_TYPE6  = 6;//百人牛牛20次单局赢200000
+    TASK_TYPE7  = 7;//牛牛金币场赢场次
+    TASK_TYPE8  = 8;//百人牛牛押中牛牛
+    TASK_TYPE9  = 9;//百人牛牛押中五花
+    TASK_TYPE10 =10;//百人牛牛押中炸弹
+    TASK_TYPE11 =11;//百人牛牛押中五小
+
+    TASK_TYPE12 =12;//百人三公赢场次
+    TASK_TYPE13 =13;//百人三公单局赢100000
+    TASK_TYPE14 =14;//百人三公单局赢200000
+    TASK_TYPE15 =15;//百人三公10次单局赢100000
+    TASK_TYPE16 =16;//百人三公20次单局赢200000
+    TASK_TYPE17 =17;//三公金币场赢场次
+    TASK_TYPE18 =18;//百人三公押中混三公
+    TASK_TYPE19 =19;//百人三公押中小三公
+    TASK_TYPE20 =20;//百人三公押中大三公
+}

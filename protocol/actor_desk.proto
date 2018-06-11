@@ -1,0 +1,185 @@
+syntax = "proto3";
+package pb;
+import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+import "game_code.proto";
+
+//桌子操作
+
+//匹配桌子
+message MatchDesk {
+    string Name = 1;//节点名称
+    string Roomid = 2;//房间id
+    string Code = 3;//房间邀请码
+    int32 Rtype = 4;//房间类型
+    int32 Gtype = 5;//游戏类型
+    int32 Dtype = 6;//桌子类型
+    int32 Ltype = 7;//等级类型
+    actor.PID Sender = 8; //玩家进程
+}
+
+message MatchedDesk {
+    actor.PID Desk = 1;//桌子进程
+    int32 Rtype = 2;//房间类型
+    int32 Gtype = 3;//游戏类型
+    int32 Dtype = 4;//桌子类型
+    int32 Ltype = 5;//等级类型
+    ErrCode error = 6 ;// 错误码
+}
+
+////创建桌子
+//message CreateDesk {
+//    bytes Data = 1;//桌子数据
+//}
+//
+//message CreatedDesk {
+//    bytes Data = 1;//桌子数据
+//    ErrCode error = 2 ;// 错误码
+//}
+//
+////创建桌子进程
+//message SpawnDesk {
+//    bytes Data = 1;
+//}
+//
+//message SpawnedDesk {
+//    actor.PID Desk = 1;
+//}
+
+//生成桌子
+message GenDesk {
+    int32 Rtype = 1;//房间类型
+    int32 Gtype = 2;//游戏类型
+}
+
+message GenedDesk {
+    string Roomid = 1;//桌子id
+    string Code = 2;//邀请码
+    ErrCode error = 3 ;// 错误码
+}
+
+//创建桌子进程
+message AddDesk {
+    actor.PID Desk = 1;
+    string Roomid = 2;//房间id
+    int32 Rtype = 3;//房间类型
+    int32 Gtype = 4;//游戏类型
+    string Unique = 5;//房间唯一id
+}
+
+message AddedDesk {
+    string Roomid = 1;//桌子id
+    string Code = 2;//邀请码
+    ErrCode error = 3 ;// 错误码
+}
+
+//关闭桌子进程
+message CloseDesk {
+    string Roomid = 1;
+    int32 Rtype = 2;
+    int32 Gtype = 3;
+    string Code = 4;
+    string Unique = 5;
+}
+
+message ClosedDesk {
+    ErrCode error = 1 ;// 错误码
+}
+
+//进入房间
+message EnterDesk {
+    actor.PID Sender = 1; //玩家进程
+    bytes Data = 2;//玩家数据
+    int32 Rtype = 3;//房间类型
+    int32 Gtype = 4;//游戏类型
+    int32 Dtype = 5;//桌子类型
+    int32 Ltype = 6;//等级类型
+}
+
+message EnteredDesk {
+    string Roomid = 1;
+    int32 Rtype = 2;
+    int32 Gtype = 3;
+    string Userid = 4;
+    actor.PID Desk = 5; //桌子进程
+    ErrCode error = 6 ;// 错误码
+}
+
+//加入桌子
+message JoinDesk {
+    actor.PID Sender = 1; //玩家进程
+    string Roomid = 2;
+    int32 Rtype = 3;
+    int32 Gtype = 4;
+    string Userid = 5;
+}
+
+message JoinedDesk {
+    ErrCode error = 1 ;// 错误码
+}
+
+//离开房间
+message LeaveDesk {
+    string Roomid = 1;
+    string Userid = 2;
+    uint32 Type = 3;
+}
+
+message LeftDesk {
+    ErrCode error = 1 ;// 错误码
+}
+
+//离线
+message OfflineDesk {
+    string Userid = 1;
+}
+
+//打印桌子信息
+message PrintDesk {
+}
+
+//记录
+message SetRecord {
+	//1胜利 //-1输了 //0荒庄
+    int32 Rtype = 1;
+}
+
+//创建房间
+message CreateDesk
+{
+    string rname   = 1;  //房间名字
+    int32  dtype   = 2;  //房间类型
+    uint32 ante    = 3;  //底分
+    uint32 round   = 4;  //牌局数
+    uint32 payment = 5;  //付费方式0=房主付费,1=AA付费 
+    uint32 count   = 6;  //人数限制
+    uint32 Cost   = 7;  //消耗
+    string Cid = 8;//创建者
+    int32 Gtype = 9;//游戏类型
+    int32 Rtype = 10;//游戏类型
+    string Name = 11;//节点名称
+    actor.PID Sender = 12; //玩家进程
+}
+
+message CreatedDesk {
+    actor.PID Desk = 1;//桌子进程
+    int32 Rtype = 2;//房间类型
+    int32 Gtype = 3;//游戏类型
+    ErrCode error = 4 ;// 错误码
+}
+
+//房间列表
+message GetRoomList
+{
+    int32 Rtype = 1;//房间类型
+    int32 Gtype = 2;//游戏类型
+    string Userid = 3;  //玩家id
+    string Name = 4;//节点名称
+    actor.PID Sender = 5; //玩家进程
+}
+
+message GotRoomList
+{
+    int32 Rtype = 1;//房间类型
+    int32 Gtype = 2;//游戏类型
+    ErrCode error = 3 ;// 错误码
+}

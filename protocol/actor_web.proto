@@ -1,0 +1,74 @@
+syntax = "proto3";
+package pb;
+
+enum ConfigType {
+    CONFIG_OK      = 0; //正常
+    CONFIG_GAMES   = 1; //游戏
+    CONFIG_ENV     = 2; //变量
+    CONFIG_NOTICE  = 3; //公告
+    CONFIG_SHOP    = 4; //商城
+    CONFIG_VIP     = 5; //VIP
+    CONFIG_TASK    = 6; //task
+    CONFIG_LOGIN   = 7; //登录奖励
+}
+
+enum ConfigAtype {
+    CONFIG_UPSERT  = 0; //插入或更新
+    CONFIG_DELETE  = 1; //删除
+}
+
+// 同步数据
+message SyncConfig
+{
+    ConfigType Type = 1 ;//类型
+    ConfigAtype Atype = 2 ;//操作类型
+    bytes Data = 3 ;//数据
+}
+
+// TODO 主动获取数据
+message GetConfig
+{
+    ConfigType Type = 1 ;//类型
+}
+
+enum WebCode {
+    WebReqMsg   = 0; //正常
+    WebOnline   = 1; //在线状态
+    WebNotice   = 2; //公告
+    WebBuild    = 3; //绑定
+    WebGive     = 4; //赠送钻石
+    WebShop     = 5; //商贸城
+    WebEnv      = 6; //设置变量
+    WebGame     = 7; //游戏列表
+    WebVip      = 8; //VIP
+    WebNumber   = 9; //在线人数
+    WebTask     =10; //任务列表
+    WebLogin    =11; //登录奖励列表
+}
+
+//web请求
+message WebRequest
+{
+    WebCode Code = 1; //协议号
+    ConfigAtype Atype = 2 ;//操作类型
+    bytes Data = 3; //数据
+}
+
+message WebResponse
+{
+    WebCode Code = 1; //协议号
+    int32 ErrCode = 2; //错误码
+    string ErrMsg = 3; //错误信息
+    bytes Result = 4; //正常时返回信息
+}
+
+//web请求
+message GetNumber
+{
+}
+
+message GotNumber
+{
+    repeated string Robot = 1;//机器人
+    repeated string Role = 2;//玩家
+}
