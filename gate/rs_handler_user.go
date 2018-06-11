@@ -409,12 +409,14 @@ func (rs *RoleActor) task() {
 //任务奖励领取
 func (rs *RoleActor) taskPrize(taskType int32) {
 	rs.taskInit()
+	glog.Debugf("task prize type %d, task %#v", taskType, rs.User.Task)
 	msg := new(pb.STaskPrize)
 	if val, ok := rs.User.Task[taskType]; ok {
 		task := config.GetTask(val.Taskid)
 		if val.Num < task.Count || task.Taskid != val.Taskid {
 			msg.Error = pb.AwardFaild
 			rs.Send(msg)
+			glog.Errorf("task prize err %d, val %#v", taskType, val)
 			return
 		}
 		//奖励发放
@@ -436,6 +438,7 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 		rs.loggerPid.Tell(record)
 	} else {
 		msg.Error = pb.AwardFaild
+		glog.Errorf("task prize err type %d", taskType)
 	}
 	rs.Send(msg)
 }
@@ -526,6 +529,8 @@ func (rs *RoleActor) loginPrizeInit() {
 	//连续登录
 	glog.Debugf("userid %s, LoginTime %s", rs.User.GetUserid(),
 		utils.Time2Str(rs.User.LoginTime))
+	glog.Debugf("userid %s, LoginTimes %d, LoginPrize %d",
+		rs.User.GetUserid(), rs.User.LoginTimes, rs.User.LoginPrize)
 	//rs.User.LoginTime = utils.Stamp2Time(utils.TimestampToday() - 10)
 	handler.SetLoginPrize(rs.User)
 	glog.Debugf("userid %s, LoginTime %s", rs.User.GetUserid(),
