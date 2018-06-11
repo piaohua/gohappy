@@ -484,11 +484,11 @@ func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 		if val.Prize {
 			return
 		}
-		//TODO 数值超出不再更新
-		//task := config.GetTask(val.Taskid)
-		//if val.Num >= task.Count {
-		//	return
-		//}
+		//数值超出不再更新
+		task := config.GetTask(val.Taskid)
+		if val.Num >= task.Count {
+			return
+		}
 		val.Num += arg.Num
 		val.Utime = time.Now()
 		rs.User.Task[int32(arg.Type)] = val
