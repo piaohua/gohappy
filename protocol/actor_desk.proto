@@ -158,6 +158,7 @@ message CreateDesk
     int32 Rtype = 10;//游戏类型
     string Name = 11;//节点名称
     actor.PID Sender = 12; //玩家进程
+    bool Pub = 13; //公开展示
 }
 
 message CreatedDesk {

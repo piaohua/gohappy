@@ -41,6 +41,7 @@ message CJHCreateRoom
     uint32 round   = 4;  //牌局数
     uint32 payment = 5;  //付费方式0=房主付费,1=AA付费 
     uint32 count   = 6;  //人数限制
+    bool   pub     = 7;  //公开展示
 }
 
 // 返回房间数据

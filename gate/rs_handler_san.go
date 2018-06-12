@@ -286,6 +286,7 @@ func (rs *RoleActor) createSGRoom(arg *pb.CSGCreateRoom, ctx actor.Context) {
 		Round:   arg.Round,
 		Payment: arg.Payment,
 		Count:   arg.Count,
+		Pub:     arg.Pub,
 		//TODO 消耗
 		Cost: 100,
 	}

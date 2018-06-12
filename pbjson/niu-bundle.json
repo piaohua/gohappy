@@ -82,6 +82,10 @@
             "count": {
               "type": "uint32",
               "id": 6
+            },
+            "pub": {
+              "type": "bool",
+              "id": 7
             }
           }
         },

@@ -64,6 +64,7 @@ func NewDeskData(d *data.Game) *data.DeskData {
 		Sit:     d.Sit,
 		Minimum: d.Minimum,
 		Maximum: d.Maximum,
+		Pub:     d.Pub,
 	}
 }
 
@@ -83,6 +84,7 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 		Sit:    20000,
 		Node:   node,
 		Ctime:  bson.Now(),
+		Pub:    true,
 	}
 }
 
@@ -102,6 +104,7 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 		Sit:    20000,
 		Node:   node,
 		Ctime:  bson.Now(),
+		Pub:    true,
 	}
 	switch ltype {
 	case int32(pb.ROOM_LEVEL0):
@@ -169,6 +172,7 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 		Ctime:   uint32(utils.Timestamp()),
 		Expire:  utils.Timestamp() + 86400,
 		Deal:    true,
+		Pub:     true,
 	}
 }
 

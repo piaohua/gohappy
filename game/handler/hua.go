@@ -110,7 +110,7 @@ func PackJHRoomList(arg *pb.GetRoomList,
 	for _, v := range desks {
 		switch arg.Rtype {
 		case int32(pb.ROOM_TYPE1): //私人
-			if v.DeskData.Cid != arg.Userid {
+			if v.DeskData.Cid != arg.Userid && !v.DeskData.Pub {
 				continue
 			}
 		}

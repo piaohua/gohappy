@@ -306,6 +306,7 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 		Round:   arg.Round,
 		Payment: arg.Payment,
 		Count:   arg.Count,
+		Pub:     arg.Pub,
 		//TODO 消耗
 		Cost: 100,
 	}
