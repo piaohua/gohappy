@@ -48,9 +48,9 @@ type Desk struct {
 
 const (
 	//ReadyTime 准备超时时间
-	ReadyTime = 5
+	ReadyTime = 10
 	//BetTime 下注超时时间
-	BetTime = 5
+	BetTime = 10
 	//FreeBetTime 下注超时时间
 	FreeBetTime = 10
 	//RestTime 休息超时时间

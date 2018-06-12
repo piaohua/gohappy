@@ -15,6 +15,7 @@ message UserData
     int64  card     = 9;//房卡
     int64  chip     =10;//筹码
     uint32 vip      =11;//vip
+    string sign     =12;//个性签名
 }
 
 //货币数据

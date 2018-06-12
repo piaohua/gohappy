@@ -259,7 +259,8 @@ message TaskUpdate {
     int32 Taskid = 2;//unique
     TaskType Type = 3;//类型
     uint32 Num = 4; //更新数量
-    bool Prize = 5; //领取奖励,移除
+    bool Prize = 5; //领取奖励
+    int32 Nextid = 6;//unique
 }
 
 //登录数据更新

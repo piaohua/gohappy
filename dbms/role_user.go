@@ -130,6 +130,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.LoginPrizeUpdate)
 		glog.Debugf("LoginPrizeUpdate %#v", arg)
 		a.loginPrizeUpdate(arg)
+	case *pb.CSignature:
+		arg := msg.(*pb.CSignature)
+		glog.Debugf("CSignature %#v", arg)
+		a.setSign(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -471,11 +475,15 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 		user.Task = make(map[int32]data.TaskInfo)
 	}
 	if val, ok := user.Task[int32(arg.Type)]; ok {
-		if arg.Prize {
+		if arg.Prize && arg.Nextid != 0 {
 			delete(user.Task, int32(arg.Type))
+		} else if arg.Prize {
+			val.Prize = arg.Prize //不存在下个时不清除
+			user.Task[int32(arg.Type)] = val
 		} else {
 			val.Num += arg.Num
 			val.Utime = time.Now()
+			user.Task[int32(arg.Type)] = val
 		}
 	} else {
 		taskInfo := data.TaskInfo{
@@ -501,4 +509,15 @@ func (a *RoleActor) loginPrizeUpdate(arg *pb.LoginPrizeUpdate) {
 	user.LoginTime = utils.Stamp2Time(arg.LoginTime)
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateLogin()
+}
+
+func (a *RoleActor) setSign(arg *pb.CSignature) {
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("setSign err userid %#v", arg)
+		return
+	}
+	user.SetSign(arg.GetContent())
+	//暂时实时写入, TODO 异步数据更新
+	user.UpdateSign()
 }

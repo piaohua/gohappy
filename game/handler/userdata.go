@@ -120,6 +120,7 @@ func PackUserData(p *data.User) (stoc *pb.UserData) {
 		Card:     p.GetCard(),
 		Chip:     p.GetChip(),
 		Vip:      p.GetVip(),
+		Sign:     p.GetSign(),
 	}
 }
 

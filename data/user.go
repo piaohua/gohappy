@@ -55,6 +55,7 @@ type User struct {
 	//
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
+	Sign  string `bson:"sign" json:"sign"`     //个性签名
 }
 
 // 数据库操作
@@ -84,6 +85,11 @@ func (this *User) UpdateLogin() bool {
 		bson.M{"$set": bson.M{"login_times": this.LoginTimes,
 			"login_prize": this.LoginPrize, "login_time": this.LoginTime,
 			"login_ip": this.LoginIp}})
+}
+
+func (this *User) UpdateSign() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"sign": this.Sign}})
 }
 
 func (this *User) Get() {
@@ -310,4 +316,12 @@ func (this *User) AddBank(num int64) {
 	if this.Bank < 0 {
 		this.Bank = 0
 	}
+}
+
+func (this *User) SetSign(content string) {
+	this.Sign = content
+}
+
+func (this *User) GetSign() string {
+	return this.Sign
 }

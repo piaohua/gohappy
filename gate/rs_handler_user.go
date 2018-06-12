@@ -87,6 +87,10 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CLoginPrize)
 		glog.Debugf("CLoginPrize %#v", arg)
 		rs.loginPrize(arg)
+	case *pb.CSignature:
+		arg := msg.(*pb.CSignature)
+		glog.Debugf("CSignature %#v", arg)
+		rs.setSign(arg)
 	case *pb.CRoomRecord:
 		arg := msg.(*pb.CRoomRecord)
 		glog.Debugf("CRoomRecord %#v", arg)
@@ -423,6 +427,7 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 		rs.addCurrency(task.Diamond, task.Coin,
 			0, 0, int32(pb.LOG_TYPE46))
 		val.Prize = true
+		rs.User.Task[taskType] = val
 		//响应消息
 		msg.Type = taskType
 		msg.Coin = task.Coin
@@ -444,17 +449,18 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 }
 
 func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
-	if nextid == 0 {
-		return
-	}
 	rs.taskInit()
-	//存在下个任务
-	delete(rs.User.Task, taskType) //移除
 	//TODO 任务完成日志
 	msg2 := handler.TaskUpdateMsg(0, pb.TaskType(taskType),
 		rs.User.GetUserid())
 	msg2.Prize = true //移除标识
+	msg2.Nextid = nextid
 	rs.rolePid.Tell(msg2)
+	if nextid == 0 {
+		return
+	}
+	//存在下个任务
+	delete(rs.User.Task, taskType) //移除
 	//查找
 	task := config.GetTask(nextid)
 	if task.Taskid != nextid {
@@ -564,5 +570,21 @@ func (rs *RoleActor) loginPrize(arg *pb.CLoginPrize) {
 }
 
 //.
+
+//设置个性签名
+func (rs *RoleActor) setSign(arg *pb.CSignature) {
+	msg := new(pb.SSignature)
+	if len(arg.GetContent()) > 1024 {
+		msg.Error = pb.SignTooLong
+		rs.Send(msg)
+		return
+	}
+	msg.Userid = rs.User.GetUserid()
+	msg.Content = arg.GetContent()
+	rs.User.SetSign(arg.GetContent())
+	arg.Userid = rs.User.GetUserid()
+	rs.rolePid.Tell(arg)
+	rs.Send(msg)
+}
 
 // vim: set foldmethod=marker foldmarker=//',//.:

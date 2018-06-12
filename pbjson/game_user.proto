@@ -144,3 +144,17 @@ message SRoomRecord
     repeated RoomRecord list = 3; //
     ErrCode error = 4;//错误码
 }
+
+// 设置个性签名
+message CSignature
+{
+    string userid = 1;//
+    string content = 2;//
+}
+
+message SSignature
+{
+    string userid = 1;//
+    string content = 2; //
+    ErrCode error = 3;//错误码
+}

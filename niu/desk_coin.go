@@ -324,8 +324,8 @@ func (t *Desk) gameOverInit() {
 	t.DeskGame.BetNum = 0
 	t.gameInit()
 	//t.timer = 0
-	//结算加长5秒
-	t.timer = -5
+	//结算
+	t.timer = 0
 	t.state = int32(pb.STATE_READY) //设置房间状态
 	t.pushState()
 }

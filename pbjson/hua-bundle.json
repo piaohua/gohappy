@@ -336,7 +336,8 @@
             "PwdError": 93,
             "BankNotOpen": 94,
             "BankAlreadyOpen": 95,
-            "AlreadySitDown": 96
+            "AlreadySitDown": 96,
+            "SignTooLong": 97
           }
         },
         "SitType": {

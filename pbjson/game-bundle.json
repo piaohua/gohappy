@@ -284,7 +284,8 @@
             "PwdError": 93,
             "BankNotOpen": 94,
             "BankAlreadyOpen": 95,
-            "AlreadySitDown": 96
+            "AlreadySitDown": 96,
+            "SignTooLong": 97
           }
         },
         "SitType": {
@@ -839,6 +840,34 @@
             }
           }
         },
+        "CSignature": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "content": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SSignature": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "content": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
         "UserData": {
           "fields": {
             "userid": {
@@ -884,6 +913,10 @@
             "vip": {
               "type": "uint32",
               "id": 11
+            },
+            "sign": {
+              "type": "string",
+              "id": 12
             }
           }
         },
