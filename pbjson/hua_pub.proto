@@ -47,6 +47,7 @@ message JHRoomData
     //
     int64  minimum =19;//房间最低限制
     int64  maximum =20;//房间最高限制
+    bool   pub     =21;//是否公开展示
 }
 
 // 下注信息

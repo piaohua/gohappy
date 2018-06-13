@@ -406,7 +406,9 @@ func (t *Desk) sitCheck(userid string, arg *pb.CSGSit) pb.ErrCode {
 		switch t.state {
 		case int32(pb.STATE_READY):
 		default:
-			return pb.GameStartedCannotLeave
+			if v, ok := t.seats[seat]; ok && v.Ready {
+				return pb.GameStartedCannotLeave
+			}
 		}
 	case int32(pb.ROOM_TYPE2): //百人
 		if !(arg.Seat >= 1 && arg.Seat <= 8) {

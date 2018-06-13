@@ -80,6 +80,7 @@ func PackNNCoinRoom(d *data.DeskData) *pb.NNRoomData {
 		Code:    d.Code,    //
 		Minimum: d.Minimum, //
 		Maximum: d.Maximum, //
+		Pub:     d.Pub,
 	}
 }
 

@@ -80,6 +80,7 @@ func PackJHCoinRoom(d *data.DeskData) *pb.JHRoomData {
 		Code:    d.Code,    //
 		Minimum: d.Minimum, //
 		Maximum: d.Maximum, //
+		Pub:     d.Pub,
 	}
 }
 

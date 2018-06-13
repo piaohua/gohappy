@@ -500,6 +500,10 @@
             "maximum": {
               "type": "int64",
               "id": 20
+            },
+            "pub": {
+              "type": "bool",
+              "id": 21
             }
           }
         },

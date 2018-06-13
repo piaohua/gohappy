@@ -46,6 +46,7 @@ message SGRoomData
     //
     int64  minimum =18;//房间最低限制
     int64  maximum =19;//房间最高限制
+    bool   pub     =20;//是否公开展示
 }
 
 // 下注信息
