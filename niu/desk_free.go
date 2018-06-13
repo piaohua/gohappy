@@ -177,7 +177,7 @@ func (t *Desk) beDealer(userid string, st int32, num uint32) pb.ErrCode {
 			return pb.BeDealerAlready
 		}
 		//上庄限制
-		if int64(num) < t.DeskFree.Carry {
+		if num < t.DeskData.Carry {
 			return pb.BeDealerNotEnough
 		}
 		t.addBeDealer(userid, st, int64(num), user)

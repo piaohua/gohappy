@@ -80,7 +80,7 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 		Deal:   true,
 		Carry:  20000,
 		Down:   10000,
-		Top:    2000000,
+		Top:    200000000,
 		Sit:    20000,
 		Node:   node,
 		Ctime:  bson.Now(),
