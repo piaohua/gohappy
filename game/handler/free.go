@@ -94,6 +94,9 @@ func PackNNCoinUser(p *data.User) *pb.NNRoomUser {
 		Photo:    p.GetPhoto(),
 		Coin:     p.GetCoin(),
 		Diamond:  p.GetDiamond(),
+		Lat:      p.Lat,
+		Lng:      p.Lng,
+		Address:  p.Address,
 	}
 }
 

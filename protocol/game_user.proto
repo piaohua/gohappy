@@ -158,3 +158,16 @@ message SSignature
     string content = 2; //
     ErrCode error = 3;//错误码
 }
+
+// 设置经纬度
+message CLatLng
+{
+    string lat = 1;//Latitude
+    string lng = 2;//Longitude
+    string address = 3;//Address
+}
+
+message SLatLng
+{
+    ErrCode error = 1;//错误码
+}

@@ -868,6 +868,30 @@
             }
           }
         },
+        "CLatLng": {
+          "fields": {
+            "lat": {
+              "type": "string",
+              "id": 1
+            },
+            "lng": {
+              "type": "string",
+              "id": 2
+            },
+            "address": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SLatLng": {
+          "fields": {
+            "error": {
+              "type": "ErrCode",
+              "id": 1
+            }
+          }
+        },
         "UserData": {
           "fields": {
             "userid": {

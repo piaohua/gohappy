@@ -56,6 +56,10 @@ type User struct {
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
 	Sign  string `bson:"sign" json:"sign"`     //个性签名
+	//
+	Lat string `bson:"-" json:"lat"` //Latitude
+	Lng string `bson:"-" json:"lng"` //Longitude
+	Address string `bson:"-" json:"address"` //Address
 }
 
 // 数据库操作

@@ -68,6 +68,7 @@ var protosUnpack = map[string][]proto{
 		{code: 1021, name: "CLoginPrize"},
 		{code: 1022, name: "CRoomRecord"},
 		{code: 1023, name: "CSignature"},
+		{code: 1024, name: "CLatLng"},
 	},
 	//niu
 	"niu": {
@@ -183,6 +184,7 @@ var protosPacket = map[string][]proto{
 		{code: 1525, name: "SRoomRecord"},
 		{code: 1526, name: "SPushNotice"},
 		{code: 1527, name: "SSignature"},
+		{code: 1528, name: "SLatLng"},
 	},
 	//niu
 	"niu": {

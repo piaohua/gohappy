@@ -20,6 +20,9 @@ message NNRoomUser
     uint32 num      =14;//玩家抢庄倍数
     bool   niu      =15;//是否选牛
     bool   offline  =16;//是否离线
+    string lat = 17;//Latitude
+    string lng = 18;//Longitude
+    string address = 19;//Address
 }
 
 // 房间数据

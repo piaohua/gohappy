@@ -218,6 +218,8 @@
 		SRoomRecord
 		CSignature
 		SSignature
+		CLatLng
+		SLatLng
 		CJHCoinEnterRoom
 		SJHCoinEnterRoom
 		SJHCoinGameover

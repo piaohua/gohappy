@@ -514,6 +514,18 @@
             "offline": {
               "type": "bool",
               "id": 16
+            },
+            "lat": {
+              "type": "string",
+              "id": 17
+            },
+            "lng": {
+              "type": "string",
+              "id": 18
+            },
+            "address": {
+              "type": "string",
+              "id": 19
             }
           }
         },

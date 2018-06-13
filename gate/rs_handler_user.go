@@ -91,6 +91,10 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CSignature)
 		glog.Debugf("CSignature %#v", arg)
 		rs.setSign(arg)
+	case *pb.CLatLng:
+		arg := msg.(*pb.CLatLng)
+		glog.Debugf("CLatLng %#v", arg)
+		rs.setLatLng(arg)
 	case *pb.CRoomRecord:
 		arg := msg.(*pb.CRoomRecord)
 		glog.Debugf("CRoomRecord %#v", arg)
@@ -584,6 +588,15 @@ func (rs *RoleActor) setSign(arg *pb.CSignature) {
 	rs.User.SetSign(arg.GetContent())
 	arg.Userid = rs.User.GetUserid()
 	rs.rolePid.Tell(arg)
+	rs.Send(msg)
+}
+
+//设置经纬度
+func (rs *RoleActor) setLatLng(arg *pb.CLatLng) {
+	msg := new(pb.SLatLng)
+	rs.User.Lat = arg.GetLat()
+	rs.User.Lng = arg.GetLng()
+	rs.User.Address = arg.GetAddress()
 	rs.Send(msg)
 }
 

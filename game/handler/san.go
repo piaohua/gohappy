@@ -94,6 +94,9 @@ func PackSGCoinUser(p *data.User) *pb.SGRoomUser {
 		Photo:    p.GetPhoto(),
 		Coin:     p.GetCoin(),
 		Diamond:  p.GetDiamond(),
+		Lat:      p.Lat,
+		Lng:      p.Lng,
+		Address:  p.Address,
 	}
 }
 
