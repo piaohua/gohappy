@@ -704,6 +704,9 @@ func (t *Desk) dealerWin() {
 	//庄家收钱转为正数
 	if val < 0 {
 		val *= -1
+	} else {
+		//	抽成
+		val = int64(math.Trunc(float64(val) * 0.98))
 	}
 	if val != 0 {
 		t.DeskFree.Score1[uint32(pb.DESK_SEAT1)] = val
