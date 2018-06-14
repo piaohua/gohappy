@@ -46,8 +46,12 @@ func (a *RoleActor) smsbao(arg *pb.SmscodeRegist, ctx actor.Context) {
 			a.smstime[code] = utils.Timestamp() + (60 * 3)
 			a.smsphone[arg.Phone] = code
 			glog.Debugf("phone %s, code %s", arg.Phone, code)
-			if cfg.Section("smsbao").Key("status").MustBool(false) {
-				go login.SendSms(arg.Phone, code, smsusername, smspassword)
+			//if cfg.Section("smsbao").Key("status").MustBool(false) {
+			//	go login.SendSms(arg.Phone, code, smsusername, smspassword)
+			//}
+			//sms253
+			if cfg.Section("sms253").Key("status").MustBool(false) {
+				go login.SendSms253(sms253URL, sms253account, sms253password, arg.Phone, code)
 			}
 		}
 	case 2: //删除

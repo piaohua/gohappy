@@ -21,8 +21,11 @@ var (
 
 	json = jsoniter.ConfigCompatibleWithStandardLibrary
 
-	smsusername string
-	smspassword string
+	smsusername    string
+	smspassword    string
+	sms253account  string
+	sms253password string
+	sms253URL      string
 )
 
 func main() {
@@ -47,6 +50,9 @@ func main() {
 	config.ConfigInit()
 	smsusername = cfg.Section("smsbao").Key("username").Value()
 	smspassword = cfg.Section("smsbao").Key("password").Value()
+	sms253account = cfg.Section("sms253").Key("account").Value()
+	sms253password = cfg.Section("sms253").Key("password").Value()
+	sms253URL = cfg.Section("sms253").Key("url").Value()
 	//启动服务
 	bind := cfg.Section("dbms").Key("bind").Value()
 	kind := cfg.Section("dbms").Key("kind").Value()

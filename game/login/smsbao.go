@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"api/smsbao"
+	"api/sms253"
 	"gohappy/glog"
 )
 
@@ -26,4 +27,24 @@ func sendSms2(phone, code, username, password string, n int) bool {
 	}
 	<-time.After(3 * time.Second)
 	return sendSms2(phone, code, username, password, n+1)
+}
+
+//SendSms253 发送验证码
+func SendSms253(targetURL, account, password, phone, code string) bool {
+	return sendSms3(targetURL, account, password, phone, code, 0)
+}
+
+func sendSms3(targetURL, account, password, phone, code string, n int) bool {
+	msg := fmt.Sprintf("【欢乐】你的验证码%s，请勿泄露。", code)
+	err := sms253.SendSms(targetURL, account, password, phone, msg)
+	if err == nil {
+		glog.Debugf("send sms successfully phone %s, code %s", phone, code)
+		return true
+	}
+	glog.Errorf("send sms failed phone %s, code %s, err %v", phone, code, err)
+	if n >= 3 { //失败尝试次数3次
+		return false
+	}
+	<-time.After(3 * time.Second)
+	return sendSms3(targetURL, account, password, phone, code, n+1)
 }
