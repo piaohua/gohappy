@@ -650,7 +650,7 @@ func (t *Desk) choiceNiuOver(ctx actor.Context) {
 
 //.
 
-//换房间
+//'换房间
 func (t *Desk) changeDesk(ctx actor.Context) {
 	userid := t.getRouter(ctx)
 	errcode := t.changeDeskCheck(userid)
@@ -661,7 +661,7 @@ func (t *Desk) changeDesk(ctx actor.Context) {
 		return
 	}
 	t.nnLeave(userid, ctx)
-	//
+	//匹配房间消息
 	msg := new(pb.ChangeDesk)
 	msg.Roomid = t.DeskData.Rid
 	msg.Rtype = t.DeskData.Rtype
@@ -691,5 +691,7 @@ func (t *Desk) changeDeskCheck(userid string) pb.ErrCode {
 	}
 	return  pb.OK
 }
+
+//.
 
 // vim: set foldmethod=marker foldmarker=//',//.:

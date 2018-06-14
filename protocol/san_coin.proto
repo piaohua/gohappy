@@ -26,3 +26,13 @@ message SSGCoinGameover
     string dealer = 2;//庄家
     repeated SGCoinOver data = 3;//结算
 }
+
+// 换房间
+message CSGCoinChangeRoom
+{
+}
+
+message SSGCoinChangeRoom
+{
+    ErrCode error= 1;//错误码 ,0:正常
+}

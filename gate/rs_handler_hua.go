@@ -190,6 +190,16 @@ func (rs *RoleActor) handlerHua(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CJHCoinChangeRoom:
+		arg := msg.(*pb.CJHCoinChangeRoom)
+		glog.Debugf("CJHCoinChangeRoom %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SJHCoinChangeRoom)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
 	case proto.Message:
 		//响应消息
 		rs.Send(msg)

@@ -1199,6 +1199,17 @@
             }
           }
         },
+        "CJHCoinChangeRoom": {
+          "fields": {}
+        },
+        "SJHCoinChangeRoom": {
+          "fields": {
+            "error": {
+              "type": "ErrCode",
+              "id": 1
+            }
+          }
+        },
         "CJHFreeEnterRoom": {
           "fields": {}
         },

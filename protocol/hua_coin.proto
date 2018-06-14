@@ -108,3 +108,13 @@ message SJHCoinBi
     int64 pot= 6;  //底池数量
     ErrCode error= 7;//错误码 ,0:正常
 }
+
+// 换房间
+message CJHCoinChangeRoom
+{
+}
+
+message SJHCoinChangeRoom
+{
+    ErrCode error= 1;//错误码 ,0:正常
+}

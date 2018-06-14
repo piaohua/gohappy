@@ -386,6 +386,12 @@ func (rs *RoleActor) changedDeskMsg(arg *pb.ChangedDesk, errcode pb.ErrCode) {
 		rsp.Error = errcode
 		rs.Send(rsp)
 	case int32(pb.SAN):
+		rsp := new(pb.SSGCoinChangeRoom)
+		rsp.Error = errcode
+		rs.Send(rsp)
 	case int32(pb.HUA):
+		rsp := new(pb.SJHCoinChangeRoom)
+		rsp.Error = errcode
+		rs.Send(rsp)
 	}
 }

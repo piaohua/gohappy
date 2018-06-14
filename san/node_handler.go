@@ -74,6 +74,10 @@ func (a *DeskActor) handlerMsg(msg interface{}, ctx actor.Context) {
 		//响应
 		rsp := handler.PackSGRoomList(arg, a.desks)
 		arg.Sender.Tell(rsp)
+	case *pb.ChangeDesk:
+		arg := msg.(*pb.ChangeDesk)
+		glog.Debugf("ChangeDesk %#v", arg)
+		a.changeDesk(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -183,6 +187,46 @@ func (a *DeskActor) enterDesk(arg *pb.EnterDesk, ctx actor.Context) {
 	rsp.Error = pb.Failed
 	ctx.Respond(rsp)
 	//arg.Sender.Tell(rsp)
+}
+
+//.
+
+//'匹配房间
+func (a *DeskActor) changeDesk(arg *pb.ChangeDesk, ctx actor.Context) {
+	rsp := new(pb.ChangedDesk)
+	rsp.Gtype = arg.Gtype
+	//查找房间
+	for _, v := range a.desks {
+		if v.DeskData.Rtype == arg.Rtype &&
+			v.DeskData.Ltype == arg.Ltype &&
+			int32(pb.ROOM_TYPE1) != arg.Rtype &&
+			v.DeskData.Rid != arg.Roomid &&
+			v.Number < v.DeskData.Count {
+			rsp.Desk = v.Pid
+			arg.Sender.Tell(rsp)
+			return
+		}
+	}
+	//创建一个新的房间
+	switch arg.Rtype {
+	case int32(pb.ROOM_TYPE2): //百人
+		glog.Errorf("change Desk err %#v", arg)
+	case int32(pb.ROOM_TYPE1): //私人
+		glog.Errorf("change Desk err %#v", arg)
+	case int32(pb.ROOM_TYPE0): //自由
+		//TODO 查找匹配房间,
+		//测试时动态添加,正式时后台配置
+		gameData := handler.NewCoinGameData(a.Name,
+			int32(pb.SAN), arg.Dtype, arg.Ltype)
+		if deskPid, ok := a.spawnDesk(gameData, ctx); ok {
+			rsp.Desk = deskPid
+			arg.Sender.Tell(rsp)
+			return
+		}
+	default:
+	}
+	rsp.Error = pb.Failed
+	arg.Sender.Tell(rsp)
 }
 
 //.

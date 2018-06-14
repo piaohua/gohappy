@@ -1122,6 +1122,17 @@
             }
           }
         },
+        "CSGCoinChangeRoom": {
+          "fields": {}
+        },
+        "SSGCoinChangeRoom": {
+          "fields": {
+            "error": {
+              "type": "ErrCode",
+              "id": 1
+            }
+          }
+        },
         "CSGFreeEnterRoom": {
           "fields": {}
         },

@@ -230,6 +230,7 @@ func (a *DeskActor) changeDesk(arg *pb.ChangeDesk, ctx actor.Context) {
 }
 
 //.
+
 //'启动新服务,新开的房间同步状态
 func (a *DeskActor) spawnDesk(gameData *data.Game,
 	ctx actor.Context) (deskPid *actor.PID, ok bool) {

@@ -638,4 +638,48 @@ func (t *Desk) choiceNiuOver(ctx actor.Context) {
 
 //.
 
+//'换房间
+func (t *Desk) changeDesk(ctx actor.Context) {
+	userid := t.getRouter(ctx)
+	errcode := t.changeDeskCheck(userid)
+	if errcode != pb.OK {
+		rsp := new(pb.SSGCoinChangeRoom)
+		rsp.Error = errcode
+		ctx.Respond(rsp)
+		return
+	}
+	t.nnLeave(userid, ctx)
+	//匹配房间消息
+	msg := new(pb.ChangeDesk)
+	msg.Roomid = t.DeskData.Rid
+	msg.Rtype = t.DeskData.Rtype
+	msg.Gtype = t.DeskData.Gtype
+	msg.Ltype = t.DeskData.Ltype
+	msg.Dtype = t.DeskData.Dtype
+	msg.Userid = userid
+	msg.Sender = ctx.Sender() //玩家进程
+	nodePid.Request(msg, ctx.Self())
+}
+
+func (t *Desk) changeDeskCheck(userid string) pb.ErrCode {
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE0): //自由
+		switch t.state {
+		case int32(pb.STATE_READY):
+		default:
+			seat := t.getSeat(userid)
+			if v, ok := t.seats[seat]; ok {
+				if v.Ready {
+					return pb.GameStartedCannotLeave
+				}
+			}
+		}
+	default:
+		return pb.OperateError
+	}
+	return  pb.OK
+}
+
+//.
+
 // vim: set foldmethod=marker foldmarker=//',//.:

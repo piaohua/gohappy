@@ -236,6 +236,8 @@
 		SJHCoinFold
 		CJHCoinBi
 		SJHCoinBi
+		CJHCoinChangeRoom
+		SJHCoinChangeRoom
 		CJHFreeEnterRoom
 		SJHFreeEnterRoom
 		SJHFreeCamein
@@ -368,6 +370,8 @@
 		CSGCoinEnterRoom
 		SSGCoinEnterRoom
 		SSGCoinGameover
+		CSGCoinChangeRoom
+		SSGCoinChangeRoom
 		CSGFreeEnterRoom
 		SSGFreeEnterRoom
 		SSGFreeCamein

@@ -118,6 +118,7 @@ var protosUnpack = map[string][]proto{
 		{code: 3018, name: "CSGFreeWiners"},
 		{code: 3019, name: "CSGFreeRoles"},
 		{code: 3020, name: "CSGSit"},
+		{code: 3021, name: "CSGCoinChangeRoom"},
 	},
 	//hua
 	"hua": {
@@ -148,6 +149,7 @@ var protosUnpack = map[string][]proto{
 		{code: 4024, name: "CJHCoinFold"},
 		{code: 4025, name: "CJHCoinBi"},
 		{code: 4026, name: "CJHSit"},
+		{code: 4027, name: "CJHCoinChangeRoom"},
 	},
 }
 
@@ -257,6 +259,7 @@ var protosPacket = map[string][]proto{
 		{code: 3529, name: "SSGFreeRoles"},
 		{code: 3530, name: "SSGSit"},
 		{code: 3531, name: "SSGPushOffline"},
+		{code: 3532, name: "SSGCoinChangeRoom"},
 	},
 	//hua
 	"hua": {
@@ -299,6 +302,7 @@ var protosPacket = map[string][]proto{
 		{code: 4536, name: "SJHCoinBi"},
 		{code: 4537, name: "SJHSit"},
 		{code: 4538, name: "SJHPushOffline"},
+		{code: 4539, name: "SJHCoinChangeRoom"},
 	},
 }
 

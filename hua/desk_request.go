@@ -168,6 +168,10 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 		glog.Debugf("CJHCoinBi %#v", arg)
 		userid := a.getRouter(ctx)
 		a.coinBi(userid, arg.Seat)
+	case *pb.CJHCoinChangeRoom:
+		arg := msg.(*pb.CJHCoinChangeRoom)
+		glog.Debugf("CJHCoinChangeRoom %#v", arg)
+		a.changeDesk(ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

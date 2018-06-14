@@ -176,6 +176,10 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 			return
 		}
 		ctx.Respond(rsp)
+	case *pb.CSGCoinChangeRoom:
+		arg := msg.(*pb.CSGCoinChangeRoom)
+		glog.Debugf("CSGCoinChangeRoom %#v", arg)
+		a.changeDesk(ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
