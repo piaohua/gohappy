@@ -93,6 +93,7 @@ var protosUnpack = map[string][]proto{
 		{code: 2018, name: "CNNFreeWiners"},
 		{code: 2019, name: "CNNFreeRoles"},
 		{code: 2020, name: "CNNSit"},
+		{code: 2021, name: "CNNCoinChangeRoom"},
 	},
 	//san
 	"san": {
@@ -220,6 +221,7 @@ var protosPacket = map[string][]proto{
 		{code: 2529, name: "SNNFreeRoles"},
 		{code: 2530, name: "SNNSit"},
 		{code: 2531, name: "SNNPushOffline"},
+		{code: 2532, name: "SNNCoinChangeRoom"},
 	},
 	//san
 	"san": {

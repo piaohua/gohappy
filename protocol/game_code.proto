@@ -104,6 +104,7 @@ enum ErrCode {
     BankAlreadyOpen        = 95; //已经开通银行
     AlreadySitDown         = 96; //已经在位置上
     SignTooLong            = 97; //签名太长了
+    ChangeFailed           = 98; //换房失败,返回大厅
 }
 
 enum SitType {

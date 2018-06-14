@@ -26,3 +26,13 @@ message SNNCoinGameover
     string dealer = 2;//庄家
     repeated NNCoinOver data = 3;//结算
 }
+
+// 换房间
+message CNNCoinChangeRoom
+{
+}
+
+message SNNCoinChangeRoom
+{
+    ErrCode error= 1;//错误码 ,0:正常
+}

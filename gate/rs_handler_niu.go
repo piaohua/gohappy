@@ -189,6 +189,16 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CNNCoinChangeRoom:
+		arg := msg.(*pb.CNNCoinChangeRoom)
+		glog.Debugf("CNNCoinChangeRoom %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SNNCoinChangeRoom)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)

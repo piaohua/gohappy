@@ -40,6 +40,10 @@ func (rs *RoleActor) handlerDesk(msg interface{}, ctx actor.Context) {
 		glog.Debugf("GotRoomList %#v", arg)
 		msg2 := new(pb.SNNRoomList)
 		rs.Send(msg2)
+	case *pb.ChangedDesk:
+		arg := msg.(*pb.ChangedDesk)
+		glog.Debugf("ChangedDesk %#v", arg)
+		rs.changedDesk(arg, ctx)
 	default:
 		//glog.Errorf("unknown message %v", msg)
 		rs.handlerNiu(msg, ctx)
@@ -262,7 +266,7 @@ func (rs *RoleActor) enterdDeskErr(msg *pb.EnteredDesk, ctx actor.Context) {
 	}
 }
 
-//响应加入游戏失败消息
+//响应匹配游戏失败消息
 func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 	switch msg.Gtype {
 	case int32(pb.NIU):
@@ -321,7 +325,7 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 	}
 }
 
-//加入游戏结果
+//创建房间结果
 func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
 		rsp := new(pb.SNNCreateRoom)
@@ -353,4 +357,35 @@ func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 		return
 	}
 	arg.Desk.Request(msg, ctx.Self())
+}
+
+//换房间结果
+func (rs *RoleActor) changedDesk(arg *pb.ChangedDesk, ctx actor.Context) {
+	if arg.Error != pb.OK || arg.Desk == nil {
+		glog.Errorf("changed failed %#v, userid %s", arg, rs.User.GetUserid())
+		//失败消息
+		rs.changedDeskMsg(arg, pb.ChangeFailed)
+		return
+	}
+	msg := new(pb.EnterDesk)
+	if !rs.enterDeskMsg(msg, ctx) {
+		glog.Errorf("changed failed %#v, userid %s", arg, rs.User.GetUserid())
+		//失败消息
+		rs.changedDeskMsg(arg, pb.ChangeFailed)
+		return
+	}
+	//请求消息
+	arg.Desk.Request(msg, ctx.Self())
+	rs.changedDeskMsg(arg, pb.OK)
+}
+
+func (rs *RoleActor) changedDeskMsg(arg *pb.ChangedDesk, errcode pb.ErrCode) {
+	switch arg.Gtype {
+	case int32(pb.NIU):
+		rsp := new(pb.SNNCoinChangeRoom)
+		rsp.Error = errcode
+		rs.Send(rsp)
+	case int32(pb.SAN):
+	case int32(pb.HUA):
+	}
 }

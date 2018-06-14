@@ -184,3 +184,20 @@ message GotRoomList
     int32 Gtype = 2;//游戏类型
     ErrCode error = 3 ;// 错误码
 }
+
+//换房间
+message ChangeDesk {
+    actor.PID Sender = 1; //玩家进程
+    string Roomid = 2;
+    int32 Rtype = 3;
+    int32 Gtype = 4;
+    string Userid = 5;
+    int32 Ltype = 6;
+    int32 Dtype = 7;
+}
+
+message ChangedDesk {
+    actor.PID Desk = 1; //桌子进程
+    int32 Gtype = 2;
+    ErrCode error = 3 ;// 错误码
+}
