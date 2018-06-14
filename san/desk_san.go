@@ -684,7 +684,7 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 		switch t.DeskData.Rtype {
 		case int32(pb.ROOM_TYPE0): //自由
 			//if v > 0 {
-			//	//抽成
+			//	//TODO 抽成
 			//	v = int64(math.Trunc(float64(v) * 0.98))
 			//}
 			t.sendCoin(userid, v, ltype)
