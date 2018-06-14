@@ -102,7 +102,13 @@ func webJSONHandler(ctx *fasthttp.RequestCtx) {
 		fmt.Fprintf(ctx, "%s", "failed")
 		return
 	}
-	body, err1 := jsoniter.Marshal(response2)
+	//result字符串格式响应
+	resp2 := new(pb.WebResponse2)
+	resp2.Code = response2.Code
+	resp2.ErrCode = response2.ErrCode
+	resp2.ErrMsg = response2.ErrMsg
+	resp2.Result = string(response2.Result)
+	body, err1 := jsoniter.Marshal(resp2)
 	if err1 != nil {
 		fmt.Fprintf(ctx, "%v", err1)
 		return

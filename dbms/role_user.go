@@ -506,7 +506,7 @@ func (a *RoleActor) loginPrizeUpdate(arg *pb.LoginPrizeUpdate) {
 	user.LoginTimes = arg.LoginTimes
 	user.LoginPrize = arg.LoginPrize
 	user.LoginIp = arg.LoginIP
-	user.LoginTime = utils.Stamp2Time(arg.LoginTime)
+	user.LoginTime = utils.Stamp2Time(arg.LoginTime).Local()
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateLogin()
 }

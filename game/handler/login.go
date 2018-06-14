@@ -13,7 +13,8 @@ import (
 func SetLoginPrize(user *data.User) {
 	//上次登录, TODO 全部领取完重置
 	yesterDay := utils.Stamp2Time(utils.TimestampYesterday())
-	if user.LoginTime.Before(yesterDay) {
+	//FIXME 签到成功后会出现LoginTimes = 0，why?
+	if user.LoginTime.Before(yesterDay) || user.LoginTimes == 0 {
 		//隔天登录重置
 		user.LoginTimes = (1 << 0)
 		user.LoginPrize = 0

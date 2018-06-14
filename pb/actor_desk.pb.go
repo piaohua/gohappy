@@ -153,6 +153,7 @@
 		GetConfig
 		WebRequest
 		WebResponse
+		WebResponse2
 		GetNumber
 		GotNumber
 		CBuy

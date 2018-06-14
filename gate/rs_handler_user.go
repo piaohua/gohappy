@@ -538,16 +538,16 @@ func (rs *RoleActor) taskInit() {
 func (rs *RoleActor) loginPrizeInit() {
 	//连续登录
 	glog.Debugf("userid %s, LoginTime %s", rs.User.GetUserid(),
-		utils.Time2Str(rs.User.LoginTime))
+		utils.Time2Str(rs.User.LoginTime.Local()))
 	glog.Debugf("userid %s, LoginTimes %d, LoginPrize %d",
 		rs.User.GetUserid(), rs.User.LoginTimes, rs.User.LoginPrize)
 	//rs.User.LoginTime = utils.Stamp2Time(utils.TimestampToday() - 10)
 	handler.SetLoginPrize(rs.User)
 	glog.Debugf("userid %s, LoginTime %s", rs.User.GetUserid(),
-		utils.Time2Str(rs.User.LoginTime))
+		utils.Time2Str(rs.User.LoginTime.Local()))
 	glog.Debugf("userid %s, LoginTimes %d, LoginPrize %d",
 		rs.User.GetUserid(), rs.User.LoginTimes, rs.User.LoginPrize)
-	rs.User.LoginTime = utils.BsonNow()
+	rs.User.LoginTime = utils.BsonNow().Local()
 	msg := handler.LoginPrizeUpdateMsg(rs.User)
 	rs.rolePid.Tell(msg)
 }
