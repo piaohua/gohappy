@@ -8,6 +8,7 @@
 package main
 
 import (
+	"math"
 	"math/rand"
 	"time"
 
@@ -812,8 +813,8 @@ func (t *Desk) dealerJiesuan1() {
 			if val2 < 0 {
 				val2 = 0
 			} else {
-				//	//TODO 抽成
-				//	val2 = int64(math.Trunc(float64(val2) * 0.98))
+				//	抽成
+				val2 = int64(math.Trunc(float64(val2) * 0.98))
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
@@ -861,8 +862,8 @@ func (t *Desk) dealerJiesuan2(num int64) {
 			if val2 < 0 {
 				val2 = 0
 			} else {
-				//	//TODO 抽成,抽成日志记录
-				//	val2 = int64(math.Trunc(float64(val2) * 0.98))
+				//抽成,TODO 抽成日志记录
+				val2 = int64(math.Trunc(float64(val2) * 0.98))
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
