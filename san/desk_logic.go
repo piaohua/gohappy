@@ -41,6 +41,7 @@ func (t *Desk) InitDesk() {
 	case int32(pb.ROOM_TYPE2): //百人
 		t.DeskFree = new(data.DeskFree)
 		t.DeskFree.Dealers = make(map[string]int64) //上庄列表,userid: carry
+		t.DeskFree.Carry = SysCarry
 		t.freeInit()
 	}
 }
