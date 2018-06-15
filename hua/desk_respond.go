@@ -755,7 +755,7 @@ func (t *Desk) changeDeskCheck(userid string) pb.ErrCode {
 	default:
 		return pb.OperateError
 	}
-	return  pb.OK
+	return pb.OK
 }
 
 //.

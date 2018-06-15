@@ -33,7 +33,7 @@ type Game struct {
 	//Num   uint32    `bson:"num" json:"num"`      //启动房间数量
 	Minimum int64 `bson:"minimum" json:"minimum"` //房间最低限制
 	Maximum int64 `bson:"maximum" json:"maximum"` //房间最高限制
-	Pub     bool `bson:"pub" json:"pub"`           //公开展示
+	Pub     bool  `bson:"pub" json:"pub"`         //公开展示
 }
 
 func GetGameList() []Game {

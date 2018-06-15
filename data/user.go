@@ -48,19 +48,19 @@ type User struct {
 	Ctime     time.Time `bson:"ctime" json:"ctime"`           // 注册时间
 	LoginTime time.Time `bson:"login_time" json:"login_time"` // 最后登录时间
 	//
-	Bank         int64              `bson:"bank" json:"bank"`                   // 个人银行
-	BankPhone    string             `bson:"bank_phone" json:"bank_phone"`       // 个人银行
-	BankPassword string             `bson:"bank_password" json:"bank_password"` // 个人银行
+	Bank         int64  `bson:"bank" json:"bank"`                   // 个人银行
+	BankPhone    string `bson:"bank_phone" json:"bank_phone"`       // 个人银行
+	BankPassword string `bson:"bank_password" json:"bank_password"` // 个人银行
 	//
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
-	Sign  string `bson:"sign" json:"sign"`     //个性签名
+	Sign       string `bson:"sign" json:"sign"`               //个性签名
 	//
-	Lat string `bson:"-" json:"lat"` //Latitude
-	Lng string `bson:"-" json:"lng"` //Longitude
+	Lat     string `bson:"-" json:"lat"`     //Latitude
+	Lng     string `bson:"-" json:"lng"`     //Longitude
 	Address string `bson:"-" json:"address"` //Address
 	//
-	Task         map[string]TaskInfo `bson:"task" json:"task"`                   // 已经完成或者还在继续的任务
+	Task map[string]TaskInfo `bson:"task" json:"task"` // 已经完成或者还在继续的任务
 }
 
 // 数据库操作
