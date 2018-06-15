@@ -164,6 +164,10 @@ func (rs *RoleActor) logined(arg *pb.LoginSuccess, ctx actor.Context) {
 func (rs *RoleActor) loginedGetUser(userid string, ctx actor.Context) bool {
 	//关闭旧进程
 	rs.loginElseGate(userid)
+	//已经存在，TODO 优化,SelectGate时返回结果
+	if rs.User != nil {
+		return true
+	}
 	//登录
 	msg1 := &pb.GetUser{
 		Userid:  userid,
@@ -187,6 +191,7 @@ func (rs *RoleActor) loginedGetUser(userid string, ctx actor.Context) bool {
 			return false
 		}
 		rs.User = user
+		glog.Debugf("loginedGetUser %#v", rs.User)
 		return true
 	}
 	return false

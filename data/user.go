@@ -51,7 +51,6 @@ type User struct {
 	Bank         int64              `bson:"bank" json:"bank"`                   // 个人银行
 	BankPhone    string             `bson:"bank_phone" json:"bank_phone"`       // 个人银行
 	BankPassword string             `bson:"bank_password" json:"bank_password"` // 个人银行
-	Task         map[int32]TaskInfo `bson:"task" json:"task"`                   // 已经完成或者还在继续的任务
 	//
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
@@ -60,6 +59,8 @@ type User struct {
 	Lat string `bson:"-" json:"lat"` //Latitude
 	Lng string `bson:"-" json:"lng"` //Longitude
 	Address string `bson:"-" json:"address"` //Address
+	//
+	Task         map[string]TaskInfo `bson:"task" json:"task"`                   // 已经完成或者还在继续的任务
 }
 
 // 数据库操作

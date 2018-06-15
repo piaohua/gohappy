@@ -219,6 +219,7 @@ func (rs *RoleActor) syncUser() {
 	rs.status = false
 	msg := new(pb.SyncUser)
 	msg.Userid = rs.User.GetUserid()
+	glog.Debugf("syscUser %#v", rs.User)
 	result, err := json.Marshal(rs.User)
 	if err != nil {
 		glog.Errorf("user %s Marshal err %v", rs.User.GetUserid(), err)
@@ -386,7 +387,7 @@ func (rs *RoleActor) task() {
 	list := config.GetOrderTasks()
 	m := make(map[int32]bool)
 	for _, v := range list {
-		if val, ok := rs.User.Task[v.Type]; ok {
+		if val, ok := rs.User.Task[utils.String(v.Type)]; ok {
 			if val.Prize {
 				continue
 			}
@@ -405,7 +406,7 @@ func (rs *RoleActor) task() {
 			Coin:    v.Coin,
 			Diamond: v.Diamond,
 		}
-		if val, ok := rs.User.Task[v.Type]; ok {
+		if val, ok := rs.User.Task[utils.String(v.Type)]; ok {
 			msg2.Num = val.Num
 		}
 		m[v.Type] = true
@@ -419,7 +420,7 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 	rs.taskInit()
 	glog.Debugf("task prize type %d, task %#v", taskType, rs.User.Task)
 	msg := new(pb.STaskPrize)
-	if val, ok := rs.User.Task[taskType]; ok {
+	if val, ok := rs.User.Task[utils.String(taskType)]; ok {
 		task := config.GetTask(val.Taskid)
 		if val.Num < task.Count || task.Taskid != val.Taskid {
 			msg.Error = pb.AwardFaild
@@ -431,7 +432,7 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 		rs.addCurrency(task.Diamond, task.Coin,
 			0, 0, int32(pb.LOG_TYPE46))
 		val.Prize = true
-		rs.User.Task[taskType] = val
+		rs.User.Task[utils.String(taskType)] = val
 		//响应消息
 		msg.Type = taskType
 		msg.Coin = task.Coin
@@ -464,7 +465,7 @@ func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
 		return
 	}
 	//存在下个任务
-	delete(rs.User.Task, taskType) //移除
+	delete(rs.User.Task, utils.String(taskType)) //移除
 	//查找
 	task := config.GetTask(nextid)
 	if task.Taskid != nextid {
@@ -483,7 +484,7 @@ func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
 		Taskid: task.Taskid,
 		Utime:  time.Now(),
 	}
-	rs.User.Task[int32(task.Type)] = taskInfo
+	rs.User.Task[utils.String(task.Type)] = taskInfo
 	msg3 := handler.TaskUpdateMsg(0, pb.TaskType(task.Type),
 		rs.User.GetUserid())
 	msg3.Taskid = task.Taskid
@@ -493,7 +494,8 @@ func (rs *RoleActor) nextTask(taskType, nextid int32, msg *pb.STaskPrize) {
 //更新任务数据
 func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 	rs.taskInit()
-	if val, ok := rs.User.Task[int32(arg.Type)]; ok {
+	taskTypeStr := utils.String(int32(arg.Type))
+	if val, ok := rs.User.Task[taskTypeStr]; ok {
 		if val.Prize {
 			return
 		}
@@ -504,7 +506,7 @@ func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 		}
 		val.Num += arg.Num
 		val.Utime = time.Now()
-		rs.User.Task[int32(arg.Type)] = val
+		rs.User.Task[taskTypeStr] = val
 		rs.rolePid.Tell(arg)
 	} else {
 		list := config.GetOrderTasks()
@@ -517,7 +519,7 @@ func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 				Num:    arg.Num,
 				Utime:  time.Now(),
 			}
-			rs.User.Task[int32(arg.Type)] = taskInfo
+			rs.User.Task[taskTypeStr] = taskInfo
 			rs.rolePid.Tell(arg)
 			break
 		}
@@ -526,7 +528,7 @@ func (rs *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 
 func (rs *RoleActor) taskInit() {
 	if rs.User.Task == nil {
-		rs.User.Task = make(map[int32]data.TaskInfo)
+		rs.User.Task = make(map[string]data.TaskInfo)
 	}
 }
 

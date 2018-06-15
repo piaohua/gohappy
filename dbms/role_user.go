@@ -2,12 +2,12 @@ package main
 
 import (
 	"time"
-	"utils"
 
 	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
+	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 )
@@ -203,6 +203,7 @@ func (a *RoleActor) getUserById(userid string) *data.User {
 		return user
 	}
 	newUser := new(data.User)
+	user.Task = make(map[string]data.TaskInfo)
 	newUser.GetById(userid) //数据库中取
 	if newUser.Userid == "" {
 		glog.Debugf("getUserById failed %s", userid)
@@ -218,6 +219,7 @@ func (a *RoleActor) getUserByTourist(account string) *data.User {
 		return a.getUserById(v)
 	}
 	user := new(data.User)
+	user.Task = make(map[string]data.TaskInfo)
 	user.Tourist = account
 	user.GetByTourist() //数据库中取
 	if user.Userid == "" {
@@ -234,6 +236,7 @@ func (a *RoleActor) getUserByPhone(account string) *data.User {
 		return a.getUserById(v)
 	}
 	user := new(data.User)
+	user.Task = make(map[string]data.TaskInfo)
 	user.Phone = account
 	user.GetByPhone() //数据库中取
 	if user.Userid == "" {
@@ -250,6 +253,7 @@ func (a *RoleActor) getUserByWx(account string) *data.User {
 		return a.getUserById(v)
 	}
 	user := new(data.User)
+	user.Task = make(map[string]data.TaskInfo)
 	user.Wxuid = account
 	user.GetByWechat() //数据库中取
 	if user.GetUserid() == "" {
@@ -335,6 +339,7 @@ func (a *RoleActor) syncUser(arg *pb.SyncUser, ctx actor.Context) {
 		return
 	}
 	glog.Debugf("sync user successful %s", arg.Userid)
+	glog.Debugf("syscUser %#v", user)
 	a.states[arg.Userid] = true
 }
 
@@ -472,18 +477,19 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 		return
 	}
 	if user.Task == nil {
-		user.Task = make(map[int32]data.TaskInfo)
+		user.Task = make(map[string]data.TaskInfo)
 	}
-	if val, ok := user.Task[int32(arg.Type)]; ok {
+	taskTypeStr := utils.String(int32(arg.Type))
+	if val, ok := user.Task[taskTypeStr]; ok {
 		if arg.Prize && arg.Nextid != 0 {
-			delete(user.Task, int32(arg.Type))
+			delete(user.Task, taskTypeStr)
 		} else if arg.Prize {
 			val.Prize = arg.Prize //不存在下个时不清除
-			user.Task[int32(arg.Type)] = val
+			user.Task[taskTypeStr] = val
 		} else {
 			val.Num += arg.Num
 			val.Utime = time.Now()
-			user.Task[int32(arg.Type)] = val
+			user.Task[taskTypeStr] = val
 		}
 	} else {
 		taskInfo := data.TaskInfo{
@@ -491,7 +497,7 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 			Num:    arg.Num,
 			Utime:  time.Now(),
 		}
-		user.Task[int32(arg.Type)] = taskInfo
+		user.Task[taskTypeStr] = taskInfo
 	}
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateTask()

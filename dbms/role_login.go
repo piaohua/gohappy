@@ -22,6 +22,7 @@ func (a *RoleActor) loginedGetUser(arg *pb.GetUser, ctx actor.Context) {
 		return
 	}
 	//打包
+	glog.Debugf("loginedGetUser %#v", user)
 	result, err1 := json.Marshal(user)
 	if err1 != nil {
 		glog.Errorf("userid %s Marshal err %v", arg.Userid, err1)
