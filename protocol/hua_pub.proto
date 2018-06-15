@@ -23,6 +23,7 @@ message JHRoomUser
     string lat = 17;//Latitude
     string lng = 18;//Longitude
     string address = 19;//Address
+    string sign = 20;//个性签名
 }
 
 // 房间数据

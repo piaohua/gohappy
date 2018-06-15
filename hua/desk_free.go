@@ -460,8 +460,6 @@ func (t *Desk) freeStartMsg() {
 
 //开始下注
 func (t *Desk) gameStartBet() {
-	//不足做庄
-	t.checkBeDealer()
 	//下注状态
 	t.state = int32(pb.STATE_BET)
 	t.freeStartMsg()
@@ -652,7 +650,8 @@ func (t *Desk) dealerWin() {
 	//庄家收钱转为正数
 	if val < 0 {
 		val *= -1
-	} else {
+	}
+	if val > 0 {
 		//	抽成
 		val = int64(math.Trunc(float64(val) * 0.98))
 	}

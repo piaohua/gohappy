@@ -97,6 +97,7 @@ func PackJHCoinUser(p *data.User) *pb.JHRoomUser {
 		Lat:      p.Lat,
 		Lng:      p.Lng,
 		Address:  p.Address,
+		Sign:     p.Sign,
 	}
 }
 

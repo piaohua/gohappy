@@ -353,18 +353,20 @@ func (t *Desk) findBeDealer() (userid string, carry int64) {
 		return
 	}
 	for k, v := range t.DeskFree.Dealers {
-		if !t.isOnline(k) {
-			continue
-		}
-		//TODO 自动下庄金额不足玩家
-		if v < int64(t.DeskData.Carry) {
+		if !t.isOnline(k) || v < int64(t.DeskData.Carry) {
+			delete(t.DeskFree.Dealers, k)
 			continue
 		}
 		if val, ok := t.roles[k]; ok {
-			//TODO 全部资金上庄
-			if val.GetCoin() >= v && v > carry {
+			//自动下庄金额不足玩家
+			if val.GetCoin() < int64(t.DeskData.Carry) {
+				delete(t.DeskFree.Dealers, k)
+				continue
+			}
+			//全部资金上庄
+			if val.GetCoin() > carry {
 				userid = k
-				carry = v
+				carry = val.GetCoin()
 			}
 		}
 	}
@@ -411,6 +413,7 @@ func (t *Desk) checkBeDealer() {
 			t.DeskFree.Carry <= int64(t.DeskData.Down) ||
 			t.DeskFree.Carry >= int64(t.DeskData.Top) {
 			t.delBeDealer(t.DeskGame.Dealer, v.User)
+		} else {
 			return
 		}
 	}

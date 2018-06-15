@@ -97,6 +97,7 @@ func PackNNCoinUser(p *data.User) *pb.NNRoomUser {
 		Lat:      p.Lat,
 		Lng:      p.Lng,
 		Address:  p.Address,
+		Sign:     p.Sign,
 	}
 }
 

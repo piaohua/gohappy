@@ -429,6 +429,10 @@
             "address": {
               "type": "string",
               "id": 19
+            },
+            "sign": {
+              "type": "string",
+              "id": 20
             }
           }
         },
