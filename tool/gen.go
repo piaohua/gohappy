@@ -69,6 +69,16 @@ var protosUnpack = map[string][]proto{
 		{code: 1022, name: "CRoomRecord"},
 		{code: 1023, name: "CSignature"},
 		{code: 1024, name: "CLatLng"},
+		//agent
+		{code: 1050, name: "CAgentJoin"},
+		{code: 1051, name: "CMyAgent"},
+		{code: 1052, name: "CAgentManage"},
+		{code: 1053, name: "CAgentProfit"},
+		{code: 1054, name: "CAgentProfitOrder"},
+		{code: 1055, name: "CAgentProfitApply"},
+		{code: 1056, name: "CAgentProfitRank"},
+		{code: 1057, name: "CAgentPlayerManage"},
+		{code: 1058, name: "CAgentPlayerApprove"},
 	},
 	//niu
 	"niu": {
@@ -188,6 +198,16 @@ var protosPacket = map[string][]proto{
 		{code: 1526, name: "SPushNotice"},
 		{code: 1527, name: "SSignature"},
 		{code: 1528, name: "SLatLng"},
+		//agent
+		{code: 1550, name: "SAgentJoin"},
+		{code: 1551, name: "SMyAgent"},
+		{code: 1552, name: "SAgentManage"},
+		{code: 1553, name: "SAgentProfit"},
+		{code: 1554, name: "SAgentProfitOrder"},
+		{code: 1555, name: "SAgentProfitApply"},
+		{code: 1556, name: "SAgentProfitRank"},
+		{code: 1557, name: "SAgentPlayerManage"},
+		{code: 1558, name: "SAgentPlayerApprove"},
 	},
 	//niu
 	"niu": {

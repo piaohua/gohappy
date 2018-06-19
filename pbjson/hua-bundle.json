@@ -86,6 +86,22 @@
             "pub": {
               "type": "bool",
               "id": 7
+            },
+            "minimum": {
+              "type": "uint32",
+              "id": 8
+            },
+            "maximum": {
+              "type": "uint32",
+              "id": 9
+            },
+            "mode": {
+              "type": "uint32",
+              "id": 10
+            },
+            "multiple": {
+              "type": "uint32",
+              "id": 11
             }
           }
         },
@@ -521,6 +537,14 @@
             "pub": {
               "type": "bool",
               "id": 21
+            },
+            "mode": {
+              "type": "uint32",
+              "id": 22
+            },
+            "multiple": {
+              "type": "uint32",
+              "id": 23
             }
           }
         },
@@ -982,6 +1006,22 @@
               "rule": "repeated",
               "type": "JHOverList",
               "id": 12
+            },
+            "minimum": {
+              "type": "int64",
+              "id": 13
+            },
+            "maximum": {
+              "type": "int64",
+              "id": 14
+            },
+            "mode": {
+              "type": "uint32",
+              "id": 15
+            },
+            "multiple": {
+              "type": "uint32",
+              "id": 16
             }
           }
         },

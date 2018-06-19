@@ -24,6 +24,8 @@ message SGRoomUser
     string lng = 18;//Longitude
     string address = 19;//Address
     string sign = 20;//个性签名
+    uint32 mode    =21;//模式，0普通，1特殊，2疯狂
+    uint32 multiple=22;//倍数，0低，1中，2高
 }
 
 // 房间数据
@@ -223,4 +225,8 @@ message SGRecordList
     string userid    =10;//房间房主ID
     uint32 ctime     =11;//房间创建时间
     repeated SGOverList list    = 12;  //房间总结算
+    int64  minimum = 13;//入场限制
+    int64  maximum = 14;//离场限制
+    uint32 mode    = 15;//模式，0普通，1特殊，2疯狂
+    uint32 multiple= 16;//倍数，0低，1中，2高
 }

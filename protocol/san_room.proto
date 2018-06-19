@@ -42,6 +42,10 @@ message CSGCreateRoom
     uint32 payment = 5;  //付费方式0=房主付费,1=AA付费 
     uint32 count   = 6;  //人数限制
     bool   pub     = 7;  //公开展示
+    uint32 minimum = 8;  //入场限制
+    uint32 maximum = 9;  //离场限制
+    uint32 mode    = 10; //模式，0普通，1特殊，2疯狂
+    uint32 multiple= 11; //倍数，0低，1中，2高
 }
 
 // 返回房间数据

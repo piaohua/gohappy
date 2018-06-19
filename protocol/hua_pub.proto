@@ -52,6 +52,8 @@ message JHRoomData
     int64  minimum =19;//房间最低限制
     int64  maximum =20;//房间最高限制
     bool   pub     =21;//是否公开展示
+    uint32 mode    =22;//模式，0普通，1特殊，2疯狂
+    uint32 multiple=23;//倍数，0低，1中，2高
 }
 
 // 下注信息
@@ -224,4 +226,8 @@ message JHRecordList
     string userid    =10;//房间房主ID
     uint32 ctime     =11;//房间创建时间
     repeated JHOverList list    = 12;  //房间总结算
+    int64  minimum = 13;//入场限制
+    int64  maximum = 14;//离场限制
+    uint32 mode    = 15;//模式，0普通，1特殊，2疯狂
+    uint32 multiple= 16;//倍数，0低，1中，2高
 }

@@ -1129,6 +1129,26 @@
             "Ctime": {
               "type": "uint32",
               "id": 11
+            },
+            "Pub": {
+              "type": "bool",
+              "id": 12
+            },
+            "Minimum": {
+              "type": "int64",
+              "id": 13
+            },
+            "Maximum": {
+              "type": "int64",
+              "id": 14
+            },
+            "Mode": {
+              "type": "uint32",
+              "id": 15
+            },
+            "Multiple": {
+              "type": "uint32",
+              "id": 16
             }
           }
         },

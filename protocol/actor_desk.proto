@@ -159,6 +159,10 @@ message CreateDesk
     string Name = 11;//节点名称
     actor.PID Sender = 12; //玩家进程
     bool Pub = 13; //公开展示
+    int64  minimum = 14; //入场限制
+    int64  maximum = 15; //离场限制
+    uint32 mode    = 16; //模式，0普通，1特殊，2疯狂
+    uint32 multiple= 17; //倍数，0低，1中，2高
 }
 
 message CreatedDesk {

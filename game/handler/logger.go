@@ -80,6 +80,11 @@ func LogRoomRecordMsg(d *data.DeskData) (msg *pb.RoomRecordInfo) {
 		Round:  d.Round,
 		Cid:    d.Cid,
 		Ctime:  d.Ctime,
+		Pub:    msg.Pub,
+		Minimum:  msg.Minimum,
+		Maximum:  msg.Maximum,
+		Mode:     msg.Mode,
+		Multiple: msg.Multiple,
 	}
 	return
 }
@@ -98,6 +103,11 @@ func Log2RoomRecord(msg *pb.RoomRecordInfo) {
 		Round:  msg.Round,
 		Cid:    msg.Cid,
 		Ctime:  msg.Ctime,
+		Pub:    msg.Pub,
+		Minimum:  msg.Minimum,
+		Maximum:  msg.Maximum,
+		Mode:     msg.Mode,
+		Multiple: msg.Multiple,
 	}
 	r.Save()
 }
@@ -152,6 +162,11 @@ func RoomRecordInfoMsg(msg *data.RoomRecord) *pb.RoomRecordInfo {
 		Round:  msg.Round,
 		Cid:    msg.Cid,
 		Ctime:  msg.Ctime,
+		Pub:    msg.Pub,
+		Minimum:  msg.Minimum,
+		Maximum:  msg.Maximum,
+		Mode:     msg.Mode,
+		Multiple: msg.Multiple,
 	}
 	return r
 }

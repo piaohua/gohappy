@@ -331,6 +331,11 @@ type RoomRecord struct {
 	Round  uint32 `bson:"round"`
 	Cid    string `bson:"cid"`
 	Ctime  uint32 `bson:"ctime"`
+	Pub    bool    `bson:"pub"`
+	Minimum  int64  `bson:"minimum"`
+	Maximum  int64  `bson:"maximum"`
+	Mode     uint32 `bson:"mode"`
+	Multiple uint32 `bson:"multiple"`
 }
 
 //Save 保存记录

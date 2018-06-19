@@ -173,6 +173,10 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 		Expire:  utils.Timestamp() + 86400,
 		Deal:    true,
 		Pub:     arg.Pub,
+		Minimum: arg.Minimum,
+		Maximum: arg.Maximum,
+		Mode:    arg.Mode,
+		Multiple:arg.Multiple,
 	}
 }
 

@@ -317,6 +317,10 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 		Payment: arg.Payment,
 		Count:   arg.Count,
 		Pub:     arg.Pub,
+		Minimum: int64(arg.Minimum),
+		Maximum: int64(arg.Maximum),
+		Mode:    arg.Mode,
+		Multiple:arg.Multiple,
 		//TODO 消耗
 		Cost: 100,
 	}

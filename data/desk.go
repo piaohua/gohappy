@@ -34,7 +34,9 @@ type DeskData struct {
 	Minimum int64 `json:"minimum"` //房间最低限制
 	Maximum int64 `json:"maximum"` //房间最高限制
 	//
-	Pub bool `json:"pub"` //公开显示
+	Pub      bool   `json:"pub"`       //公开显示
+	Mode     uint32 `json:"mode"`      //模式，0普通，1特殊，2疯狂
+	Multiple uint32 `json:"multiple"` //倍数，0低，1中，2高
 }
 
 //DeskRole 牌桌玩家数据
