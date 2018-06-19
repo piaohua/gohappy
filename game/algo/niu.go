@@ -21,9 +21,12 @@ const (
 	Niu8
 	Niu9
 	NiuNiu
-	FourFlower
+	Straight
+	FullHouse
+	Flush
 	FiveFlower
 	Bomb
+	StraightFlush
 	FiveTiny
 )
 
@@ -79,43 +82,18 @@ var NIUS [][]int = [][]int{{0, 1, 2}, {0, 1, 3}, {0, 2, 3}, {1, 2, 3}, {0, 1, 4}
 var NIUL [][]int = [][]int{{3, 4}, {2, 4}, {1, 4}, {0, 4}, {2, 3}, {1, 3}, {0, 3}, {1, 2}, {0, 2}, {0, 1}}
 
 //Algo []uint32{1, 5, 8, 9, K}
-func Algo(cs []uint32) uint32 {
+func Algo(mode uint32, cs []uint32) uint32 {
 	if len(cs) != 5 {
 		return 0
 	}
 	descSort(cs)
-	bomb_n := make(map[uint32]int)
-	var tiny_n int
-	var tiny_v uint32
-	var flower int
-	var ten int
-	for _, v := range cs {
-		bomb_n[Rank(v)] += 1
-		switch Rank(v) {
-		case Jack, Queen, King:
-			flower++
-		case Ten:
-			ten++
-		case Ace, Deuce, Trey, Four, Five, Six:
-			tiny_n++
-			tiny_v += Rank(v)
-		}
-	}
-	if tiny_n == 5 && tiny_v <= Ten {
-		return FiveTiny
-	}
-	for _, v := range bomb_n {
-		if v == 4 {
-			return Bomb
-		}
-	}
-	if flower == 5 {
-		return FiveFlower
-	}
-	//if ten == 1 && flower == 4 {
-	//	return FourFlower
-	//}
 	var niu uint32 = HgihCard
+	if mode != 0 {
+		niu = Algo1(cs)
+		if niu != 0 {
+			return niu
+		}
+	}
 	for k, v := range NIUS {
 		if ((Trunc(cs[v[0]]) + Trunc(cs[v[1]]) + Trunc(cs[v[2]])) % 10) != 0 {
 			continue
@@ -144,6 +122,87 @@ func Algo(cs []uint32) uint32 {
 		}
 	}
 	return niu
+}
+
+//Algo1 原有特殊玩法
+func Algo1(cs []uint32) uint32 {
+	bomb_n := make(map[uint32]int)
+	var tiny_n int
+	var tiny_v uint32
+	var flower int
+	var ten int
+	for _, v := range cs {
+		bomb_n[Rank(v)] += 1
+		switch Rank(v) {
+		case Jack, Queen, King:
+			flower++
+		case Ten:
+			ten++
+		case Ace, Deuce, Trey, Four, Five, Six:
+			tiny_n++
+			tiny_v += Rank(v)
+		}
+	}
+	if tiny_n == 5 && tiny_v <= Ten {
+		return FiveTiny
+	}
+	niu := Algo2(cs)
+	if niu == StraightFlush {
+		return niu
+	}
+	for _, v := range bomb_n {
+		if v == 4 {
+			return Bomb
+		}
+	}
+	if flower == 5 {
+		return FiveFlower
+	}
+	return niu
+}
+
+//Algo2 新加特殊玩法
+func Algo2(cs []uint32) uint32 {
+	var straight bool
+	var flush bool
+	cards := make([]hands, len(cs))
+	for k, v := range cs {
+		cards[k].Suit = Suit(v)
+		cards[k].Rank = Rank(v)
+	}
+	if cards[0].Suit == cards[1].Suit &&
+		cards[1].Suit == cards[2].Suit &&
+		cards[2].Suit == cards[3].Suit &&
+		cards[3].Suit == cards[4].Suit {
+			straight = true
+	}
+	if (cards[0].Rank + 1) == cards[1].Rank &&
+		(cards[1].Rank + 1) == cards[2].Rank &&
+		(cards[2].Rank + 1) == cards[3].Rank &&
+		(cards[3].Rank + 1) == cards[4].Rank {
+		flush = true
+	}
+	if straight && flush {
+		return StraightFlush
+	}
+	if flush {
+		return Flush
+	}
+	if (cards[0].Rank == cards[1].Rank &&
+		cards[1].Rank == cards[2].Rank &&
+		cards[3].Rank == cards[4].Rank) ||
+		(cards[1].Rank == cards[2].Rank &&
+		cards[2].Rank == cards[3].Rank &&
+		cards[0].Rank == cards[4].Rank) ||
+		(cards[2].Rank == cards[3].Rank &&
+		cards[3].Rank == cards[4].Rank &&
+		cards[0].Rank == cards[1].Rank) {
+		return FullHouse
+	}
+	if straight {
+		return Straight
+	}
+	return 0
 }
 
 //Trunc 取整
@@ -305,22 +364,60 @@ func Compare3(a, b []uint32) bool {
 }
 
 //Multiple 积分倍数
-func Multiple(n uint32) uint32 {
+func Multiple(mode, n uint32) uint32 {
+	if mode != 0 {
+		return Multiple1(n)
+	}
 	switch n {
-	case HgihCard, Niu1, Niu2, Niu3, Niu4, Niu5, Niu6:
+	case HgihCard, Niu1, Niu2, Niu3, Niu4, Niu5, Niu6, Niu7:
 		return 1
-	case Niu7, Niu8, Niu9:
+	case Niu8:
 		return 2
-	case NiuNiu:
+	case Niu9:
 		return 3
-	case FourFlower:
+	case NiuNiu:
 		return 4
-	case FiveFlower:
+	}
+	return 1
+}
+
+//Multiple1 积分倍数
+func Multiple1(n uint32) uint32 {
+	switch n {
+	case HgihCard, Niu1:
+		return 1
+	case Niu2:
+		return 2
+	case Niu3:
+		return 3
+	case Niu4:
 		return 4
-	case FiveTiny:
-		return 6
-	case Bomb:
+	case Niu5:
 		return 5
+	case Niu6:
+		return 6
+	case Niu7:
+		return 7
+	case Niu8:
+		return 8
+	case Niu9:
+		return 9
+	case NiuNiu:
+		return 10
+	case Straight:
+		return 11
+	case FullHouse:
+		return 12
+	case Flush:
+		return 13
+	case FiveFlower:
+		return 14
+	case Bomb:
+		return 15
+	case StraightFlush:
+		return 16
+	case FiveTiny:
+		return 17
 	}
 	return 1
 }
@@ -359,9 +456,6 @@ func AlgoVerify(cs []uint32, val uint32) bool {
 	if flower == 5 && val == FiveFlower {
 		return true
 	}
-	//if ten == 1 && flower == 4 && val == FourFlower {
-	//	return true
-	//}
 	for k, v := range NIUS {
 		if ((Trunc(cs[v[0]]) + Trunc(cs[v[1]]) + Trunc(cs[v[2]])) % 10) != 0 {
 			continue

@@ -275,7 +275,7 @@ func (t *Desk) niuTimeout() {
 		if v.Niu {
 			continue
 		}
-		num := algo.Algo(v.Cards)
+		num := algo.Algo(t.DeskData.Mode, v.Cards)
 		v.Power = num
 		v.Niu = true
 		msg := new(pb.SNNiu)

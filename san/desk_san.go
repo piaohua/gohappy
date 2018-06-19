@@ -327,15 +327,18 @@ func (t *Desk) limitOver() {
 	}
 	for k, v := range t.roles {
 		coin := v.User.GetCoin()
-		if t.DeskData.Maximum == 0 {
-			if coin >= t.DeskData.Minimum {
-				continue
-			}
-		} else {
-			if coin >= t.DeskData.Minimum &&
-				coin < t.DeskData.Maximum {
-				continue
-			}
+		//if t.DeskData.Maximum == 0 {
+		//	if coin >= t.DeskData.Minimum {
+		//		continue
+		//	}
+		//} else {
+		//	if coin >= t.DeskData.Minimum &&
+		//		coin < t.DeskData.Maximum {
+		//		continue
+		//	}
+		//}
+		if coin >= t.DeskData.Minimum { //离场限制
+			continue
 		}
 		errcode := t.leave(k)
 		if errcode != pb.OK {

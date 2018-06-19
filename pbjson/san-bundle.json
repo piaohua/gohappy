@@ -547,14 +547,6 @@
             "sign": {
               "type": "string",
               "id": 20
-            },
-            "mode": {
-              "type": "uint32",
-              "id": 21
-            },
-            "multiple": {
-              "type": "uint32",
-              "id": 22
             }
           }
         },
@@ -639,6 +631,14 @@
             "pub": {
               "type": "bool",
               "id": 20
+            },
+            "mode": {
+              "type": "uint32",
+              "id": 21
+            },
+            "multiple": {
+              "type": "uint32",
+              "id": 22
             }
           }
         },

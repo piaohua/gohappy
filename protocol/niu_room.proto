@@ -44,7 +44,7 @@ message CNNCreateRoom
     bool   pub     = 7;  //公开展示
     uint32 minimum = 8;  //入场限制
     uint32 maximum = 9;  //离场限制
-    uint32 mode    = 10; //模式，0普通，1特殊，2疯狂
+    uint32 mode    = 10; //模式，0普通，1疯狂
     uint32 multiple= 11; //倍数，0低，1中，2高
 }
 

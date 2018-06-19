@@ -81,6 +81,8 @@ func PackSGCoinRoom(d *data.DeskData) *pb.SGRoomData {
 		Minimum: d.Minimum, //
 		Maximum: d.Maximum, //
 		Pub:     d.Pub,
+		Mode:    d.Mode,
+		Multiple:d.Multiple,
 	}
 }
 

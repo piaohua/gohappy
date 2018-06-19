@@ -65,6 +65,8 @@ func NewDeskData(d *data.Game) *data.DeskData {
 		Minimum: d.Minimum,
 		Maximum: d.Maximum,
 		Pub:     d.Pub,
+		Mode:    d.Mode,
+		Multiple:d.Multiple,
 	}
 }
 
@@ -76,7 +78,7 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 		Rtype:  int32(pb.ROOM_TYPE2),
 		Status: 1,
 		Count:  100,
-		Ante:   1,
+		Ante:   50,
 		Deal:   true,
 		Carry:  20000,
 		Down:   10000,
@@ -85,6 +87,7 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 		Node:   node,
 		Ctime:  bson.Now(),
 		Pub:    true,
+		Mode:   1,
 	}
 }
 
@@ -98,45 +101,46 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 		Ltype:  ltype,
 		Status: 1,
 		Count:  5,
-		Ante:   1,
+		Ante:   100,
 		Deal:   true,
 		Chip:   20000,
 		Sit:    20000,
 		Node:   node,
 		Ctime:  bson.Now(),
 		Pub:    true,
+		Mode:   1,
 	}
 	switch ltype {
 	case int32(pb.ROOM_LEVEL0):
-		g.Ante = 1
+		g.Ante = 100
 		g.Chip = 2000
 		g.Sit = 2000
-		g.Minimum = 2000
-		g.Maximum = 5000
+		g.Minimum = 1000
+		g.Maximum = 2000
 	case int32(pb.ROOM_LEVEL1):
-		g.Ante = 2
-		g.Chip = 5000
-		g.Sit = 5000
+		g.Ante = 200
+		g.Chip = 50000
+		g.Sit = 50000
 		g.Minimum = 5000
 		g.Maximum = 50000
 	case int32(pb.ROOM_LEVEL2):
-		g.Ante = 5
-		g.Chip = 20000
-		g.Sit = 20000
+		g.Ante = 500
+		g.Chip = 200000
+		g.Sit = 200000
 		g.Minimum = 20000
 		g.Maximum = 200000
 	case int32(pb.ROOM_LEVEL3):
-		g.Ante = 10
-		g.Chip = 200000
-		g.Sit = 200000
+		g.Ante = 1000
+		g.Chip = 1000000
+		g.Sit = 1000000
 		g.Minimum = 200000
-		g.Maximum = 2000000
+		g.Maximum = 1000000
 	case int32(pb.ROOM_LEVEL4):
-		g.Ante = 20
+		g.Ante = 2000
 		g.Chip = 2000000
 		g.Sit = 2000000
-		g.Minimum = 2000000
-		g.Maximum = 0
+		g.Minimum = 1000000
+		g.Maximum = 2000000
 	}
 	return g
 }
@@ -145,11 +149,11 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 func MatchLevel(coin int64) int32 {
 	if coin >= 2000000 {
 		return int32(pb.ROOM_LEVEL4)
-	} else if coin >= 200000 {
+	} else if coin >= 1000000 {
 		return int32(pb.ROOM_LEVEL3)
-	} else if coin >= 20000 {
+	} else if coin >= 200000 {
 		return int32(pb.ROOM_LEVEL2)
-	} else if coin >= 5000 {
+	} else if coin >= 50000 {
 		return int32(pb.ROOM_LEVEL1)
 	}
 	return int32(pb.ROOM_LEVEL0)

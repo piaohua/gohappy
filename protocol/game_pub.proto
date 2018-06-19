@@ -94,7 +94,7 @@ message RoomRecordInfo {
     bool   Pub   =12;//公开展示
     int64  Minimum =13;//入场限制
     int64  Maximum =14;//离场限制
-    uint32 Mode    =15;//模式，0普通，1特殊，2疯狂
+    uint32 Mode    =15;//模式，0普通，1疯狂
     uint32 Multiple=16;//倍数，0低，1中，2高
 }
 

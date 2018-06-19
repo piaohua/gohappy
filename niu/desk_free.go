@@ -551,21 +551,21 @@ func (t *Desk) freeGameOver() {
 	cs4 := t.getHandCards(uint32(pb.DESK_SEAT4)) //闲家牌
 	cs5 := t.getHandCards(uint32(pb.DESK_SEAT5)) //闲家牌
 	//
-	var a1 uint32 = algo.Algo(cs1) //1位置庄家牌力
-	var a2 uint32 = algo.Algo(cs2) //2位置闲家牌力
-	var a3 uint32 = algo.Algo(cs3) //3位置闲家牌力
-	var a4 uint32 = algo.Algo(cs4) //4位置闲家牌力
-	var a5 uint32 = algo.Algo(cs5) //5位置闲家牌力
+	var a1 uint32 = algo.Algo(t.DeskData.Mode, cs1) //1位置庄家牌力
+	var a2 uint32 = algo.Algo(t.DeskData.Mode, cs2) //2位置闲家牌力
+	var a3 uint32 = algo.Algo(t.DeskData.Mode, cs3) //3位置闲家牌力
+	var a4 uint32 = algo.Algo(t.DeskData.Mode, cs4) //4位置闲家牌力
+	var a5 uint32 = algo.Algo(t.DeskData.Mode, cs5) //5位置闲家牌力
 	t.DeskFree.Power[uint32(pb.DESK_SEAT1)] = a1
 	t.DeskFree.Power[uint32(pb.DESK_SEAT2)] = a2
 	t.DeskFree.Power[uint32(pb.DESK_SEAT3)] = a3
 	t.DeskFree.Power[uint32(pb.DESK_SEAT4)] = a4
 	t.DeskFree.Power[uint32(pb.DESK_SEAT5)] = a5
 	//各位置和庄家对比的赔付倍数
-	t.DeskFree.Multiple[uint32(pb.DESK_SEAT2)] = muliti(a1, a2, cs1, cs2)
-	t.DeskFree.Multiple[uint32(pb.DESK_SEAT3)] = muliti(a1, a3, cs1, cs3)
-	t.DeskFree.Multiple[uint32(pb.DESK_SEAT4)] = muliti(a1, a4, cs1, cs4)
-	t.DeskFree.Multiple[uint32(pb.DESK_SEAT5)] = muliti(a1, a5, cs1, cs5)
+	t.DeskFree.Multiple[uint32(pb.DESK_SEAT2)] = t.muliti(a1, a2, cs1, cs2)
+	t.DeskFree.Multiple[uint32(pb.DESK_SEAT3)] = t.muliti(a1, a3, cs1, cs3)
+	t.DeskFree.Multiple[uint32(pb.DESK_SEAT4)] = t.muliti(a1, a4, cs1, cs4)
+	t.DeskFree.Multiple[uint32(pb.DESK_SEAT5)] = t.muliti(a1, a5, cs1, cs5)
 	//牌局数累加一次
 	//t.DeskGame.Round++
 	t.xianjiaJiesuan() //结算,闲家赔付
@@ -921,17 +921,17 @@ func (t *Desk) getFreeBets(seat uint32) map[string]int64 {
 //.
 
 //'返回庄家赢倍数,a1庄家牌力,an闲家牌力,庄家赢返回正数,输返回负数
-func muliti(a1, an uint32, cs1, csn []uint32) int64 {
+func (t *Desk) muliti(a1, an uint32, cs1, csn []uint32) int64 {
 	switch {
 	case a1 > an:
-		return int64(algo.Multiple(a1))
+		return int64(algo.Multiple(t.DeskData.Mode, a1))
 	case a1 < an:
-		return -1 * int64(algo.Multiple(an))
+		return -1 * int64(algo.Multiple(t.DeskData.Mode, an))
 	case a1 == an:
 		if algo.Compare(cs1, csn) {
-			return int64(algo.Multiple(a1))
+			return int64(algo.Multiple(t.DeskData.Mode, a1))
 		}
-		return -1 * int64(algo.Multiple(an))
+		return -1 * int64(algo.Multiple(t.DeskData.Mode, an))
 	}
 	return 1
 }

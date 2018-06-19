@@ -81,6 +81,8 @@ func PackJHCoinRoom(d *data.DeskData) *pb.JHRoomData {
 		Minimum: d.Minimum, //
 		Maximum: d.Maximum, //
 		Pub:     d.Pub,
+		Mode:    d.Mode,
+		Multiple:d.Multiple,
 	}
 }
 

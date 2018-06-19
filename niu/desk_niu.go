@@ -336,15 +336,18 @@ func (t *Desk) limitOver() {
 	}
 	for k, v := range t.roles {
 		coin := v.User.GetCoin()
-		if t.DeskData.Maximum == 0 {
-			if coin >= t.DeskData.Minimum {
-				continue
-			}
-		} else {
-			if coin >= t.DeskData.Minimum &&
-				coin < t.DeskData.Maximum {
-				continue
-			}
+		//if t.DeskData.Maximum == 0 {
+		//	if coin >= t.DeskData.Minimum {
+		//		continue
+		//	}
+		//} else {
+		//	if coin >= t.DeskData.Minimum &&
+		//		coin < t.DeskData.Maximum {
+		//		continue
+		//	}
+		//}
+		if coin >= t.DeskData.Minimum { //离场限制
+			continue
 		}
 		errcode := t.leave(k)
 		if errcode != pb.OK {
@@ -520,17 +523,17 @@ func (t *Desk) pailiOver1(score map[uint32]int64) map[uint32]int64 {
 		}
 		switch {
 		case v.Power > a:
-			val := int64(v.Bet * int64(algo.Multiple(v.Power)) * ante)
+			val := int64(v.Bet * int64(algo.Multiple(t.DeskData.Mode, v.Power)) * ante)
 			score = over3(k, dealerSeat, val, score)
 		case v.Power < a:
-			val := int64(v.Bet * int64(algo.Multiple(a)) * ante)
+			val := int64(v.Bet * int64(algo.Multiple(t.DeskData.Mode, a)) * ante)
 			score = over3(dealerSeat, k, val, score)
 		case v.Power == a:
 			if t.pailiCompare(dealerSeat, k) {
-				val := int64(v.Bet * int64(algo.Multiple(a)) * ante)
+				val := int64(v.Bet * int64(algo.Multiple(t.DeskData.Mode, a)) * ante)
 				score = over3(dealerSeat, k, val, score)
 			} else {
-				val := int64(v.Bet * int64(algo.Multiple(v.Power)) * ante)
+				val := int64(v.Bet * int64(algo.Multiple(t.DeskData.Mode, v.Power)) * ante)
 				score = over3(k, dealerSeat, val, score)
 			}
 		}
@@ -582,7 +585,7 @@ func (t *Desk) pailiOver3(score map[uint32]int64) (uint32, map[uint32]int64) {
 		if k == seat || !v.Ready {
 			continue
 		}
-		val := int64(v.Bet * bet1 * int64(algo.Multiple(a1)) * ante)
+		val := int64(v.Bet * bet1 * int64(algo.Multiple(t.DeskData.Mode, a1)) * ante)
 		score = over3(seat, k, val, score)
 	}
 	return seat, score
