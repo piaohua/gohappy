@@ -295,7 +295,9 @@ func (t *Desk) gameOver() {
 		t.kickOffline()
 	case int32(pb.ROOM_TYPE1): //私人
 		//牌局数累加一次
-		t.DeskGame.Round++
+		if !t.DeskData.Pub {
+			t.DeskGame.Round++
+		}
 		//结算消息
 		msg := t.resOver(score)
 		glog.Debugf("SNNGameover %#v", msg)
@@ -304,11 +306,15 @@ func (t *Desk) gameOver() {
 		}
 		t.broadcast(msg)
 		//记录
-		t.saveRecord(score)
+		if !t.DeskData.Pub {
+			t.saveRecord(score)
+		}
 		//结束连庄处理
 		t.dealerOver()
 		//重置状态
 		t.gameOverInit()
+		//TODO 踢出不足坐下玩家或超额玩家
+		//t.limitOver()
 		//关闭房间
 		t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
@@ -321,25 +327,31 @@ func (t *Desk) gameOver() {
 func (t *Desk) limitOver() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0): //自由
-		for k, v := range t.roles {
-			coin := v.User.GetCoin()
-			if t.DeskData.Maximum == 0 {
-				if coin >= t.DeskData.Minimum {
-					continue
-				}
-			} else {
-				if coin >= t.DeskData.Minimum &&
-					coin < t.DeskData.Maximum {
-					continue
-				}
-			}
-			errcode := t.leave(k)
-			if errcode != pb.OK {
+	case int32(pb.ROOM_TYPE1): //私人
+		if !t.DeskData.Pub {
+			return
+		}
+	case int32(pb.ROOM_TYPE2): //百人
+		return
+	}
+	for k, v := range t.roles {
+		coin := v.User.GetCoin()
+		if t.DeskData.Maximum == 0 {
+			if coin >= t.DeskData.Minimum {
 				continue
 			}
-			//离开状态消息
-			t.userLeaveDesk(k)
+		} else {
+			if coin >= t.DeskData.Minimum &&
+				coin < t.DeskData.Maximum {
+				continue
+			}
 		}
+		errcode := t.leave(k)
+		if errcode != pb.OK {
+			continue
+		}
+		//离开状态消息
+		t.userLeaveDesk(k)
 	}
 }
 
