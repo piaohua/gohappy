@@ -296,7 +296,10 @@ func (t *Desk) gameOver() {
 		//结算消息
 		msg := t.resOver(score)
 		t.broadcast(msg)
-		//TODO 记录
+		//记录
+		if !t.DeskData.Pub {
+			t.saveRecord(score)
+		}
 		//结束连庄处理
 		t.dealerOver()
 		//重置状态
@@ -703,6 +706,48 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 			t.DeskPriv.PrivScore[userid] += v
 			t.DeskPriv.Joins[userid]++
 		}
+	}
+}
+
+//.
+
+//'日志记录
+func (t *Desk) saveRecord(score map[uint32]int64) {
+	msg := new(pb.RoundRecord)
+	msg.Roomid = t.DeskData.Rid
+	msg.Round = t.DeskData.Round
+	msg.Dealer = t.DeskGame.Dealer
+	for k, v := range score {
+		if val, ok := t.seats[k]; ok {
+			msg2 := &pb.RoundRoleRecord{
+				Userid: val.Userid,
+				Cards:  val.Cards,
+				Value:  val.Power,
+				Bets:   val.Bet,
+				Score:  v,
+			}
+			if val2, ok2 := t.roles[val.Userid]; ok2 {
+				msg2.Rest = val2.User.GetCoin()
+			}
+			msg.Roles = append(msg.Roles, msg2)
+		}
+	}
+	t.loggerPid.Tell(msg)
+	for k := range score {
+		user := t.getUserBySeat(k)
+		if user == nil {
+			continue
+		}
+		msg1 := new(pb.RoleRecord)
+		msg1.Roomid = t.DeskData.Rid
+		msg1.Gtype = t.DeskData.Gtype
+		msg1.Userid = user.GetUserid()
+		msg1.Nickname = user.GetNickname()
+		msg1.Photo = user.GetPhoto()
+		msg1.Rest = user.GetCoin()
+		msg1.Score = t.DeskPriv.PrivScore[user.GetUserid()]
+		msg1.Joins = t.DeskPriv.Joins[user.GetUserid()]
+		t.loggerPid.Tell(msg1)
 	}
 }
 
