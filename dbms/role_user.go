@@ -203,7 +203,7 @@ func (a *RoleActor) getUserById(userid string) *data.User {
 		return user
 	}
 	newUser := new(data.User)
-	user.Task = make(map[string]data.TaskInfo)
+	newUser.Task = make(map[string]data.TaskInfo)
 	newUser.GetById(userid) //数据库中取
 	if newUser.Userid == "" {
 		glog.Debugf("getUserById failed %s", userid)
