@@ -1,0 +1,188 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+
+// 代理申请
+message CAgentJoin
+{
+    string agentname = 1;//名字
+    string agentid = 2;//代理id
+}
+
+message SAgentJoin
+{
+    ErrCode error= 1;//错误码 ,0:正常
+}
+
+// 代理信息
+message CMyAgent
+{
+}
+
+message SMyAgent
+{
+    string agentname = 1;//名字
+    string agentid = 2;//代理id
+    string address = 3;//地址
+    int64 profit = 4;//收益
+    int64 weekprofit = 5;//周收益
+    int64 historyprofit = 6;//历史收益
+    //TODO other info
+    ErrCode error= 7;//错误码 ,0:正常
+}
+
+// 代理管理
+message CAgentManage
+{
+    uint32 page = 1;//页数
+    string agentid = 2;//代理id,查询参数
+}
+
+message SAgentManage
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    AgentManage list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentManage
+{
+    string agentid = 1;//代理id
+    string address = 2;//地址
+    uint32 num = 3;//下级人数
+    int64 profit = 4;//当前收益
+    uint32 level = 5;//代理等级
+}
+
+// 代理收益明细
+message CAgentProfit
+{
+    uint32 page = 1;//页数
+    string agentid = 2;//代理id,查询参数
+    string time = 3;//收益日期
+    uint32 level = 4;//收益等级
+}
+
+message SAgentProfit
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    AgentProfitDetail list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentProfitDetail
+{
+    string userid = 1;//代理id
+    int64 profit = 2;//收益
+    uint32 level = 3;//收益等级
+    int32  gtype = 4;//game type
+    uint32 rate = 5;//收益比例
+}
+
+// 代理收益提现订单明细
+message CAgentProfitOrder
+{
+    uint32 page = 1;//页数
+    string agentid = 2;//代理id
+}
+
+message SAgentProfitOrder
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    AgentProfitOrder list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentProfitOrder
+{
+    string orderid = 1;//id
+    string userid = 2;//玩家id
+    string nickname = 3;//玩家昵称
+    int64 profit = 4;//提取金额
+    string applytime = 5;//提单时间
+    string handletime = 6;//响应时间
+    int32 state = 7;//状态,0等待处理,1成功,2失败
+}
+
+// 代理收益提现申请
+message CAgentProfitApply
+{
+    uint32 profit = 1;//提取金额
+}
+
+message SAgentProfitApply
+{
+    uint32 profit = 1;//提取金额
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 代理收益排行榜
+message CAgentProfitRank
+{
+    uint32 page = 1;//页数
+}
+
+message SAgentProfitRank
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    AgentProfit list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentProfit
+{
+    string nickname = 1;//玩家昵称
+    string address = 2;//地址
+    string userid = 3;//玩家id
+    int64 profit = 4;//当前收益
+}
+
+// 代理玩家管理
+message CAgentPlayerManage
+{
+    uint32 page = 1;//页数
+    string userid = 2;//玩家id,查询参数
+    AgentApproveState state = 3;//状态，通过，审批，拒绝
+}
+
+message SAgentPlayerManage
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    AgentPlayerManage list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentPlayerManage
+{
+    string userid = 1;//玩家id
+    string nickname = 2;//昵称
+    int64 coin = 3;//金币
+    string agentid = 4;//代理id
+    AgentApproveState state = 5;//状态，通过，审批，拒绝
+}
+
+//代理玩家管理状态
+enum AgentApproveState {
+    AgentApprove = 0; //审批中
+    AgentAgreed = 1; //同意,通过
+    AgentRefused = 2; //拒绝
+}
+
+// 代理玩家申请审批
+message CAgentPlayerApprove
+{
+    AgentApproveState state = 1;//同意，拒绝
+    string userid = 2;//玩家id
+}
+
+message SAgentPlayerApprove
+{
+    AgentApproveState state = 1;//同意，拒绝
+    string userid = 2;//玩家id
+    ErrCode error= 3;//错误码 ,0:正常
+}

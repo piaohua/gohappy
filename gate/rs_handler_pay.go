@@ -60,7 +60,7 @@ func (rs *RoleActor) handlerPay(msg interface{}, ctx actor.Context) {
 		rs.addCurrency(diamond, coin, card, chip, ltype)
 	default:
 		//glog.Errorf("unknown message %v", msg)
-		rs.handlerDesk(msg, ctx)
+		rs.handlerAgent(msg, ctx)
 	}
 }
 

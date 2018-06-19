@@ -315,6 +315,7 @@ func (t *Desk) gameOver() {
 		t.gameOverInit()
 		//TODO 踢出不足坐下玩家或超额玩家
 		//t.limitOver()
+		//TODO pub房间人数为0时解散
 		//关闭房间
 		t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
