@@ -238,6 +238,12 @@ func (rs *RoleActor) enterJHCoin(arg *pb.CJHCoinEnterRoom, ctx actor.Context) {
 		//计算出匹配房间等级,算法一致
 		//msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
 		msg.Ltype = handler.MatchLevel(rs.User.GetCoin())
+		if msg.Ltype < 0 {
+			rsp := new(pb.SJHCoinEnterRoom)
+			rsp.Error = pb.NotEnoughCoin
+			rs.Send(rsp)
+			return
+		}
 		rs.selectDesk(msg, ctx)
 	}
 }

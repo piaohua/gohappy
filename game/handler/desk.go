@@ -112,51 +112,53 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 	}
 	switch ltype {
 	case int32(pb.ROOM_LEVEL0):
+		g.Ante = 50
+		g.Chip = 1000
+		g.Sit = 1000
+		g.Minimum = 500
+		g.Maximum = 1000
+	case int32(pb.ROOM_LEVEL1):
 		g.Ante = 100
 		g.Chip = 2000
 		g.Sit = 2000
 		g.Minimum = 1000
 		g.Maximum = 2000
-	case int32(pb.ROOM_LEVEL1):
-		g.Ante = 200
-		g.Chip = 50000
-		g.Sit = 50000
-		g.Minimum = 5000
-		g.Maximum = 50000
 	case int32(pb.ROOM_LEVEL2):
-		g.Ante = 500
-		g.Chip = 200000
-		g.Sit = 200000
-		g.Minimum = 20000
-		g.Maximum = 200000
+		g.Ante = 200
+		g.Chip = 4000
+		g.Sit = 4000
+		g.Minimum = 2000
+		g.Maximum = 4000
 	case int32(pb.ROOM_LEVEL3):
-		g.Ante = 1000
-		g.Chip = 1000000
-		g.Sit = 1000000
-		g.Minimum = 200000
-		g.Maximum = 1000000
+		g.Ante = 400
+		g.Chip = 8000
+		g.Sit = 8000
+		g.Minimum = 4000
+		g.Maximum = 8000
 	case int32(pb.ROOM_LEVEL4):
-		g.Ante = 2000
-		g.Chip = 2000000
-		g.Sit = 2000000
-		g.Minimum = 1000000
-		g.Maximum = 2000000
+		g.Ante = 600
+		g.Chip = 12000
+		g.Sit = 12000
+		g.Minimum = 6000
+		g.Maximum = 12000
 	}
 	return g
 }
 
 //MatchLevel 匹配等级
 func MatchLevel(coin int64) int32 {
-	if coin >= 2000000 {
+	if coin >= 12000 {
 		return int32(pb.ROOM_LEVEL4)
-	} else if coin >= 1000000 {
+	} else if coin >= 8000 {
 		return int32(pb.ROOM_LEVEL3)
-	} else if coin >= 200000 {
+	} else if coin >= 4000 {
 		return int32(pb.ROOM_LEVEL2)
-	} else if coin >= 50000 {
+	} else if coin >= 2000 {
 		return int32(pb.ROOM_LEVEL1)
+	} else if coin >= 1000 {
+		return int32(pb.ROOM_LEVEL0)
 	}
-	return int32(pb.ROOM_LEVEL0)
+	return int32(-1)
 }
 
 //NewPrivGameData 私人房间桌子数据

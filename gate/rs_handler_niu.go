@@ -237,6 +237,12 @@ func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
 		//计算出匹配房间等级,算法一致
 		//msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
 		msg.Ltype = handler.MatchLevel(rs.User.GetCoin())
+		if msg.Ltype < 0 {
+			rsp := new(pb.SNNCoinEnterRoom)
+			rsp.Error = pb.NotEnoughCoin
+			rs.Send(rsp)
+			return
+		}
 		rs.selectDesk(msg, ctx)
 	}
 }
