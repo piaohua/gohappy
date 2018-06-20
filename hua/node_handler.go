@@ -336,7 +336,7 @@ func (a *DeskActor) createDesk(arg *pb.CreateDesk, ctx actor.Context) {
 			msg := handler.PackJHCreateMsg(gameData)
 			arg.Sender.Tell(msg)
 			//扣除玩家消耗
-			msg2 := handler.ChangeCurrencyMsg(int64(gameData.Cost),
+			msg2 := handler.ChangeCurrencyMsg((-1 * int64(gameData.Cost)),
 				0, 0, 0, int32(pb.LOG_TYPE2), arg.Cid)
 			arg.Sender.Tell(msg2)
 			//响应消息
