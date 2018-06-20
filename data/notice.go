@@ -22,7 +22,7 @@ const (
 //公告
 type Notice struct {
 	Id      string    `bson:"_id" json:"id"`          //公告ID
-	Userid  string    `bson:"userid" json:"Userid"`   //玩家
+	Userid  string    `bson:"userid" json:"userid"`   //玩家
 	Rtype   int       `bson:"rtype" json:"rtype"`     //类型,1=公告消息,2=广播消息
 	Atype   int32     `bson:"atype" json:"atype"`     //分包类型
 	Acttype int       `bson:"acttype" json:"acttype"` //操作类型,0=无操作,1=支付,2=活动

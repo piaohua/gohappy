@@ -8,6 +8,8 @@
 package main
 
 import (
+	"math"
+
 	"gohappy/game/algo"
 	"gohappy/game/handler"
 	"gohappy/glog"
@@ -734,12 +736,10 @@ func (t *Desk) jiesuan3(seat uint32, score map[uint32]int64) map[uint32]int64 {
 func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 	for k, v := range score {
 		userid := t.getUserid(k)
+		//抽水
+		v = t.drawcoin(userid, v)
 		switch t.DeskData.Rtype {
 		case int32(pb.ROOM_TYPE0): //自由
-			//if v > 0 {
-			//	//TODO 抽成
-			//	v = int64(math.Trunc(float64(v) * 0.98))
-			//}
 			t.sendCoin(userid, v, ltype)
 		case int32(pb.ROOM_TYPE1): //私人
 			t.sendCoin(userid, v, ltype)
@@ -747,6 +747,29 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 			t.DeskPriv.Joins[userid]++
 		}
 	}
+}
+
+//抽水
+func (t *Desk) drawcoin(userid string, val int64) (num int64) {
+	if val <= 0 {
+		return val
+	}
+	num = val
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1): //私人
+		switch t.DeskData.Mode {
+		case 0: //普通
+			num = int64(math.Trunc(float64(val) * 0.9))
+		default:
+			num = int64(math.Trunc(float64(val) * 0.8))
+		}
+		//TODO 抽成日志记录 val - num
+	case int32(pb.ROOM_TYPE2): //百人
+		num = int64(math.Trunc(float64(val) * 0.95))
+		//TODO 抽成日志记录 val - num
+	}
+	return
 }
 
 //.

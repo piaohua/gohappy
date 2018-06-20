@@ -8,7 +8,6 @@
 package main
 
 import (
-	"math"
 	"math/rand"
 	"time"
 
@@ -710,7 +709,7 @@ func (t *Desk) dealerWin() {
 	}
 	if val > 0 {
 		//	抽成
-		val = int64(math.Trunc(float64(val) * 0.98))
+		val = t.drawcoin(t.DeskGame.Dealer, val)
 	}
 	if val != 0 {
 		t.DeskFree.Score1[uint32(pb.DESK_SEAT1)] = val
@@ -821,7 +820,7 @@ func (t *Desk) dealerJiesuan1() {
 				val2 = 0
 			} else {
 				//	抽成
-				val2 = int64(math.Trunc(float64(val2) * 0.98))
+				val2 = t.drawcoin(userid, val2)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
@@ -869,8 +868,8 @@ func (t *Desk) dealerJiesuan2(num int64) {
 			if val2 < 0 {
 				val2 = 0
 			} else {
-				//抽成,TODO 抽成日志记录
-				val2 = int64(math.Trunc(float64(val2) * 0.98))
+				//抽成
+				val2 = t.drawcoin(userid, val2)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
