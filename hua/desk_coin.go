@@ -187,7 +187,10 @@ func (t *Desk) readyTimeout() {
 	}
 	if num >= 2 {
 		t.gameStart() //开始牌局
+		return
 	}
+	//房间人数为0时解散
+	t.checkPubOver()
 }
 
 //操作超时放弃

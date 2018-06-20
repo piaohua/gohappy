@@ -285,8 +285,9 @@ func (t *Desk) gameOver() {
 		t.dealerOver()
 		//重置状态
 		t.gameOverInit()
-		//TODO 踢出不足坐下玩家或超额玩家
-		//t.limitOver()
+		//踢出不足坐下玩家或超额玩家
+		t.limitOver()
+		//踢除离线玩家
 		t.kickOffline()
 	case int32(pb.ROOM_TYPE1): //私人
 		//牌局数累加一次
@@ -304,8 +305,8 @@ func (t *Desk) gameOver() {
 		t.dealerOver()
 		//重置状态
 		t.gameOverInit()
-		//TODO 踢出不足坐下玩家或超额玩家
-		//t.limitOver()
+		//踢出不足坐下玩家或超额玩家
+		t.limitOver()
 		//关闭房间
 		t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
@@ -366,6 +367,24 @@ func (t *Desk) kickOffline() {
 			t.userLeaveDesk(k)
 		}
 	}
+}
+
+// pub房间人数为0时解散
+func (t *Desk) checkPubOver() {
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE1): //私人
+		if !t.DeskData.Pub {
+			return
+		}
+	default:
+		return
+	}
+	if len(t.roles) != 0 {
+		return
+	}
+	//停止服务
+	msg1 := new(pb.ServeStop)
+	t.selfPid.Tell(msg1)
 }
 
 //.
@@ -432,6 +451,9 @@ func (t *Desk) checkOver() bool {
 //结束牌局
 func (t *Desk) gameStop() {
 	if !t.checkOver() {
+		return
+	}
+	if !t.DeskData.Pub { //大厅房间不解散
 		return
 	}
 	//返回未开局钻石
