@@ -80,11 +80,11 @@ func LogRoomRecordMsg(d *data.DeskData) (msg *pb.RoomRecordInfo) {
 		Round:  d.Round,
 		Cid:    d.Cid,
 		Ctime:  d.Ctime,
-		Pub:    msg.Pub,
-		Minimum:  msg.Minimum,
-		Maximum:  msg.Maximum,
-		Mode:     msg.Mode,
-		Multiple: msg.Multiple,
+		Pub:    d.Pub,
+		Minimum:  d.Minimum,
+		Maximum:  d.Maximum,
+		Mode:     d.Mode,
+		Multiple: d.Multiple,
 	}
 	return
 }
