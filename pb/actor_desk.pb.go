@@ -154,6 +154,7 @@
 		GetConfig
 		WebRequest
 		WebResponse
+		WebRequest2
 		WebResponse2
 		GetNumber
 		GotNumber

@@ -67,12 +67,16 @@ func webJSONHandler(ctx *fasthttp.RequestCtx) {
 	}
 	//解析请求数据
 	result := ctx.PostBody()
-	msg1 := new(pb.WebRequest)
-	err1 := jsoniter.Unmarshal(result, msg1)
+	msg := new(pb.WebRequest2)
+	err1 := jsoniter.Unmarshal(result, msg)
 	if err1 != nil {
 		fmt.Fprintf(ctx, "%v", err1)
 		return
 	}
+	msg1 := new(pb.WebRequest)
+	msg1.Code = msg.Code
+	msg1.Atype = msg.Atype
+	msg1.Data = []byte(msg.Data)
 	//转换为pb格式,TODO 优化
 	switch msg1.Code {
 	case pb.WebGive:

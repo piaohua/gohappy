@@ -63,6 +63,13 @@ message WebResponse
 }
 
 //result字符串格式响应
+message WebRequest2
+{
+    WebCode Code = 1; //协议号
+    ConfigAtype Atype = 2 ;//操作类型
+    string Data = 3; //数据
+}
+
 message WebResponse2
 {
     WebCode Code = 1; //协议号
