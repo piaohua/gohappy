@@ -9,76 +9,76 @@ const (
 )
 
 type RespErr struct {
-	ErrCode int    `json:errcode` //错误码
-	ErrMsg  string `json:errmsg`  //错误信息
-	Result  string `json:result`  //正常时返回信息
+	ErrCode int    `json:"errcode"` //错误码
+	ErrMsg  string `json:"errmsg"`  //错误信息
+	Result  string `json:"result"`  //正常时返回信息
 }
 
 //货币变更请求
 type ReqMsg struct {
-	Userid string `json:userid` //角色ID
-	Rtype  int    `json:rtype`  //类型
-	Itemid uint32 `json:itemid` //物品,1钻石,2金币,3VIP
-	Amount int32  `json:amount` //数量
+	Userid string `json:"userid"` //角色ID
+	Rtype  int    `json:"rtype"`  //类型
+	Itemid uint32 `json:"itemid"` //物品,1钻石,2金币,3VIP
+	Amount int32  `json:"amount"` //数量
 }
 
 //在线状态请求
 type ReqOnlineStatusMsg struct {
-	Userid []string `json:userid` //角色ID
+	Userid []string `json:"userid"` //角色ID
 }
 
 type RespOnlineStatusMsg struct {
-	Userid map[string]int `json:userid` //角色ID,1在线
+	Userid map[string]int `json:"userid"` //角色ID,1在线
 }
 
 //发布公告
 type ReqNoticeMsg struct {
-	Id      string    `json:id`
-	Rtype   int       `json:rtype`    //类型
-	Atype   uint32    `json:atype`    //分包类型
-	Acttype int       `json:act_type` //操作类型
-	Top     int       `json:top`      //置顶
-	Num     int       `json:num`      //广播次数
-	Del     int       `json:del`      //是否移除
-	Content string    `json:content`  //广播内容
-	Etime   time.Time `json:etime`    //过期时间
-	Ctime   time.Time `json:ctime`    //创建时间
+	Id      string    `json:"id"`
+	Rtype   int       `json:"rtype"`    //类型
+	Atype   uint32    `json:"atype"`    //分包类型
+	Acttype int       `json:"act_type"` //操作类型
+	Top     int       `json:"top"`      //置顶
+	Num     int       `json:"num"`      //广播次数
+	Del     int       `json:"del"`      //是否移除
+	Content string    `json:"content"`  //广播内容
+	Etime   time.Time `json:"etime"`    //过期时间
+	Ctime   time.Time `json:"ctime"`    //创建时间
 }
 
 //绑定请求(修改绑定)
 type ReqBuildMsg struct {
-	Userid string `json:userid` //角色ID
-	Agent  string `json:agent`  //代理ID
+	Userid string `json:"userid"` //角色ID
+	Agent  string `json:"agent"`  //代理ID
 }
 
 //代理商赠送给下级用户
 type ReqGiveDiamondMsg struct {
-	Userid string `json:userid` //角色ID
-	Agent  string `json:agent`  //代理商
-	Rtype  int    `json:rtype`  //类型
-	Itemid uint32 `json:itemid` //物品,1钻石,2金币
-	Amount int32  `json:amount` //数量
+	Userid string `json:"userid"` //角色ID
+	Agent  string `json:"agent"`  //代理商
+	Rtype  int    `json:"rtype"`  //类型
+	Itemid uint32 `json:"itemid"` //物品,1钻石,2金币
+	Amount int32  `json:"amount"` //数量
 }
 
 //设置手牌
 type ReqSetHandsMsg struct {
-	Userid string   `json:userid` //代理商
-	Round  uint32   `json:round`  //牌局
-	Hands  []uint32 `json:hands`  //手牌
+	Userid string   `json:"userid"` //代理商
+	Round  uint32   `json:"round"`  //牌局
+	Hands  []uint32 `json:"hands"`  //手牌
 }
 
 //获取设置手牌
 type ReqGetHandsMsg struct {
-	Userid string `json:userid` //代理商
+	Userid string `json:"userid"` //代理商
 }
 
 type RespGetHandsMsg struct {
-	List []Rounds `json:list` //手牌列表
+	List []Rounds `json:"list"` //手牌列表
 }
 
 type Rounds struct {
-	Round uint32   `json:round` //牌局
-	Hands []uint32 `json:hands` //手牌
+	Round uint32   `json:"round"` //牌局
+	Hands []uint32 `json:"hands"` //手牌
 }
 
 //发布商品
@@ -109,21 +109,21 @@ type ReqShopMsg struct {
 //bankrupt_coin     破产金额
 //relieve_coin      救济金额
 type ReqEnvMsg struct {
-	Key   string `json:key`   //key
-	Value int32  `json:value` //value
+	Key   string `json:"key"`   //key
+	Value int32  `json:"value"` //value
 }
 
 type ReqGetEnvMsg struct {
-	Key string `json:key` //key
+	Key string `json:"key"` //key
 }
 
 type ReqDelEnvMsg struct {
-	Key string `json:key` //key
+	Key string `json:"key"` //key
 }
 
 //设置变量
 type RespEnvMsg struct {
-	List []ReqEnvMsg `json:list` //list
+	List []ReqEnvMsg `json:"list"` //list
 }
 
 //发布抽奖
@@ -148,13 +148,13 @@ type ReqBoxMsg struct {
 
 //房间数据
 type ReqRoomMsg struct {
-	Userid string `json:userid`  //角色ID
+	Userid string `json:"userid"`  //角色ID
 	Rtype  int    `json:"rtype"` //0打印数据,1离开房间,2解散房间
 }
 
 type RespRoomMsg struct {
-	Userid   string `json:userid`    //角色ID
-	DeskData string `json:desk_data` //代理ID
+	Userid   string `json:"userid"`    //角色ID
+	DeskData string `json:"desk_data"` //代理ID
 }
 
 //经典
