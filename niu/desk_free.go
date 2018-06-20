@@ -504,7 +504,11 @@ func (t *Desk) gameStartBet() {
 
 //剩余坐庄次数
 func (t *Desk) leftDealerTimes() uint32 {
-	return DealerTimes - t.DeskFree.DealerNum
+	if DealerTimes >= t.DeskFree.DealerNum {
+		return DealerTimes - t.DeskFree.DealerNum
+	}
+	glog.Errorf("Dealer %s, DealerNum %d", t.DeskGame.Dealer, t.DeskFree.DealerNum)
+	return 0
 }
 
 //.
@@ -589,9 +593,10 @@ func (t *Desk) freeGameOver() {
 	t.taskHandler()
 	//重置状态
 	t.freeOverInit()
+	//检测不足做庄
+	t.checkBeDealer()
 	//踢除离线玩家
 	t.kickOffline()
-	t.checkBeDealer()
 }
 
 //.
