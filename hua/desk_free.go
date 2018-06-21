@@ -878,14 +878,18 @@ func (t *Desk) getFreeBets(seat uint32) map[string]int64 {
 func muliti(a1, an uint32, cs1, csn []uint32) int64 {
 	switch {
 	case a1 > an:
-		return int64(algo.HuaMultiple(a1))
+		//return int64(algo.HuaMultiple(a1))
+		return  1
 	case a1 < an:
-		return -1 * int64(algo.HuaMultiple(an))
+		//return -1 * int64(algo.HuaMultiple(an))
+		return  -1
 	case a1 == an:
 		if algo.HuaCompare(cs1, csn) {
-			return int64(algo.HuaMultiple(a1))
+			//return int64(algo.HuaMultiple(a1))
+			return  1
 		}
-		return -1 * int64(algo.HuaMultiple(an))
+		//return -1 * int64(algo.HuaMultiple(an))
+		return  -1
 	}
 	return 1
 }
