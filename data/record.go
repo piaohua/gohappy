@@ -320,18 +320,18 @@ func GetRank() ([]bson.M, error) {
 //RoomRecord 创建房间记录
 type RoomRecord struct {
 	//Id     string    `bson:"_id"`
-	Roomid string `bson:"roomid"` //唯一
-	Gtype  int32  `bson:"gtype"`
-	Rtype  int32  `bson:"rtype"`
-	Dtype  int32  `bson:"dtype"`
-	Rname  string `bson:"rname"`
-	Count  uint32 `bson:"count"`
-	Ante   uint32 `bson:"ante"`
-	Code   string `bson:"code"`
-	Round  uint32 `bson:"round"`
-	Cid    string `bson:"cid"`
-	Ctime  uint32 `bson:"ctime"`
-	Pub    bool    `bson:"pub"`
+	Roomid   string `bson:"roomid"` //唯一
+	Gtype    int32  `bson:"gtype"`
+	Rtype    int32  `bson:"rtype"`
+	Dtype    int32  `bson:"dtype"`
+	Rname    string `bson:"rname"`
+	Count    uint32 `bson:"count"`
+	Ante     uint32 `bson:"ante"`
+	Code     string `bson:"code"`
+	Round    uint32 `bson:"round"`
+	Cid      string `bson:"cid"`
+	Ctime    uint32 `bson:"ctime"`
+	Pub      bool   `bson:"pub"`
 	Minimum  int64  `bson:"minimum"`
 	Maximum  int64  `bson:"maximum"`
 	Mode     uint32 `bson:"mode"`
@@ -463,7 +463,7 @@ func GetProfitRank() ([]bson.M, error) {
 	selector["address"] = true
 	selector["_id"] = true
 	q := bson.M{"profit": bson.M{"$gt": 0},
-	"agent": bson.M{"$ne": ""}, "agent_state": bson.M{"$eq": 1}}
+		"agent": bson.M{"$ne": ""}, "agent_state": bson.M{"$eq": 1}}
 	err := PlayerUsers.
 		Find(q).Select(selector).
 		Sort(sortFieldR).

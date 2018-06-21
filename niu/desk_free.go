@@ -931,17 +931,17 @@ func (t *Desk) muliti(a1, an uint32, cs1, csn []uint32) int64 {
 	switch {
 	case a1 > an:
 		//return int64(algo.Multiple(t.DeskData.Mode, a1))
-		return  1
+		return 1
 	case a1 < an:
 		//return -1 * int64(algo.Multiple(t.DeskData.Mode, an))
-		return  -1
+		return -1
 	case a1 == an:
 		if algo.Compare(cs1, csn) {
 			//return int64(algo.Multiple(t.DeskData.Mode, a1))
-			return  1
+			return 1
 		}
 		//return -1 * int64(algo.Multiple(t.DeskData.Mode, an))
-		return  -1
+		return -1
 	}
 	return 1
 }

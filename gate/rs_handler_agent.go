@@ -56,6 +56,7 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		rs.handlerDesk(msg, ctx)
 	}
 }
+
 //基础信息
 func (rs *RoleActor) agentInfo() {
 	rsp := new(pb.SMyAgent)
@@ -85,9 +86,9 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 	}
 	if arg.GetAgentid() == "" || arg.GetAgentname() == "" ||
 		arg.GetRealname() == "" || arg.GetWeixin() == "" {
-			rsp.Error = pb.ParamError
-			rs.Send(rsp)
-			return
+		rsp.Error = pb.ParamError
+		rs.Send(rsp)
+		return
 	}
 	res1 := rs.reqRole(arg, ctx)
 	if response1, ok := res1.(*pb.SAgentJoin); ok {

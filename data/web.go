@@ -148,8 +148,8 @@ type ReqBoxMsg struct {
 
 //房间数据
 type ReqRoomMsg struct {
-	Userid string `json:"userid"`  //角色ID
-	Rtype  int    `json:"rtype"` //0打印数据,1离开房间,2解散房间
+	Userid string `json:"userid"` //角色ID
+	Rtype  int    `json:"rtype"`  //0打印数据,1离开房间,2解散房间
 }
 
 type RespRoomMsg struct {

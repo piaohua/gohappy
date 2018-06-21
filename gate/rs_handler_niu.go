@@ -316,17 +316,17 @@ func (rs *RoleActor) nnFreeBet(arg *pb.CNNFreeBet, ctx actor.Context) {
 func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 	//TODO 验证
 	msg := &pb.CreateDesk{
-		Rname:   arg.Rname,
-		Dtype:   arg.Dtype,
-		Ante:    arg.Ante,
-		Round:   arg.Round,
-		Payment: arg.Payment,
-		Count:   arg.Count,
-		Pub:     arg.Pub,
-		Minimum: int64(arg.Minimum),
-		Maximum: int64(arg.Maximum),
-		Mode:    arg.Mode,
-		Multiple:arg.Multiple,
+		Rname:    arg.Rname,
+		Dtype:    arg.Dtype,
+		Ante:     arg.Ante,
+		Round:    arg.Round,
+		Payment:  arg.Payment,
+		Count:    arg.Count,
+		Pub:      arg.Pub,
+		Minimum:  int64(arg.Minimum),
+		Maximum:  int64(arg.Maximum),
+		Mode:     arg.Mode,
+		Multiple: arg.Multiple,
 		//TODO 消耗
 		Cost: 100,
 	}
