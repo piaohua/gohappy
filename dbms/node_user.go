@@ -55,6 +55,12 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		//TODO 缓存
 		rsp := handler.PackUserNotice(arg)
 		ctx.Respond(rsp)
+	case *pb.CAgentProfitRank:
+		arg := msg.(*pb.CAgentProfitRank)
+		glog.Debugf("CAgentProfitRank %#v", arg)
+		//TODO 缓存
+		rsp := handler.PackAgentProfitRankMsg(arg)
+		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

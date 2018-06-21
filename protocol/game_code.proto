@@ -105,6 +105,11 @@ enum ErrCode {
     AlreadySitDown         = 96; //已经在位置上
     SignTooLong            = 97; //签名太长了
     ChangeFailed           = 98; //换房失败,返回大厅
+    AlreadyBuild           = 99; //已经绑定代理
+    ParamError             =100; //请求参数错误
+    AgentNotExist          =101; //代理id不存在
+    AgentLevelLow          =102; //代理等级过低
+    NotAgent               =103; //不是代理
 }
 
 enum SitType {

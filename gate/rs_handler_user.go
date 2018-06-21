@@ -600,6 +600,8 @@ func (rs *RoleActor) setLatLng(arg *pb.CLatLng) {
 	rs.User.Lng = arg.GetLng()
 	rs.User.Address = arg.GetAddress()
 	rs.Send(msg)
+	arg.Userid = rs.User.GetUserid()
+	rs.rolePid.Tell(arg)
 }
 
 // vim: set foldmethod=marker foldmarker=//',//.:

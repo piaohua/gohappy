@@ -7,6 +7,8 @@ message CAgentJoin
 {
     string agentname = 1;//名字
     string agentid = 2;//代理id
+    string realname = 3;//真实姓名
+    string weixin = 4;//微信
 }
 
 message SAgentJoin
@@ -25,10 +27,12 @@ message SMyAgent
     string agentid = 2;//代理id
     string address = 3;//地址
     int64 profit = 4;//收益
-    int64 weekprofit = 5;//周收益
-    int64 historyprofit = 6;//历史收益
-    //TODO other info
-    ErrCode error= 7;//错误码 ,0:正常
+    int64 WeekProfit = 5;//周收益
+    int64 HistoryProfit = 6;//历史收益
+    int64 SubPlayerProfit = 7;//下属玩家业绩
+    int64 SubAgentProfit = 8;//下属代理业绩
+    string PopularizeURL = 9;//推广地址
+    ErrCode error= 10;//错误码 ,0:正常
 }
 
 // 代理管理
@@ -42,7 +46,7 @@ message SAgentManage
 {
     uint32 page = 1;//页数
     uint32 count = 2;//总数
-    AgentManage list = 3;//列表
+    repeated AgentManage list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
 }
 
@@ -68,7 +72,7 @@ message SAgentProfit
 {
     uint32 page = 1;//页数
     uint32 count = 2;//总数
-    AgentProfitDetail list = 3;//列表
+    repeated AgentProfitDetail list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
 }
 
@@ -92,7 +96,7 @@ message SAgentProfitOrder
 {
     uint32 page = 1;//页数
     uint32 count = 2;//总数
-    AgentProfitOrder list = 3;//列表
+    repeated AgentProfitOrder list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
 }
 
@@ -129,7 +133,7 @@ message SAgentProfitRank
 {
     uint32 page = 1;//页数
     uint32 count = 2;//总数
-    AgentProfit list = 3;//列表
+    repeated AgentProfit list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
 }
 
@@ -153,7 +157,7 @@ message SAgentPlayerManage
 {
     uint32 page = 1;//页数
     uint32 count = 2;//总数
-    AgentPlayerManage list = 3;//列表
+    repeated AgentPlayerManage list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
 }
 

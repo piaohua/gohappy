@@ -41,9 +41,20 @@ type User struct {
 	TopWinDiamond int64 `bson:"top_win_diamond" json:"top_win_diamond"` // 单局赢最高钻石金额
 	TopWinCoin    int64 `bson:"top_win_coin" json:"top_win_coin"`       // 单局赢最高金币金额
 	TopWinChip    int64 `bson:"top_win_chip" json:"top_win_chip"`       // 单局赢最高筹码金额
-	//代理
+	//代理, TODO 分佣设置，上级和上级分佣
 	Agent string    `bson:"agent" json:"agent"` // 代理ID
 	Atime time.Time `bson:"atime" json:"atime"` // 绑定代理时间
+	AgentState uint32 `bson:"agent_state" json:"agent_state"` // 代理状态1通过
+	AgentLevel uint32 `bson:"agent_level" json:"agent_level"` // 代理等级
+	Build uint32 `bson:"build" json:"build"` // 绑定数量
+	AgentName string `bson:"agent_name" json:"agent_name"` // 代理名字
+	RealName string `bson:"real_name" json:"real_name"` // 真实姓名
+	Weixin string `bson:"weixin" json:"weixin"` // 微信
+	Profit int64 `bson:"profit" json:"profit"` // 收益
+	WeekProfit int64 `bson:"week_profit" json:"week_profit"` // 周收益
+	HistoryProfit int64 `bson:"history_profit" json:"history_profit"` // 历史收益
+	SubPlayerProfit int64 `bson:"sub_player_profit" json:"sub_player_profit"` // 下属玩家业绩收益
+	SubAgentProfit int64 `bson:"sub_agent_profit" json:"sub_agent_profit"` // 下属代理业绩收益
 	//时间
 	Ctime     time.Time `bson:"ctime" json:"ctime"`           // 注册时间
 	LoginTime time.Time `bson:"login_time" json:"login_time"` // 最后登录时间
@@ -56,9 +67,9 @@ type User struct {
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
 	Sign       string `bson:"sign" json:"sign"`               //个性签名
 	//位置
-	Lat     string `bson:"-" json:"lat"`     //Latitude
-	Lng     string `bson:"-" json:"lng"`     //Longitude
-	Address string `bson:"-" json:"address"` //Address
+	Lat     string `bson:"lat" json:"lat"`     //Latitude
+	Lng     string `bson:"lng" json:"lng"`     //Longitude
+	Address string `bson:"address" json:"address"` //Address
 	//任务
 	Task map[string]TaskInfo `bson:"task" json:"task"` // 已经完成或者还在继续的任务
 }

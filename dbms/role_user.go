@@ -134,6 +134,14 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CSignature)
 		glog.Debugf("CSignature %#v", arg)
 		a.setSign(arg)
+	case *pb.CLatLng:
+		arg := msg.(*pb.CLatLng)
+		glog.Debugf("CLatLng %#v", arg)
+		a.setLatLng(arg)
+	case *pb.CAgentJoin:
+		arg := msg.(*pb.CAgentJoin)
+		glog.Debugf("CAgentJoin %#v", arg)
+		a.agentJoin(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -526,4 +534,16 @@ func (a *RoleActor) setSign(arg *pb.CSignature) {
 	user.SetSign(arg.GetContent())
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateSign()
+}
+
+func (a *RoleActor) setLatLng(arg *pb.CLatLng) {
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("setLatLng err userid %#v", arg)
+		return
+	}
+	user.Lat = arg.GetLat()
+	user.Lng = arg.GetLng()
+	user.Address = arg.GetAddress()
+	//暂时实时写入, TODO 异步数据更新
 }

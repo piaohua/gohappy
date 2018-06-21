@@ -165,6 +165,7 @@ message CLatLng
     string lat = 1;//Latitude
     string lng = 2;//Longitude
     string address = 3;//Address
+    string userid = 4;//userid
 }
 
 message SLatLng
