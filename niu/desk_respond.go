@@ -344,6 +344,14 @@ func (t *Desk) beComeDealer() {
 		//glog.Errorf("beComeDealer failed %s, %d", userid, num)
 		return
 	}
+	seat := t.getSeat(userid)
+	if seat != 0 {
+		arg := &pb.CNNSit{
+			Type: pb.SitUp,
+			Seat: seat,
+		}
+		t.freeSit(userid, arg)
+	}
 	//上庄成功扣除
 	t.sendCoin(userid, (-1 * num), int32(pb.LOG_TYPE7))
 	//成为庄家
