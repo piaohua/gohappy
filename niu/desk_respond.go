@@ -216,6 +216,9 @@ func (t *Desk) leave(userid string) pb.ErrCode {
 			if _, ok := t.DeskFree.Bets[userid]; ok {
 				return pb.GameStartedCannotLeave
 			}
+			if userid == t.DeskGame.Dealer {
+				return pb.GameStartedCannotLeave
+			}
 		default:
 			//庄家下庄
 			user := t.getPlayer(userid)

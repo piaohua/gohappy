@@ -414,13 +414,13 @@ func (t *Desk) sitCheck(userid string, arg *pb.CSGSit) pb.ErrCode {
 		if !(arg.Seat >= 1 && arg.Seat <= 8) {
 			return pb.OperateError
 		}
-		if userid == t.DeskGame.Dealer { //庄家不能坐
-			return pb.DealerSitFailed
-		}
 		switch arg.Type {
 		case pb.SitDown:
 			if user.GetCoin() < int64(t.DeskData.Sit) {
 				return pb.NotEnoughCoin
+			}
+			if userid == t.DeskGame.Dealer { //庄家不能坐
+				return pb.DealerSitFailed
 			}
 		}
 	}
