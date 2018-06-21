@@ -462,7 +462,7 @@ func (t *Desk) freeTimeout() {
 //结束重置
 func (t *Desk) freeOverInit() {
 	t.freeInit()
-	t.freeStart()
+	t.state = int32(pb.STATE_OVER) //休息停顿
 }
 
 //开始状态初始化
@@ -591,6 +591,8 @@ func (t *Desk) freeGameOver() {
 	t.checkBeDealer()
 	//踢除离线玩家
 	t.kickOffline()
+	//消息广播
+	t.freeStart()
 }
 
 //.
