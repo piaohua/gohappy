@@ -350,7 +350,12 @@ func (t *Desk) beComeDealer() {
 			Type: pb.SitUp,
 			Seat: seat,
 		}
-		t.freeSit(userid, arg)
+		rsp := t.freeSit(userid, arg)
+		if rsp.Error == pb.OK {
+			t.broadcast(rsp)
+		} else {
+			glog.Errorf("free sit up err %s, %d", userid, seat)
+		}
 	}
 	//上庄成功扣除
 	t.sendCoin(userid, (-1 * num), int32(pb.LOG_TYPE7))
