@@ -358,7 +358,12 @@
             "BankAlreadyOpen": 95,
             "AlreadySitDown": 96,
             "SignTooLong": 97,
-            "ChangeFailed": 98
+            "ChangeFailed": 98,
+            "AlreadyBuild": 99,
+            "ParamError": 100,
+            "AgentNotExist": 101,
+            "AgentLevelLow": 102,
+            "NotAgent": 103
           }
         },
         "SitType": {

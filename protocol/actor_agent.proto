@@ -1,0 +1,20 @@
+syntax = "proto3";
+package pb;
+//import "github.com/AsynkronIT/protoactor-go/actor/protos.proto";
+import "game_code.proto";
+
+//代理操作
+
+//申请加入
+message AgentJoin {
+    string agentname = 1;//名字
+    string agentid = 2;//代理id
+    string realname = 3;//真实姓名
+    string weixin = 4;//微信
+}
+
+message AgentJoined
+{
+    ErrCode error = 1 ;// 错误码
+}
+
