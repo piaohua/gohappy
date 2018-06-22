@@ -39,6 +39,7 @@ message SJHFreeDealer
     string nickname = 4;  //昵称
     uint32 coin     = 5;  //上/下庄金额
     ErrCode error= 6;//错误码 ,0:正常
+    string photo   = 7;//庄家头像
 }
 
 //上庄列表
@@ -112,6 +113,7 @@ message SJHFreeGamestart
     string photo   = 4;//庄家头像
     uint32 dealerNum     = 5;//可坐庄总次数
     uint32 leftDealerNum = 6;//剩余坐庄次数
+    string nickname = 7;  //昵称
 }
 
 // 结算广播接口，游戏结束

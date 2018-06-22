@@ -53,13 +53,14 @@ func JHLeaveMsg(userid string, seat uint32) *pb.SJHLeave {
 
 //BeJHDealerMsg 上下庄消息
 func BeJHDealerMsg(state int32, num int64, dealer,
-	userid, name string) *pb.SJHFreeDealer {
+	userid, name, photo string) *pb.SJHFreeDealer {
 	return &pb.SJHFreeDealer{
 		State:    state,
 		Coin:     uint32(num),
 		Userid:   userid,
 		Dealer:   dealer,
 		Nickname: name,
+		Photo:    photo,
 	}
 }
 

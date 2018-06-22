@@ -1358,6 +1358,10 @@
             "error": {
               "type": "ErrCode",
               "id": 6
+            },
+            "photo": {
+              "type": "string",
+              "id": 7
             }
           }
         },
@@ -1478,6 +1482,10 @@
             "leftDealerNum": {
               "type": "uint32",
               "id": 6
+            },
+            "nickname": {
+              "type": "string",
+              "id": 7
             }
           }
         },

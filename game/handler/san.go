@@ -53,13 +53,14 @@ func SGLeaveMsg(userid string, seat uint32) *pb.SSGLeave {
 
 //BeSGDealerMsg 上下庄消息
 func BeSGDealerMsg(state int32, num int64, dealer,
-	userid, name string) *pb.SSGFreeDealer {
+	userid, name, photo string) *pb.SSGFreeDealer {
 	return &pb.SSGFreeDealer{
 		State:    state,
 		Coin:     uint32(num),
 		Userid:   userid,
 		Dealer:   dealer,
 		Nickname: name,
+		Photo:    photo,
 	}
 }
 

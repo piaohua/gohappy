@@ -53,13 +53,14 @@ func NNLeaveMsg(userid string, seat uint32) *pb.SNNLeave {
 
 //BeDealerMsg 上下庄消息
 func BeDealerMsg(state int32, num int64, dealer,
-	userid, name string) *pb.SNNFreeDealer {
+	userid, name, photo string) *pb.SNNFreeDealer {
 	return &pb.SNNFreeDealer{
 		State:    state,
 		Coin:     uint32(num),
 		Userid:   userid,
 		Dealer:   dealer,
 		Nickname: name,
+		Photo:    photo,
 	}
 }
 

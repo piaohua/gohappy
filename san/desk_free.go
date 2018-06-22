@@ -479,13 +479,15 @@ func (t *Desk) freeStart() {
 //状态变更消息
 func (t *Desk) freeStartMsg() {
 	var photo string
+	var nickname string
 	p := t.getPlayer(t.DeskGame.Dealer)
 	if p != nil {
 		photo = p.GetPhoto()
+		nickname = p.GetNickname()
 	}
 	var left uint32 = t.leftDealerTimes()
-	msg := resFreeStart(t.DeskGame.Dealer, photo, t.state,
-		t.DeskFree.Carry, DealerTimes, left)
+	msg := resFreeStart(t.DeskGame.Dealer, photo, nickname,
+		t.state, t.DeskFree.Carry, DealerTimes, left)
 	t.broadcast(msg)
 }
 
@@ -955,8 +957,8 @@ func resDraw(seat uint32, state int32, cards []uint32) *pb.SSGDraw {
 //.
 
 //' 游戏开始消息
-func resFreeStart(dealer, photo string, state int32, carry int64,
-	dealerNum, left uint32) *pb.SSGFreeGamestart {
+func resFreeStart(dealer, photo, nickname string, state int32,
+	carry int64, dealerNum, left uint32) *pb.SSGFreeGamestart {
 	return &pb.SSGFreeGamestart{
 		Dealer:        dealer,
 		Photo:         photo,
@@ -964,6 +966,7 @@ func resFreeStart(dealer, photo string, state int32, carry int64,
 		Coin:          carry,
 		DealerNum:     dealerNum,
 		LeftDealerNum: left,
+		Nickname:      nickname,
 	}
 }
 

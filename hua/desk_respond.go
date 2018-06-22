@@ -291,7 +291,7 @@ func (t *Desk) addBeDealer(userid string, st int32,
 		t.DeskFree.Dealers[userid] += num
 	}
 	msg := handler.BeJHDealerMsg(st, num, t.DeskGame.Dealer,
-		userid, user.GetNickname())
+		userid, user.GetNickname(), user.GetPhoto())
 	t.broadcast(msg)
 }
 
@@ -311,7 +311,7 @@ func (t *Desk) delBeDealer(userid string, user *data.User) {
 	t.DeskFree.Carry = 0
 	t.DeskFree.DealerNum = 0
 	msg := handler.BeJHDealerMsg(0, num, t.DeskGame.Dealer,
-		userid, user.GetNickname())
+		userid, user.GetNickname(), user.GetPhoto())
 	t.broadcast(msg)
 }
 
@@ -359,7 +359,7 @@ func (t *Desk) beComeDealer() {
 		return
 	}
 	msg := handler.BeJHDealerMsg(1, num, t.DeskGame.Dealer,
-		userid, user.GetNickname())
+		userid, user.GetNickname(), user.GetPhoto())
 	t.broadcast(msg)
 }
 
