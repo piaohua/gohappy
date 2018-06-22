@@ -218,35 +218,3 @@ func BankChangeMsg(coin int64,
 	msg.Userid = userid
 	return
 }
-
-//PackAgentProfitRankMsg 获取排行榜信息
-func PackAgentProfitRankMsg(arg *pb.CAgentProfitRank) (msg *pb.SAgentProfitRank) {
-	msg = new(pb.SAgentProfitRank)
-	list, err := data.GetProfitRank()
-	msg.Page = arg.Page
-	msg.Count = uint32(len(list))
-	if err != nil {
-		glog.Errorf("PackAgentProfitRankMsg err %v", err)
-	}
-	glog.Debugf("rank list %#v", list)
-	for _, v := range list {
-		msg2 := new(pb.AgentProfit)
-		if val, ok := v["profit"]; ok {
-			msg2.Profit = val.(int64)
-		}
-		if val, ok := v["_id"]; ok {
-			msg2.Userid = val.(string)
-		}
-		if val, ok := v["nickname"]; ok {
-			msg2.Nickname = val.(string)
-		}
-		if val, ok := v["address"]; ok {
-			msg2.Address = val.(string)
-		}
-		if msg2.Userid == "" {
-			continue
-		}
-		msg.List = append(msg.List, msg2)
-	}
-	return
-}

@@ -5,12 +5,15 @@ import "game_code.proto";
 
 //代理操作
 
-//申请加入
+//申请加入数据同步
 message AgentJoin {
     string agentname = 1;//名字
     string agentid = 2;//代理id
     string realname = 3;//真实姓名
     string weixin = 4;//微信
+    uint32 level = 5;//
+    string time = 6;//
+    string userid = 7;//
 }
 
 message AgentJoined
@@ -18,3 +21,9 @@ message AgentJoined
     ErrCode error = 1 ;// 错误码
 }
 
+//审批
+message AgentPlayerApprove {
+    AgentApproveState state = 1;//1同意，2拒绝
+    string userid = 2;//申请玩家id
+    string selfid = 3;//审批玩家id
+}

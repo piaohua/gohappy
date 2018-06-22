@@ -61,6 +61,16 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		//TODO 缓存
 		rsp := handler.PackAgentProfitRankMsg(arg)
 		ctx.Respond(rsp)
+	case *pb.CAgentManage:
+		arg := msg.(*pb.CAgentManage)
+		glog.Debugf("CAgentManage %#v", arg)
+		rsp := handler.PackAgentManageMsg(arg)
+		ctx.Respond(rsp)
+	case *pb.CAgentPlayerManage:
+		arg := msg.(*pb.CAgentPlayerManage)
+		glog.Debugf("CAgentPlayerManage %#v", arg)
+		rsp := handler.PackPlayerManageMsg(arg)
+		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

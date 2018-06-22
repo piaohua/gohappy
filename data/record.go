@@ -451,30 +451,3 @@ func GetRoomRecords(userid string, gtype int32, page int) ([]*RoomRecord,
 	}
 	return ls, ds, us, nil
 }
-
-//GetProfitRank 收益排行榜信息
-func GetProfitRank() ([]bson.M, error) {
-	pageSize := 20 //取前20条
-	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "coin", false)
-	var list []bson.M
-	selector := make(bson.M, 4)
-	selector["profit"] = true
-	selector["nickname"] = true
-	selector["address"] = true
-	selector["_id"] = true
-	q := bson.M{"profit": bson.M{"$gt": 0},
-		"agent": bson.M{"$ne": ""}, "agent_state": bson.M{"$eq": 1}}
-	err := PlayerUsers.
-		Find(q).Select(selector).
-		Sort(sortFieldR).
-		Skip(skipNum).
-		Limit(pageSize).
-		All(&list)
-	if err != nil {
-		return nil, err
-	}
-	if len(list) == 0 {
-		return nil, errors.New("none record")
-	}
-	return list, nil
-}

@@ -42,11 +42,12 @@ type User struct {
 	TopWinCoin    int64 `bson:"top_win_coin" json:"top_win_coin"`       // 单局赢最高金币金额
 	TopWinChip    int64 `bson:"top_win_chip" json:"top_win_chip"`       // 单局赢最高筹码金额
 	//代理, TODO 分佣设置，上级和上级分佣
-	Agent           string    `bson:"agent" json:"agent"`                         // 代理ID
+	Agent           string    `bson:"agent" json:"agent"`                         // 绑定的代理ID
 	Atime           time.Time `bson:"atime" json:"atime"`                         // 绑定代理时间
-	AgentState      uint32    `bson:"agent_state" json:"agent_state"`             // 代理状态1通过
+	AgentJoinTime   time.Time `bson:"agent_join_time" json:"agent_join_time"`  // 申请成为代理时间
+	AgentState      uint32    `bson:"agent_state" json:"agent_state"`             // 是否是代理状态1通过
 	AgentLevel      uint32    `bson:"agent_level" json:"agent_level"`             // 代理等级
-	Build           uint32    `bson:"build" json:"build"`                         // 绑定数量
+	Build           uint32    `bson:"build" json:"build"`                         // 下属绑定数量
 	AgentName       string    `bson:"agent_name" json:"agent_name"`               // 代理名字
 	RealName        string    `bson:"real_name" json:"real_name"`                 // 真实姓名
 	Weixin          string    `bson:"weixin" json:"weixin"`                       // 微信
@@ -106,6 +107,14 @@ func (this *User) UpdateLogin() bool {
 func (this *User) UpdateSign() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"sign": this.Sign}})
+}
+
+func (this *User) UpdateAgentJoin() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"agent_join_time": this.AgentJoinTime,
+			"agent_name": this.AgentName, "real_name": this.RealName,
+			"weixin": this.Weixin, "agent_level": this.AgentLevel,
+			"agent": this.Agent}})
 }
 
 func (this *User) Get() {

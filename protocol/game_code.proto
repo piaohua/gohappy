@@ -110,9 +110,18 @@ enum ErrCode {
     AgentNotExist          =101; //代理id不存在
     AgentLevelLow          =102; //代理等级过低
     NotAgent               =103; //不是代理
+    AlreadyAgent           =104; //已经是代理
+    WaitForAudit           =105; //已经申请等待审核
 }
 
 enum SitType {
     SitDown = 0;//坐下
     SitUp = 1;//站起
+}
+
+//代理玩家管理状态
+enum AgentApproveState {
+    AgentApprove = 0; //审批中
+    AgentAgreed = 1; //同意,通过
+    AgentRefused = 2; //拒绝
 }

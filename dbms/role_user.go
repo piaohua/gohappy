@@ -142,6 +142,14 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CAgentJoin)
 		glog.Debugf("CAgentJoin %#v", arg)
 		a.agentJoin(arg, ctx)
+	case *pb.AgentJoin:
+		arg := msg.(*pb.AgentJoin)
+		glog.Debugf("AgentJoin %#v", arg)
+		a.syncAgentJoin(arg, ctx)
+	case *pb.CAgentPlayerApprove:
+		arg := msg.(*pb.CAgentPlayerApprove)
+		glog.Debugf("CAgentPlayerApprove %#v", arg)
+		a.agentApprove(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

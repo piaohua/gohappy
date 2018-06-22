@@ -1,9 +1,11 @@
 package data
 
 import (
+	"errors"
 	"time"
 
 	"github.com/globalsign/mgo/bson"
+	"gohappy/pb"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -41,4 +43,104 @@ func (this *Agency) Get(userid string) {
 
 func ExistAgency(safetycode string) bool {
 	return Has(Agencys, bson.M{"agent": safetycode, "status": 0})
+}
+
+//GetProfitRank 收益排行榜信息
+func GetProfitRank() ([]bson.M, error) {
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "coin", false)
+	var list []bson.M
+	selector := make(bson.M, 4)
+	selector["profit"] = true
+	selector["nickname"] = true
+	selector["address"] = true
+	selector["_id"] = true
+	q := bson.M{"profit": bson.M{"$gt": 0},
+		"agent": bson.M{"$ne": ""}, "agent_state": bson.M{"$eq": 1}}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
+}
+
+//GetAgentManage 代理管理列表信息查询
+func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
+	var list []bson.M
+	selector := make(bson.M, 4)
+	selector["profit"] = true
+	selector["build"] = true
+	selector["agent_level"] = true
+	selector["address"] = true
+	selector["_id"] = true
+	q := bson.M{"agent_level": bson.M{"$gt": 0},
+		"agent": bson.M{"$eq": arg.Userid},
+		"agent_state": bson.M{"$eq": 1}}
+	if arg.Agentid != "" {
+		q["_id"] = bson.M{"$eq": arg.Agentid}
+	}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
+}
+
+//GetPlayerManage 玩家管理列表信息查询
+func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "coin", false)
+	var list []bson.M
+	selector := make(bson.M, 4)
+	selector["coin"] = true
+	selector["agent"] = true
+	selector["agent_level"] = true
+	selector["address"] = true
+	selector["nickname"] = true
+	selector["agent_name"] = true
+	selector["agent_state"] = true
+	selector["agent_join_time"] = true
+	selector["_id"] = true
+	q := bson.M{"agent": bson.M{"$eq": arg.Selfid},
+		"agent_state": bson.M{"$eq": uint32(arg.State)}}
+	if arg.Userid != "" {
+		q["_id"] = bson.M{"$eq": arg.Userid}
+	}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
 }
