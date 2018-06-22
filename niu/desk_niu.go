@@ -801,10 +801,10 @@ func (t *Desk) drawfee() {
 		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
 		//抽水消息广播
 		msg := &pb.SNNPushDrawCoin{
-			Rtype: uint32(pb.LOG_TYPE48),
+			Rtype:  uint32(pb.LOG_TYPE48),
 			Userid: v.Userid,
-			Seat: k,
-			Coin: num,
+			Seat:   k,
+			Coin:   num,
 		}
 		t.broadcast(msg)
 		//反佣和收益消息

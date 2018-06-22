@@ -44,14 +44,14 @@ type User struct {
 	//代理, TODO 分佣设置，上级和上级分佣
 	Agent           string    `bson:"agent" json:"agent"`                         // 绑定的代理ID
 	Atime           time.Time `bson:"atime" json:"atime"`                         // 绑定代理时间
-	AgentJoinTime   time.Time `bson:"agent_join_time" json:"agent_join_time"`  // 申请成为代理时间
+	AgentJoinTime   time.Time `bson:"agent_join_time" json:"agent_join_time"`     // 申请成为代理时间
 	AgentState      uint32    `bson:"agent_state" json:"agent_state"`             // 是否是代理状态1通过
 	AgentLevel      uint32    `bson:"agent_level" json:"agent_level"`             // 代理等级
 	Build           uint32    `bson:"build" json:"build"`                         // 下属绑定数量
 	AgentName       string    `bson:"agent_name" json:"agent_name"`               // 代理名字
 	RealName        string    `bson:"real_name" json:"real_name"`                 // 真实姓名
 	Weixin          string    `bson:"weixin" json:"weixin"`                       // 微信
-	ProfitRate      uint32    `bson:"profit_rate" json:"profit_rate"`           // 分佣比例
+	ProfitRate      uint32    `bson:"profit_rate" json:"profit_rate"`             // 分佣比例
 	Profit          int64     `bson:"profit" json:"profit"`                       // 收益
 	WeekProfit      int64     `bson:"week_profit" json:"week_profit"`             // 周收益
 	HistoryProfit   int64     `bson:"history_profit" json:"history_profit"`       // 历史收益

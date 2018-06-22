@@ -4,8 +4,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/globalsign/mgo/bson"
 	"gohappy/pb"
+
+	"github.com/globalsign/mgo/bson"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -87,7 +88,7 @@ func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
 	selector["address"] = true
 	selector["_id"] = true
 	q := bson.M{"agent_level": bson.M{"$gt": 0},
-		"agent": bson.M{"$eq": arg.Userid},
+		"agent":       bson.M{"$eq": arg.Userid},
 		"agent_state": bson.M{"$eq": 1}}
 	if arg.Agentid != "" {
 		q["_id"] = bson.M{"$eq": arg.Agentid}

@@ -3,9 +3,9 @@ package handler
 import (
 	"time"
 
-	"gohappy/pb"
 	"gohappy/data"
 	"gohappy/glog"
+	"gohappy/pb"
 	"utils"
 )
 
@@ -169,11 +169,11 @@ func AgentProfitInfoMsg(agentid string, agent bool, gtype int32,
 	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
 	msg = &pb.AgentProfitInfo{
 		Agentid: agentid,
-		Gtype: gtype,
-		Level: level,
-		Rate: rate,
-		Profit:profit,
-		Agent: agent,
+		Gtype:   gtype,
+		Level:   level,
+		Rate:    rate,
+		Profit:  profit,
+		Agent:   agent,
 	}
 	return
 }

@@ -364,10 +364,10 @@ func (t *LogProfit) Save() bool {
 func ProfitRecord(userid string, gtype int32, level, rate uint32, profit int64) {
 	record := &LogProfit{
 		Userid: userid,
-		Gtype: gtype,
-		Level:   level,
-		Rate: rate,
-		Profit:profit,
+		Gtype:  gtype,
+		Level:  level,
+		Rate:   rate,
+		Profit: profit,
 	}
 	record.Save()
 }

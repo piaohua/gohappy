@@ -3,11 +3,11 @@ package main
 import (
 	"time"
 
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/game/handler"
 )
 
 //玩家数据请求处理

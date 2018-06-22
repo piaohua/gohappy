@@ -1,11 +1,11 @@
 package main
 
 import (
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/game/handler"
 )
 
 //申请
@@ -66,7 +66,7 @@ func (a *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context)
 	}
 	if v, ok := a.roles[arg.Userid]; ok && v != nil {
 		msg := &pb.AgentPlayerApprove{
-			State: arg.GetState(),
+			State:  arg.GetState(),
 			Userid: arg.GetUserid(),
 			Selfid: arg.GetSelfid(),
 		}

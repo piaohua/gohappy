@@ -782,10 +782,10 @@ func (t *Desk) drawfee() {
 		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
 		//TODO 计算反佣和收益, 日志记录
 		msg := &pb.SSGPushDrawCoin{
-			Rtype: uint32(pb.LOG_TYPE48),
+			Rtype:  uint32(pb.LOG_TYPE48),
 			Userid: v.Userid,
-			Seat: k,
-			Coin: num,
+			Seat:   k,
+			Coin:   num,
 		}
 		t.broadcast(msg)
 	}
