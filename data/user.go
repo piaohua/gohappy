@@ -51,6 +51,7 @@ type User struct {
 	AgentName       string    `bson:"agent_name" json:"agent_name"`               // 代理名字
 	RealName        string    `bson:"real_name" json:"real_name"`                 // 真实姓名
 	Weixin          string    `bson:"weixin" json:"weixin"`                       // 微信
+	ProfitRate      uint32    `bson:"profit_rate" json:"profit_rate"`           // 分佣比例
 	Profit          int64     `bson:"profit" json:"profit"`                       // 收益
 	WeekProfit      int64     `bson:"week_profit" json:"week_profit"`             // 周收益
 	HistoryProfit   int64     `bson:"history_profit" json:"history_profit"`       // 历史收益

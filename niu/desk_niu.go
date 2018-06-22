@@ -783,19 +783,23 @@ func (t *Desk) drawfee() {
 	if t.state != int32(pb.STATE_READY) {
 		return
 	}
+	//计算反佣和收益
 	var num int64
 	switch t.DeskData.Mode {
 	case 0: //普通
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.9))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.1))
 	default:
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.8))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.2))
 	}
 	for k, v := range t.seats {
 		if !v.Ready {
 			continue
 		}
+		if num <= 0 {
+			continue
+		}
 		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
-		//TODO 计算反佣和收益, 日志记录
+		//抽水消息广播
 		msg := &pb.SNNPushDrawCoin{
 			Rtype: uint32(pb.LOG_TYPE48),
 			Userid: v.Userid,
@@ -803,6 +807,15 @@ func (t *Desk) drawfee() {
 			Coin: num,
 		}
 		t.broadcast(msg)
+		//反佣和收益消息
+		if val, ok := t.roles[v.Userid]; ok {
+			msg2 := handler.AgentProfitInfoMsg(val.User.GetAgent(), false,
+				t.DeskData.Gtype, val.User.AgentLevel, 0, num)
+			if val.User.AgentState == 1 {
+				msg2.Agent = true
+			}
+			t.send3userid(v.Userid, msg2)
+		}
 	}
 }
 

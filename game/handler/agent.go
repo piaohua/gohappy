@@ -163,3 +163,17 @@ func AgentApprove(state pb.AgentApproveState, selfid string, user *data.User) pb
 	}
 	return pb.OK
 }
+
+//AgentProfitInfoMsg 收益消息
+func AgentProfitInfoMsg(agentid string, agent bool, gtype int32,
+	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
+	msg = &pb.AgentProfitInfo{
+		Agentid: agentid,
+		Gtype: gtype,
+		Level: level,
+		Rate: rate,
+		Profit:profit,
+		Agent: agent,
+	}
+	return
+}

@@ -89,3 +89,12 @@ message LogTask {
     int32 Taskid  = 2;//任务id
     int32 Type    = 3;//类型
 }
+
+//收益记录
+message LogProfit {
+    string Userid = 1;//玩家ID
+    int32  Gtype  = 2;//game type
+    uint32 Level  = 3;//level type
+    uint32 Rate   = 4;//rate
+    int64  Profit = 5;//Profit
+}

@@ -54,6 +54,12 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		glog.Debugf("AgentPlayerApprove %#v", arg)
 		errcode := handler.AgentApprove(arg.GetState(), arg.GetSelfid(), rs.User)
 		glog.Debugf("AgentPlayerApprove errcode %v", errcode)
+		//TODO 更新房间内玩家数据
+	case *pb.AgentProfitInfo:
+		arg := msg.(*pb.AgentProfitInfo)
+		glog.Debugf("AgentProfitInfo %#v", arg)
+		//TODO 收益日志
+		//arg.Agentid = rs.User.GetAgent()
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)

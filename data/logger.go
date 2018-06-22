@@ -341,3 +341,33 @@ func TaskRecord(userid string, taskid, ttype int32) {
 	}
 	record.Save()
 }
+
+//LogProfit 代理收益日志
+type LogProfit struct {
+	//Id       string    `bson:"_id"`
+	Userid string    `bson:"userid"` //玩家ID
+	Gtype  int32     `bson:"gtype"`  //game type
+	Level  uint32    `bson:"level"`  //level type
+	Rate   uint32    `bson:"rate"`   //rate
+	Profit int64     `bson:"profit"` //Profit
+	Ctime  time.Time `bson:"ctime"`  //create Time
+}
+
+//Save 保存消息记录
+func (t *LogProfit) Save() bool {
+	//t.Id = bson.NewObjectId().String()
+	t.Ctime = bson.Now()
+	return Insert(LogProfits, t)
+}
+
+//ProfitRecord 代理收益记录
+func ProfitRecord(userid string, gtype int32, level, rate uint32, profit int64) {
+	record := &LogProfit{
+		Userid: userid,
+		Gtype: gtype,
+		Level:   level,
+		Rate: rate,
+		Profit:profit,
+	}
+	record.Save()
+}
