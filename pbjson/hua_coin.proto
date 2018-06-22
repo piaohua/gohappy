@@ -118,3 +118,12 @@ message SJHCoinChangeRoom
 {
     ErrCode error= 1;//错误码 ,0:正常
 }
+
+// 开始前推送抽水变更
+message SJHPushDrawCoin
+{
+    uint32 rtype   = 1;//类型
+    uint32 seat    = 2;//位置
+    string userid  = 3;//玩家id
+    int64 coin     = 4;//扣除数量金币
+}

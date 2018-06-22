@@ -268,6 +268,7 @@
 		SJHCoinBi
 		CJHCoinChangeRoom
 		SJHCoinChangeRoom
+		SJHPushDrawCoin
 		CJHFreeEnterRoom
 		SJHFreeEnterRoom
 		SJHFreeCamein
@@ -332,6 +333,7 @@
 		SNNCoinGameover
 		CNNCoinChangeRoom
 		SNNCoinChangeRoom
+		SNNPushDrawCoin
 		CNNFreeEnterRoom
 		SNNFreeEnterRoom
 		SNNFreeCamein
@@ -402,6 +404,7 @@
 		SSGCoinGameover
 		CSGCoinChangeRoom
 		SSGCoinChangeRoom
+		SSGPushDrawCoin
 		CSGFreeEnterRoom
 		SSGFreeEnterRoom
 		SSGFreeCamein

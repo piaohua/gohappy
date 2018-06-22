@@ -737,7 +737,7 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 	for k, v := range score {
 		userid := t.getUserid(k)
 		//抽水
-		v = t.drawcoin(userid, v)
+		//v = t.drawcoin(userid, v)
 		switch t.DeskData.Rtype {
 		case int32(pb.ROOM_TYPE0): //自由
 			t.sendCoin(userid, v, ltype)
@@ -770,6 +770,40 @@ func (t *Desk) drawcoin(userid string, val int64) (num int64) {
 		//TODO 抽成日志记录 val - num
 	}
 	return
+}
+
+//开始前扣除抽水
+func (t *Desk) drawfee() {
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1): //私人
+	case int32(pb.ROOM_TYPE2): //百人
+		return
+	}
+	if t.state != int32(pb.STATE_READY) {
+		return
+	}
+	var num int64
+	switch t.DeskData.Mode {
+	case 0: //普通
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.9))
+	default:
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.8))
+	}
+	for k, v := range t.seats {
+		if !v.Ready {
+			continue
+		}
+		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
+		//TODO 计算反佣和收益, 日志记录
+		msg := &pb.SNNPushDrawCoin{
+			Rtype: uint32(pb.LOG_TYPE48),
+			Userid: v.Userid,
+			Seat: k,
+			Coin: num,
+		}
+		t.broadcast(msg)
+	}
 }
 
 //.

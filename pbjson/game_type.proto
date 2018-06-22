@@ -159,6 +159,7 @@ enum LogType {
     LOG_TYPE45 = 45;//结算
     LOG_TYPE46 = 46;//任务奖励
     LOG_TYPE47 = 47;//连续登录奖励
+    LOG_TYPE48 = 48;//抽水
 }
 
 // 放看比加跟掩码

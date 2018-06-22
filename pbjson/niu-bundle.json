@@ -461,13 +461,22 @@
             "ParamError": 100,
             "AgentNotExist": 101,
             "AgentLevelLow": 102,
-            "NotAgent": 103
+            "NotAgent": 103,
+            "AlreadyAgent": 104,
+            "WaitForAudit": 105
           }
         },
         "SitType": {
           "values": {
             "SitDown": 0,
             "SitUp": 1
+          }
+        },
+        "AgentApproveState": {
+          "values": {
+            "AgentApprove": 0,
+            "AgentAgreed": 1,
+            "AgentRefused": 2
           }
         },
         "NNRoomUser": {
@@ -1179,6 +1188,26 @@
             "error": {
               "type": "ErrCode",
               "id": 1
+            }
+          }
+        },
+        "SNNPushDrawCoin": {
+          "fields": {
+            "rtype": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
             }
           }
         },

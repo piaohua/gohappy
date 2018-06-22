@@ -291,13 +291,22 @@
             "ParamError": 100,
             "AgentNotExist": 101,
             "AgentLevelLow": 102,
-            "NotAgent": 103
+            "NotAgent": 103,
+            "AlreadyAgent": 104,
+            "WaitForAudit": 105
           }
         },
         "SitType": {
           "values": {
             "SitDown": 0,
             "SitUp": 1
+          }
+        },
+        "AgentApproveState": {
+          "values": {
+            "AgentApprove": 0,
+            "AgentAgreed": 1,
+            "AgentRefused": 2
           }
         },
         "CChatText": {

@@ -294,6 +294,8 @@ func (t *Desk) niuTimeout() {
 
 //' 开始游戏
 func (t *Desk) gameStart() {
+	//抽水
+	t.drawfee()
 	//初始化
 	t.gameStartInit()
 	//洗牌

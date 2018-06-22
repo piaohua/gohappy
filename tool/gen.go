@@ -244,6 +244,7 @@ var protosPacket = map[string][]proto{
 		{code: 2530, name: "SNNSit"},
 		{code: 2531, name: "SNNPushOffline"},
 		{code: 2532, name: "SNNCoinChangeRoom"},
+		{code: 2533, name: "SNNPushDrawCoin"},
 	},
 	//san
 	"san": {
@@ -280,6 +281,7 @@ var protosPacket = map[string][]proto{
 		{code: 3530, name: "SSGSit"},
 		{code: 3531, name: "SSGPushOffline"},
 		{code: 3532, name: "SSGCoinChangeRoom"},
+		{code: 3533, name: "SSGPushDrawCoin"},
 	},
 	//hua
 	"hua": {
@@ -323,6 +325,7 @@ var protosPacket = map[string][]proto{
 		{code: 4537, name: "SJHSit"},
 		{code: 4538, name: "SJHPushOffline"},
 		{code: 4539, name: "SJHCoinChangeRoom"},
+		{code: 4540, name: "SJHPushDrawCoin"},
 	},
 }
 
