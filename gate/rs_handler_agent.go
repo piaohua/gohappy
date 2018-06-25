@@ -28,15 +28,19 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 	case *pb.CAgentProfit:
 		arg := msg.(*pb.CAgentProfit)
 		glog.Debugf("CAgentProfit: %v", arg)
-		rs.Send(new(pb.SAgentProfit))
+		rs.agentProfit(arg, ctx)
 	case *pb.CAgentProfitOrder:
 		arg := msg.(*pb.CAgentProfitOrder)
 		glog.Debugf("CAgentProfitOrder %#v", arg)
-		rs.Send(new(pb.SAgentProfitOrder))
+		rs.agentProfitOrder(arg, ctx)
 	case *pb.CAgentProfitApply:
 		arg := msg.(*pb.CAgentProfitApply)
 		glog.Debugf("CAgentProfitApply %#v", arg)
-		rs.Send(new(pb.SAgentProfitApply))
+		rs.agentProfitApply(arg, ctx)
+	case *pb.CAgentProfitReply:
+		arg := msg.(*pb.CAgentProfitReply)
+		glog.Debugf("CAgentProfitReply %#v", arg)
+		rs.agentProfitReply(arg, ctx)
 	case *pb.CAgentProfitRank:
 		arg := msg.(*pb.CAgentProfitRank)
 		glog.Debugf("CAgentProfitRank %#v", arg)
@@ -54,12 +58,18 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		glog.Debugf("AgentPlayerApprove %#v", arg)
 		errcode := handler.AgentApprove(arg.GetState(), arg.GetSelfid(), rs.User)
 		glog.Debugf("AgentPlayerApprove errcode %v", errcode)
-		//TODO 更新房间内玩家数据
 	case *pb.AgentProfitInfo:
 		arg := msg.(*pb.AgentProfitInfo)
 		glog.Debugf("AgentProfitInfo %#v", arg)
-		//TODO 收益日志
-		//arg.Agentid = rs.User.GetAgent()
+		rs.agentProfitInfo(arg)
+	case *pb.AgentProfitNum:
+		arg := msg.(*pb.AgentProfitNum)
+		glog.Debugf("AgentProfitNum %#v", arg)
+		rs.agentProfitNum(arg)
+	case *pb.AgentProfitReplyMsg:
+		arg := msg.(*pb.AgentProfitReplyMsg)
+		glog.Debugf("AgentProfitReplyMsg %#v", arg)
+		rs.agentProfitReplyMsg(arg)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -68,15 +78,60 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		rs.handlerDesk(msg, ctx)
 	}
 }
+//代理反佣收益消息处理
+func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
+	if rs.User.AgentState != 1 {
+		return
+	}
+	msg1, msg2, msg3, msg4 := handler.AddProfit(arg, rs.User)
+	//反给上级
+	if msg1 != nil {
+		rs.rolePid.Tell(msg1)
+	}
+	//收益日志
+	if msg2 != nil {
+		rs.loggerPid.Tell(msg2)
+	}
+	//更新时间
+	if msg3 != nil {
+		rs.rolePid.Tell(msg3)
+	}
+	//更新数据
+	if msg4 != nil {
+		rs.rolePid.Tell(msg4)
+	}
+}
+
+//玩家收益消息处理
+func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
+	if rs.User.GetAgent() == "" {
+		return
+	}
+	if arg.GetProfit() <= 0 {
+		return
+	}
+	//发送消息给代理
+	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
+		false, arg.Gtype, rs.User.AgentLevel, 100, arg.Profit)
+	if rs.User.AgentState == 1 {
+		msg2.Agent = true
+	}
+	rs.rolePid.Tell(msg2)
+}
 
 //基础信息
 func (rs *RoleActor) agentInfo() {
+	if handler.UpdateWeekProfit(0, rs.User) {
+		msg := handler.UpdateWeekMsg(rs.User)
+		rs.rolePid.Tell(msg)
+	}
 	rsp := new(pb.SMyAgent)
 	rsp.Agentname = rs.User.AgentName
 	rsp.Agentid = rs.User.Agent
 	rsp.Address = rs.User.Address
 	rsp.Profit = rs.User.Profit
 	rsp.WeekProfit = rs.User.WeekProfit
+	rsp.WeekProfit = rs.User.WeekPlayerProfit
 	rsp.HistoryProfit = rs.User.HistoryProfit
 	rsp.SubPlayerProfit = rs.User.SubPlayerProfit
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
@@ -172,6 +227,116 @@ func (rs *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context
 	}
 	arg.Selfid = rs.User.GetUserid()
 	rs.rolePid.Request(arg, ctx.Self())
+}
+
+//代理收益明细列表
+func (rs *RoleActor) agentProfit(arg *pb.CAgentProfit, ctx actor.Context) {
+	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+		rsp := new(pb.SAgentProfit)
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	arg.Agentid = rs.User.GetUserid()
+	rs.dbmsPid.Request(arg, ctx.Self())
+}
+
+//代理收益订单列表
+func (rs *RoleActor) agentProfitOrder(arg *pb.CAgentProfitOrder, ctx actor.Context) {
+	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+		rsp := new(pb.SAgentProfitOrder)
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	arg.Agentid = rs.User.GetUserid()
+	rs.dbmsPid.Request(arg, ctx.Self())
+}
+
+//收益提现申请
+func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Context) {
+	rsp := new(pb.SAgentProfitApply)
+	rsp.Profit = arg.GetProfit()
+	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	if rs.User.Profit < int64(arg.GetProfit()) {
+		rsp.Error = pb.ProfitNotEnough
+		rs.Send(rsp)
+		return
+	}
+	msg := &pb.AgentProfitApply{
+		Agentid: rs.User.GetAgent(), //受理人userid
+		Userid: rs.User.GetUserid(), //申请人玩家id
+		Nickname: rs.User.GetNickname(), //玩家昵称
+		Profit: int64(arg.GetProfit()), //提取金额
+	}
+	res1 := rs.reqRole(msg, ctx)
+	if response1, ok := res1.(*pb.AgentProfitApplied); ok {
+		rsp.Error = response1.Error
+		if response1.Error == pb.OK {
+			//扣除收益
+			rs.User.Profit -= response1.Profit
+		}
+	}
+	rs.Send(rsp)
+}
+
+//收益提现受理
+func (rs *RoleActor) agentProfitReply(arg *pb.CAgentProfitReply, ctx actor.Context) {
+	rsp := new(pb.SAgentProfitReply)
+	rsp.Orderid = arg.GetOrderid()
+	rsp.State = arg.GetState()
+	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	if arg.GetState() != 1 && arg.GetState() != 2 {
+		rsp.Error = pb.Failed
+		rs.Send(rsp)
+		return
+	}
+	msg := &pb.AgentProfitReply{
+		Orderid: arg.GetOrderid(), //order id
+		Agentid: rs.User.GetUserid(),//受理人userid
+		State: arg.GetState(), //状态,1同意,2拒绝
+	}
+	res1 := rs.reqRole(msg, ctx)
+	if response1, ok := res1.(*pb.AgentProfitReplied); ok {
+		rsp.Error = response1.Error
+		if response1.Error == pb.OK {
+			rsp.Profit = response1.Profit
+			if arg.GetState() == 1 {
+				//银行账户增加收入
+				msg1 := &pb.AgentProfitReplyMsg{
+					Userid: response1.Userid,
+					Bank: response1.Profit,
+				}
+				rs.rolePid.Tell(msg1)
+			} else if arg.GetState() == 2 {
+				//返还收益
+				msg1 := &pb.AgentProfitReplyMsg{
+					Userid: response1.Userid,
+					Profit: response1.Profit,
+				}
+				rs.rolePid.Tell(msg1)
+			}
+		}
+	}
+	rs.Send(rsp)
+}
+
+//提现受理消息
+func (rs *RoleActor) agentProfitReplyMsg(arg *pb.AgentProfitReplyMsg) {
+	if arg.GetBank() != 0 {
+		rs.User.AddBank(arg.GetBank())
+	}
+	if arg.GetProfit() != 0 {
+		rs.User.Profit += arg.GetProfit()
+	}
 }
 
 func (rs *RoleActor) reqRole(msg interface{}, ctx actor.Context) interface{} {

@@ -28,12 +28,13 @@ message SMyAgent
     string agentid = 2;//代理id
     string address = 3;//地址
     int64 profit = 4;//收益
-    int64 WeekProfit = 5;//周收益
-    int64 HistoryProfit = 6;//历史收益
-    int64 SubPlayerProfit = 7;//下属玩家业绩
-    int64 SubAgentProfit = 8;//下属代理业绩
-    string PopularizeURL = 9;//推广地址
-    ErrCode error= 10;//错误码 ,0:正常
+    int64 WeekProfit = 5;//本周收益
+    int64 WeekPlayerProfit = 6;//本周玩家业绩
+    int64 HistoryProfit = 7;//历史收益
+    int64 SubPlayerProfit = 8;//下属玩家业绩
+    int64 SubAgentProfit = 9;//下属代理业绩
+    string PopularizeURL = 10;//推广地址
+    ErrCode error= 11;//错误码 ,0:正常
 }
 
 // 代理管理
@@ -41,7 +42,7 @@ message CAgentManage
 {
     uint32 page = 1;//页数
     string agentid = 2;//代理id,查询参数
-    string userid = 3;//玩家id
+    string userid = 3;//玩家id,server参数
 }
 
 message SAgentManage
@@ -65,9 +66,9 @@ message AgentManage
 message CAgentProfit
 {
     uint32 page = 1;//页数
-    string agentid = 2;//代理id,查询参数
-    string time = 3;//收益日期
-    uint32 level = 4;//收益等级
+    int64 time = 2;//收益日期时间截,查询参数
+    uint32 level = 3;//收益等级
+    string agentid = 4;//代理id,server参数
 }
 
 message SAgentProfit
@@ -91,7 +92,7 @@ message AgentProfitDetail
 message CAgentProfitOrder
 {
     uint32 page = 1;//页数
-    string agentid = 2;//代理id
+    string agentid = 2;//代理id,server参数
 }
 
 message SAgentProfitOrder
@@ -109,7 +110,7 @@ message AgentProfitOrder
     string nickname = 3;//玩家昵称
     int64 profit = 4;//提取金额
     string applytime = 5;//提单时间
-    string handletime = 6;//响应时间
+    string replytime = 6;//响应时间
     int32 state = 7;//状态,0等待处理,1成功,2失败
 }
 
@@ -123,6 +124,21 @@ message SAgentProfitApply
 {
     uint32 profit = 1;//提取金额
     ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 代理收益提现受理
+message CAgentProfitReply
+{
+    string orderid = 1;//orderid
+    int32 state = 2;//状态,1同意,2拒绝
+}
+
+message SAgentProfitReply
+{
+    string orderid = 1;//orderid
+    int32 state = 2;//状态,1同意,2拒绝
+    int64 profit = 3;//提取金额
+    ErrCode error= 4;//错误码 ,0:正常
 }
 
 // 代理收益排行榜
@@ -153,7 +169,7 @@ message CAgentPlayerManage
     uint32 page = 1;//页数
     string userid = 2;//玩家id,查询参数
     AgentApproveState state = 3;//状态，通过，审批，拒绝
-    string selfid = 4;//玩家id
+    string selfid = 4;//玩家id,server参数
 }
 
 message SAgentPlayerManage
@@ -183,7 +199,7 @@ message CAgentPlayerApprove
 {
     AgentApproveState state = 1;//1同意，2拒绝
     string userid = 2;//申请玩家id
-    string selfid = 3;//审批玩家id
+    string selfid = 3;//审批玩家id,server参数
 }
 
 message SAgentPlayerApprove

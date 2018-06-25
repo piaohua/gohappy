@@ -145,3 +145,82 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	}
 	return list, nil
 }
+
+//GetAgentProfit 代理收益明细
+func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
+	var list []LogProfit
+	q := bson.M{"agentid": arg.Agentid}
+	if arg.GetLevel() != 0 {
+		q["level"] = arg.GetLevel()
+	}
+	if arg.GetTime() != 0 {
+		q["ctime"] = bson.M{"$gte": time.Unix(arg.GetTime(), 0), "$lt": time.Unix(arg.GetTime()+86400, 0)}
+	}
+	err := LogProfits.
+		Find(q).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+	}
+	return list, err
+}
+
+//LogProfitOrder 提取收益订单
+type LogProfitOrder struct {
+	Id         string    `bson:"_id" json:"id"`                  // AUTO_INCREMENT, PRIMARY KEY (`id`),
+	Userid   string    `bson:"userid" json:"userid"`       // 玩家id
+	Agentid   string    `bson:"agentid" json:"agentid"`       // 代理id
+	Nickname   string    `bson:"nickname" json:"nickname"`       // 玩家昵称
+	Profit   int64    `bson:"profit" json:"profit"`       // 提取金额
+	State   int32    `bson:"state" json:"state"`       // 状态,0等待处理,1成功,2失败
+	ApplyTime     time.Time `bson:"apply_time" json:"apply_time"`         //提单时间
+	ReplyTime     time.Time `bson:"reply_time" json:"reply_time"`         //响应时间
+	Ctime     time.Time `bson:"ctime" json:"ctime"`         //记录生成时间
+}
+
+//Save 保存消息记录
+func (t *LogProfitOrder) Save() bool {
+	t.Id = bson.NewObjectId().String()
+	t.Ctime = bson.Now()
+	t.ApplyTime = bson.Now()
+	return Insert(LogProfitsOrders, t)
+}
+
+//Update 更新记录
+func (t *LogProfitOrder) Update(state int32) bool {
+	t.ReplyTime = bson.Now()
+	return Update(LogProfitsOrders, bson.M{"_id": t.Id},
+		bson.M{"$set": bson.M{"state": t.State, "reply_time": t.ReplyTime}})
+}
+
+//Get 查询交易记录
+func (t *LogProfitOrder) Get(orderid string) {
+	Get(LogProfitsOrders, orderid, t)
+}
+
+//GetProfitOrder 收益提取订单
+func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
+	var list []LogProfitOrder
+	q := bson.M{"agentid": arg.Agentid}
+	err := LogProfitsOrders.
+		Find(q).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+	}
+	return list, err
+}

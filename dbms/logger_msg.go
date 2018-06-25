@@ -50,7 +50,8 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 		handler.Log2RoundRecord(arg)
 	case *pb.LogProfit:
 		arg := msg.(*pb.LogProfit)
-		data.ProfitRecord(arg.Userid, arg.Gtype, arg.Level, arg.Rate, arg.Profit)
+		data.ProfitRecord(arg.Agentid, arg.Userid, arg.Gtype,
+			arg.Level, arg.Rate, arg.Profit)
 	case *pb.ServeStop:
 		//关闭服务
 		a.handlerStop(ctx)

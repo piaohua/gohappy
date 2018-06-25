@@ -71,6 +71,16 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		glog.Debugf("CAgentPlayerManage %#v", arg)
 		rsp := handler.PackPlayerManageMsg(arg)
 		ctx.Respond(rsp)
+	case *pb.CAgentProfit:
+		arg := msg.(*pb.CAgentProfit)
+		glog.Debugf("CAgentProfit: %v", arg)
+		rsp := handler.PackAgentProfitMsg(arg)
+		ctx.Respond(rsp)
+	case *pb.CAgentProfitOrder:
+		arg := msg.(*pb.CAgentProfitOrder)
+		glog.Debugf("CAgentProfitOrder %#v", arg)
+		rsp := handler.PackAgentProfitOrderMsg(arg)
+		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

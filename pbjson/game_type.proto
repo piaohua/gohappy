@@ -160,6 +160,7 @@ enum LogType {
     LOG_TYPE46 = 46;//任务奖励
     LOG_TYPE47 = 47;//连续登录奖励
     LOG_TYPE48 = 48;//抽水
+    LOG_TYPE49 = 49;//代理提现
 }
 
 // 放看比加跟掩码

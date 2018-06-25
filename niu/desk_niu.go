@@ -764,10 +764,14 @@ func (t *Desk) drawcoin(userid string, val int64) (num int64) {
 		default:
 			num = int64(math.Trunc(float64(val) * 0.8))
 		}
-		//TODO 抽成日志记录 val - num
+		//反佣和收益消息,抽成日志记录 val - num
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		t.send3userid(userid, msg2)
 	case int32(pb.ROOM_TYPE2): //百人
 		num = int64(math.Trunc(float64(val) * 0.95))
-		//TODO 抽成日志记录 val - num
+		//反佣和收益消息,抽成日志记录 val - num
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		t.send3userid(userid, msg2)
 	}
 	return
 }
@@ -808,14 +812,8 @@ func (t *Desk) drawfee() {
 		}
 		t.broadcast(msg)
 		//反佣和收益消息
-		if val, ok := t.roles[v.Userid]; ok {
-			msg2 := handler.AgentProfitInfoMsg(val.User.GetAgent(), false,
-				t.DeskData.Gtype, val.User.AgentLevel, 0, num)
-			if val.User.AgentState == 1 {
-				msg2.Agent = true
-			}
-			t.send3userid(v.Userid, msg2)
-		}
+		msg2 := handler.AgentProfitNumMsg(v.Userid, t.DeskData.Gtype, num)
+		t.send3userid(v.Userid, msg2)
 	}
 }
 

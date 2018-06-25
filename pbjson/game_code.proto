@@ -112,6 +112,9 @@ enum ErrCode {
     NotAgent               =103; //不是代理
     AlreadyAgent           =104; //已经是代理
     WaitForAudit           =105; //已经申请等待审核
+    ProfitNotEnough        =106; //提取收益不足
+    ProfitOrderNotExist    =107; //收益订单不存在
+    ProfitOrderReplied     =108; //收益订单已经处理过
 }
 
 enum SitType {

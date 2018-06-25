@@ -44,6 +44,14 @@
 		AgentJoined
 		AgentPlayerApprove
 		AgentProfitInfo
+		AgentProfitNum
+		AgentProfitApply
+		AgentProfitApplied
+		AgentProfitReply
+		AgentProfitReplied
+		AgentProfitUpdate
+		AgentWeekUpdate
+		AgentProfitReplyMsg
 		MatchDesk
 		MatchedDesk
 		GenDesk
@@ -179,6 +187,8 @@
 		AgentProfitOrder
 		CAgentProfitApply
 		SAgentProfitApply
+		CAgentProfitReply
+		SAgentProfitReply
 		CAgentProfitRank
 		SAgentProfitRank
 		AgentProfit
@@ -614,6 +624,7 @@ type AgentProfitInfo struct {
 	Level   uint32 `protobuf:"varint,4,opt,name=level,proto3" json:"level,omitempty"`
 	Agent   bool   `protobuf:"varint,5,opt,name=agent,proto3" json:"agent,omitempty"`
 	Profit  int64  `protobuf:"varint,6,opt,name=profit,proto3" json:"profit,omitempty"`
+	Userid  string `protobuf:"bytes,7,opt,name=userid,proto3" json:"userid,omitempty"`
 }
 
 func (m *AgentProfitInfo) Reset()                    { *m = AgentProfitInfo{} }
@@ -662,11 +673,296 @@ func (m *AgentProfitInfo) GetProfit() int64 {
 	return 0
 }
 
+func (m *AgentProfitInfo) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+// 代理收益信息
+type AgentProfitNum struct {
+	Gtype  int32  `protobuf:"varint,1,opt,name=gtype,proto3" json:"gtype,omitempty"`
+	Profit int64  `protobuf:"varint,2,opt,name=profit,proto3" json:"profit,omitempty"`
+	Userid string `protobuf:"bytes,3,opt,name=userid,proto3" json:"userid,omitempty"`
+}
+
+func (m *AgentProfitNum) Reset()                    { *m = AgentProfitNum{} }
+func (*AgentProfitNum) ProtoMessage()               {}
+func (*AgentProfitNum) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{4} }
+
+func (m *AgentProfitNum) GetGtype() int32 {
+	if m != nil {
+		return m.Gtype
+	}
+	return 0
+}
+
+func (m *AgentProfitNum) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
+func (m *AgentProfitNum) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+// 代理申请提现
+type AgentProfitApply struct {
+	Agentid  string `protobuf:"bytes,1,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Userid   string `protobuf:"bytes,2,opt,name=userid,proto3" json:"userid,omitempty"`
+	Nickname string `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Profit   int64  `protobuf:"varint,4,opt,name=profit,proto3" json:"profit,omitempty"`
+}
+
+func (m *AgentProfitApply) Reset()                    { *m = AgentProfitApply{} }
+func (*AgentProfitApply) ProtoMessage()               {}
+func (*AgentProfitApply) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{5} }
+
+func (m *AgentProfitApply) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+func (m *AgentProfitApply) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *AgentProfitApply) GetNickname() string {
+	if m != nil {
+		return m.Nickname
+	}
+	return ""
+}
+
+func (m *AgentProfitApply) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
+type AgentProfitApplied struct {
+	Profit int64   `protobuf:"varint,1,opt,name=profit,proto3" json:"profit,omitempty"`
+	Error  ErrCode `protobuf:"varint,2,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *AgentProfitApplied) Reset()                    { *m = AgentProfitApplied{} }
+func (*AgentProfitApplied) ProtoMessage()               {}
+func (*AgentProfitApplied) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{6} }
+
+func (m *AgentProfitApplied) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
+func (m *AgentProfitApplied) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+// 代理提现受理
+type AgentProfitReply struct {
+	Orderid string `protobuf:"bytes,1,opt,name=orderid,proto3" json:"orderid,omitempty"`
+	Agentid string `protobuf:"bytes,2,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	State   int32  `protobuf:"varint,3,opt,name=state,proto3" json:"state,omitempty"`
+}
+
+func (m *AgentProfitReply) Reset()                    { *m = AgentProfitReply{} }
+func (*AgentProfitReply) ProtoMessage()               {}
+func (*AgentProfitReply) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{7} }
+
+func (m *AgentProfitReply) GetOrderid() string {
+	if m != nil {
+		return m.Orderid
+	}
+	return ""
+}
+
+func (m *AgentProfitReply) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+func (m *AgentProfitReply) GetState() int32 {
+	if m != nil {
+		return m.State
+	}
+	return 0
+}
+
+type AgentProfitReplied struct {
+	Orderid string  `protobuf:"bytes,1,opt,name=orderid,proto3" json:"orderid,omitempty"`
+	State   int32   `protobuf:"varint,2,opt,name=state,proto3" json:"state,omitempty"`
+	Userid  string  `protobuf:"bytes,3,opt,name=userid,proto3" json:"userid,omitempty"`
+	Profit  int64   `protobuf:"varint,4,opt,name=profit,proto3" json:"profit,omitempty"`
+	Error   ErrCode `protobuf:"varint,5,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *AgentProfitReplied) Reset()                    { *m = AgentProfitReplied{} }
+func (*AgentProfitReplied) ProtoMessage()               {}
+func (*AgentProfitReplied) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{8} }
+
+func (m *AgentProfitReplied) GetOrderid() string {
+	if m != nil {
+		return m.Orderid
+	}
+	return ""
+}
+
+func (m *AgentProfitReplied) GetState() int32 {
+	if m != nil {
+		return m.State
+	}
+	return 0
+}
+
+func (m *AgentProfitReplied) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *AgentProfitReplied) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
+func (m *AgentProfitReplied) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+// 更新收益
+type AgentProfitUpdate struct {
+	Userid  string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Profit  int64  `protobuf:"varint,2,opt,name=profit,proto3" json:"profit,omitempty"`
+	Isagent bool   `protobuf:"varint,3,opt,name=isagent,proto3" json:"isagent,omitempty"`
+}
+
+func (m *AgentProfitUpdate) Reset()                    { *m = AgentProfitUpdate{} }
+func (*AgentProfitUpdate) ProtoMessage()               {}
+func (*AgentProfitUpdate) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{9} }
+
+func (m *AgentProfitUpdate) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *AgentProfitUpdate) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
+func (m *AgentProfitUpdate) GetIsagent() bool {
+	if m != nil {
+		return m.Isagent
+	}
+	return false
+}
+
+// 更新周时间
+type AgentWeekUpdate struct {
+	Userid string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Start  string `protobuf:"bytes,2,opt,name=Start,json=start,proto3" json:"Start,omitempty"`
+	End    string `protobuf:"bytes,3,opt,name=End,json=end,proto3" json:"End,omitempty"`
+}
+
+func (m *AgentWeekUpdate) Reset()                    { *m = AgentWeekUpdate{} }
+func (*AgentWeekUpdate) ProtoMessage()               {}
+func (*AgentWeekUpdate) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{10} }
+
+func (m *AgentWeekUpdate) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *AgentWeekUpdate) GetStart() string {
+	if m != nil {
+		return m.Start
+	}
+	return ""
+}
+
+func (m *AgentWeekUpdate) GetEnd() string {
+	if m != nil {
+		return m.End
+	}
+	return ""
+}
+
+// 代理提现受理消息
+type AgentProfitReplyMsg struct {
+	Userid string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Bank   int64  `protobuf:"varint,2,opt,name=bank,proto3" json:"bank,omitempty"`
+	Profit int64  `protobuf:"varint,3,opt,name=profit,proto3" json:"profit,omitempty"`
+}
+
+func (m *AgentProfitReplyMsg) Reset()                    { *m = AgentProfitReplyMsg{} }
+func (*AgentProfitReplyMsg) ProtoMessage()               {}
+func (*AgentProfitReplyMsg) Descriptor() ([]byte, []int) { return fileDescriptorActorAgent, []int{11} }
+
+func (m *AgentProfitReplyMsg) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *AgentProfitReplyMsg) GetBank() int64 {
+	if m != nil {
+		return m.Bank
+	}
+	return 0
+}
+
+func (m *AgentProfitReplyMsg) GetProfit() int64 {
+	if m != nil {
+		return m.Profit
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*AgentJoin)(nil), "pb.AgentJoin")
 	proto.RegisterType((*AgentJoined)(nil), "pb.AgentJoined")
 	proto.RegisterType((*AgentPlayerApprove)(nil), "pb.AgentPlayerApprove")
 	proto.RegisterType((*AgentProfitInfo)(nil), "pb.AgentProfitInfo")
+	proto.RegisterType((*AgentProfitNum)(nil), "pb.AgentProfitNum")
+	proto.RegisterType((*AgentProfitApply)(nil), "pb.AgentProfitApply")
+	proto.RegisterType((*AgentProfitApplied)(nil), "pb.AgentProfitApplied")
+	proto.RegisterType((*AgentProfitReply)(nil), "pb.AgentProfitReply")
+	proto.RegisterType((*AgentProfitReplied)(nil), "pb.AgentProfitReplied")
+	proto.RegisterType((*AgentProfitUpdate)(nil), "pb.AgentProfitUpdate")
+	proto.RegisterType((*AgentWeekUpdate)(nil), "pb.AgentWeekUpdate")
+	proto.RegisterType((*AgentProfitReplyMsg)(nil), "pb.AgentProfitReplyMsg")
 }
 func (this *AgentJoin) Equal(that interface{}) bool {
 	if that == nil {
@@ -801,6 +1097,255 @@ func (this *AgentProfitInfo) Equal(that interface{}) bool {
 	if this.Profit != that1.Profit {
 		return false
 	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitNum) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitNum)
+	if !ok {
+		that2, ok := that.(AgentProfitNum)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Gtype != that1.Gtype {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitApply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitApply)
+	if !ok {
+		that2, ok := that.(AgentProfitApply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Nickname != that1.Nickname {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitApplied) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitApplied)
+	if !ok {
+		that2, ok := that.(AgentProfitApplied)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitReply) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitReply)
+	if !ok {
+		that2, ok := that.(AgentProfitReply)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Orderid != that1.Orderid {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	if this.State != that1.State {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitReplied) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitReplied)
+	if !ok {
+		that2, ok := that.(AgentProfitReplied)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Orderid != that1.Orderid {
+		return false
+	}
+	if this.State != that1.State {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitUpdate) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitUpdate)
+	if !ok {
+		that2, ok := that.(AgentProfitUpdate)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
+	if this.Isagent != that1.Isagent {
+		return false
+	}
+	return true
+}
+func (this *AgentWeekUpdate) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentWeekUpdate)
+	if !ok {
+		that2, ok := that.(AgentWeekUpdate)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Start != that1.Start {
+		return false
+	}
+	if this.End != that1.End {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitReplyMsg) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitReplyMsg)
+	if !ok {
+		that2, ok := that.(AgentProfitReplyMsg)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Bank != that1.Bank {
+		return false
+	}
+	if this.Profit != that1.Profit {
+		return false
+	}
 	return true
 }
 func (this *AgentJoin) GoString() string {
@@ -845,13 +1390,112 @@ func (this *AgentProfitInfo) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 10)
+	s := make([]string, 0, 11)
 	s = append(s, "&pb.AgentProfitInfo{")
 	s = append(s, "Gtype: "+fmt.Sprintf("%#v", this.Gtype)+",\n")
 	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
 	s = append(s, "Rate: "+fmt.Sprintf("%#v", this.Rate)+",\n")
 	s = append(s, "Level: "+fmt.Sprintf("%#v", this.Level)+",\n")
 	s = append(s, "Agent: "+fmt.Sprintf("%#v", this.Agent)+",\n")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitNum) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.AgentProfitNum{")
+	s = append(s, "Gtype: "+fmt.Sprintf("%#v", this.Gtype)+",\n")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitApply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&pb.AgentProfitApply{")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Nickname: "+fmt.Sprintf("%#v", this.Nickname)+",\n")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitApplied) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&pb.AgentProfitApplied{")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitReply) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.AgentProfitReply{")
+	s = append(s, "Orderid: "+fmt.Sprintf("%#v", this.Orderid)+",\n")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitReplied) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 9)
+	s = append(s, "&pb.AgentProfitReplied{")
+	s = append(s, "Orderid: "+fmt.Sprintf("%#v", this.Orderid)+",\n")
+	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitUpdate) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.AgentProfitUpdate{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
+	s = append(s, "Isagent: "+fmt.Sprintf("%#v", this.Isagent)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentWeekUpdate) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.AgentWeekUpdate{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Start: "+fmt.Sprintf("%#v", this.Start)+",\n")
+	s = append(s, "End: "+fmt.Sprintf("%#v", this.End)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitReplyMsg) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.AgentProfitReplyMsg{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Bank: "+fmt.Sprintf("%#v", this.Bank)+",\n")
 	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -1032,6 +1676,304 @@ func (m *AgentProfitInfo) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
 	}
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0x3a
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	return i, nil
+}
+
+func (m *AgentProfitNum) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitNum) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Gtype != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Gtype))
+	}
+	if m.Profit != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	return i, nil
+}
+
+func (m *AgentProfitApply) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitApply) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Nickname) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Nickname)))
+		i += copy(dAtA[i:], m.Nickname)
+	}
+	if m.Profit != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
+	return i, nil
+}
+
+func (m *AgentProfitApplied) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitApplied) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Profit != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *AgentProfitReply) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitReply) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Orderid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Orderid)))
+		i += copy(dAtA[i:], m.Orderid)
+	}
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	if m.State != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.State))
+	}
+	return i, nil
+}
+
+func (m *AgentProfitReplied) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitReplied) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Orderid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Orderid)))
+		i += copy(dAtA[i:], m.Orderid)
+	}
+	if m.State != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.State))
+	}
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if m.Profit != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *AgentProfitUpdate) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitUpdate) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if m.Profit != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
+	if m.Isagent {
+		dAtA[i] = 0x18
+		i++
+		if m.Isagent {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	return i, nil
+}
+
+func (m *AgentWeekUpdate) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentWeekUpdate) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Start) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Start)))
+		i += copy(dAtA[i:], m.Start)
+	}
+	if len(m.End) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.End)))
+		i += copy(dAtA[i:], m.End)
+	}
+	return i, nil
+}
+
+func (m *AgentProfitReplyMsg) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitReplyMsg) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if m.Bank != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Bank))
+	}
+	if m.Profit != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintActorAgent(dAtA, i, uint64(m.Profit))
+	}
 	return i, nil
 }
 
@@ -1125,6 +2067,149 @@ func (m *AgentProfitInfo) Size() (n int) {
 	if m.Profit != 0 {
 		n += 1 + sovActorAgent(uint64(m.Profit))
 	}
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *AgentProfitNum) Size() (n int) {
+	var l int
+	_ = l
+	if m.Gtype != 0 {
+		n += 1 + sovActorAgent(uint64(m.Gtype))
+	}
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *AgentProfitApply) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	l = len(m.Nickname)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
+	return n
+}
+
+func (m *AgentProfitApplied) Size() (n int) {
+	var l int
+	_ = l
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
+	if m.Error != 0 {
+		n += 1 + sovActorAgent(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *AgentProfitReply) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Orderid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.State != 0 {
+		n += 1 + sovActorAgent(uint64(m.State))
+	}
+	return n
+}
+
+func (m *AgentProfitReplied) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Orderid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.State != 0 {
+		n += 1 + sovActorAgent(uint64(m.State))
+	}
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
+	if m.Error != 0 {
+		n += 1 + sovActorAgent(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *AgentProfitUpdate) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
+	if m.Isagent {
+		n += 2
+	}
+	return n
+}
+
+func (m *AgentWeekUpdate) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	l = len(m.Start)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	l = len(m.End)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *AgentProfitReplyMsg) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorAgent(uint64(l))
+	}
+	if m.Bank != 0 {
+		n += 1 + sovActorAgent(uint64(m.Bank))
+	}
+	if m.Profit != 0 {
+		n += 1 + sovActorAgent(uint64(m.Profit))
+	}
 	return n
 }
 
@@ -1189,6 +2274,105 @@ func (this *AgentProfitInfo) String() string {
 		`Rate:` + fmt.Sprintf("%v", this.Rate) + `,`,
 		`Level:` + fmt.Sprintf("%v", this.Level) + `,`,
 		`Agent:` + fmt.Sprintf("%v", this.Agent) + `,`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitNum) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitNum{`,
+		`Gtype:` + fmt.Sprintf("%v", this.Gtype) + `,`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitApply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitApply{`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Nickname:` + fmt.Sprintf("%v", this.Nickname) + `,`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitApplied) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitApplied{`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitReply) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitReply{`,
+		`Orderid:` + fmt.Sprintf("%v", this.Orderid) + `,`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitReplied) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitReplied{`,
+		`Orderid:` + fmt.Sprintf("%v", this.Orderid) + `,`,
+		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitUpdate) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitUpdate{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
+		`Isagent:` + fmt.Sprintf("%v", this.Isagent) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentWeekUpdate) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentWeekUpdate{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Start:` + fmt.Sprintf("%v", this.Start) + `,`,
+		`End:` + fmt.Sprintf("%v", this.End) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitReplyMsg) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitReplyMsg{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Bank:` + fmt.Sprintf("%v", this.Bank) + `,`,
 		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
 		`}`,
 	}, "")
@@ -1795,6 +2979,1060 @@ func (m *AgentProfitInfo) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 7:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitNum) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitNum: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitNum: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Gtype", wireType)
+			}
+			m.Gtype = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Gtype |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitApply) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitApply: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitApply: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nickname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Nickname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitApplied) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitApplied: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitApplied: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitReply) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitReply: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitReply: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Orderid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Orderid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitReplied) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitReplied: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitReplied: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Orderid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Orderid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field State", wireType)
+			}
+			m.State = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.State |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitUpdate) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitUpdate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Isagent", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Isagent = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentWeekUpdate) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentWeekUpdate: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentWeekUpdate: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Start", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Start = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field End", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.End = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitReplyMsg) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitReplyMsg: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitReplyMsg: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Bank", wireType)
+			}
+			m.Bank = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Bank |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Profit", wireType)
+			}
+			m.Profit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Profit |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipActorAgent(dAtA[iNdEx:])
@@ -1924,29 +4162,42 @@ var (
 func init() { proto.RegisterFile("actor_agent.proto", fileDescriptorActorAgent) }
 
 var fileDescriptorActorAgent = []byte{
-	// 384 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x92, 0xcf, 0x4e, 0xea, 0x40,
-	0x14, 0xc6, 0x3b, 0xd0, 0xf2, 0x67, 0xc8, 0xbd, 0xe4, 0x4e, 0xb8, 0xa6, 0x21, 0x66, 0x82, 0x5d,
-	0x91, 0x68, 0x88, 0xd1, 0x27, 0x40, 0xe3, 0x42, 0x57, 0xa6, 0x3e, 0x00, 0x29, 0xf4, 0x40, 0x26,
-	0x29, 0x9d, 0x3a, 0x8c, 0x28, 0x3b, 0x1f, 0xc1, 0xad, 0x6f, 0xe0, 0x2b, 0xf8, 0x06, 0x2e, 0x59,
-	0xba, 0x94, 0xba, 0x71, 0xc9, 0x23, 0x98, 0x39, 0x53, 0x81, 0x95, 0xbb, 0xf9, 0xcd, 0xf9, 0xbe,
-	0x39, 0x5f, 0xbf, 0x94, 0xfe, 0x8b, 0x46, 0x5a, 0xaa, 0x41, 0x34, 0x81, 0x54, 0xf7, 0x32, 0x25,
-	0xb5, 0x64, 0xa5, 0x6c, 0xd8, 0x6e, 0x4e, 0xa2, 0x29, 0x0c, 0x46, 0x32, 0x06, 0x7b, 0x19, 0xbc,
-	0x12, 0x5a, 0xef, 0x1b, 0xd1, 0x95, 0x14, 0x29, 0xdb, 0xa7, 0x75, 0x74, 0xa4, 0xd1, 0x14, 0x7c,
-	0xd2, 0x21, 0xdd, 0x7a, 0xb8, 0xbd, 0x60, 0x3e, 0xad, 0x22, 0x88, 0xd8, 0x2f, 0xe1, 0xec, 0x07,
-	0x59, 0x9b, 0xd6, 0x14, 0x44, 0x09, 0xda, 0xca, 0x38, 0xda, 0x30, 0xdb, 0xa3, 0x95, 0x7b, 0x10,
-	0x0f, 0x22, 0xf5, 0x5d, 0x9c, 0x14, 0xc4, 0x5a, 0xd4, 0x4b, 0x60, 0x0e, 0x89, 0xef, 0x75, 0x48,
-	0xf7, 0x4f, 0x68, 0x81, 0x31, 0xea, 0x6a, 0x31, 0x05, 0xbf, 0x82, 0x5a, 0x3c, 0x9b, 0x17, 0xee,
-	0x66, 0xa0, 0x44, 0xec, 0x57, 0xed, 0x0b, 0x96, 0x82, 0x63, 0xda, 0xd8, 0x44, 0x87, 0x98, 0x1d,
-	0x50, 0x0f, 0x94, 0x92, 0x0a, 0x83, 0xff, 0x3d, 0x69, 0xf4, 0xb2, 0x61, 0xef, 0x42, 0xa9, 0x73,
-	0x19, 0x43, 0x68, 0x27, 0xc1, 0x2d, 0x65, 0xe8, 0xb8, 0x4e, 0xa2, 0x05, 0xa8, 0x7e, 0x96, 0x29,
-	0x39, 0x07, 0x76, 0x48, 0xbd, 0x99, 0x8e, 0x34, 0x14, 0xc6, 0xff, 0xc6, 0x88, 0xb2, 0x42, 0x70,
-	0x63, 0x86, 0xa1, 0xd5, 0xec, 0x84, 0x29, 0xed, 0x86, 0x31, 0xf7, 0x33, 0x48, 0xc6, 0x22, 0x2e,
-	0x0a, 0x28, 0x28, 0x78, 0x26, 0xb4, 0x69, 0x77, 0x2a, 0x39, 0x16, 0xfa, 0x32, 0x1d, 0x4b, 0xf3,
-	0xe9, 0x13, 0xbd, 0xc8, 0xec, 0x42, 0x2f, 0xb4, 0xf0, 0x4b, 0xbd, 0x8c, 0xba, 0xca, 0xe4, 0x2b,
-	0x63, 0x53, 0x78, 0xde, 0xd6, 0xe7, 0xee, 0xd6, 0xd7, 0xa2, 0x1e, 0x9a, 0xb0, 0xd4, 0x5a, 0x68,
-	0xc1, 0x64, 0xcb, 0x70, 0x3b, 0xd6, 0x5a, 0x0e, 0x0b, 0x3a, 0x3b, 0x5a, 0xae, 0xb8, 0xf3, 0xbe,
-	0xe2, 0xce, 0x7a, 0xc5, 0xc9, 0x63, 0xce, 0xc9, 0x4b, 0xce, 0xc9, 0x5b, 0xce, 0xc9, 0x32, 0xe7,
-	0xe4, 0x23, 0xe7, 0xe4, 0x2b, 0xe7, 0xce, 0x3a, 0xe7, 0xe4, 0xe9, 0x93, 0x3b, 0xc3, 0x0a, 0xfe,
-	0x31, 0xa7, 0xdf, 0x01, 0x00, 0x00, 0xff, 0xff, 0xed, 0xc8, 0x4f, 0xf7, 0x5b, 0x02, 0x00, 0x00,
+	// 590 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x84, 0x54, 0xcb, 0x6e, 0xd3, 0x40,
+	0x14, 0xcd, 0xf8, 0xd1, 0x24, 0xb7, 0xa2, 0x8f, 0x21, 0x20, 0x2b, 0x42, 0x56, 0xf1, 0xaa, 0x12,
+	0x28, 0x42, 0xf0, 0x05, 0x01, 0x75, 0x01, 0x12, 0x2f, 0x57, 0x80, 0x90, 0x40, 0x95, 0x13, 0xdf,
+	0x44, 0x56, 0x1c, 0xdb, 0x4c, 0xdc, 0xd2, 0xec, 0xf8, 0x04, 0x76, 0xfc, 0x02, 0x5b, 0x96, 0xfc,
+	0x01, 0xcb, 0x2e, 0x59, 0x12, 0xb3, 0x61, 0xd9, 0x4f, 0x40, 0xbe, 0x33, 0x4e, 0xc6, 0x48, 0x2e,
+	0x3b, 0x9f, 0x99, 0x7b, 0xcf, 0x3d, 0xe7, 0xcc, 0x4d, 0x60, 0x3f, 0x18, 0xe7, 0xa9, 0x38, 0x09,
+	0xa6, 0x98, 0xe4, 0x83, 0x4c, 0xa4, 0x79, 0xca, 0x8d, 0x6c, 0xd4, 0xdf, 0x9d, 0x06, 0x73, 0x3c,
+	0x19, 0xa7, 0x21, 0xca, 0x43, 0xef, 0x3b, 0x83, 0xee, 0xb0, 0x2c, 0x7a, 0x92, 0x46, 0x09, 0xbf,
+	0x05, 0x5d, 0xea, 0x48, 0x82, 0x39, 0x3a, 0xec, 0x80, 0x1d, 0x76, 0xfd, 0xcd, 0x01, 0x77, 0xa0,
+	0x4d, 0x20, 0x0a, 0x1d, 0x83, 0xee, 0x2a, 0xc8, 0xfb, 0xd0, 0x11, 0x18, 0xc4, 0xd4, 0x66, 0xd2,
+	0xd5, 0x1a, 0xf3, 0x9b, 0xb0, 0xf5, 0x11, 0xa3, 0xf3, 0x28, 0x71, 0x2c, 0xba, 0x51, 0x88, 0xf7,
+	0xc0, 0x8e, 0xf1, 0x0c, 0x63, 0xc7, 0x3e, 0x60, 0x87, 0xd7, 0x7c, 0x09, 0x38, 0x07, 0x2b, 0x8f,
+	0xe6, 0xe8, 0x6c, 0x51, 0x2d, 0x7d, 0x97, 0x0c, 0xa7, 0x0b, 0x14, 0x51, 0xe8, 0xb4, 0x25, 0x83,
+	0x44, 0xde, 0x3d, 0xd8, 0x5e, 0x4b, 0xc7, 0x90, 0xdf, 0x06, 0x1b, 0x85, 0x48, 0x05, 0x09, 0xdf,
+	0xb9, 0xbf, 0x3d, 0xc8, 0x46, 0x83, 0x23, 0x21, 0x1e, 0xa5, 0x21, 0xfa, 0xf2, 0xc6, 0xfb, 0x00,
+	0x9c, 0x3a, 0x5e, 0xc4, 0xc1, 0x12, 0xc5, 0x30, 0xcb, 0x44, 0x7a, 0x86, 0xfc, 0x0e, 0xd8, 0x8b,
+	0x3c, 0xc8, 0x51, 0x35, 0xde, 0x28, 0x1b, 0xa9, 0x4c, 0x15, 0x1c, 0x97, 0x97, 0xbe, 0xac, 0xd1,
+	0xc4, 0x18, 0xba, 0x98, 0xf2, 0x7c, 0x81, 0xf1, 0x24, 0x0a, 0x55, 0x00, 0x0a, 0x79, 0xdf, 0x18,
+	0xec, 0xca, 0x99, 0x22, 0x9d, 0x44, 0xf9, 0xe3, 0x64, 0x92, 0x96, 0xd6, 0xa7, 0xf9, 0x32, 0x93,
+	0x03, 0x6d, 0x5f, 0x82, 0x2b, 0xe2, 0xe5, 0x60, 0x89, 0x52, 0x9f, 0x49, 0x49, 0xd1, 0xf7, 0x26,
+	0x3e, 0x4b, 0x8f, 0xaf, 0x07, 0x36, 0x35, 0x51, 0xa8, 0x1d, 0x5f, 0x82, 0x52, 0x5b, 0x46, 0xd3,
+	0x29, 0x56, 0xd3, 0x57, 0xa8, 0x31, 0xd8, 0xd7, 0xb0, 0xa3, 0x49, 0x7e, 0x76, 0x3a, 0x6f, 0x50,
+	0xbc, 0xe1, 0x35, 0x1a, 0x78, 0xcd, 0x1a, 0xef, 0x39, 0xec, 0x69, 0xbc, 0xc3, 0x2c, 0x8b, 0x97,
+	0xba, 0x6b, 0x56, 0x77, 0xdd, 0x94, 0x74, 0x1f, 0x3a, 0x49, 0x34, 0x9e, 0xe9, 0xcb, 0x56, 0x61,
+	0x4d, 0x91, 0xa5, 0x2b, 0xf2, 0x9e, 0x57, 0x0f, 0xbf, 0x9e, 0x1c, 0x61, 0xa8, 0x55, 0xb3, 0x9a,
+	0xfe, 0xf5, 0x26, 0x19, 0x8d, 0x9b, 0xf4, 0xae, 0x66, 0xc5, 0x47, 0x65, 0x25, 0x15, 0x21, 0x29,
+	0x56, 0x56, 0x14, 0xbc, 0xe2, 0x69, 0x7b, 0xd5, 0xee, 0x99, 0x32, 0x58, 0x02, 0xde, 0x17, 0x56,
+	0xd3, 0x5b, 0xd2, 0x97, 0x7a, 0x9b, 0x07, 0xac, 0x69, 0x0c, 0x8d, 0xa6, 0xe9, 0x1d, 0x9a, 0x52,
+	0xda, 0xf8, 0xb6, 0x1b, 0x7d, 0xbf, 0x87, 0x7d, 0x4d, 0xd8, 0xab, 0x2c, 0xac, 0xcf, 0x61, 0x0d,
+	0x73, 0xea, 0xfb, 0xe1, 0x40, 0x3b, 0x5a, 0xc8, 0x3d, 0x35, 0x69, 0x4f, 0x2b, 0xe8, 0xbd, 0x54,
+	0x3f, 0x96, 0x37, 0x88, 0xb3, 0xff, 0x90, 0xf7, 0xc0, 0x3e, 0xce, 0x03, 0x91, 0xab, 0x44, 0x4b,
+	0xcb, 0x22, 0xe7, 0x7b, 0x60, 0x1e, 0x25, 0x95, 0x5f, 0x13, 0x93, 0xd0, 0x7b, 0x0b, 0xd7, 0xff,
+	0x7d, 0xa9, 0xa7, 0x8b, 0x69, 0x23, 0x2d, 0x07, 0x6b, 0x14, 0x24, 0x33, 0xa5, 0x98, 0xbe, 0x35,
+	0x1f, 0xa6, 0xee, 0xe3, 0xe1, 0xdd, 0x8b, 0x95, 0xdb, 0xfa, 0xb9, 0x72, 0x5b, 0x97, 0x2b, 0x97,
+	0x7d, 0x2a, 0x5c, 0xf6, 0xb5, 0x70, 0xd9, 0x8f, 0xc2, 0x65, 0x17, 0x85, 0xcb, 0x7e, 0x15, 0x2e,
+	0xfb, 0x53, 0xb8, 0xad, 0xcb, 0xc2, 0x65, 0x9f, 0x7f, 0xbb, 0xad, 0xd1, 0x16, 0xfd, 0xe3, 0x3e,
+	0xf8, 0x1b, 0x00, 0x00, 0xff, 0xff, 0xdd, 0xa6, 0x28, 0xc8, 0x9b, 0x05, 0x00, 0x00,
 }

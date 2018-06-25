@@ -97,4 +97,5 @@ message LogProfit {
     uint32 Level  = 3;//level type
     uint32 Rate   = 4;//rate
     int64  Profit = 5;//Profit
+    string Agentid = 6;//代理ID
 }

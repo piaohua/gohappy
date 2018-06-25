@@ -345,6 +345,7 @@ func TaskRecord(userid string, taskid, ttype int32) {
 //LogProfit 代理收益日志
 type LogProfit struct {
 	//Id       string    `bson:"_id"`
+	Agentid string    `bson:"agentid"` //代理ID
 	Userid string    `bson:"userid"` //玩家ID
 	Gtype  int32     `bson:"gtype"`  //game type
 	Level  uint32    `bson:"level"`  //level type
@@ -361,9 +362,10 @@ func (t *LogProfit) Save() bool {
 }
 
 //ProfitRecord 代理收益记录
-func ProfitRecord(userid string, gtype int32, level, rate uint32, profit int64) {
+func ProfitRecord(agentid, userid string, gtype int32, level, rate uint32, profit int64) {
 	record := &LogProfit{
 		Userid: userid,
+		Agentid: agentid,
 		Gtype:  gtype,
 		Level:  level,
 		Rate:   rate,

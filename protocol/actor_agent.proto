@@ -31,9 +31,73 @@ message AgentPlayerApprove {
 //代理收益信息
 message AgentProfitInfo {
     int32 gtype = 1;//game type
-    string agentid = 2;//代理id
+    string agentid = 2;//代理id, to
     uint32 rate = 3;//分佣比例
     uint32 level = 4;//等级
     bool agent = 5;//是否是代理反佣
     int64 profit = 6;//收益
+    string userid = 7;//玩家id, from
+}
+
+//代理收益信息
+message AgentProfitNum {
+    int32 gtype = 1;//game type
+    int64 profit = 2;//收益
+    string userid = 3;//玩家id, from
+}
+
+//代理申请提现
+message AgentProfitApply
+{
+    string agentid = 1;//受理人userid
+    string userid = 2;//申请人玩家id
+    string nickname = 3;//玩家昵称
+    int64 profit = 4;//提取金额
+}
+
+message AgentProfitApplied
+{
+    int64 profit = 1;//提取金额
+    ErrCode error = 2 ;// 错误码
+}
+
+//代理提现受理
+message AgentProfitReply
+{
+    string orderid = 1;//id
+    string agentid = 2;//受理人userid
+    int32 state = 3;//状态,1同意,2拒绝
+}
+
+message AgentProfitReplied
+{
+    string orderid = 1;//orderid
+    int32 state = 2;//状态,1同意,2拒绝
+    string userid = 3;//申请人玩家id
+    int64 profit = 4;//提取金额
+    ErrCode error = 5 ;// 错误码
+}
+
+//更新收益
+message AgentProfitUpdate
+{
+    string userid = 1;//玩家id
+    int64 profit = 2;//
+    bool isagent = 3;//
+}
+
+//更新周时间
+message AgentWeekUpdate
+{
+    string userid = 1;//玩家id
+    string Start = 2;//
+    string End = 3;//
+}
+
+//代理提现受理消息
+message AgentProfitReplyMsg
+{
+    string userid = 1;//玩家id
+    int64 bank = 2;//银行收益
+    int64 profit = 3;//收益返还
 }

@@ -150,6 +150,26 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CAgentPlayerApprove)
 		glog.Debugf("CAgentPlayerApprove %#v", arg)
 		a.agentApprove(arg, ctx)
+	case *pb.AgentProfitInfo:
+		arg := msg.(*pb.AgentProfitInfo)
+		glog.Debugf("AgentProfitInfo %#v", arg)
+		a.agentProfitInfo(arg, ctx)
+	case *pb.AgentProfitApply:
+		arg := msg.(*pb.AgentProfitApply)
+		glog.Debugf("AgentProfitApply %#v", arg)
+		a.agentProfitApply(arg, ctx)
+	case *pb.AgentProfitReply:
+		arg := msg.(*pb.AgentProfitReply)
+		glog.Debugf("AgentProfitReply %#v", arg)
+		a.agentProfitReply(arg, ctx)
+	case *pb.AgentProfitUpdate:
+		arg := msg.(*pb.AgentProfitUpdate)
+		glog.Debugf("AgentProfitUpdate %#v", arg)
+		a.agentProfitUpdate(arg, ctx)
+	case *pb.AgentWeekUpdate:
+		arg := msg.(*pb.AgentWeekUpdate)
+		glog.Debugf("AgentWeekUpdate %#v", arg)
+		a.agentWeekUpdate(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

@@ -463,7 +463,10 @@
             "AgentLevelLow": 102,
             "NotAgent": 103,
             "AlreadyAgent": 104,
-            "WaitForAudit": 105
+            "WaitForAudit": 105,
+            "ProfitNotEnough": 106,
+            "ProfitOrderNotExist": 107,
+            "ProfitOrderReplied": 108
           }
         },
         "SitType": {

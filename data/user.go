@@ -53,7 +53,10 @@ type User struct {
 	Weixin          string    `bson:"weixin" json:"weixin"`                       // 微信
 	ProfitRate      uint32    `bson:"profit_rate" json:"profit_rate"`             // 分佣比例
 	Profit          int64     `bson:"profit" json:"profit"`                       // 收益
-	WeekProfit      int64     `bson:"week_profit" json:"week_profit"`             // 周收益
+	WeekProfit      int64     `bson:"week_profit" json:"week_profit"`             // 本周收益
+	WeekPlayerProfit int64     `bson:"week_player_profit" json:"week_player_profit"` // 本周玩家收益
+	WeekStart      time.Time     `bson:"week_start" json:"week_start"`             // 每周日重置
+	WeekEnd      time.Time     `bson:"week_end" json:"week_end"`             // 每周日重置
 	HistoryProfit   int64     `bson:"history_profit" json:"history_profit"`       // 历史收益
 	SubPlayerProfit int64     `bson:"sub_player_profit" json:"sub_player_profit"` // 下属玩家业绩收益
 	SubAgentProfit  int64     `bson:"sub_agent_profit" json:"sub_agent_profit"`   // 下属代理业绩收益
@@ -116,6 +119,21 @@ func (this *User) UpdateAgentJoin() bool {
 			"agent_name": this.AgentName, "real_name": this.RealName,
 			"weixin": this.Weixin, "agent_level": this.AgentLevel,
 			"agent": this.Agent}})
+}
+
+func (this *User) UpdateAgentProfit() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"week_profit": this.WeekProfit,
+			"week_player_profit": this.WeekPlayerProfit,
+			"history_profit": this.HistoryProfit,
+			"sub_player_profit": this.SubPlayerProfit,
+			"sub_agent_profit": this.SubAgentProfit}})
+}
+
+func (this *User) UpdateAgentWeek() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"week_start": this.WeekStart,
+			"week_end": this.WeekEnd}})
 }
 
 func (this *User) Get() {
@@ -350,4 +368,19 @@ func (this *User) SetSign(content string) {
 
 func (this *User) GetSign() string {
 	return this.Sign
+}
+
+func (this *User) AddProfit(isagent bool, num int64) {
+	if num <= 0 {
+		return
+	}
+	this.Profit += num
+	this.HistoryProfit += num
+	this.WeekProfit += num
+	this.WeekPlayerProfit += num
+	if isagent {
+		this.SubAgentProfit += num
+	} else {
+		this.SubPlayerProfit += num
+	}
 }

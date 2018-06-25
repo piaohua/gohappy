@@ -7,6 +7,7 @@ import (
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
+	"math"
 )
 
 //PackAgentProfitRankMsg 获取排行榜信息
@@ -123,6 +124,52 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 	return
 }
 
+//PackAgentProfitMsg 获取代理收益明细列表
+func PackAgentProfitMsg(arg *pb.CAgentProfit) (msg *pb.SAgentProfit) {
+	msg = new(pb.SAgentProfit)
+	list, err := data.GetAgentProfit(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("PackAgentProfitMsg err %v", err)
+	}
+	glog.Debugf("PackAgentProfitMsg list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.AgentProfitDetail)
+		msg2.Userid = v.Userid //代理id
+		msg2.Profit = v.Profit //收益
+		msg2.Level = v.Level //收益等级
+		msg2.Gtype = v.Gtype //game type
+		msg2.Rate = v.Rate //收益比例
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
+//PackAgentProfitOrderMsg 获取收益订单列表
+func PackAgentProfitOrderMsg(arg *pb.CAgentProfitOrder) (msg *pb.SAgentProfitOrder) {
+	msg = new(pb.SAgentProfitOrder)
+	list, err := data.GetProfitOrder(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("PackAgentProfitOrderMsg err %v", err)
+	}
+	glog.Debugf("PackAgentProfitOrderMsg list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.AgentProfitOrder)
+		msg2.Orderid = v.Id //代理id
+		msg2.Userid = v.Userid //提单人id
+		msg2.Nickname = v.Nickname //代理id
+		msg2.Profit = v.Profit //收益
+		msg2.Applytime = utils.Time2Str(v.ApplyTime) //提单时间
+		msg2.Replytime = utils.Time2Str(v.ReplyTime) //响应时间
+		msg2.State = v.State //状态,0等待处理,1成功,2失败
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
 //AgentJoinMsg 申请消息
 func AgentJoinMsg(user *data.User) (msg *pb.AgentJoin) {
 	msg = new(pb.AgentJoin)
@@ -164,16 +211,82 @@ func AgentApprove(state pb.AgentApproveState, selfid string, user *data.User) pb
 	return pb.OK
 }
 
-//AgentProfitInfoMsg 收益消息
-func AgentProfitInfoMsg(agentid string, agent bool, gtype int32,
+//AgentProfitInfoMsg 代理收益消息
+func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
 	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
 	msg = &pb.AgentProfitInfo{
+		Userid:  userid,
 		Agentid: agentid,
 		Gtype:   gtype,
 		Level:   level,
 		Rate:    rate,
 		Profit:  profit,
 		Agent:   agent,
+	}
+	return
+}
+
+//AgentProfitNumMsg 收益消息
+func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentProfitNum) {
+	msg = &pb.AgentProfitNum{
+		Gtype:   gtype,
+		Profit:  profit,
+		Userid:  userid,
+	}
+	return
+}
+
+//AgentProfitNumMsg 收益
+func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg *pb.AgentProfitInfo,
+	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate) {
+	num := int64(math.Trunc(float64(user.ProfitRate) / 100) * float64(arg.Profit))
+	profit := arg.Profit - num
+	user.AddProfit(arg.Agent, profit)
+	if UpdateWeekProfit(profit, user) {
+		//更新时间消息
+		msg3 = UpdateWeekMsg(user)
+	}
+	//日志消息
+	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.Gtype, arg.Level, arg.Rate, profit)
+	//更新消息
+	msg4 = &pb.AgentProfitUpdate{
+		Userid: user.GetUserid(),
+		Profit: profit,
+		Isagent: arg.Agent,
+	}
+	if num <= 0 {
+		return
+	}
+	//反给上级消息
+	msg = AgentProfitInfoMsg(user.GetUserid(), user.GetAgent(), false,
+		arg.Gtype, user.AgentLevel, user.ProfitRate, num)
+	if user.AgentState == 1 {
+		msg.Agent = true
+	}
+	return
+}
+
+//UpdateWeekProfit 更新周收益统计
+func UpdateWeekProfit(num int64, user *data.User) bool {
+	if user.AgentState != 1 {
+		return false
+	}
+	now := utils.LocalTime()
+	if user.WeekStart.Before(now) && user.WeekEnd.After(now) {
+		return false
+	}
+	user.WeekPlayerProfit = num
+	user.WeekProfit = num
+	user.WeekStart, user.WeekEnd = utils.ThisWeek()
+	return true
+}
+
+//UpdateWeekMsg 更新周统计时间消息
+func UpdateWeekMsg(user *data.User) (msg *pb.AgentWeekUpdate) {
+	msg = &pb.AgentWeekUpdate{
+		Userid: user.GetUserid(),
+		Start: utils.Time2Str(user.WeekStart),
+		End: utils.Time2Str(user.WeekEnd),
 	}
 	return
 }
