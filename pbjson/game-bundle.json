@@ -1262,6 +1262,498 @@
               "id": 8
             }
           }
+        },
+        "CAgentJoin": {
+          "fields": {
+            "agentname": {
+              "type": "string",
+              "id": 1
+            },
+            "agentid": {
+              "type": "string",
+              "id": 2
+            },
+            "realname": {
+              "type": "string",
+              "id": 3
+            },
+            "weixin": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "SAgentJoin": {
+          "fields": {
+            "level": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CMyAgent": {
+          "fields": {}
+        },
+        "SMyAgent": {
+          "fields": {
+            "agentname": {
+              "type": "string",
+              "id": 1
+            },
+            "agentid": {
+              "type": "string",
+              "id": 2
+            },
+            "address": {
+              "type": "string",
+              "id": 3
+            },
+            "profit": {
+              "type": "int64",
+              "id": 4
+            },
+            "WeekProfit": {
+              "type": "int64",
+              "id": 5
+            },
+            "WeekPlayerProfit": {
+              "type": "int64",
+              "id": 6
+            },
+            "HistoryProfit": {
+              "type": "int64",
+              "id": 7
+            },
+            "SubPlayerProfit": {
+              "type": "int64",
+              "id": 8
+            },
+            "SubAgentProfit": {
+              "type": "int64",
+              "id": 9
+            },
+            "PopularizeURL": {
+              "type": "string",
+              "id": 10
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 11
+            }
+          }
+        },
+        "CAgentManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agentid": {
+              "type": "string",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SAgentManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentManage",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentManage": {
+          "fields": {
+            "agentid": {
+              "type": "string",
+              "id": 1
+            },
+            "address": {
+              "type": "string",
+              "id": 2
+            },
+            "num": {
+              "type": "uint32",
+              "id": 3
+            },
+            "profit": {
+              "type": "int64",
+              "id": 4
+            },
+            "level": {
+              "type": "uint32",
+              "id": 5
+            }
+          }
+        },
+        "CAgentProfit": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "time": {
+              "type": "int64",
+              "id": 2
+            },
+            "level": {
+              "type": "uint32",
+              "id": 3
+            },
+            "agentid": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "SAgentProfit": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentProfitDetail",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentProfitDetail": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "profit": {
+              "type": "int64",
+              "id": 2
+            },
+            "level": {
+              "type": "uint32",
+              "id": 3
+            },
+            "gtype": {
+              "type": "int32",
+              "id": 4
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 5
+            }
+          }
+        },
+        "CAgentProfitOrder": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agentid": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SAgentProfitOrder": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentProfitOrder",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentProfitOrder": {
+          "fields": {
+            "orderid": {
+              "type": "string",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "nickname": {
+              "type": "string",
+              "id": 3
+            },
+            "profit": {
+              "type": "int64",
+              "id": 4
+            },
+            "applytime": {
+              "type": "string",
+              "id": 5
+            },
+            "replytime": {
+              "type": "string",
+              "id": 6
+            },
+            "state": {
+              "type": "int32",
+              "id": 7
+            }
+          }
+        },
+        "CAgentProfitApply": {
+          "fields": {
+            "profit": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SAgentProfitApply": {
+          "fields": {
+            "profit": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CAgentProfitReply": {
+          "fields": {
+            "orderid": {
+              "type": "string",
+              "id": 1
+            },
+            "state": {
+              "type": "int32",
+              "id": 2
+            }
+          }
+        },
+        "SAgentProfitReply": {
+          "fields": {
+            "orderid": {
+              "type": "string",
+              "id": 1
+            },
+            "state": {
+              "type": "int32",
+              "id": 2
+            },
+            "profit": {
+              "type": "int64",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "CAgentProfitRank": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SAgentProfitRank": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentProfit",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentProfit": {
+          "fields": {
+            "nickname": {
+              "type": "string",
+              "id": 1
+            },
+            "address": {
+              "type": "string",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "profit": {
+              "type": "int64",
+              "id": 4
+            }
+          }
+        },
+        "CAgentPlayerManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "state": {
+              "type": "AgentApproveState",
+              "id": 3
+            },
+            "selfid": {
+              "type": "string",
+              "id": 4
+            }
+          }
+        },
+        "SAgentPlayerManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentPlayerManage",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentPlayerManage": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "coin": {
+              "type": "int64",
+              "id": 3
+            },
+            "agentid": {
+              "type": "string",
+              "id": 4
+            },
+            "address": {
+              "type": "string",
+              "id": 5
+            },
+            "agentname": {
+              "type": "string",
+              "id": 6
+            },
+            "level": {
+              "type": "uint32",
+              "id": 7
+            },
+            "profitRate": {
+              "type": "uint32",
+              "id": 8
+            },
+            "jointime": {
+              "type": "string",
+              "id": 9
+            },
+            "state": {
+              "type": "AgentApproveState",
+              "id": 10
+            }
+          }
+        },
+        "CAgentPlayerApprove": {
+          "fields": {
+            "state": {
+              "type": "AgentApproveState",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "selfid": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SAgentPlayerApprove": {
+          "fields": {
+            "state": {
+              "type": "AgentApproveState",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
         }
       }
     }

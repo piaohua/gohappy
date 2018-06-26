@@ -114,6 +114,7 @@ protojson() {
     ${PBJS} -t json \
         game_buy.proto game_chat.proto \
         game_login.proto game_user.proto \
+        game_agent.proto \
         game_pub.proto \
         game_code.proto \
         > ../pbjson/game-bundle.json
