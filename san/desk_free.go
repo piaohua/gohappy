@@ -813,13 +813,11 @@ func (t *Desk) dealerJiesuan1() {
 				num = t.DeskFree.Carry
 			}
 			t.DeskFree.Carry -= num
-			n := int64(num + betNum)
-			val2 := n
+			//	抽成, 赢利中抽取
+			num = t.drawcoin(userid, num)
+			val2 := int64(num + betNum)
 			if val2 < 0 {
 				val2 = 0
-			} else {
-				//	抽成, 减去下注本金
-				val2 = t.drawcoin(userid, val2 - betNum)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
@@ -862,13 +860,11 @@ func (t *Desk) dealerJiesuan2(num int64) {
 		t.DeskFree.Score3[seat] = make(map[string]int64)
 		for userid, betNum := range tmp {
 			num2 := (betNum / betsNum) * val //分到金额
-			num3 := num2 + betNum            //加上下注额
-			val2 := int64(num3)
+			//	抽成, 赢利中抽取
+			num2 = t.drawcoin(userid, num2)
+			val2 := num2 + betNum            //加上下注额
 			if val2 < 0 {
 				val2 = 0
-			} else {
-				//	抽成, 减去下注本金
-				val2 = t.drawcoin(userid, val2 - betNum)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))

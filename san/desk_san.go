@@ -735,30 +735,30 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 }
 
 //抽水
-func (t *Desk) drawcoin(userid string, val int64) (num int64) {
+func (t *Desk) drawcoin(userid string, val int64) int64 {
 	if val <= 0 {
 		return val
 	}
-	num = val
+	var num int64
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0), //自由
 		int32(pb.ROOM_TYPE1): //私人
 		switch t.DeskData.Mode {
 		case 0: //普通
-			num = int64(math.Trunc(float64(val) * 0.9))
+			num = int64(math.Trunc(float64(val) * 0.1))
 		default:
-			num = int64(math.Trunc(float64(val) * 0.8))
+			num = int64(math.Trunc(float64(val) * 0.2))
 		}
 		//反佣和收益消息,抽成日志记录 val - num
-		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, num)
 		t.send3userid(userid, msg2)
 	case int32(pb.ROOM_TYPE2): //百人
-		num = int64(math.Trunc(float64(val) * 0.95))
+		num = int64(math.Trunc(float64(val) * 0.05))
 		//反佣和收益消息,抽成日志记录 val - num
-		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, num)
 		t.send3userid(userid, msg2)
 	}
-	return
+	return val - num
 }
 
 //开始前扣除抽水
