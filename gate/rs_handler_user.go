@@ -315,7 +315,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 		}
 	case pb.BankResetPwd: //重置密码
 		if rs.User.BankPhone == "" {
-			msg.Error = pb.BankAlreadyOpen
+			msg.Error = pb.BankNotOpen
 		} else if rs.User.BankPhone != arg.GetPhone() {
 			msg.Error = pb.PhoneNumberError
 		} else if len(arg.GetPassword()) != 32 {
@@ -367,6 +367,7 @@ func (rs *RoleActor) bankCheck(arg *pb.CBank) pb.ErrCode {
 	}
 	if response1, ok := res1.(*pb.BankChecked); ok {
 		if response1.Error == pb.OK {
+			rs.User.BankPhone = arg.GetPhone()
 			rs.User.BankPassword = arg.GetPassword()
 			return response1.Error
 		}

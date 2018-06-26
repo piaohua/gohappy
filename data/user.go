@@ -46,7 +46,7 @@ type User struct {
 	Atime           time.Time `bson:"atime" json:"atime"`                         // 绑定代理时间
 	AgentJoinTime   time.Time `bson:"agent_join_time" json:"agent_join_time"`     // 申请成为代理时间
 	AgentState      uint32    `bson:"agent_state" json:"agent_state"`             // 是否是代理状态1通过
-	AgentLevel      uint32    `bson:"agent_level" json:"agent_level"`             // 代理等级
+	AgentLevel      uint32    `bson:"agent_level" json:"agent_level"`             // 代理等级,1，2，3，4
 	Build           uint32    `bson:"build" json:"build"`                         // 下属绑定数量
 	AgentName       string    `bson:"agent_name" json:"agent_name"`               // 代理名字
 	RealName        string    `bson:"real_name" json:"real_name"`                 // 真实姓名
