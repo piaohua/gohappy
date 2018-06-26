@@ -767,8 +767,8 @@ func (t *Desk) dealerJiesuan1() {
 			}
 			t.DeskFree.Carry -= num
 			//	抽成, 赢利中抽取
-			num = t.drawcoin(userid, num)
-			val2 := int64(num + betNum)
+			num2 := t.drawcoin(userid, num)
+			val2 := int64(num2 + betNum)
 			if val2 < 0 {
 				val2 = 0
 			}
@@ -814,8 +814,8 @@ func (t *Desk) dealerJiesuan2(num int64) {
 		for userid, betNum := range tmp {
 			num2 := (betNum / betsNum) * val //分到金额
 			//	抽成, 赢利中抽取
-			num2 = t.drawcoin(userid, num2)
-			val2 := num2 + betNum            //加上下注额
+			num3 := t.drawcoin(userid, num2)
+			val2 := num3 + betNum            //加上下注额
 			if val2 < 0 {
 				val2 = 0
 			}
