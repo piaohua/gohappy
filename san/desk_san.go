@@ -455,7 +455,7 @@ func (t *Desk) gameStop() {
 	if !t.checkOver() {
 		return
 	}
-	if !t.DeskData.Pub { //大厅房间不解散
+	if t.DeskData.Pub { //大厅房间不解散
 		return
 	}
 	//返回未开局钻石
