@@ -1340,9 +1340,17 @@
               "type": "string",
               "id": 10
             },
+            "state": {
+              "type": "uint32",
+              "id": 11
+            },
+            "level": {
+              "type": "uint32",
+              "id": 12
+            },
             "error": {
               "type": "ErrCode",
-              "id": 11
+              "id": 13
             }
           }
         },

@@ -818,8 +818,8 @@ func (t *Desk) dealerJiesuan1() {
 			if val2 < 0 {
 				val2 = 0
 			} else {
-				//	抽成
-				val2 = t.drawcoin(userid, val2)
+				//	抽成, 减去下注本金
+				val2 = t.drawcoin(userid, val2 - betNum)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))
@@ -867,8 +867,8 @@ func (t *Desk) dealerJiesuan2(num int64) {
 			if val2 < 0 {
 				val2 = 0
 			} else {
-				//	抽成
-				val2 = t.drawcoin(userid, val2)
+				//	抽成, 减去下注本金
+				val2 = t.drawcoin(userid, val2 - betNum)
 			}
 			//扣除位置数
 			t.sendCoin(userid, val2, int32(pb.LOG_TYPE6))

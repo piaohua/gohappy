@@ -135,6 +135,8 @@ func (rs *RoleActor) agentInfo() {
 	rsp.HistoryProfit = rs.User.HistoryProfit
 	rsp.SubPlayerProfit = rs.User.SubPlayerProfit
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
+	rsp.State = rs.User.AgentState
+	rsp.Level = rs.User.AgentLevel
 	rs.Send(rsp)
 }
 

@@ -25,7 +25,7 @@ message CMyAgent
 message SMyAgent
 {
     string agentname = 1;//名字
-    string agentid = 2;//代理id
+    string agentid = 2;//绑定的代理id
     string address = 3;//地址
     int64 profit = 4;//收益
     int64 WeekProfit = 5;//本周收益
@@ -34,7 +34,9 @@ message SMyAgent
     int64 SubPlayerProfit = 8;//下属玩家业绩
     int64 SubAgentProfit = 9;//下属代理业绩
     string PopularizeURL = 10;//推广地址
-    ErrCode error= 11;//错误码 ,0:正常
+    uint32 state = 11;//1开通代理
+    uint32 level = 12;//代理等级
+    ErrCode error= 13;//错误码 ,0:正常
 }
 
 // 代理管理

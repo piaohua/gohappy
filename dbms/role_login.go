@@ -131,7 +131,8 @@ func (a *RoleActor) regist(arg *pb.RoleRegist, ctx actor.Context) {
 		//return
 	}
 	//安全码
-	if !data.ExistAgency(safetycode) {
+	if !data.ExistAgent(safetycode) {
+	//if !data.ExistAgency(safetycode) {
 		rsp := new(pb.RoleRegisted)
 		rsp.Error = pb.SafetycodeNotExist
 		ctx.Respond(rsp)

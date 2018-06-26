@@ -46,6 +46,10 @@ func ExistAgency(safetycode string) bool {
 	return Has(Agencys, bson.M{"agent": safetycode, "status": 0})
 }
 
+func ExistAgent(safetycode string) bool {
+	return Has(PlayerUsers, bson.M{"_id": safetycode, "agent_state": 1})
+}
+
 //GetProfitRank 收益排行榜信息
 func GetProfitRank() ([]bson.M, error) {
 	pageSize := 20 //取前20条
