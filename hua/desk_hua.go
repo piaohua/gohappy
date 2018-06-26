@@ -539,10 +539,14 @@ func (t *Desk) drawcoin(userid string, val int64) (num int64) {
 		default:
 			num = int64(math.Trunc(float64(val) * 0.8))
 		}
-		//TODO 抽成日志记录 val - num
+		//反佣和收益消息,抽成日志记录 val - num
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		t.send3userid(userid, msg2)
 	case int32(pb.ROOM_TYPE2): //百人
 		num = int64(math.Trunc(float64(val) * 0.95))
-		//TODO 抽成日志记录 val - num
+		//反佣和收益消息,抽成日志记录 val - num
+		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, val - num)
+		t.send3userid(userid, msg2)
 	}
 	return
 }
@@ -558,26 +562,33 @@ func (t *Desk) drawfee() {
 	if t.state != int32(pb.STATE_READY) {
 		return
 	}
+	//计算反佣和收益
 	var num int64
 	switch t.DeskData.Mode {
 	case 0: //普通
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.9))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.1))
 	default:
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.8))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.2))
 	}
 	for k, v := range t.seats {
 		if !v.Ready {
 			continue
 		}
+		if num <= 0 {
+			continue
+		}
 		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
-		//TODO 计算反佣和收益, 日志记录
+		//抽水消息广播
 		msg := &pb.SJHPushDrawCoin{
-			Rtype: uint32(pb.LOG_TYPE48),
+			Rtype:  uint32(pb.LOG_TYPE48),
 			Userid: v.Userid,
-			Seat: k,
-			Coin: num,
+			Seat:   k,
+			Coin:   num,
 		}
 		t.broadcast(msg)
+		//反佣和收益消息
+		msg2 := handler.AgentProfitNumMsg(v.Userid, t.DeskData.Gtype, num)
+		t.send3userid(v.Userid, msg2)
 	}
 }
 
