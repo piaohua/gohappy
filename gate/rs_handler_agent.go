@@ -78,6 +78,7 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		rs.handlerDesk(msg, ctx)
 	}
 }
+
 //代理反佣收益消息处理
 func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
 	if rs.User.AgentState != 1 {
@@ -270,10 +271,10 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		return
 	}
 	msg := &pb.AgentProfitApply{
-		Agentid: rs.User.GetAgent(), //受理人userid
-		Userid: rs.User.GetUserid(), //申请人玩家id
-		Nickname: rs.User.GetNickname(), //玩家昵称
-		Profit: int64(arg.GetProfit()), //提取金额
+		Agentid:  rs.User.GetAgent(),     //受理人userid
+		Userid:   rs.User.GetUserid(),    //申请人玩家id
+		Nickname: rs.User.GetNickname(),  //玩家昵称
+		Profit:   int64(arg.GetProfit()), //提取金额
 	}
 	res1 := rs.reqRole(msg, ctx)
 	if response1, ok := res1.(*pb.AgentProfitApplied); ok {
@@ -302,9 +303,9 @@ func (rs *RoleActor) agentProfitReply(arg *pb.CAgentProfitReply, ctx actor.Conte
 		return
 	}
 	msg := &pb.AgentProfitReply{
-		Orderid: arg.GetOrderid(), //order id
-		Agentid: rs.User.GetUserid(),//受理人userid
-		State: arg.GetState(), //状态,1同意,2拒绝
+		Orderid: arg.GetOrderid(),    //order id
+		Agentid: rs.User.GetUserid(), //受理人userid
+		State:   arg.GetState(),      //状态,1同意,2拒绝
 	}
 	res1 := rs.reqRole(msg, ctx)
 	if response1, ok := res1.(*pb.AgentProfitReplied); ok {
@@ -315,7 +316,7 @@ func (rs *RoleActor) agentProfitReply(arg *pb.CAgentProfitReply, ctx actor.Conte
 				//银行账户增加收入
 				msg1 := &pb.AgentProfitReplyMsg{
 					Userid: response1.Userid,
-					Bank: response1.Profit,
+					Bank:   response1.Profit,
 				}
 				rs.rolePid.Tell(msg1)
 			} else if arg.GetState() == 2 {

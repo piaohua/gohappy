@@ -1,13 +1,13 @@
 package handler
 
 import (
+	"math"
 	"time"
 
 	"gohappy/data"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"math"
 )
 
 //PackAgentProfitRankMsg 获取排行榜信息
@@ -138,9 +138,9 @@ func PackAgentProfitMsg(arg *pb.CAgentProfit) (msg *pb.SAgentProfit) {
 		msg2 := new(pb.AgentProfitDetail)
 		msg2.Userid = v.Userid //代理id
 		msg2.Profit = v.Profit //收益
-		msg2.Level = v.Level //收益等级
-		msg2.Gtype = v.Gtype //game type
-		msg2.Rate = v.Rate //收益比例
+		msg2.Level = v.Level   //收益等级
+		msg2.Gtype = v.Gtype   //game type
+		msg2.Rate = v.Rate     //收益比例
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -158,13 +158,13 @@ func PackAgentProfitOrderMsg(arg *pb.CAgentProfitOrder) (msg *pb.SAgentProfitOrd
 	glog.Debugf("PackAgentProfitOrderMsg list %#v", list)
 	for _, v := range list {
 		msg2 := new(pb.AgentProfitOrder)
-		msg2.Orderid = v.Id //代理id
-		msg2.Userid = v.Userid //提单人id
-		msg2.Nickname = v.Nickname //代理id
-		msg2.Profit = v.Profit //收益
+		msg2.Orderid = v.Id                          //代理id
+		msg2.Userid = v.Userid                       //提单人id
+		msg2.Nickname = v.Nickname                   //代理id
+		msg2.Profit = v.Profit                       //收益
 		msg2.Applytime = utils.Time2Str(v.ApplyTime) //提单时间
 		msg2.Replytime = utils.Time2Str(v.ReplyTime) //响应时间
-		msg2.State = v.State //状态,0等待处理,1成功,2失败
+		msg2.State = v.State                         //状态,0等待处理,1成功,2失败
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -229,9 +229,9 @@ func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
 //AgentProfitNumMsg 收益消息
 func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentProfitNum) {
 	msg = &pb.AgentProfitNum{
-		Gtype:   gtype,
-		Profit:  profit,
-		Userid:  userid,
+		Gtype:  gtype,
+		Profit: profit,
+		Userid: userid,
 	}
 	return
 }
@@ -239,7 +239,7 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 //AgentProfitNumMsg 收益
 func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg *pb.AgentProfitInfo,
 	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate) {
-	num := int64(math.Trunc(float64(user.ProfitRate) / 100) * float64(arg.Profit))
+	num := int64(math.Trunc(float64(user.ProfitRate)/100) * float64(arg.Profit))
 	profit := arg.Profit - num
 	user.AddProfit(arg.Agent, profit)
 	if UpdateWeekProfit(profit, user) {
@@ -250,8 +250,8 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg *pb.AgentProfitInf
 	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.Gtype, arg.Level, arg.Rate, profit)
 	//更新消息
 	msg4 = &pb.AgentProfitUpdate{
-		Userid: user.GetUserid(),
-		Profit: profit,
+		Userid:  user.GetUserid(),
+		Profit:  profit,
 		Isagent: arg.Agent,
 	}
 	if num <= 0 {
@@ -285,8 +285,8 @@ func UpdateWeekProfit(num int64, user *data.User) bool {
 func UpdateWeekMsg(user *data.User) (msg *pb.AgentWeekUpdate) {
 	msg = &pb.AgentWeekUpdate{
 		Userid: user.GetUserid(),
-		Start: utils.Time2Str(user.WeekStart),
-		End: utils.Time2Str(user.WeekEnd),
+		Start:  utils.Time2Str(user.WeekStart),
+		End:    utils.Time2Str(user.WeekEnd),
 	}
 	return
 }

@@ -867,7 +867,7 @@ func (t *Desk) dealerJiesuan2(num int64) {
 			num2 := (betNum / betsNum) * val //分到金额
 			//	抽成, 赢利中抽取
 			num3 := t.drawcoin(userid, num2)
-			val2 := num3 + betNum            //加上下注额
+			val2 := num3 + betNum //加上下注额
 			if val2 < 0 {
 				val2 = 0
 			}

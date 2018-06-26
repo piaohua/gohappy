@@ -2,6 +2,7 @@ package data
 
 import (
 	"time"
+
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
@@ -42,24 +43,24 @@ type User struct {
 	TopWinCoin    int64 `bson:"top_win_coin" json:"top_win_coin"`       // 单局赢最高金币金额
 	TopWinChip    int64 `bson:"top_win_chip" json:"top_win_chip"`       // 单局赢最高筹码金额
 	//代理, TODO 分佣设置，上级和上级分佣
-	Agent           string    `bson:"agent" json:"agent"`                         // 绑定的代理ID
-	Atime           time.Time `bson:"atime" json:"atime"`                         // 绑定代理时间
-	AgentJoinTime   time.Time `bson:"agent_join_time" json:"agent_join_time"`     // 申请成为代理时间
-	AgentState      uint32    `bson:"agent_state" json:"agent_state"`             // 是否是代理状态1通过
-	AgentLevel      uint32    `bson:"agent_level" json:"agent_level"`             // 代理等级,1，2，3，4
-	Build           uint32    `bson:"build" json:"build"`                         // 下属绑定数量
-	AgentName       string    `bson:"agent_name" json:"agent_name"`               // 代理名字
-	RealName        string    `bson:"real_name" json:"real_name"`                 // 真实姓名
-	Weixin          string    `bson:"weixin" json:"weixin"`                       // 微信
-	ProfitRate      uint32    `bson:"profit_rate" json:"profit_rate"`             // 分佣比例
-	Profit          int64     `bson:"profit" json:"profit"`                       // 收益
-	WeekProfit      int64     `bson:"week_profit" json:"week_profit"`             // 本周收益
+	Agent            string    `bson:"agent" json:"agent"`                           // 绑定的代理ID
+	Atime            time.Time `bson:"atime" json:"atime"`                           // 绑定代理时间
+	AgentJoinTime    time.Time `bson:"agent_join_time" json:"agent_join_time"`       // 申请成为代理时间
+	AgentState       uint32    `bson:"agent_state" json:"agent_state"`               // 是否是代理状态1通过
+	AgentLevel       uint32    `bson:"agent_level" json:"agent_level"`               // 代理等级,1，2，3，4
+	Build            uint32    `bson:"build" json:"build"`                           // 下属绑定数量
+	AgentName        string    `bson:"agent_name" json:"agent_name"`                 // 代理名字
+	RealName         string    `bson:"real_name" json:"real_name"`                   // 真实姓名
+	Weixin           string    `bson:"weixin" json:"weixin"`                         // 微信
+	ProfitRate       uint32    `bson:"profit_rate" json:"profit_rate"`               // 分佣比例
+	Profit           int64     `bson:"profit" json:"profit"`                         // 收益
+	WeekProfit       int64     `bson:"week_profit" json:"week_profit"`               // 本周收益
 	WeekPlayerProfit int64     `bson:"week_player_profit" json:"week_player_profit"` // 本周玩家收益
-	WeekStart      time.Time     `bson:"week_start" json:"week_start"`             // 每周日重置
-	WeekEnd      time.Time     `bson:"week_end" json:"week_end"`             // 每周日重置
-	HistoryProfit   int64     `bson:"history_profit" json:"history_profit"`       // 历史收益
-	SubPlayerProfit int64     `bson:"sub_player_profit" json:"sub_player_profit"` // 下属玩家业绩收益
-	SubAgentProfit  int64     `bson:"sub_agent_profit" json:"sub_agent_profit"`   // 下属代理业绩收益
+	WeekStart        time.Time `bson:"week_start" json:"week_start"`                 // 每周日重置
+	WeekEnd          time.Time `bson:"week_end" json:"week_end"`                     // 每周日重置
+	HistoryProfit    int64     `bson:"history_profit" json:"history_profit"`         // 历史收益
+	SubPlayerProfit  int64     `bson:"sub_player_profit" json:"sub_player_profit"`   // 下属玩家业绩收益
+	SubAgentProfit   int64     `bson:"sub_agent_profit" json:"sub_agent_profit"`     // 下属代理业绩收益
 	//时间
 	Ctime     time.Time `bson:"ctime" json:"ctime"`           // 注册时间
 	LoginTime time.Time `bson:"login_time" json:"login_time"` // 最后登录时间
@@ -125,9 +126,9 @@ func (this *User) UpdateAgentProfit() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"week_profit": this.WeekProfit,
 			"week_player_profit": this.WeekPlayerProfit,
-			"history_profit": this.HistoryProfit,
-			"sub_player_profit": this.SubPlayerProfit,
-			"sub_agent_profit": this.SubAgentProfit}})
+			"history_profit":     this.HistoryProfit,
+			"sub_player_profit":  this.SubPlayerProfit,
+			"sub_agent_profit":   this.SubAgentProfit}})
 }
 
 func (this *User) UpdateAgentWeek() bool {

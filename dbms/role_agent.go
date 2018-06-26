@@ -1,13 +1,13 @@
 package main
 
 import (
+	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
+	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/data"
-	"utils"
 )
 
 //申请
@@ -125,10 +125,10 @@ func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context
 		return
 	}
 	record := &data.LogProfitOrder{
-		Agentid: arg.GetAgentid(),
-		Userid: arg.GetUserid(),
+		Agentid:  arg.GetAgentid(),
+		Userid:   arg.GetUserid(),
 		Nickname: arg.GetNickname(),
-		Profit: arg.GetProfit(),
+		Profit:   arg.GetProfit(),
 	}
 	if !record.Save() {
 		rsp.Error = pb.Failed

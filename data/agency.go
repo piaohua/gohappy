@@ -178,15 +178,15 @@ func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
 
 //LogProfitOrder 提取收益订单
 type LogProfitOrder struct {
-	Id         string    `bson:"_id" json:"id"`                  // AUTO_INCREMENT, PRIMARY KEY (`id`),
-	Userid   string    `bson:"userid" json:"userid"`       // 玩家id
+	Id        string    `bson:"_id" json:"id"`                // AUTO_INCREMENT, PRIMARY KEY (`id`),
+	Userid    string    `bson:"userid" json:"userid"`         // 玩家id
 	Agentid   string    `bson:"agentid" json:"agentid"`       // 代理id
-	Nickname   string    `bson:"nickname" json:"nickname"`       // 玩家昵称
-	Profit   int64    `bson:"profit" json:"profit"`       // 提取金额
-	State   int32    `bson:"state" json:"state"`       // 状态,0等待处理,1成功,2失败
-	ApplyTime     time.Time `bson:"apply_time" json:"apply_time"`         //提单时间
-	ReplyTime     time.Time `bson:"reply_time" json:"reply_time"`         //响应时间
-	Ctime     time.Time `bson:"ctime" json:"ctime"`         //记录生成时间
+	Nickname  string    `bson:"nickname" json:"nickname"`     // 玩家昵称
+	Profit    int64     `bson:"profit" json:"profit"`         // 提取金额
+	State     int32     `bson:"state" json:"state"`           // 状态,0等待处理,1成功,2失败
+	ApplyTime time.Time `bson:"apply_time" json:"apply_time"` //提单时间
+	ReplyTime time.Time `bson:"reply_time" json:"reply_time"` //响应时间
+	Ctime     time.Time `bson:"ctime" json:"ctime"`           //记录生成时间
 }
 
 //Save 保存消息记录

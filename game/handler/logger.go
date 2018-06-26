@@ -213,11 +213,11 @@ func LogProfitMsg(agentid, userid string, gtype int32, level, rate uint32,
 	profit int64) (msg *pb.LogProfit) {
 	msg = &pb.LogProfit{
 		Agentid: agentid,
-		Userid: userid,
-		Gtype:  gtype,
-		Level:  level,
-		Rate:   rate,
-		Profit: profit,
+		Userid:  userid,
+		Gtype:   gtype,
+		Level:   level,
+		Rate:    rate,
+		Profit:  profit,
 	}
 	return
 }
