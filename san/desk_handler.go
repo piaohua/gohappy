@@ -96,6 +96,8 @@ func (a *Desk) leaveDesk(arg *pb.LeaveDesk, ctx actor.Context) {
 //'进入房间
 func (a *Desk) enterDesk(arg *pb.EnterDesk, ctx actor.Context) {
 	rsp := new(pb.EnteredDesk)
+	rsp.Gtype = arg.Gtype
+	rsp.Rtype = arg.Rtype
 	user := new(data.User)
 	err2 := json.Unmarshal(arg.Data, user)
 	if err2 != nil {

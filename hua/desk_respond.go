@@ -138,6 +138,9 @@ func (t *Desk) enterCheck(user *data.User) pb.ErrCode {
 			return pb.NotEnoughDiamond
 		}
 	}
+	if user.GetCoin() < t.DeskData.Maximum {
+		return pb.NotEnoughCoin
+	}
 	return pb.OK
 }
 
