@@ -85,7 +85,7 @@ func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
 	var list []bson.M
-	selector := make(bson.M, 4)
+	selector := make(bson.M, 5)
 	selector["profit"] = true
 	selector["build"] = true
 	selector["agent_level"] = true
@@ -120,7 +120,7 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "coin", false)
 	var list []bson.M
-	selector := make(bson.M, 4)
+	selector := make(bson.M, 9)
 	selector["coin"] = true
 	selector["agent"] = true
 	selector["agent_level"] = true

@@ -61,10 +61,10 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 			msg2.Agentid = val.(string)
 		}
 		if val, ok := v["build"]; ok {
-			msg2.Num = val.(uint32)
+			msg2.Num = uint32(val.(int))
 		}
 		if val, ok := v["agent_level"]; ok {
-			msg2.Level = val.(uint32)
+			msg2.Level = uint32(val.(int))
 		}
 		if val, ok := v["address"]; ok {
 			msg2.Address = val.(string)
@@ -99,10 +99,10 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 			msg2.Userid = val.(string)
 		}
 		if val, ok := v["agent_state"]; ok {
-			msg2.State = pb.AgentApproveState(val.(uint32))
+			msg2.State = pb.AgentApproveState(val.(int))
 		}
 		if val, ok := v["agent_level"]; ok {
-			msg2.Level = val.(uint32)
+			msg2.Level = uint32(val.(int))
 		}
 		if val, ok := v["address"]; ok {
 			msg2.Address = val.(string)
