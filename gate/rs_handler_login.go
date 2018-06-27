@@ -267,7 +267,7 @@ func (rs *RoleActor) loginedLog(arg *pb.LoginSuccess) {
 	}
 	rs.loggerPid.Tell(msg2)
 	//TODO test
-	rs.loginedLog2()
+	//rs.loginedLog2()
 }
 
 //test
