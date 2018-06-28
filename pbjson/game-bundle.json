@@ -726,6 +726,39 @@
             }
           }
         },
+        "CBankLog": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SBankLog": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "BankLog",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 6
+            }
+          }
+        },
         "CRank": {
           "fields": {}
         },
@@ -1260,6 +1293,26 @@
             "Joins": {
               "type": "uint32",
               "id": 8
+            }
+          }
+        },
+        "BankLog": {
+          "fields": {
+            "Ctime": {
+              "type": "string",
+              "id": 1
+            },
+            "Type": {
+              "type": "int32",
+              "id": 2
+            },
+            "Num": {
+              "type": "int64",
+              "id": 3
+            },
+            "Rest": {
+              "type": "int64",
+              "id": 4
             }
           }
         },

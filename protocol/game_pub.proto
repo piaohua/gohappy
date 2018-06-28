@@ -131,3 +131,11 @@ message RoleRecord
     int64  Rest     =7; //剩余数量
     uint32 Joins    =8; //参与牌局数
 }
+
+message BankLog
+{
+    string Ctime  = 1; //时间
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //银行剩余数量
+}

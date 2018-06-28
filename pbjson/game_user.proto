@@ -76,6 +76,21 @@ message SBank
     ErrCode error = 6;//错误码
 }
 
+// bank log
+message CBankLog
+{
+    uint32 page = 1;//页数
+    string userid = 2;//用户id,server参数
+}
+
+message SBankLog
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    repeated BankLog list = 3;//列表
+    ErrCode error = 6;//错误码
+}
+
 // rank
 message CRank
 {

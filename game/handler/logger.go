@@ -4,6 +4,7 @@ import (
 	"gohappy/data"
 	"gohappy/pb"
 	"utils"
+	"gohappy/glog"
 )
 
 //LogDiamondMsg 打包钻石日志消息
@@ -56,8 +57,8 @@ func LogChipMsg(num int64, ltype int32,
 
 //LogBankMsg 打包银行日志消息
 func LogBankMsg(num int64, ltype int32,
-	p *data.User) (msg *pb.LogCoin) {
-	msg = &pb.LogCoin{
+	p *data.User) (msg *pb.LogBank) {
+	msg = &pb.LogBank{
 		Userid: p.GetUserid(),
 		Type:   int32(ltype),
 		Num:    num,
@@ -218,6 +219,27 @@ func LogProfitMsg(agentid, userid string, gtype int32, level, rate uint32,
 		Level:   level,
 		Rate:    rate,
 		Profit:  profit,
+	}
+	return
+}
+
+//PackBankLogMsg 获取银行操作记录信息
+func PackBankLogMsg(arg *pb.CBankLog) (msg *pb.SBankLog) {
+	msg = new(pb.SBankLog)
+	list, err := data.GetBankLogs(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("GetBankLogs err %v", err)
+	}
+	glog.Debugf("PackBankLogMsg list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.BankLog)
+		msg2.Ctime  = utils.Time2Str(v.Ctime) //时间
+		msg2.Type   = v.Type //类型
+		msg2.Num    = v.Num //数量
+		msg2.Rest   = v.Rest //银行剩余数量
+		msg.List = append(msg.List, msg2)
 	}
 	return
 }

@@ -6,6 +6,7 @@ import (
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
+	"gohappy/pb"
 )
 
 //TODO 数据统计 玩家7日，30日，总赢亏
@@ -372,4 +373,50 @@ func ProfitRecord(agentid, userid string, gtype int32, level, rate uint32, profi
 		Profit:  profit,
 	}
 	record.Save()
+}
+//LogBank 银行日志
+type LogBank struct {
+	//Id     string `bson:"_id"`
+	Userid string    `bson:"userid"` //账户ID
+	Type   int32     `bson:"type"`   //类型
+	Num    int64     `bson:"num"`    //数量
+	Rest   int64     `bson:"rest"`   //剩余数量
+	Ctime  time.Time `bson:"ctime"`  //create Time
+}
+
+func (t *LogBank) Save() bool {
+	//t.Id = bson.NewObjectId().String()
+	t.Ctime = bson.Now()
+	return Insert(LogBanks, t)
+}
+
+//银行记录
+func BankRecord(userid string, rtype int32, rest, num int64) {
+	record := &LogBank{
+		Userid: userid,
+		Type:   rtype,
+		Num:    num,
+		Rest:   rest,
+	}
+	record.Save()
+}
+
+//GetBankLogs 获取银行操作记录
+func GetBankLogs(arg *pb.CBankLog) ([]LogBank, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
+	var list []LogBank
+	q := bson.M{"userid": arg.Userid}
+	err := LogBanks.
+		Find(q).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+	}
+	return list, err
 }

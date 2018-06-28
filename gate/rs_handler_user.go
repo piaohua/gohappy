@@ -71,6 +71,11 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CRank)
 		glog.Debugf("CRank %#v", arg)
 		rs.dbmsPid.Request(arg, ctx.Self())
+	case *pb.CBankLog:
+		arg := msg.(*pb.CBankLog)
+		glog.Debugf("CBankLog %#v", arg)
+		arg.Userid = rs.User.GetUserid()
+		rs.dbmsPid.Request(arg, ctx.Self())
 	case *pb.TaskUpdate:
 		arg := msg.(*pb.TaskUpdate)
 		glog.Debugf("TaskUpdate %#v", arg)

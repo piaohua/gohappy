@@ -99,3 +99,11 @@ message LogProfit {
     int64  Profit = 5;//Profit
     string Agentid = 6;//代理ID
 }
+
+//银行操作日志
+message LogBank {
+    string Userid = 1; //玩家ID
+    int32  Type   = 2; //类型
+    int64  Num    = 3; //数量
+    int64  Rest   = 4; //银行剩余数量
+}

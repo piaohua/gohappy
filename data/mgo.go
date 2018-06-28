@@ -50,6 +50,7 @@ var LoginPrizes *mgo.Collection
 var LogTasks *mgo.Collection
 var LogProfits *mgo.Collection
 var LogProfitsOrders *mgo.Collection
+var LogBanks *mgo.Collection
 
 // 初始化时连接数据库
 func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
@@ -115,6 +116,7 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	LogTasks = Session.DB(dbName).C("col_log_task")
 	LogProfits = Session.DB(dbName).C("col_log_profit")
 	LogProfitsOrders = Session.DB(dbName).C("col_log_profit_order")
+	LogBanks = Session.DB(dbName).C("col_log_bank")
 }
 
 func Close() {

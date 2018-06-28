@@ -69,6 +69,7 @@ var protosUnpack = map[string][]proto{
 		{code: 1022, name: "CRoomRecord"},
 		{code: 1023, name: "CSignature"},
 		{code: 1024, name: "CLatLng"},
+		{code: 1025, name: "CBankLog"},
 		//agent
 		{code: 1050, name: "CAgentJoin"},
 		{code: 1051, name: "CMyAgent"},
@@ -199,6 +200,7 @@ var protosPacket = map[string][]proto{
 		{code: 1526, name: "SPushNotice"},
 		{code: 1527, name: "SSignature"},
 		{code: 1528, name: "SLatLng"},
+		{code: 1529, name: "SBankLog"},
 		//agent
 		{code: 1550, name: "SAgentJoin"},
 		{code: 1551, name: "SMyAgent"},

@@ -101,6 +101,7 @@
 		LogNotice
 		LogTask
 		LogProfit
+		LogBank
 		Request
 		Response
 		Connect
@@ -241,6 +242,7 @@
 		RoundRecord
 		RoundRoleRecord
 		RoleRecord
+		BankLog
 		CPing
 		SPing
 		CUserData
@@ -250,6 +252,8 @@
 		SPushCurrency
 		CBank
 		SBank
+		CBankLog
+		SBankLog
 		CRank
 		SRank
 		CTask
