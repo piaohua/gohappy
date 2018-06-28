@@ -337,7 +337,7 @@ func (t *Desk) limitOver() {
 	case int32(pb.ROOM_TYPE0): //自由
 	case int32(pb.ROOM_TYPE1): //私人
 		if !t.DeskData.Pub {
-			return
+			//return
 		}
 	case int32(pb.ROOM_TYPE2): //百人
 		return
