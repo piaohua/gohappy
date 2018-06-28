@@ -49,6 +49,7 @@ func WxRegist(ctos *pb.WxLogin, genid *data.IDGen) (stoc *pb.WxLogined,
 		stoc.Error = pb.GetWechatUserInfoFail
 		return
 	}
+	//TODO agent 关系查找和建立
 	stoc.IsRegist = true
 	stoc.Userid = user.Userid
 	return

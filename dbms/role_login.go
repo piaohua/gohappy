@@ -175,6 +175,7 @@ func (a *RoleActor) loginByWx(arg *pb.WxLogin, ctx actor.Context) {
 		rsp := login.WxLogin(arg, user)
 		ctx.Respond(rsp)
 	} else {
+		//TODO agent 关系查找和建立, ExistAgent
 		rsp, user2 := login.WxRegist(arg, a.uniqueid)
 		if rsp.Error == pb.OK {
 			a.loadingUser(user2)

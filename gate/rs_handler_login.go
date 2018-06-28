@@ -158,6 +158,7 @@ func (rs *RoleActor) logined(arg *pb.LoginSuccess, ctx actor.Context) {
 	rs.loginedLog(arg)
 	//登录成功
 	rs.online = true
+	//TODO agent build 处理, 给上级代理发送绑定消息
 }
 
 //登录后获取数据
