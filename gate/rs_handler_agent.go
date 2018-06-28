@@ -228,6 +228,7 @@ func (rs *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context
 		rs.Send(rsp)
 		return
 	}
+	//TODO 权限限制(有效玩家3个以上)
 	arg.Selfid = rs.User.GetUserid()
 	rs.rolePid.Request(arg, ctx.Self())
 }
@@ -270,6 +271,7 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
+	//TODO 权限限制(有效玩家3个以上)
 	msg := &pb.AgentProfitApply{
 		Agentid:  rs.User.GetAgent(),     //受理人userid
 		Userid:   rs.User.GetUserid(),    //申请人玩家id
