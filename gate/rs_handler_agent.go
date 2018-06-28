@@ -253,6 +253,7 @@ func (rs *RoleActor) agentProfitOrder(arg *pb.CAgentProfitOrder, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
+	arg.Type = 1 //固定只能查自己订单
 	arg.Agentid = rs.User.GetUserid()
 	rs.dbmsPid.Request(arg, ctx.Self())
 }
@@ -284,6 +285,8 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		if response1.Error == pb.OK {
 			//扣除收益
 			rs.User.Profit -= response1.Profit
+			//默认直接发放,不再需要审批
+			rs.addBank(response1.Profit, int32(pb.LOG_TYPE49))
 		}
 	}
 	rs.Send(rsp)
