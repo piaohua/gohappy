@@ -179,9 +179,9 @@ func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
 //LogProfitOrder 提取收益订单
 type LogProfitOrder struct {
 	Id        string    `bson:"_id" json:"id"`                // AUTO_INCREMENT, PRIMARY KEY (`id`),
-	Userid    string    `bson:"userid" json:"userid"`         // 玩家id
-	Agentid   string    `bson:"agentid" json:"agentid"`       // 代理id
-	Nickname  string    `bson:"nickname" json:"nickname"`     // 玩家昵称
+	Userid    string    `bson:"userid" json:"userid"`         // 玩家id(申请人)
+	Agentid   string    `bson:"agentid" json:"agentid"`       // 代理id(受理人)
+	Nickname  string    `bson:"nickname" json:"nickname"`     // 玩家昵称(申请人)
 	Profit    int64     `bson:"profit" json:"profit"`         // 提取金额
 	State     int32     `bson:"state" json:"state"`           // 状态,0等待处理,1成功,2失败
 	ApplyTime time.Time `bson:"apply_time" json:"apply_time"` //提单时间
@@ -218,6 +218,9 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
 	var list []LogProfitOrder
 	q := bson.M{"agentid": arg.Agentid}
+	if arg.Type == 1 {
+		q = bson.M{"userid": arg.Agentid}
+	}
 	err := LogProfitsOrders.
 		Find(q).
 		Sort(sortFieldR).

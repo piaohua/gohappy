@@ -151,6 +151,7 @@ func PackAgentProfitOrderMsg(arg *pb.CAgentProfitOrder) (msg *pb.SAgentProfitOrd
 	msg = new(pb.SAgentProfitOrder)
 	list, err := data.GetProfitOrder(arg)
 	msg.Page = arg.Page
+	msg.Type = arg.Type
 	msg.Count = uint32(len(list))
 	if err != nil {
 		glog.Errorf("PackAgentProfitOrderMsg err %v", err)

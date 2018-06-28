@@ -1486,9 +1486,13 @@
               "type": "uint32",
               "id": 1
             },
+            "type": {
+              "type": "uint32",
+              "id": 2
+            },
             "agentid": {
               "type": "string",
-              "id": 2
+              "id": 3
             }
           }
         },
@@ -1507,9 +1511,13 @@
               "type": "AgentProfitOrder",
               "id": 3
             },
+            "type": {
+              "type": "uint32",
+              "id": 4
+            },
             "error": {
               "type": "ErrCode",
-              "id": 4
+              "id": 5
             }
           }
         },

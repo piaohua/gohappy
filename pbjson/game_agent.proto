@@ -94,7 +94,8 @@ message AgentProfitDetail
 message CAgentProfitOrder
 {
     uint32 page = 1;//页数
-    string agentid = 2;//代理id,server参数
+    uint32 type = 2;//0下级的订单,1自己的订单
+    string agentid = 3;//代理id,server参数
 }
 
 message SAgentProfitOrder
@@ -102,7 +103,8 @@ message SAgentProfitOrder
     uint32 page = 1;//页数
     uint32 count = 2;//总数
     repeated AgentProfitOrder list = 3;//列表
-    ErrCode error= 4;//错误码 ,0:正常
+    uint32 type = 4;//0下级的订单,1自己的订单
+    ErrCode error= 5;//错误码 ,0:正常
 }
 
 message AgentProfitOrder
