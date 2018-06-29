@@ -107,3 +107,14 @@ message LogBank {
     int64  Num    = 3; //数量
     int64  Rest   = 4; //银行剩余数量
 }
+
+//系统收益记录
+message LogSysProfit {
+    string Userid = 1;//玩家ID
+    int32  Gtype  = 2;//game type
+    uint32 Level  = 3;//level type
+    uint32 Rate   = 4;//rate
+    int64  Profit = 5;//Profit
+    string Agentid = 6;//代理ID
+    int64  Rest   = 7; //收益剩余数量
+}

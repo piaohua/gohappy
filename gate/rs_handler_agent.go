@@ -8,6 +8,7 @@ import (
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
+	"math"
 )
 
 //玩家数据请求处理
@@ -111,9 +112,15 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	if arg.GetProfit() <= 0 {
 		return
 	}
+	//系统抽成
+	num := int64(math.Trunc(float64(arg.GetProfit()) * 0.1))
+	rest := arg.GetProfit() - num
+	msg1 := handler.LogSysProfitMsg(rs.User.GetAgent(), arg.Userid,
+		arg.Gtype, rs.User.AgentLevel, 10, num, rest)
+	rs.loggerPid.Tell(msg1)
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, rs.User.AgentLevel, 100, arg.Profit)
+		false, arg.Gtype, rs.User.AgentLevel, 100, rest)
 	if rs.User.AgentState == 1 {
 		msg2.Agent = true
 	}

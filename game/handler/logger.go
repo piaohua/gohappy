@@ -223,6 +223,21 @@ func LogProfitMsg(agentid, userid string, gtype int32, level, rate uint32,
 	return
 }
 
+//LogSysProfitMsg 打包系统收益日志消息
+func LogSysProfitMsg(agentid, userid string, gtype int32, level, rate uint32,
+	profit, rest int64) (msg *pb.LogSysProfit) {
+	msg = &pb.LogSysProfit{
+		Agentid: agentid,
+		Userid:  userid,
+		Gtype:   gtype,
+		Level:   level,
+		Rate:    rate,
+		Profit:  profit,
+		Rest:    rest,
+	}
+	return
+}
+
 //PackBankLogMsg 获取银行操作记录信息
 func PackBankLogMsg(arg *pb.CBankLog) (msg *pb.SBankLog) {
 	msg = new(pb.SBankLog)
