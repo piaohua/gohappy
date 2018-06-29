@@ -250,7 +250,7 @@ func PackBankLogMsg(arg *pb.CBankLog) (msg *pb.SBankLog) {
 	glog.Debugf("PackBankLogMsg list %#v", list)
 	for _, v := range list {
 		msg2 := new(pb.BankLog)
-		msg2.Ctime  = utils.Time2Str(v.Ctime) //时间
+		msg2.Ctime  = utils.Time2LocalStr(v.Ctime) //时间
 		msg2.Type   = v.Type //类型
 		msg2.Num    = v.Num //数量
 		msg2.Rest   = v.Rest //银行剩余数量
