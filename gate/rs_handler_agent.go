@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"time"
 
 	"gohappy/game/handler"
@@ -8,7 +9,6 @@ import (
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"math"
 )
 
 //玩家数据请求处理
@@ -144,11 +144,7 @@ func (rs *RoleActor) agentInfo() {
 	rsp.SubPlayerProfit = rs.User.SubPlayerProfit
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
 	rsp.Level = rs.User.AgentLevel
-	if rs.User.AgentState == 1 {
-		rsp.State = rs.User.AgentState
-	} else if rs.User.AgentState == 0 && rs.User.AgentLevel != 0 {
-		rsp.State = 2 //审核中
-	}
+	rsp.State = handler.GetAgentState(rs.User.AgentState, rs.User.AgentLevel)
 	rs.Send(rsp)
 }
 

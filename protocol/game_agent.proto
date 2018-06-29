@@ -172,7 +172,7 @@ message CAgentPlayerManage
 {
     uint32 page = 1;//页数
     string userid = 2;//玩家id,查询参数
-    AgentApproveState state = 3;//状态，通过，审批，拒绝
+    AgentApproveState state = 3;//状态，0审批中或玩家，1通过，2拒绝
     string selfid = 4;//玩家id,server参数
 }
 
@@ -181,7 +181,8 @@ message SAgentPlayerManage
     uint32 page = 1;//页数
     uint32 count = 2;//总数
     repeated AgentPlayerManage list = 3;//列表
-    ErrCode error= 4;//错误码 ,0:正常
+    AgentApproveState state = 4;//状态，0审批中或玩家，1通过，2拒绝
+    ErrCode error= 5;//错误码 ,0:正常
 }
 
 message AgentPlayerManage
@@ -195,7 +196,7 @@ message AgentPlayerManage
     uint32 level = 7;//代理等级
     uint32 profitRate = 8;//收益占比
     string jointime = 9;//名字
-    AgentApproveState state = 10;//状态，0审批，1通过，2拒绝
+    uint32 state = 10;//状态，0不是代理,1开通代理,2审核中
 }
 
 // 代理玩家申请审批

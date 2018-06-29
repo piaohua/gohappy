@@ -55,7 +55,7 @@ func (a *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context)
 		return
 	}
 	if user.GetAgent() != arg.GetSelfid() || user.AgentLevel == 0 {
-		glog.Errorf("get selfid %s fail", arg.GetSelfid())
+		glog.Errorf("get selfid %s, %s, %d fail", arg.GetSelfid(), user.GetAgent(), user.AgentLevel)
 		rsp.Error = pb.NotAgent
 		ctx.Respond(rsp)
 		return

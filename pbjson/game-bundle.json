@@ -1742,9 +1742,13 @@
               "type": "AgentPlayerManage",
               "id": 3
             },
+            "state": {
+              "type": "AgentApproveState",
+              "id": 4
+            },
             "error": {
               "type": "ErrCode",
-              "id": 4
+              "id": 5
             }
           }
         },
@@ -1787,7 +1791,7 @@
               "id": 9
             },
             "state": {
-              "type": "AgentApproveState",
+              "type": "uint32",
               "id": 10
             }
           }
