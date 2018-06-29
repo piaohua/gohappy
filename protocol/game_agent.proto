@@ -34,7 +34,7 @@ message SMyAgent
     int64 SubPlayerProfit = 8;//下属玩家业绩
     int64 SubAgentProfit = 9;//下属代理业绩
     string PopularizeURL = 10;//推广地址
-    uint32 state = 11;//1开通代理
+    uint32 state = 11;//0不是代理,1开通代理,2审核中
     uint32 level = 12;//代理等级
     ErrCode error= 13;//错误码 ,0:正常
 }

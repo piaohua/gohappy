@@ -136,8 +136,12 @@ func (rs *RoleActor) agentInfo() {
 	rsp.HistoryProfit = rs.User.HistoryProfit
 	rsp.SubPlayerProfit = rs.User.SubPlayerProfit
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
-	rsp.State = rs.User.AgentState
 	rsp.Level = rs.User.AgentLevel
+	if rs.User.AgentState == 1 {
+		rsp.State = rs.User.AgentState
+	} else if rs.User.AgentState == 0 && rs.User.AgentLevel != 0 {
+		rsp.State = 2 //审核中
+	}
 	rs.Send(rsp)
 }
 
@@ -156,7 +160,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		return
 	}
 	if rs.User.AgentState == 1 || rs.User.AgentLevel != 0 {
-		rsp.Error = pb.AlreadyBuild
+		rsp.Error = pb.AlreadyAgent
 		rs.Send(rsp)
 		return
 	}
