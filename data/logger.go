@@ -3,10 +3,10 @@ package data
 import (
 	"time"
 
+	"gohappy/pb"
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
-	"gohappy/pb"
 )
 
 //TODO 数据统计 玩家7日，30日，总赢亏
@@ -374,6 +374,7 @@ func ProfitRecord(agentid, userid string, gtype int32, level, rate uint32, profi
 	}
 	record.Save()
 }
+
 //LogBank 银行日志
 type LogBank struct {
 	//Id     string `bson:"_id"`

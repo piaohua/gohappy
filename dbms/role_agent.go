@@ -129,7 +129,7 @@ func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context
 		Userid:   arg.GetUserid(),
 		Nickname: arg.GetNickname(),
 		Profit:   arg.GetProfit(),
-		State: 1, //默认直接发放,不再需要审批
+		State:    1, //默认直接发放,不再需要审批
 	}
 	if !record.Save() {
 		rsp.Error = pb.Failed
