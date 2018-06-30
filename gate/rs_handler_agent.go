@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math"
 	"time"
 
 	"gohappy/game/handler"
@@ -111,9 +112,15 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	if arg.GetProfit() <= 0 {
 		return
 	}
+	//系统抽成
+	num := int64(math.Trunc(float64(arg.GetProfit()) * 0.1))
+	rest := arg.GetProfit() - num
+	msg1 := handler.LogSysProfitMsg(rs.User.GetAgent(), arg.Userid,
+		arg.Gtype, rs.User.AgentLevel, 10, num, rest)
+	rs.loggerPid.Tell(msg1)
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, rs.User.AgentLevel, 100, arg.Profit)
+		false, arg.Gtype, rs.User.AgentLevel, 100, rest)
 	if rs.User.AgentState == 1 {
 		msg2.Agent = true
 	}
@@ -136,8 +143,8 @@ func (rs *RoleActor) agentInfo() {
 	rsp.HistoryProfit = rs.User.HistoryProfit
 	rsp.SubPlayerProfit = rs.User.SubPlayerProfit
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
-	rsp.State = rs.User.AgentState
 	rsp.Level = rs.User.AgentLevel
+	rsp.State = handler.GetAgentState(rs.User.AgentState, rs.User.AgentLevel)
 	rs.Send(rsp)
 }
 
@@ -156,7 +163,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		return
 	}
 	if rs.User.AgentState == 1 || rs.User.AgentLevel != 0 {
-		rsp.Error = pb.AlreadyBuild
+		rsp.Error = pb.AlreadyAgent
 		rs.Send(rsp)
 		return
 	}

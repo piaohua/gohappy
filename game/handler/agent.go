@@ -80,6 +80,7 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 //PackPlayerManageMsg 获取玩家管理列表信息
 func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage) {
 	msg = new(pb.SAgentPlayerManage)
+	msg.State = arg.State
 	list, err := data.GetPlayerManage(arg)
 	msg.Page = arg.Page
 	msg.Count = uint32(len(list))
@@ -99,7 +100,7 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 			msg2.Userid = val.(string)
 		}
 		if val, ok := v["agent_state"]; ok {
-			msg2.State = pb.AgentApproveState(val.(int))
+			msg2.State = uint32(val.(int))
 		}
 		if val, ok := v["agent_level"]; ok {
 			msg2.Level = uint32(val.(int))
@@ -114,11 +115,12 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 			msg2.Agentname = val.(string)
 		}
 		if val, ok := v["agent_join_time"]; ok {
-			msg2.Jointime = utils.Time2Str(val.(time.Time))
+			msg2.Jointime = utils.Time2LocalStr(val.(time.Time))
 		}
 		if msg2.Userid == "" {
 			continue
 		}
+		msg2.State = GetAgentState(msg2.State, msg2.Level)
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -163,8 +165,8 @@ func PackAgentProfitOrderMsg(arg *pb.CAgentProfitOrder) (msg *pb.SAgentProfitOrd
 		msg2.Userid = v.Userid                       //提单人id
 		msg2.Nickname = v.Nickname                   //代理id
 		msg2.Profit = v.Profit                       //收益
-		msg2.Applytime = utils.Time2Str(v.ApplyTime) //提单时间
-		msg2.Replytime = utils.Time2Str(v.ReplyTime) //响应时间
+		msg2.Applytime = utils.Time2LocalStr(v.ApplyTime) //提单时间
+		msg2.Replytime = utils.Time2LocalStr(v.ReplyTime) //响应时间
 		msg2.State = v.State                         //状态,0等待处理,1成功,2失败
 		msg.List = append(msg.List, msg2)
 	}
@@ -210,6 +212,16 @@ func AgentApprove(state pb.AgentApproveState, selfid string, user *data.User) pb
 		return pb.Failed
 	}
 	return pb.OK
+}
+
+//GetAgentState 返回代理状态0不是代理，1已经是代理，2审核中
+func GetAgentState(state, level uint32) uint32 {
+	if state == 1 {
+		return 1
+	} else if state == 0 && level != 0 {
+		return 2 //审核中
+	}
+	return 0
 }
 
 //AgentProfitInfoMsg 代理收益消息

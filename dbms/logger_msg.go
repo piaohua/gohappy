@@ -55,6 +55,10 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.LogProfit)
 		data.ProfitRecord(arg.Agentid, arg.Userid, arg.Gtype,
 			arg.Level, arg.Rate, arg.Profit)
+	case *pb.LogSysProfit:
+		arg := msg.(*pb.LogSysProfit)
+		data.SysProfitRecord(arg.Agentid, arg.Userid, arg.Gtype,
+			arg.Level, arg.Rate, arg.Profit, arg.Rest)
 	case *pb.ServeStop:
 		//关闭服务
 		a.handlerStop(ctx)

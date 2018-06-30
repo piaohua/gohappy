@@ -102,6 +102,7 @@
 		LogTask
 		LogProfit
 		LogBank
+		LogSysProfit
 		Request
 		Response
 		Connect

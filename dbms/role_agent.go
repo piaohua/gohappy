@@ -55,7 +55,7 @@ func (a *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context)
 		return
 	}
 	if user.GetAgent() != arg.GetSelfid() || user.AgentLevel == 0 {
-		glog.Errorf("get selfid %s fail", arg.GetSelfid())
+		glog.Errorf("get selfid %s, %s, %d fail", arg.GetSelfid(), user.GetAgent(), user.AgentLevel)
 		rsp.Error = pb.NotAgent
 		ctx.Respond(rsp)
 		return
@@ -117,10 +117,10 @@ func (a *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo, ctx actor.Context) 
 func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context) {
 	rsp := new(pb.AgentProfitApplied)
 	//rsp.Profit = arg.GetProfit()
-	user := a.getUserById(arg.GetAgentid())
+	user := a.getUserById(arg.GetUserid())
 	if user == nil {
-		glog.Errorf("get agentid %s fail", arg.GetAgentid())
-		rsp.Error = pb.NotAgent
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		rsp.Error = pb.UserDataNotExist
 		ctx.Respond(rsp)
 		return
 	}
