@@ -56,7 +56,7 @@ enum ConfigAtype {
     CONFIG_DELETE  = 1; //删除
 }
 
-//web请求
+//web请求 (post)
 message WebRequest
 {
     WebCode Code = 1; //协议号
@@ -73,8 +73,12 @@ message WebResponse
 }
 
 WebRequest 请求request消息(json格式)
+    b = new(WebRequest)
+    body, err := json.Marshal(b)
 WebResponse 响应response消息(json格式)
-ErrCode 不为0 或者 ErrMsg 不为空 返回错误
+    b := new(WebResponse)
+    d, err := json.Unmarshal(body, b)
+    ErrCode 不为0 或者 ErrMsg 不为空 返回错误
 
 1、WebOnline 请求Data数据 (json格式)
     b := make([]string, 0) //玩家id列表
@@ -96,7 +100,7 @@ ErrCode 不为0 或者 ErrMsg 不为空 返回错误
     b := make(map[int]int) //key: 1 机器人,2 玩家, value: 数量
     d, err := json.Marshal(b)
     response.Result = d
-    example: {1: 10, 2: 11}
+    example: {"1": 10, "2": 11}
 
 3、WebGive 请求Data数据 (json格式)
     b := new(pb.PayCurrency)
