@@ -43,5 +43,5 @@ message SSGPushDrawCoin
     uint32 rtype   = 1;//类型
     uint32 seat    = 2;//位置
     string userid  = 3;//玩家id
-    int64 coin     = 4;//扣除数量金币
+    int64 coin     = 4;//扣除数量金币(负)
 }

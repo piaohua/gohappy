@@ -787,13 +787,13 @@ func (t *Desk) drawfee() {
 		if num <= 0 {
 			continue
 		}
-		t.sendCoin(v.Userid, num, int32(pb.LOG_TYPE48))
+		t.sendCoin(v.Userid, (-1 * num), int32(pb.LOG_TYPE48))
 		//抽水消息广播
 		msg := &pb.SSGPushDrawCoin{
 			Rtype:  uint32(pb.LOG_TYPE48),
 			Userid: v.Userid,
 			Seat:   k,
-			Coin:   num,
+			Coin:   (-1 * num),
 		}
 		t.broadcast(msg)
 		//反佣和收益消息
