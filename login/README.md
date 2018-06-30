@@ -72,75 +72,108 @@ message WebResponse
     bytes Result = 4; //正常时返回信息
 }
 
-WebRequest 请求消息(json格式)
-WebResponse 响应消息(json格式)
+WebRequest 请求request消息(json格式)
+WebResponse 响应response消息(json格式)
 ErrCode 不为0 或者 ErrMsg 不为空 返回错误
 
 1、WebOnline 请求Data数据 (json格式)
-    msg1 := make([]string, 0)
-    example: ["id1","id2"]
+    b := make([]string, 0) //玩家id列表
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: ["userid1","userid2"]
 
-2、WebOnline 响应Data数据 (json格式)
-    resp := make(map[string]int)
-    //1表示在线,0表示离线
-    example: {"id1":1,"id2":0}
+   WebOnline 响应Data数据 (json格式)
+    b := make(map[string]int) //key:玩家id, value: 1表示在线,0表示离线
+    d, err := json.Marshal(b)
+    response.Result = d
+    example: {"userid1":1,"userid2":0}
 
-3、WebNumber 请求Data数据 (json格式)
+2、WebNumber 请求Data数据 (json格式)
+    request.Data = []byte{} //空数据
     example: {}
 
-4、WebNumber 响应Data数据 (json格式)
-    resp := make(map[int]int)
-    //响应1 机器人,2 玩家
+   WebNumber 响应Data数据 (json格式)
+    b := make(map[int]int) //key: 1 机器人,2 玩家, value: 数量
+    d, err := json.Marshal(b)
+    response.Result = d
     example: {1: 10, 2: 11}
 
-5、WebGive 请求Data数据 (json格式)
-    msg2 := new(pb.PayCurrency)
+3、WebGive 请求Data数据 (json格式)
+    b := new(pb.PayCurrency)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"userid": "xxx"}
+
+   WebGive 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-6、WebGive 响应Data数据 (json格式)
-    example: {}
-
-7、WebShop 请求Data数据 (json格式)
-    b := make(map[string]data.Shop)
+4、WebShop 请求Data数据 (json格式)
+    b := make(map[string]data.Shop) //key: Shop.Id
+    d, err := json.Marshal(b)
+    request.Data = d
     example: {"id1": {xxx}, "id2": {xxx}}
 
-8、WebShop 响应Data数据 (json格式)
+   WebShop 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-9、WebEnv 请求Data数据 (json格式)
-    b := make(map[string]int32)
-    example: {"id1": 1, "id2": 2}
+5、WebEnv 请求Data数据 (json格式)
+    b := make(map[string]int32) //key: GameEnv或自定义, value: 数值
+    example: {"ENV1": 1, "ENV2": 2}
 
-10、WebEnv 响应Data数据 (json格式)
+   WebEnv 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-11、WebNotice 请求Data数据 (json格式)
-    b := make(map[string]data.Notice)
+6、WebNotice 请求Data数据 (json格式)
+    b := make(map[string]data.Notice) //key: Notice.Id
+    d, err := json.Marshal(b)
+    request.Data = d
     example: {"id1": {xxx}}
 
-12、WebNotice 响应Data数据 (json格式)
+   WebNotice 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-13、WebGame 请求Data数据 (json格式)
-    b := make(map[string]data.Game)
+7、WebGame 请求Data数据 (json格式)
+    b := make(map[string]data.Game) //key: Game.Id
+    d, err := json.Marshal(b)
+    request.Data = d
     example: {"id1": {xxx}}
 
-14、WebGame 响应Data数据 (json格式)
+   WebGame 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-15、WebVip 请求Data数据 (json格式)
-    b := make(map[string]data.Vip)
+8、WebVip 请求Data数据 (json格式)
+    b := make(map[string]data.Vip) //key: Vip.Id
+    d, err := json.Marshal(b)
+    request.Data = d
     example: {"id1": {xxx}}
 
-16、WebVip 响应Data数据 (json格式)
+   WebVip 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
     example: {}
 
-17、WebTask 请求Data数据 (json格式)
-    b := make(map[int32]data.Task)
-    example: {1: {xxx}}
+9、WebTask 请求Data数据 (json格式)
+    b := make(map[int32]data.Task) //key: Task.Taskid
+    d, err := json.Marshal(&b)
+    request.Data = d
+    example: {"taskid1": {xxx}, "taskid2": {xxx}}
 
-18、WebLogin 请求Data数据 (json格式)
-    b := make(map[uint32]data.LoginPrize)
-    example: {1: {xxx}}
+   WebTask 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
+10、WebLogin 请求Data数据 (json格式)
+    b := make(map[uint32]data.LoginPrize) //key: LoginPrize.Day
+    d, err := json.Marshal(&b)
+    request.Result = d
+    example: {"day1": {xxx}, "day2": {xxx}}
+
+    WebLogin 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
 
 ```
