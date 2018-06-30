@@ -44,20 +44,20 @@ func TestAlgo(t *testing.T) {
 	//t.Log((0x4a + 0x22 + 0x48) & RemMask)
 	//cards := []int{0x4b, 0x4b, 0x4d, 0x4d, 0x4b}
 	cards := []uint32{0x1c, 0x19, 0x14, 0x15, 0x17}
-	t.Log(Algo(cards))
+	t.Log(Algo(0, cards))
 	t.Log([]uint32(cards))
 	cs := []uint32{0x13, 0x23, 0x1a, 0x2a, 0x1d}
-	t.Log(Algo(cs))
+	t.Log(Algo(0, cs))
 	t.Log(AlgoVerify(cs, 0x06))
 	cs = []uint32{0x4d, 0x32, 0x36, 0x16, 0x18}
 	t.Log(AlgoVerify(cs, 0x02))
 	cs = []uint32{0x31, 0x25, 0x21, 0x12, 0x11}
-	t.Log(Algo(cs))
+	t.Log(Algo(0, cs))
 	cs = []uint32{19, 67, 51, 35, 23}
 	cs = []uint32{0x13, 0x43, 0x33, 0x23, 0x17}
 	//t.Log(Algo(cs))
 	cs = []uint32{0x13, 0x13, 0x13, 0x13, 0x17}
-	t.Log(Algo(cs))
+	t.Log(Algo(0, cs))
 }
 
 func TestNius(t *testing.T) {
@@ -102,7 +102,7 @@ func TestBomb(t *testing.T) {
 	cs = []uint32{0x3d, 0x2d, 0x1d, 0x4b, 0x4d}
 	cs = []uint32{0x4d, 0x2c, 0x28, 0x39, 0x31}
 	cs = []uint32{0x43, 0x3d, 0x39, 0x32, 0x4c}
-	t.Log(Algo(cs))
+	t.Log(Algo(0, cs))
 	gs := []uint32{0x4d, 0x2c, 0x28, 0x39, 0x31}
 	gs = []uint32{0x43, 0x3d, 0x39, 0x32, 0x4c}
 	t.Log(AlgoVerify(gs, 0))
@@ -112,4 +112,50 @@ func TestBomb(t *testing.T) {
 	t.Log(utils.LocalTime())
 	t.Log(utils.Minute())
 	t.Log(utils.Hour())
+}
+
+// 测试
+func TestMode(t *testing.T) {
+	cs := []uint32{0x49, 0x2a, 0x18, 0x3c, 0x1b}
+	if Straight != Algo(1, cs) {
+		t.Log("Straight failed")
+	} else {
+		t.Log("Straight successful")
+	}
+	cs = []uint32{0x4a, 0x2a, 0x1a, 0x32, 0x12}
+	if FullHouse != Algo(1, cs) {
+		t.Log("FullHouse failed")
+	} else {
+		t.Log("FullHouse successful")
+	}
+	cs = []uint32{0x4a, 0x42, 0x41, 0x4c, 0x4d}
+	if Flush != Algo(1, cs) {
+		t.Log("Flush failed")
+	} else {
+		t.Log("Flush successful")
+	}
+	cs = []uint32{0x4b, 0x2b, 0x1b, 0x3d, 0x1c}
+	if FiveFlower != Algo(1, cs) {
+		t.Log("FiveFlower failed")
+	} else {
+		t.Log("FiveFlower successful")
+	}
+	cs = []uint32{0x4a, 0x2a, 0x1a, 0x3a, 0x12}
+	if Bomb != Algo(1, cs) {
+		t.Log("Bomb failed")
+	} else {
+		t.Log("Bomb successful")
+	}
+	cs = []uint32{0x49, 0x4a, 0x48, 0x4c, 0x4b}
+	if StraightFlush != Algo(1, cs) {
+		t.Log("StraightFlush failed")
+	} else {
+		t.Log("StraightFlush successful")
+	}
+	cs = []uint32{0x41, 0x21, 0x13, 0x32, 0x12}
+	if FiveTiny != Algo(1, cs) {
+		t.Log("FiveTiny failed")
+	} else {
+		t.Log("FiveTiny successful")
+	}
 }

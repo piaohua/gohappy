@@ -170,17 +170,18 @@ func Algo2(cs []uint32) uint32 {
 		cards[k].Suit = Suit(v)
 		cards[k].Rank = Rank(v)
 	}
+	ascSortHands(cards)
 	if cards[0].Suit == cards[1].Suit &&
 		cards[1].Suit == cards[2].Suit &&
 		cards[2].Suit == cards[3].Suit &&
 		cards[3].Suit == cards[4].Suit {
-		straight = true
+		flush = true
 	}
 	if (cards[0].Rank+1) == cards[1].Rank &&
 		(cards[1].Rank+1) == cards[2].Rank &&
 		(cards[2].Rank+1) == cards[3].Rank &&
 		(cards[3].Rank+1) == cards[4].Rank {
-		flush = true
+		straight = true
 	}
 	if straight && flush {
 		return StraightFlush
@@ -282,6 +283,16 @@ func descSortHands(cards []hands) {
 			return cards[i].Suit > cards[j].Suit
 		}
 		return cards[i].Rank > cards[j].Rank
+	})
+}
+
+//升序排序
+func ascSortHands(cards []hands) {
+	sort.Slice(cards, func(i, j int) bool {
+		if cards[i].Rank == cards[j].Rank {
+			return cards[i].Suit < cards[j].Suit
+		}
+		return cards[i].Rank < cards[j].Rank
 	})
 }
 
