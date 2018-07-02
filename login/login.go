@@ -41,6 +41,7 @@ func main() {
 	addr := cfg.Section("login").Key("addr").Value()
 	//启动监听
 	go Start(addr)
+	go Wxmp()
 	signalListen() //监听关闭信号
 	//关闭服务
 	Stop()
