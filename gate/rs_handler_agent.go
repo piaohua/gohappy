@@ -115,9 +115,14 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	//系统抽成
 	num := int64(math.Trunc(float64(arg.GetProfit()) * 0.1))
 	rest := arg.GetProfit() - num
-	msg1 := handler.LogSysProfitMsg(rs.User.GetAgent(), arg.Userid,
-		arg.Gtype, rs.User.AgentLevel, 10, num, rest)
-	rs.loggerPid.Tell(msg1)
+	if num > 0 {
+		msg1 := handler.LogSysProfitMsg(rs.User.GetAgent(), arg.Userid,
+			arg.Gtype, rs.User.AgentLevel, 10, num, rest)
+		rs.loggerPid.Tell(msg1)
+	}
+	if rest <= 0 {
+		return
+	}
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
 		false, arg.Gtype, rs.User.AgentLevel, 100, rest)
