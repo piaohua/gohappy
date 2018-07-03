@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"gohappy/glog"
+	"gohappy/game/config"
 	"utils"
 
 	ini "gopkg.in/ini.v1"
@@ -33,6 +34,8 @@ func main() {
 	cfg.BlockMode = false //只读
 	//初始化
 	aesInit()
+	config.Init2Game()
+	JtPayInit()
 	//启动服务
 	bind := cfg.Section("login").Key("bind").Value()
 	kind := cfg.Section("login").Key("kind").Value()

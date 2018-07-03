@@ -7,6 +7,8 @@ import proto "github.com/gogo/protobuf/proto"
 import fmt "fmt"
 import math "math"
 
+import bytes "bytes"
+
 import strings "strings"
 import reflect "reflect"
 
@@ -69,8 +71,9 @@ type WxpayGoods struct {
 	Userid  string `protobuf:"bytes,1,opt,name=Userid,json=userid,proto3" json:"Userid,omitempty"`
 	Orderid string `protobuf:"bytes,2,opt,name=Orderid,json=orderid,proto3" json:"Orderid,omitempty"`
 	Money   uint32 `protobuf:"varint,3,opt,name=Money,json=money,proto3" json:"Money,omitempty"`
-	Diamond uint32 `protobuf:"varint,4,opt,name=Diamond,json=diamond,proto3" json:"Diamond,omitempty"`
-	First   int32  `protobuf:"varint,5,opt,name=First,json=first,proto3" json:"First,omitempty"`
+	Diamond int64  `protobuf:"varint,4,opt,name=Diamond,json=diamond,proto3" json:"Diamond,omitempty"`
+	Coin    int64  `protobuf:"varint,5,opt,name=Coin,json=coin,proto3" json:"Coin,omitempty"`
+	First   int32  `protobuf:"varint,6,opt,name=First,json=first,proto3" json:"First,omitempty"`
 }
 
 func (m *WxpayGoods) Reset()                    { *m = WxpayGoods{} }
@@ -98,9 +101,16 @@ func (m *WxpayGoods) GetMoney() uint32 {
 	return 0
 }
 
-func (m *WxpayGoods) GetDiamond() uint32 {
+func (m *WxpayGoods) GetDiamond() int64 {
 	if m != nil {
 		return m.Diamond
+	}
+	return 0
+}
+
+func (m *WxpayGoods) GetCoin() int64 {
+	if m != nil {
+		return m.Coin
 	}
 	return 0
 }
@@ -112,11 +122,133 @@ func (m *WxpayGoods) GetFirst() int32 {
 	return 0
 }
 
+// 交易下单
+type TradeOrder struct {
+	Userid   string `protobuf:"bytes,1,opt,name=Userid,json=userid,proto3" json:"Userid,omitempty"`
+	Orderid  string `protobuf:"bytes,2,opt,name=Orderid,json=orderid,proto3" json:"Orderid,omitempty"`
+	Amount   string `protobuf:"bytes,3,opt,name=Amount,json=amount,proto3" json:"Amount,omitempty"`
+	Itemid   string `protobuf:"bytes,4,opt,name=Itemid,json=itemid,proto3" json:"Itemid,omitempty"`
+	Diamond  uint32 `protobuf:"varint,5,opt,name=Diamond,json=diamond,proto3" json:"Diamond,omitempty"`
+	Money    uint32 `protobuf:"varint,6,opt,name=Money,json=money,proto3" json:"Money,omitempty"`
+	Result   uint32 `protobuf:"varint,7,opt,name=Result,json=result,proto3" json:"Result,omitempty"`
+	Clientip string `protobuf:"bytes,8,opt,name=Clientip,json=clientip,proto3" json:"Clientip,omitempty"`
+}
+
+func (m *TradeOrder) Reset()                    { *m = TradeOrder{} }
+func (*TradeOrder) ProtoMessage()               {}
+func (*TradeOrder) Descriptor() ([]byte, []int) { return fileDescriptorActorPay, []int{4} }
+
+func (m *TradeOrder) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *TradeOrder) GetOrderid() string {
+	if m != nil {
+		return m.Orderid
+	}
+	return ""
+}
+
+func (m *TradeOrder) GetAmount() string {
+	if m != nil {
+		return m.Amount
+	}
+	return ""
+}
+
+func (m *TradeOrder) GetItemid() string {
+	if m != nil {
+		return m.Itemid
+	}
+	return ""
+}
+
+func (m *TradeOrder) GetDiamond() uint32 {
+	if m != nil {
+		return m.Diamond
+	}
+	return 0
+}
+
+func (m *TradeOrder) GetMoney() uint32 {
+	if m != nil {
+		return m.Money
+	}
+	return 0
+}
+
+func (m *TradeOrder) GetResult() uint32 {
+	if m != nil {
+		return m.Result
+	}
+	return 0
+}
+
+func (m *TradeOrder) GetClientip() string {
+	if m != nil {
+		return m.Clientip
+	}
+	return ""
+}
+
+type TradedOrder struct {
+	Result bool `protobuf:"varint,1,opt,name=Result,json=result,proto3" json:"Result,omitempty"`
+}
+
+func (m *TradedOrder) Reset()                    { *m = TradedOrder{} }
+func (*TradedOrder) ProtoMessage()               {}
+func (*TradedOrder) Descriptor() ([]byte, []int) { return fileDescriptorActorPay, []int{5} }
+
+func (m *TradedOrder) GetResult() bool {
+	if m != nil {
+		return m.Result
+	}
+	return false
+}
+
+// 交易通知
+type JtpayCallback struct {
+	Result []byte `protobuf:"bytes,1,opt,name=Result,json=result,proto3" json:"Result,omitempty"`
+}
+
+func (m *JtpayCallback) Reset()                    { *m = JtpayCallback{} }
+func (*JtpayCallback) ProtoMessage()               {}
+func (*JtpayCallback) Descriptor() ([]byte, []int) { return fileDescriptorActorPay, []int{6} }
+
+func (m *JtpayCallback) GetResult() []byte {
+	if m != nil {
+		return m.Result
+	}
+	return nil
+}
+
+type JtpayCalledback struct {
+	Result bool `protobuf:"varint,1,opt,name=Result,json=result,proto3" json:"Result,omitempty"`
+}
+
+func (m *JtpayCalledback) Reset()                    { *m = JtpayCalledback{} }
+func (*JtpayCalledback) ProtoMessage()               {}
+func (*JtpayCalledback) Descriptor() ([]byte, []int) { return fileDescriptorActorPay, []int{7} }
+
+func (m *JtpayCalledback) GetResult() bool {
+	if m != nil {
+		return m.Result
+	}
+	return false
+}
+
 func init() {
 	proto.RegisterType((*ApplePay)(nil), "pb.ApplePay")
 	proto.RegisterType((*ApplePaid)(nil), "pb.ApplePaid")
 	proto.RegisterType((*WxpayCallback)(nil), "pb.WxpayCallback")
 	proto.RegisterType((*WxpayGoods)(nil), "pb.WxpayGoods")
+	proto.RegisterType((*TradeOrder)(nil), "pb.TradeOrder")
+	proto.RegisterType((*TradedOrder)(nil), "pb.TradedOrder")
+	proto.RegisterType((*JtpayCallback)(nil), "pb.JtpayCallback")
+	proto.RegisterType((*JtpayCalledback)(nil), "pb.JtpayCalledback")
 }
 func (this *ApplePay) Equal(that interface{}) bool {
 	if that == nil {
@@ -221,7 +353,127 @@ func (this *WxpayGoods) Equal(that interface{}) bool {
 	if this.Diamond != that1.Diamond {
 		return false
 	}
+	if this.Coin != that1.Coin {
+		return false
+	}
 	if this.First != that1.First {
+		return false
+	}
+	return true
+}
+func (this *TradeOrder) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TradeOrder)
+	if !ok {
+		that2, ok := that.(TradeOrder)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Orderid != that1.Orderid {
+		return false
+	}
+	if this.Amount != that1.Amount {
+		return false
+	}
+	if this.Itemid != that1.Itemid {
+		return false
+	}
+	if this.Diamond != that1.Diamond {
+		return false
+	}
+	if this.Money != that1.Money {
+		return false
+	}
+	if this.Result != that1.Result {
+		return false
+	}
+	if this.Clientip != that1.Clientip {
+		return false
+	}
+	return true
+}
+func (this *TradedOrder) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*TradedOrder)
+	if !ok {
+		that2, ok := that.(TradedOrder)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Result != that1.Result {
+		return false
+	}
+	return true
+}
+func (this *JtpayCallback) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*JtpayCallback)
+	if !ok {
+		that2, ok := that.(JtpayCallback)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if !bytes.Equal(this.Result, that1.Result) {
+		return false
+	}
+	return true
+}
+func (this *JtpayCalledback) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*JtpayCalledback)
+	if !ok {
+		that2, ok := that.(JtpayCalledback)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Result != that1.Result {
 		return false
 	}
 	return true
@@ -260,13 +512,61 @@ func (this *WxpayGoods) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 9)
+	s := make([]string, 0, 10)
 	s = append(s, "&pb.WxpayGoods{")
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
 	s = append(s, "Orderid: "+fmt.Sprintf("%#v", this.Orderid)+",\n")
 	s = append(s, "Money: "+fmt.Sprintf("%#v", this.Money)+",\n")
 	s = append(s, "Diamond: "+fmt.Sprintf("%#v", this.Diamond)+",\n")
+	s = append(s, "Coin: "+fmt.Sprintf("%#v", this.Coin)+",\n")
 	s = append(s, "First: "+fmt.Sprintf("%#v", this.First)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TradeOrder) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 12)
+	s = append(s, "&pb.TradeOrder{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Orderid: "+fmt.Sprintf("%#v", this.Orderid)+",\n")
+	s = append(s, "Amount: "+fmt.Sprintf("%#v", this.Amount)+",\n")
+	s = append(s, "Itemid: "+fmt.Sprintf("%#v", this.Itemid)+",\n")
+	s = append(s, "Diamond: "+fmt.Sprintf("%#v", this.Diamond)+",\n")
+	s = append(s, "Money: "+fmt.Sprintf("%#v", this.Money)+",\n")
+	s = append(s, "Result: "+fmt.Sprintf("%#v", this.Result)+",\n")
+	s = append(s, "Clientip: "+fmt.Sprintf("%#v", this.Clientip)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *TradedOrder) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.TradedOrder{")
+	s = append(s, "Result: "+fmt.Sprintf("%#v", this.Result)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *JtpayCallback) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.JtpayCallback{")
+	s = append(s, "Result: "+fmt.Sprintf("%#v", this.Result)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *JtpayCalledback) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.JtpayCalledback{")
+	s = append(s, "Result: "+fmt.Sprintf("%#v", this.Result)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -391,10 +691,158 @@ func (m *WxpayGoods) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintActorPay(dAtA, i, uint64(m.Diamond))
 	}
-	if m.First != 0 {
+	if m.Coin != 0 {
 		dAtA[i] = 0x28
 		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(m.Coin))
+	}
+	if m.First != 0 {
+		dAtA[i] = 0x30
+		i++
 		i = encodeVarintActorPay(dAtA, i, uint64(m.First))
+	}
+	return i, nil
+}
+
+func (m *TradeOrder) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TradeOrder) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Orderid) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Orderid)))
+		i += copy(dAtA[i:], m.Orderid)
+	}
+	if len(m.Amount) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Amount)))
+		i += copy(dAtA[i:], m.Amount)
+	}
+	if len(m.Itemid) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Itemid)))
+		i += copy(dAtA[i:], m.Itemid)
+	}
+	if m.Diamond != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(m.Diamond))
+	}
+	if m.Money != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(m.Money))
+	}
+	if m.Result != 0 {
+		dAtA[i] = 0x38
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(m.Result))
+	}
+	if len(m.Clientip) > 0 {
+		dAtA[i] = 0x42
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Clientip)))
+		i += copy(dAtA[i:], m.Clientip)
+	}
+	return i, nil
+}
+
+func (m *TradedOrder) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *TradedOrder) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Result {
+		dAtA[i] = 0x8
+		i++
+		if m.Result {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	return i, nil
+}
+
+func (m *JtpayCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *JtpayCallback) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Result) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintActorPay(dAtA, i, uint64(len(m.Result)))
+		i += copy(dAtA[i:], m.Result)
+	}
+	return i, nil
+}
+
+func (m *JtpayCalledback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *JtpayCalledback) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Result {
+		dAtA[i] = 0x8
+		i++
+		if m.Result {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
 	}
 	return i, nil
 }
@@ -454,8 +902,74 @@ func (m *WxpayGoods) Size() (n int) {
 	if m.Diamond != 0 {
 		n += 1 + sovActorPay(uint64(m.Diamond))
 	}
+	if m.Coin != 0 {
+		n += 1 + sovActorPay(uint64(m.Coin))
+	}
 	if m.First != 0 {
 		n += 1 + sovActorPay(uint64(m.First))
+	}
+	return n
+}
+
+func (m *TradeOrder) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	l = len(m.Orderid)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	l = len(m.Amount)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	l = len(m.Itemid)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	if m.Diamond != 0 {
+		n += 1 + sovActorPay(uint64(m.Diamond))
+	}
+	if m.Money != 0 {
+		n += 1 + sovActorPay(uint64(m.Money))
+	}
+	if m.Result != 0 {
+		n += 1 + sovActorPay(uint64(m.Result))
+	}
+	l = len(m.Clientip)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	return n
+}
+
+func (m *TradedOrder) Size() (n int) {
+	var l int
+	_ = l
+	if m.Result {
+		n += 2
+	}
+	return n
+}
+
+func (m *JtpayCallback) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Result)
+	if l > 0 {
+		n += 1 + l + sovActorPay(uint64(l))
+	}
+	return n
+}
+
+func (m *JtpayCalledback) Size() (n int) {
+	var l int
+	_ = l
+	if m.Result {
+		n += 2
 	}
 	return n
 }
@@ -512,7 +1026,55 @@ func (this *WxpayGoods) String() string {
 		`Orderid:` + fmt.Sprintf("%v", this.Orderid) + `,`,
 		`Money:` + fmt.Sprintf("%v", this.Money) + `,`,
 		`Diamond:` + fmt.Sprintf("%v", this.Diamond) + `,`,
+		`Coin:` + fmt.Sprintf("%v", this.Coin) + `,`,
 		`First:` + fmt.Sprintf("%v", this.First) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TradeOrder) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TradeOrder{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Orderid:` + fmt.Sprintf("%v", this.Orderid) + `,`,
+		`Amount:` + fmt.Sprintf("%v", this.Amount) + `,`,
+		`Itemid:` + fmt.Sprintf("%v", this.Itemid) + `,`,
+		`Diamond:` + fmt.Sprintf("%v", this.Diamond) + `,`,
+		`Money:` + fmt.Sprintf("%v", this.Money) + `,`,
+		`Result:` + fmt.Sprintf("%v", this.Result) + `,`,
+		`Clientip:` + fmt.Sprintf("%v", this.Clientip) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *TradedOrder) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&TradedOrder{`,
+		`Result:` + fmt.Sprintf("%v", this.Result) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *JtpayCallback) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&JtpayCallback{`,
+		`Result:` + fmt.Sprintf("%v", this.Result) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *JtpayCalledback) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&JtpayCalledback{`,
+		`Result:` + fmt.Sprintf("%v", this.Result) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -873,12 +1435,31 @@ func (m *WxpayGoods) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Diamond |= (uint32(b) & 0x7F) << shift
+				m.Diamond |= (int64(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
 		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Coin", wireType)
+			}
+			m.Coin = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Coin |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field First", wireType)
 			}
@@ -897,6 +1478,479 @@ func (m *WxpayGoods) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorPay(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TradeOrder) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorPay
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TradeOrder: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TradeOrder: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Orderid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Orderid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Amount", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Amount = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Itemid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Itemid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Diamond", wireType)
+			}
+			m.Diamond = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Diamond |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Money", wireType)
+			}
+			m.Money = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Money |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			m.Result = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Result |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 8:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Clientip", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Clientip = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorPay(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *TradedOrder) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorPay
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: TradedOrder: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: TradedOrder: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Result = bool(v != 0)
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorPay(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *JtpayCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorPay
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: JtpayCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: JtpayCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var byteLen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				byteLen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if byteLen < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			postIndex := iNdEx + byteLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Result = append(m.Result[:0], dAtA[iNdEx:postIndex]...)
+			if m.Result == nil {
+				m.Result = []byte{}
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipActorPay(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthActorPay
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *JtpayCalledback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowActorPay
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: JtpayCalledback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: JtpayCalledback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowActorPay
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Result = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := skipActorPay(dAtA[iNdEx:])
@@ -1026,22 +2080,30 @@ var (
 func init() { proto.RegisterFile("actor_pay.proto", fileDescriptorActorPay) }
 
 var fileDescriptorActorPay = []byte{
-	// 269 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x5c, 0xd0, 0x3f, 0x4b, 0xc4, 0x30,
-	0x18, 0xc7, 0xf1, 0x3e, 0xa7, 0x69, 0xaf, 0x81, 0x43, 0x28, 0x22, 0x9d, 0x1e, 0x4a, 0x1d, 0xec,
-	0x20, 0x2e, 0xbe, 0x02, 0xff, 0xa0, 0x93, 0x28, 0x41, 0x71, 0x94, 0xf4, 0x12, 0xa1, 0xd8, 0xbb,
-	0x84, 0x34, 0x07, 0x76, 0x73, 0xf0, 0x05, 0xf8, 0x32, 0x7c, 0x29, 0x8e, 0x37, 0x3a, 0xda, 0xb8,
-	0x38, 0xde, 0x4b, 0x90, 0xe4, 0xd4, 0xc1, 0xf1, 0x9b, 0xdf, 0x67, 0x08, 0x0f, 0xdd, 0xe2, 0x53,
-	0xab, 0xcc, 0x9d, 0xe6, 0xfd, 0x81, 0x36, 0xca, 0xaa, 0x6c, 0xa4, 0xeb, 0xb2, 0xa0, 0xe3, 0x23,
-	0xad, 0x5b, 0x79, 0xc5, 0xfb, 0x6c, 0x9b, 0x92, 0x6b, 0xc3, 0x85, 0xcc, 0xa1, 0x80, 0x2a, 0x65,
-	0xc4, 0xfa, 0x28, 0x77, 0x69, 0xfa, 0x23, 0x1a, 0x91, 0xed, 0xd0, 0x98, 0xc9, 0x6e, 0xd1, 0xda,
-	0x60, 0xc6, 0x2c, 0x36, 0xa1, 0xca, 0x3d, 0x3a, 0xb9, 0x7d, 0xd4, 0xbc, 0x3f, 0xe1, 0x6d, 0x5b,
-	0xf3, 0xe9, 0xc3, 0x3f, 0x98, 0xfe, 0xc1, 0x67, 0xa0, 0x34, 0xc8, 0x73, 0xa5, 0x44, 0xe7, 0xd9,
-	0x4d, 0x27, 0x4d, 0x23, 0x7e, 0xd9, 0x22, 0x54, 0x96, 0xd3, 0xe4, 0xd2, 0x88, 0x30, 0x8c, 0xc2,
-	0x90, 0xa8, 0x75, 0xfa, 0x4f, 0x5e, 0xa8, 0xb9, 0xec, 0xf3, 0x8d, 0x02, 0xaa, 0x09, 0x23, 0x33,
-	0x1f, 0xde, 0x9f, 0x36, 0x7c, 0xa6, 0xe6, 0x22, 0xdf, 0x0c, 0xef, 0x89, 0x58, 0xa7, 0xf7, 0x67,
-	0x8d, 0xe9, 0x6c, 0x4e, 0x0a, 0xa8, 0x08, 0x23, 0xf7, 0x3e, 0x8e, 0xf7, 0x97, 0x03, 0x46, 0xef,
-	0x03, 0x46, 0xab, 0x01, 0xe1, 0xc9, 0x21, 0xbc, 0x3a, 0x84, 0x37, 0x87, 0xb0, 0x74, 0x08, 0x1f,
-	0x0e, 0xe1, 0xcb, 0x61, 0xb4, 0x72, 0x08, 0x2f, 0x9f, 0x18, 0xd5, 0x71, 0xb8, 0xd7, 0xe1, 0x77,
-	0x00, 0x00, 0x00, 0xff, 0xff, 0xa6, 0x2d, 0xf8, 0x45, 0x42, 0x01, 0x00, 0x00,
+	// 388 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xc1, 0xea, 0xd3, 0x30,
+	0x1c, 0xc7, 0x9b, 0x6d, 0x4d, 0xdb, 0x9f, 0x8e, 0x41, 0x91, 0x51, 0x3c, 0x84, 0x52, 0x11, 0x2b,
+	0x88, 0x17, 0x9f, 0x60, 0x4e, 0x14, 0x05, 0x51, 0x82, 0xe2, 0x51, 0xb2, 0x26, 0x42, 0xb0, 0x6d,
+	0x4a, 0x9b, 0x81, 0xbd, 0xf9, 0x08, 0x1e, 0x7d, 0x04, 0x1f, 0xc5, 0xe3, 0xf0, 0xe4, 0xd1, 0xd5,
+	0x8b, 0xc7, 0x3d, 0x82, 0xe4, 0xb7, 0x59, 0x87, 0xb8, 0xcb, 0xff, 0xf8, 0xf9, 0xe5, 0x43, 0xf2,
+	0xfd, 0x26, 0x81, 0x85, 0x28, 0xac, 0x69, 0xdf, 0x36, 0xa2, 0xbf, 0xdf, 0xb4, 0xc6, 0x9a, 0x78,
+	0xd2, 0x6c, 0xb2, 0x14, 0xc2, 0x55, 0xd3, 0x94, 0xea, 0xa5, 0xe8, 0xe3, 0x1b, 0xe0, 0xbf, 0x6a,
+	0x85, 0x54, 0x09, 0x49, 0x49, 0x1e, 0x71, 0xdf, 0x3a, 0xc8, 0x6e, 0x41, 0x74, 0x32, 0xb4, 0x8c,
+	0x97, 0x40, 0xb9, 0xea, 0xb6, 0xa5, 0x45, 0x27, 0xe4, 0xb4, 0x45, 0xca, 0xee, 0xc0, 0xfc, 0xcd,
+	0x87, 0x46, 0xf4, 0x6b, 0x51, 0x96, 0x1b, 0x51, 0xbc, 0xff, 0x47, 0x8c, 0x46, 0xf1, 0x33, 0x01,
+	0x40, 0xf3, 0x89, 0x31, 0xb2, 0x73, 0xda, 0xeb, 0x4e, 0xb5, 0x5a, 0xfe, 0xd1, 0xb6, 0x48, 0x71,
+	0x02, 0xc1, 0x8b, 0x56, 0xe2, 0xc2, 0x04, 0x17, 0x02, 0x73, 0x44, 0x17, 0xf2, 0xb9, 0xa9, 0x55,
+	0x9f, 0x4c, 0x53, 0x92, 0xcf, 0xb9, 0x5f, 0x39, 0x70, 0xfe, 0x23, 0x2d, 0x2a, 0x53, 0xcb, 0x64,
+	0x96, 0x92, 0x7c, 0xca, 0x03, 0x79, 0xc4, 0x38, 0x86, 0xd9, 0xda, 0xe8, 0x3a, 0xf1, 0x71, 0x3c,
+	0x2b, 0x8c, 0xae, 0xdd, 0x1e, 0x8f, 0x75, 0xdb, 0xd9, 0x84, 0xa6, 0x24, 0xf7, 0xb9, 0xff, 0xce,
+	0x41, 0xf6, 0x8d, 0x00, 0x60, 0x7f, 0x3c, 0xf9, 0x0a, 0xd1, 0x96, 0x40, 0x57, 0x95, 0xd9, 0xd6,
+	0x16, 0xb3, 0x45, 0x9c, 0x0a, 0x24, 0x37, 0x7f, 0x6a, 0x55, 0xa5, 0x8f, 0xd9, 0x22, 0x4e, 0x35,
+	0xd2, 0x79, 0x68, 0x1f, 0xcb, 0x8c, 0xa1, 0xc7, 0x92, 0xf4, 0xbc, 0xe4, 0xdf, 0x3b, 0x0d, 0x70,
+	0x7c, 0xba, 0xd3, 0xf8, 0x26, 0x84, 0xeb, 0x52, 0xab, 0xda, 0xea, 0x26, 0x09, 0xf1, 0x84, 0xb0,
+	0x38, 0x71, 0x76, 0x1b, 0xae, 0x61, 0x27, 0x39, 0x96, 0xba, 0xf4, 0x7e, 0xcf, 0xec, 0xe5, 0xf7,
+	0xbb, 0x3e, 0x8a, 0x77, 0x61, 0x31, 0x8a, 0x4a, 0xfe, 0x47, 0x1d, 0xf7, 0x7c, 0x78, 0x6f, 0xb7,
+	0x67, 0xde, 0xf7, 0x3d, 0xf3, 0x0e, 0x7b, 0x46, 0x3e, 0x0e, 0x8c, 0x7c, 0x19, 0x18, 0xf9, 0x3a,
+	0x30, 0xb2, 0x1b, 0x18, 0xf9, 0x31, 0x30, 0xf2, 0x6b, 0x60, 0xde, 0x61, 0x60, 0xe4, 0xd3, 0x4f,
+	0xe6, 0x6d, 0x28, 0xfe, 0xc9, 0x07, 0xbf, 0x03, 0x00, 0x00, 0xff, 0xff, 0x4a, 0x69, 0x7e, 0xe3,
+	0xa6, 0x02, 0x00, 0x00,
 }

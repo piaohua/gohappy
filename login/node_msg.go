@@ -8,6 +8,7 @@ import (
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
+	"gohappy/game/handler"
 )
 
 //Handler 消息处理
@@ -29,7 +30,7 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.WxpayCallback:
 		arg := msg.(*pb.WxpayCallback)
 		glog.Debugf("WxpayCallback: %v", arg)
-		a.dbmsPid.Tell(arg)
+		a.rolePid.Tell(arg)
 	case *pb.SmscodeRegist:
 		arg := msg.(*pb.SmscodeRegist)
 		glog.Debugf("SmscodeRegist %v", arg)
@@ -71,6 +72,35 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 			return
 		}
 		ctx.Respond(res1)
+	case *pb.TradeOrder:
+		arg := msg.(*pb.TradeOrder)
+		glog.Debugf("TradeOrder %#v", arg)
+		timeout := 5 * time.Second
+		res1, err1 := a.rolePid.RequestFuture(arg, timeout).Result()
+		if err1 != nil {
+			rsp := new(pb.TradedOrder)
+			glog.Errorf("TradeOrder response err %v", err1)
+			ctx.Respond(rsp)
+			return
+		}
+		ctx.Respond(res1)
+	case *pb.JtpayCallback:
+		arg := msg.(*pb.JtpayCallback)
+		glog.Debugf("JtpayCallback: %v", arg)
+		timeout := 5 * time.Second
+		res1, err1 := a.rolePid.RequestFuture(arg, timeout).Result()
+		if err1 != nil {
+			rsp := new(pb.JtpayCalledback)
+			glog.Errorf("JtpayCallback response err %v", err1)
+			ctx.Respond(rsp)
+			return
+		}
+		ctx.Respond(res1)
+	case *pb.SyncConfig:
+		//同步配置
+		arg := msg.(*pb.SyncConfig)
+		glog.Debugf("SyncConfig %#v", arg)
+		handler.SyncConfig(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

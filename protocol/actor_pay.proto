@@ -22,6 +22,32 @@ message WxpayGoods {
     string Userid = 1;//玩家id
     string Orderid = 2;//订单id
     uint32 Money = 3;//RMB(分)
-    uint32 Diamond = 4;//钻石数量
-    int32 First = 5;//第一次购买
+    int64 Diamond = 4;//钻石数量
+    int64 Coin = 5;//金币数量
+    int32 First = 6;//第一次购买
+}
+
+//交易下单
+message TradeOrder {
+    string Userid = 1;//玩家id
+    string Orderid = 2;//订单id
+    string Amount = 3;//购买商品数量
+    string Itemid = 4;//1=钻石,2=金币
+    uint32 Diamond = 5;//对应虚拟货币数量
+    uint32 Money = 6;//RMB(分)
+    uint32 Result = 7;//状态
+    string Clientip = 8;//ip
+}
+
+message TradedOrder {
+    bool Result = 1;//结果
+}
+
+//交易通知
+message JtpayCallback {
+    bytes Result = 1;//交易结果数据
+}
+
+message JtpayCalledback {
+    bool Result = 1;//结果
 }

@@ -81,6 +81,16 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.WxpayCallback:
 		arg := msg.(*pb.WxpayCallback)
 		a.payHandler(arg)
+	case *pb.TradeOrder:
+		arg := msg.(*pb.TradeOrder)
+		glog.Debugf("TradeOrder %#v", arg)
+		a.tradeOrder(arg, ctx)
+	case *pb.JtpayCallback:
+		arg := msg.(*pb.JtpayCallback)
+		a.jtpayHandler(arg)
+		rsp := new(pb.JtpayCalledback)
+		rsp.Result = a.jtpayHandler(arg)
+		ctx.Respond(rsp)
 	case *pb.SmscodeRegist:
 		arg := msg.(*pb.SmscodeRegist)
 		glog.Debugf("SmscodeRegist %#v", arg)

@@ -111,8 +111,12 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 		gateHandler(ctx)
 	case "/happy/wxpay":
 		wxpayHandler(ctx)
-	case "/happy/jtpay":
-		jtpayHandler(ctx)
+	case "/happy/jtpay/order":
+		jtpayOrder(ctx)
+	case "/happy/jtpay/return":
+		jtpayReturn(ctx)
+	case "/happy/jtpay/notify":
+		jtpayNotify(ctx)
 	case "/happy/foo":
 		fooHandler(ctx)
 	case "/happy/bar":

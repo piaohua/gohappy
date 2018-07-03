@@ -119,6 +119,10 @@
 		ApplePaid
 		WxpayCallback
 		WxpayGoods
+		TradeOrder
+		TradedOrder
+		JtpayCallback
+		JtpayCalledback
 		RobotMsg
 		RobotLogin
 		RobotReLogin
