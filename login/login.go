@@ -6,8 +6,8 @@ import (
 	"runtime"
 	"time"
 
-	"gohappy/glog"
 	"gohappy/game/config"
+	"gohappy/glog"
 	"utils"
 
 	ini "gopkg.in/ini.v1"

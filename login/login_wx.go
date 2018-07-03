@@ -10,10 +10,10 @@ import (
 
 // 文本消息的处理函数
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {
-	txt := r.Content			// 获取用户发送的消息
+	txt := r.Content // 获取用户发送的消息
 	glog.Debugf("echo txt %s", txt)
-	w.ReplyText(txt)			// 回复一条文本消息
-	w.PostText("Post:" + txt)	// 发送一条文本消息
+	w.ReplyText(txt)          // 回复一条文本消息
+	w.PostText("Post:" + txt) // 发送一条文本消息
 	//w.ReplyOK()
 }
 

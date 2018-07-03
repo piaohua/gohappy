@@ -1,21 +1,21 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"strings"
-	"errors"
+	"time"
 
-	"api/wxpay"
-	"gohappy/glog"
-	"gohappy/pb"
 	"api/jtpay"
-	"utils"
-
-	"github.com/valyala/fasthttp"
+	"api/wxpay"
 	"gohappy/data"
 	"gohappy/game/config"
-	"time"
+	"gohappy/glog"
+	"gohappy/pb"
+	"utils"
+
 	"github.com/json-iterator/go"
+	"github.com/valyala/fasthttp"
 )
 
 // 微信支付,接收交易结果通知
@@ -241,8 +241,8 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 		glog.Errorf("id err: %s", order.P17_product)
 		return fmt.Errorf("id %s not exist", order.P17_product)
 	}
-	var price uint32 = shop.Price //RMB数量
-	var diamond uint32 = shop.Number //虚拟货币数量
+	var price uint32 = shop.Price                 //RMB数量
+	var diamond uint32 = shop.Number              //虚拟货币数量
 	var itemid string = utils.String(shop.Propid) //货币类型
 	//订单数据
 	order = &jtpay.JTpayOrder{
@@ -262,13 +262,13 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 	}
 	//transid,下单记录
 	msg := &pb.TradeOrder{
-		Orderid:    order.P2_ordernumber,//订单id
-		Userid: 	order.P14_customname,//玩家id
-		Amount:     order.P19_productnum, //购买商品数量
-		Itemid: itemid, //货币类型
-		Diamond:  diamond, //货币数量
-		Money:    uint32(price * 100), //转换为分
-		Result:   data.Tradeing, //下单状态
+		Orderid:  order.P2_ordernumber, //订单id
+		Userid:   order.P14_customname, //玩家id
+		Amount:   order.P19_productnum, //购买商品数量
+		Itemid:   itemid,               //货币类型
+		Diamond:  diamond,              //货币数量
+		Money:    uint32(price * 100),  //转换为分
+		Result:   data.Tradeing,        //下单状态
 		Clientip: ip,
 	}
 	//请求响应
