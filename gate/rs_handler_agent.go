@@ -192,6 +192,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 			//更新数据库,等待审核,审核通过时修改状态, TODO 添加申请日志
 			msg := handler.AgentJoinMsg(rs.User)
 			rs.rolePid.Request(msg, ctx.Self())
+			rs.User.AgentState = 1 //默认通过，不用审核
 		}
 	}
 	rs.Send(rsp)

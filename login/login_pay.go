@@ -168,8 +168,12 @@ sign=Md5(WX+1+1+2+11+key),Md5(商品名称+userid+商品id+商品数量+终端�
 // 接收交易下单请求
 func jtpayOrder(ctx *fasthttp.RequestCtx) {
 	ctx.Response.Header.Set("Content-type", "text/html;charset=UTF-8")
+	var body []byte
 	switch string(ctx.Method()) {
 	case "POST":
+		body = ctx.PostBody()
+	case "GET":
+		body = ctx.QueryArgs().QueryString()
 	default:
 		fmt.Fprintf(ctx, "%s", "failure")
 		return
@@ -183,7 +187,7 @@ func jtpayOrder(ctx *fasthttp.RequestCtx) {
 		//return
 	}
 	//解析
-	body := ctx.PostBody()
+	//body := ctx.PostBody()
 	glog.Debugf("body %s", string(body))
 	order, err := ParseOrder(body)
 	if order == nil || err != nil {
@@ -207,6 +211,7 @@ func jtpayOrder(ctx *fasthttp.RequestCtx) {
 func ParseOrder(resp []byte) (*jtpay.JTpayOrder, error) {
 	order := new(jtpay.JTpayOrder)
 	s := strings.Split(string(resp), "&")
+	var sign, signtime string
 	for _, v := range s {
 		args := strings.Split(v, "=")
 		if len(args) != 2 {
@@ -224,12 +229,20 @@ func ParseOrder(resp []byte) (*jtpay.JTpayOrder, error) {
 		case "p25_terminal":
 			order.P25_terminal = args[1]
 		case "time":
+			signtime = args[1]
 		case "sign":
+			sign = args[1]
 		default:
 			return nil, errors.New("args error")
 		}
 	}
-	//TODO 签名验证
+	//签名验证
+	key := cfg.Section("jtpay").Key("orderkey").Value()
+	mysign := utils.Md5(order.P7_productcode + order.P14_customname + order.P17_product +
+		order.P19_productnum + order.P25_terminal + signtime + key)
+	if mysign != sign {
+		//return nil, errors.New("sign failed")
+	}
 	return order, nil
 }
 

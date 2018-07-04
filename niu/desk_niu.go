@@ -310,8 +310,9 @@ func (t *Desk) gameOver() {
 		t.broadcast(msg)
 		//记录
 		if !t.DeskData.Pub {
-			t.saveRecord(score)
+			//t.saveRecord(score)
 		}
+		t.saveRecord(score)
 		//结束连庄处理
 		t.dealerOver()
 		//重置状态

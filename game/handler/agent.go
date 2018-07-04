@@ -194,6 +194,7 @@ func AgentJoin2User(msg *pb.AgentJoin, user *data.User) {
 	user.Weixin = msg.Weixin
 	user.AgentLevel = msg.Level
 	user.AgentJoinTime = utils.Str2Time(msg.Time)
+	user.AgentState = 1 //默认通过，不用审核
 	return
 }
 
