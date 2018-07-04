@@ -119,7 +119,8 @@ func (this *User) UpdateAgentJoin() bool {
 		bson.M{"$set": bson.M{"agent_join_time": this.AgentJoinTime,
 			"agent_name": this.AgentName, "real_name": this.RealName,
 			"weixin": this.Weixin, "agent_level": this.AgentLevel,
-			"agent": this.Agent, "agent_state": this.AgentState}})
+			"agent": this.Agent, "agent_state": this.AgentState,
+			"profit_rate": this.ProfitRate}})
 }
 
 func (this *User) UpdateAgentProfit() bool {
@@ -127,6 +128,7 @@ func (this *User) UpdateAgentProfit() bool {
 		bson.M{"$set": bson.M{"week_profit": this.WeekProfit,
 			"week_player_profit": this.WeekPlayerProfit,
 			"history_profit":     this.HistoryProfit,
+			"profit": this.Profit,
 			"sub_player_profit":  this.SubPlayerProfit,
 			"sub_agent_profit":   this.SubAgentProfit}})
 }

@@ -195,7 +195,20 @@ func AgentJoin2User(msg *pb.AgentJoin, user *data.User) {
 	user.AgentLevel = msg.Level
 	user.AgentJoinTime = utils.Str2Time(msg.Time)
 	user.AgentState = 1 //默认通过，不用审核
+	SetAgentProfitRate(user)
 	return
+}
+
+//SetAgentProfitRate 默认抽成设置，1级作为大代理不再分成
+func SetAgentProfitRate(user *data.User) {
+	switch user.AgentLevel {
+	case 2:
+		user.ProfitRate = 10 //TODO 优化可配置
+	case 3:
+		user.ProfitRate = 20
+	case 4:
+		user.ProfitRate = 50
+	}
 }
 
 //AgentApprove 审批,修改状态
