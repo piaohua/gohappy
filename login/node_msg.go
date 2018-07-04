@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"time"
 
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/game/handler"
 )
 
 //Handler 消息处理

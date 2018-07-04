@@ -1,13 +1,14 @@
 package handler
 
 import (
+	"strconv"
+
+	"api/jtpay"
 	"gohappy/data"
 	"gohappy/game/config"
+	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"gohappy/glog"
-	"strconv"
-	"api/jtpay"
 )
 
 //Buy 购买
@@ -59,18 +60,17 @@ func Shop(ctos *pb.CShop, p *data.User) (stoc *pb.SShop) {
 //Order2Record 下单记录
 func Order2Record(arg *pb.TradeOrder) (msg *data.TradeRecord) {
 	msg = &data.TradeRecord{
-		Id: arg.Orderid,
-		Userid:arg.Userid,
-		Amount:arg.Amount,
-		Itemid:arg.Itemid,
-		Diamond:arg.Diamond,
-		Money:arg.Money,
-		Result:int(arg.Result),
-		Clientip:arg.Clientip,
+		Id:       arg.Orderid,
+		Userid:   arg.Userid,
+		Amount:   arg.Amount,
+		Itemid:   arg.Itemid,
+		Diamond:  arg.Diamond,
+		Money:    arg.Money,
+		Result:   int(arg.Result),
+		Clientip: arg.Clientip,
 	}
 	return
 }
-
 
 //JtpayTradeVerify 发货验证
 func JtpayTradeVerify(t *jtpay.NotifyResult) *data.TradeRecord {
@@ -101,7 +101,7 @@ func JtpayTradeVerify(t *jtpay.NotifyResult) *data.TradeRecord {
 	if err != nil {
 		glog.Errorf("jtpay: %v, err: %v", t, err)
 	}
-	if uint32(money * 100) != tradeRecord.Money {
+	if uint32(money*100) != tradeRecord.Money {
 		glog.Errorf("jtpay money : %v, err: %v", t, err)
 	}
 	//tradeRecord.Money = uint32(money)      //转换为分

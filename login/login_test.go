@@ -1,12 +1,12 @@
 package main
 
 import (
-	"testing"
-	"net/http"
 	"bytes"
 	"crypto/tls"
 	"io/ioutil"
 	"log"
+	"net/http"
+	"testing"
 
 	"gohappy/pb"
 
@@ -23,7 +23,7 @@ func TestWebJson(t *testing.T) {
 	webJson("101418", 1000)
 }
 
-func webJson(userid string, coin int64)  {
+func webJson(userid string, coin int64) {
 	//var userid string
 	//var coin int64
 	//flag.StringVar(&userid, "userid", "", "userid")
@@ -31,9 +31,9 @@ func webJson(userid string, coin int64)  {
 	//flag.Parse()
 	log.Printf("userid %s, coin %d\n", userid, coin)
 	msg := &pb.PayCurrency{
-		Type: int32(pb.LOG_TYPE9),
+		Type:   int32(pb.LOG_TYPE9),
 		Userid: userid,
-		Coin: coin,
+		Coin:   coin,
 	}
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
