@@ -12,7 +12,7 @@ import (
 //SetLoginPrize 连续登录处理
 func SetLoginPrize(user *data.User) {
 	//上次登录, TODO 全部领取完重置
-	yesterDay := utils.Stamp2Time(utils.TimestampYesterday())
+	yesterDay := utils.Stamp2Time(utils.TimestampYesterday()).Local()
 	if user.LoginTime.Before(yesterDay) {
 		//隔天登录重置
 		user.LoginTimes = (1 << 0)
