@@ -1,14 +1,16 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 
 	"gohappy/glog"
 
+	"github.com/valyala/fasthttp"
 	"github.com/wizjin/weixin"
 )
 
-// 文本消息的处理函数
+//Echo 文本消息的处理函数
 func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	txt := r.Content // 获取用户发送的消息
 	glog.Debugf("echo txt %s", txt)
@@ -17,27 +19,15 @@ func Echo(w weixin.ResponseWriter, r *weixin.Request) {
 	//w.ReplyOK()
 }
 
-// 关注事件的处理函数
+//Subscribe 关注事件的处理函数
 func Subscribe(w weixin.ResponseWriter, r *weixin.Request) {
 	glog.Debugf("Subscribe txt %s", r.Content)
 	w.ReplyText("欢迎关注") // 有新人关注，返回欢迎消息
 }
 
-// 授权的处理函数
-func Download(w weixin.ResponseWriter, r *weixin.Request) {
-	glog.Debugf("Content %s", r.Content)
-	glog.Debugf("url %s", r.Url)
-	wx := w.GetWeixin()
-	code := ""
-	userAccessToken, err := wx.GetUserAccessToken(code)
-	glog.Debugf("userAccessToken %#v, err %v", userAccessToken, err)
-	userInfo, err := wx.GetUserInfo(userAccessToken.OpenId)
-	glog.Debugf("userInfo %#v, err %v", userInfo, err)
-	w.ReplyOK()
-}
-
 var mux *weixin.Weixin
 
+//Wxmp 微信公众号
 func Wxmp() {
 	token := cfg.Section("wxmp").Key("token").Value()
 	appid := cfg.Section("wxmp").Key("appid").Value()
@@ -69,4 +59,32 @@ func Wxmp() {
 	//mux.CreateHandlerFunc()
 	//TODO fasthttp
 	http.ListenAndServe(":6210", nil) // 启动接收微信数据服务器
+}
+
+// 授权的处理函数
+func wxmpOauth2(ctx *fasthttp.RequestCtx) {
+	ctx.Response.Header.Set("Content-type", "text/html;charset=UTF-8")
+	//glog.Debugf("Content %s", r.Content)
+	//glog.Debugf("url %s", r.Url)
+	//wx := w.GetWeixin()
+	//code := ""
+	//userAccessToken, err := wx.GetUserAccessToken(code)
+	//glog.Debugf("userAccessToken %#v, err %v", userAccessToken, err)
+	//userInfo, err := wx.GetUserInfo(userAccessToken.OpenId)
+	//glog.Debugf("userInfo %#v, err %v", userInfo, err)
+	//w.ReplyOK()
+	fmt.Fprintf(ctx, "%s", "success")
+}
+
+// 获取链接地址
+func wxmpShortURL(ctx *fasthttp.RequestCtx) {
+	//shortURL, err := mux.ShortURL(longURL)
+	fmt.Fprintf(ctx, "%s", "success")
+}
+
+// 获取二维码
+func wxmpQRcode(ctx *fasthttp.RequestCtx) {
+	//qr, err := mux.CreateQRLimitSceneByString(userid)
+	//qrURL := qr.ToURL()
+	fmt.Fprintf(ctx, "%s", "success")
 }

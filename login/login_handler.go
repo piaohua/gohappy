@@ -117,6 +117,13 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 		jtpayReturn(ctx)
 	case "/happy/jtpay/notify":
 		jtpayNotify(ctx)
+	case "/happy/wxmp/oauth2":
+		wxmpOauth2(ctx)
+	case "/happy/wxmp/shorturl":
+		wxmpShortURL(ctx)
+	case "/happy/wxmp/qrcode":
+		wxmpQRcode(ctx)
+	//case "/wxmp/wx":
 	case "/happy/foo":
 		fooHandler(ctx)
 	case "/happy/bar":
