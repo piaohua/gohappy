@@ -243,14 +243,14 @@ func WxpaySendGoods(online bool, trade *data.TradeRecord, user *data.User) {
 	if !online {
 		//离线状态
 		//TODO 日志记录
-		var diamond, coin int64
+		var diamond, coin int64 = GetGoods(trade)
 		//首充
 		if trade.First == 1 {
 			diamond += int64(config.GetEnv(data.ENV4))
 			coin += int64(config.GetEnv(data.ENV5))
 		}
 		//充值数量
-		diamond += int64(trade.Diamond)
+		//diamond += int64(trade.Diamond)
 		//vip赠送 TODO
 		//diamond += getVipGive(user.GetVipLevel(), diamond)
 		//货币变更
@@ -280,3 +280,15 @@ func getVipGive(level int, num int32) int32 {
 	return int32(math.Ceil(float64(num) * (float64(pay) / 100)))
 }
 */
+
+//GetGoods 获取充值货币，返回 (diamond, coin) trade.Itemid = shop.Propid , 1=钻石,2=金币
+//TODO 优化关系映射
+func GetGoods(trade *data.TradeRecord) (int64, int64) {
+	switch trade.Itemid {
+	case "1":
+		return int64(trade.Diamond), 0
+	case "2":
+		return 0, int64(trade.Diamond)
+	}
+	return 0, 0
+}

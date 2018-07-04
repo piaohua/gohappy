@@ -8,6 +8,7 @@ import (
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
+	"gohappy/data"
 )
 
 //支付处理
@@ -22,24 +23,7 @@ func (a *RoleActor) payHandler(arg *pb.WxpayCallback) {
 	if trade == nil {
 		return
 	}
-	userid := trade.Userid
-	//发货,TODO 优化
-	if user, ok := a.online[userid]; ok {
-		handler.WxpaySendGoods(true, trade, user)
-		//在线,发送给gate处理
-		msg2 := new(pb.WxpayGoods)
-		msg2.Userid = user.GetUserid()
-		msg2.Orderid = trade.Id
-		msg2.Money = trade.Money
-		msg2.Diamond = trade.Diamond
-		msg2.First = int32(trade.First)
-		//a.hallPid.Tell(msg2)
-		nodePid.Tell(msg2)
-		return
-	}
-	//离线,直接处理
-	user := a.getUserById(userid)
-	handler.WxpaySendGoods(false, trade, user)
+	a.tradeHandler(trade) //发货
 }
 
 //交易下单
@@ -69,29 +53,38 @@ func (a *RoleActor) jtpayHandler(arg *pb.JtpayCallback) bool {
 	notifyResult := new(jtpay.NotifyResult)
 	err1 := json.Unmarshal(arg.Result, notifyResult)
 	if err1 != nil {
+		glog.Errorf("jtpayHandler err1 %v", err1)
 		return false
 	}
 	//订单验证
 	trade := handler.JtpayTradeVerify(notifyResult)
 	if trade == nil {
+		glog.Errorf("jtpayHandler verify err %#v", notifyResult)
 		return false
 	}
-	userid := trade.Userid
-	user := a.getUserById(userid)
-	//发货,TODO 消息通知优化
-	if v, ok := a.roles[userid]; ok {
+	a.tradeHandler(trade) //发货
+	return true
+}
+
+//订单发货处理
+func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
+	user := a.getUserById(trade.Userid)
+	//在线
+	if v, ok := a.roles[trade.Userid]; ok {
 		handler.WxpaySendGoods(true, trade, user)
-		//在线,发送给gate处理
-		msg2 := new(pb.WxpayGoods)
-		msg2.Userid = user.GetUserid()
-		msg2.Orderid = trade.Id
-		msg2.Money = trade.Money
-		msg2.Diamond = trade.Diamond
-		msg2.First = int32(trade.First)
-		v.Pid.Tell(msg2)
-		return true
+		//在线,发送给玩家pid处理
+		msg := new(pb.WxpayGoods)
+		msg.Userid = user.GetUserid()
+		msg.Orderid = trade.Id
+		msg.Money = trade.Money
+		//msg.Diamond = int64(trade.Diamond)
+		msg.First = int32(trade.First)
+		var diamond, coin int64 = handler.GetGoods(trade)
+		msg.Diamond = diamond
+		msg.Coin = coin
+		v.Pid.Tell(msg)
+		return
 	}
 	//离线,直接处理
 	handler.WxpaySendGoods(false, trade, user)
-	return true
 }

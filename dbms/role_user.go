@@ -87,7 +87,6 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		a.tradeOrder(arg, ctx)
 	case *pb.JtpayCallback:
 		arg := msg.(*pb.JtpayCallback)
-		a.jtpayHandler(arg)
 		rsp := new(pb.JtpayCalledback)
 		rsp.Result = a.jtpayHandler(arg)
 		ctx.Respond(rsp)

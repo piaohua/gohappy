@@ -34,7 +34,7 @@ func (rs *RoleActor) handlerPay(msg interface{}, ctx actor.Context) {
 		msg2 := new(pb.SWxpayQuery)
 		msg2.Orderid = arg.Orderid
 		rs.Send(msg2)
-		rs.sendGoods(arg.Diamond, arg.Money, int(arg.First))
+		rs.sendGoods(arg.Diamond, arg.Coin, arg.Money, int(arg.First))
 	case *pb.PayCurrency:
 		arg := msg.(*pb.PayCurrency)
 		glog.Debugf("PayCurrency %#v", arg)
@@ -94,7 +94,7 @@ func (rs *RoleActor) applePay(arg *pb.CApplePay) {
 		rs.Send(rsp)
 		return
 	}
-	rs.sendGoods(record.Diamond, record.Money, record.First)
+	rs.sendGoods(int64(record.Diamond), 0, record.Money, record.First)
 	rs.Send(rsp)
 }
 
@@ -152,10 +152,10 @@ func (rs *RoleActor) wxPayQuery(orderid string) {
 }
 
 //发货
-func (rs *RoleActor) sendGoods(diamond, money uint32, first int) {
+func (rs *RoleActor) sendGoods(diamond, coin int64, money uint32, first int) {
 	rs.User.AddMoney(money)
 	//消息
-	rs.addCurrency(int64(diamond), 0, 0, 0, int32(pb.LOG_TYPE4))
+	rs.addCurrency(diamond, coin, 0, 0, int32(pb.LOG_TYPE4))
 	//消息
 	stoc := new(pb.SGetCurrency)
 	stoc.Data = handler.PackCurrency(rs.User)
