@@ -162,7 +162,7 @@ p19_productnum  //商品数量
 p25_terminal // 终端设备类型, 1 代表 pc 2 代表 ios 3 代表 android
 time //当前时间截
 sign //签名
-"p7_productcode=WX&p14_customname=1&p17_product=1&p19_productnum=1&p25_terminal=2&time=11&sign=xxx"
+"p7_productcode=WX&p14_customname=103133&p17_product=7&p19_productnum=1&p25_terminal=2&time=11&sign=xxx"
 sign=Md5(WX+1+1+2+11+key),Md5(商品名称+userid+商品id+商品数量+终端设备类型+time+key)
 */
 // 接收交易下单请求
@@ -245,11 +245,9 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 	var diamond uint32 = shop.Number //虚拟货币数量
 	var itemid string = utils.String(shop.Propid) //货币类型
 	//订单数据
-	order = &jtpay.JTpayOrder{
-		P3_money: utils.String(price),
-		//P3_money:     "1", //RMB
-		P16_customip: ip,
-	}
+	order.P3_money = utils.String(price) //RMB
+	order.P3_money = "1" //TODO test
+	order.P16_customip = ip
 	//初始化订单
 	JTpay.InitOrder(order)
 	glog.Infof("order %#v", order)
@@ -282,7 +280,7 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 			return nil
 		}
 	}
-	return fmt.Errorf("order failed", order.P2_ordernumber)
+	return fmt.Errorf("order failed %#v", msg)
 }
 
 func ioswap(order *jtpay.JTpayOrder) (str string) {
