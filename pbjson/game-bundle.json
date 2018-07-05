@@ -631,9 +631,17 @@
               "type": "TopInfo",
               "id": 2
             },
+            "game": {
+              "type": "bool",
+              "id": 3
+            },
+            "bank": {
+              "type": "bool",
+              "id": 4
+            },
             "error": {
               "type": "ErrCode",
-              "id": 3
+              "id": 5
             }
           }
         },

@@ -261,6 +261,11 @@ func (t *UserInfo) Get() {
 	Get(UserInfos, t.UnionId, t)
 }
 
+//Update 更新一条记录
+func (t *UserInfo) Update() bool {
+	return Update(UserInfos, bson.M{"_id": t.UnionId}, t)
+}
+
 //GetAgentidByUnionid select agentid by unionid
 func GetAgentidByUnionid(unionid string) string {
 	var agentid string
@@ -270,6 +275,10 @@ func GetAgentidByUnionid(unionid string) string {
 
 //Save 写入新数据
 func (t *UserInfo) Save() bool {
+	if t.Has() {
+		//return t.Update()
+		return true
+	}
 	t.Ctime = bson.Now()
 	return Insert(UserInfos, t)
 }

@@ -69,6 +69,12 @@ func (a *RoleActor) jtpayHandler(arg *pb.JtpayCallback) bool {
 //订单发货处理
 func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
 	user := a.getUserById(trade.Userid)
+	var diamond, coin int64 = handler.GetGoods(trade)
+	//充值消息提醒
+	record, msg2 := handler.BuyNotice(coin, user.GetUserid())
+	if record != nil {
+		loggerPid.Tell(record)
+	}
 	//在线
 	if v, ok := a.roles[trade.Userid]; ok {
 		handler.WxpaySendGoods(true, trade, user)
@@ -79,10 +85,12 @@ func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
 		msg.Money = trade.Money
 		//msg.Diamond = int64(trade.Diamond)
 		msg.First = int32(trade.First)
-		var diamond, coin int64 = handler.GetGoods(trade)
 		msg.Diamond = diamond
 		msg.Coin = coin
 		v.Pid.Tell(msg)
+		if msg2 != nil {
+			v.Pid.Tell(msg2)
+		}
 		return
 	}
 	//离线,直接处理
