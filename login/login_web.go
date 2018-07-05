@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-	"time"
-
 	"gohappy/pb"
 
-	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
 )
 
@@ -31,8 +29,7 @@ func webHandler(ctx *fasthttp.RequestCtx) {
 		fmt.Fprintf(ctx, "%v", err1)
 		return
 	}
-	timeout := 3 * time.Second
-	res2, err2 := nodePid.RequestFuture(msg1, timeout).Result()
+	res2, err2 := callNode(msg1)
 	if err2 != nil {
 		fmt.Fprintf(ctx, "%v", err2)
 		return
@@ -94,8 +91,7 @@ func webJSONHandler(ctx *fasthttp.RequestCtx) {
 		msg1.Data = body
 	}
 	//请求响应
-	timeout := 3 * time.Second
-	res2, err2 := nodePid.RequestFuture(msg1, timeout).Result()
+	res2, err2 := callNode(msg1)
 	if err2 != nil {
 		fmt.Fprintf(ctx, "%v", err2)
 		return

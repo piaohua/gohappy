@@ -49,15 +49,14 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.WebRequest:
 		arg := msg.(*pb.WebRequest)
 		glog.Debugf("WebRequest %#v", arg)
-		timeout := 5 * time.Second
 		var res1 interface{}
 		var err1 error
 		switch arg.Code {
 		case pb.WebOnline, pb.WebBuild,
 			pb.WebGive, pb.WebNumber:
-			res1, err1 = a.rolePid.RequestFuture(arg, timeout).Result()
+			res1, err1 = a.callRole(arg)
 		default:
-			res1, err1 = a.dbmsPid.RequestFuture(arg, timeout).Result()
+			res1, err1 = a.callDbms(arg)
 		}
 		if err1 != nil {
 			rsp := new(pb.WebResponse)
@@ -75,8 +74,7 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.TradeOrder:
 		arg := msg.(*pb.TradeOrder)
 		glog.Debugf("TradeOrder %#v", arg)
-		timeout := 5 * time.Second
-		res1, err1 := a.rolePid.RequestFuture(arg, timeout).Result()
+		res1, err1 := a.callRole(arg)
 		if err1 != nil {
 			rsp := new(pb.TradedOrder)
 			glog.Errorf("TradeOrder response err %v", err1)
@@ -87,8 +85,7 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 	case *pb.JtpayCallback:
 		arg := msg.(*pb.JtpayCallback)
 		glog.Debugf("JtpayCallback: %v", arg)
-		timeout := 5 * time.Second
-		res1, err1 := a.rolePid.RequestFuture(arg, timeout).Result()
+		res1, err1 := a.callRole(arg)
 		if err1 != nil {
 			rsp := new(pb.JtpayCalledback)
 			glog.Errorf("JtpayCallback response err %v", err1)
@@ -205,4 +202,22 @@ func (a *LoginActor) handlerStop(ctx actor.Context) {
 	}
 	//延迟
 	<-time.After(2 * time.Second)
+}
+
+func (a *LoginActor) callDbms(msg interface{}) (interface{}, error) {
+	timeout := 5 * time.Second
+	res, err := a.dbmsPid.RequestFuture(msg, timeout).Result()
+	return res, err
+}
+
+func (a *LoginActor) callRole(msg interface{}) (interface{}, error) {
+	timeout := 5 * time.Second
+	res, err := a.rolePid.RequestFuture(msg, timeout).Result()
+	return res, err
+}
+
+func callNode(msg interface{}) (interface{}, error) {
+	timeout := 5 * time.Second
+	res, err := nodePid.RequestFuture(msg, timeout).Result()
+	return res, err
 }

@@ -4,8 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"time"
-
 	"api/jtpay"
 	"api/wxpay"
 	"gohappy/data"
@@ -14,7 +12,7 @@ import (
 	"gohappy/pb"
 	"utils"
 
-	jsoniter "github.com/json-iterator/go"
+	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
 )
 
@@ -102,7 +100,6 @@ func jtpayNotify(ctx *fasthttp.RequestCtx) {
 	//解析
 	body := ctx.PostBody()
 	glog.Debugf("body %s", string(body))
-	//解析
 	tradeResult, err := jtpayNotifyVerify(body)
 	glog.Infof("tradeResult %#v, err %v", tradeResult, err)
 	if err != nil {
@@ -110,8 +107,7 @@ func jtpayNotify(ctx *fasthttp.RequestCtx) {
 		fmt.Fprintf(ctx, "%s", "failure")
 		return
 	}
-	//TODO 发货
-	//请求响应
+	//发货
 	result, err := jsoniter.Marshal(tradeResult)
 	if err != nil {
 		glog.Errorf("jtpay notify err: %v", err)
@@ -120,8 +116,7 @@ func jtpayNotify(ctx *fasthttp.RequestCtx) {
 	}
 	msg := new(pb.JtpayCallback)
 	msg.Result = result
-	timeout := 5 * time.Second
-	res2, err2 := nodePid.RequestFuture(msg, timeout).Result()
+	res2, err2 := callNode(msg)
 	if err2 != nil {
 		glog.Errorf("jtpay notify err: %v", err2)
 	}
@@ -204,6 +199,7 @@ func jtpayOrder(ctx *fasthttp.RequestCtx) {
 	}
 	glog.Infof("jtpay order success: %#v", order)
 	result := ioswap(order)
+	glog.Debugf("result %s", result)
 	fmt.Fprintf(ctx, "%s", result)
 }
 
@@ -241,7 +237,7 @@ func ParseOrder(resp []byte) (*jtpay.JTpayOrder, error) {
 	mysign := utils.Md5(order.P7_productcode + order.P14_customname + order.P17_product +
 		order.P19_productnum + order.P25_terminal + signtime + key)
 	if mysign != sign {
-		//return nil, errors.New("sign failed")
+		return nil, errors.New("sign failed")
 	}
 	return order, nil
 }
@@ -264,13 +260,13 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 	//初始化订单
 	JTpay.InitOrder(order)
 	glog.Infof("order %#v", order)
-	//下单请求
-	result, err := JTpay.Submit(order)
-	glog.Infof("result %s, err %v", result, err)
-	if err != nil {
-		glog.Errorf("submit err %v", err)
-		return err
-	}
+	//下单请求,换成页面提交
+	//result, err := JTpay.Submit(order)
+	//glog.Infof("result %s, err %v", result, err)
+	//if err != nil {
+	//	glog.Errorf("submit err %v", err)
+	//	return err
+	//}
 	//transid,下单记录
 	msg := &pb.TradeOrder{
 		Orderid:  order.P2_ordernumber, //订单id
@@ -283,8 +279,7 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 		Clientip: ip,
 	}
 	//请求响应
-	timeout := 5 * time.Second
-	res2, err2 := nodePid.RequestFuture(msg, timeout).Result()
+	res2, err2 := callNode(msg)
 	if err2 != nil {
 		return err2
 	}

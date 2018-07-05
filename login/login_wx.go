@@ -47,42 +47,54 @@ func Wxmp() {
 	mux.HandleFunc(weixin.MsgTypeEventSubscribe, Subscribe)
 	glog.Debug("wxmp start...")
 	//mux.RefreshAccessToken()
-	//urlStr string, scope string, state string
-	//urlStr := "https://bbbbvb.cn/wxmp/oauth2"
-	//scope := "snsapi_userinfo"
-	//state := "103133"
-	//redirectURL := mux.CreateRedirectURL(urlStr, scope, state)
-	//glog.Debugf("redirectURL %s\n", redirectURL)
-	//shortURL, err := mux.ShortURL(redirectURL)
-	//glog.Debugf("shortURL %s, err %v\n", shortURL, err)
 	http.Handle(pattern, mux) // 注册接收微信服务器数据的接口URI
 	//mux.CreateHandlerFunc()
 	//TODO fasthttp
 	http.ListenAndServe(":6210", nil) // 启动接收微信数据服务器
 }
 
-// 授权的处理函数
+// 授权回调处理函数, https://xxx.com/happy/wxmp/oauth2?code=xxx&state=103133
 func wxmpOauth2(ctx *fasthttp.RequestCtx) {
 	ctx.Response.Header.Set("Content-type", "text/html;charset=UTF-8")
-	//glog.Debugf("Content %s", r.Content)
-	//glog.Debugf("url %s", r.Url)
-	//wx := w.GetWeixin()
-	//code := ""
-	//userAccessToken, err := wx.GetUserAccessToken(code)
-	//glog.Debugf("userAccessToken %#v, err %v", userAccessToken, err)
-	//userInfo, err := wx.GetUserInfo(userAccessToken.OpenId)
-	//glog.Debugf("userInfo %#v, err %v", userInfo, err)
-	//w.ReplyOK()
+	glog.Debugf("RequestURI is %q\n", ctx.RequestURI())
+	code := string(ctx.QueryArgs().Peek("code"))
+	state := string(ctx.QueryArgs().Peek("state"))
+	glog.Debugf("code: %s, state: %s", code, state)
+	userAccessToken, err := mux.GetUserAccessToken(code)
+	glog.Debugf("userAccessToken %#v, err %v", userAccessToken, err)
+	glog.Debugf("openid %s", userAccessToken.OpenId)
+	userInfo, err := mux.GetUserInfo(userAccessToken.OpenId)
+	glog.Debugf("userInfo %#v, err %v", userInfo, err)
+	//TODO 存储关系
+	//TODO 展示页面
 	fmt.Fprintf(ctx, "%s", "success")
 }
 
-// 获取链接地址
+// 获取链接地址, https://xxx.com/happy/wxmp/shorturl?userid=103133
 func wxmpShortURL(ctx *fasthttp.RequestCtx) {
-	//shortURL, err := mux.ShortURL(longURL)
-	fmt.Fprintf(ctx, "%s", "success")
+	glog.Debugf("RequestURI is %q\n", ctx.RequestURI())
+	state := string(ctx.QueryArgs().Peek("userid"))
+	if state == "" {
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	//TODO 确认代理
+	//urlStr string, scope string, state string
+	urlStr := cfg.Section("wxmp").Key("redirect_uri").Value()
+	scope := cfg.Section("wxmp").Key("scope").Value()
+	redirectURL := mux.CreateRedirectURL(urlStr, scope, state)
+	glog.Debugf("redirectURL %s\n", redirectURL)
+	shortURL, err := mux.ShortURL(redirectURL)
+	glog.Debugf("shortURL %s, err %v\n", shortURL, err)
+	if err != nil {
+		glog.Error("shortURL err ", err)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	fmt.Fprintf(ctx, "%s", shortURL)
 }
 
-// 获取二维码
+// 获取二维码, https://xxx.com/happy/wxmp/qrcode?userid=103133
 func wxmpQRcode(ctx *fasthttp.RequestCtx) {
 	//qr, err := mux.CreateQRLimitSceneByString(userid)
 	//qrURL := qr.ToURL()
