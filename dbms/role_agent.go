@@ -218,3 +218,19 @@ func (a *RoleActor) agentProfitReplyMsg(arg *pb.AgentProfitReplyMsg, ctx actor.C
 		user.Profit += arg.GetProfit()
 	}
 }
+
+//更新收益
+func (a *RoleActor) agentConfirm(arg *pb.AgentConfirm, ctx actor.Context) {
+	rsp := new(pb.AgentConfirmed)
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		rsp.Error = pb.UserDataNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	if user.AgentState != 1 {
+		rsp.Error = pb.Failed
+	}
+	ctx.Respond(rsp)
+}

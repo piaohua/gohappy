@@ -25,8 +25,9 @@ message SUserData
 {
     UserData data = 1;
     TopInfo info = 2;
-    //TODO 是否在房间内,多个房间内下注
-    ErrCode error = 3;//错误码
+    bool game = 3; //是否在游戏内
+    bool bank = 4; //是否开通
+    ErrCode error = 5;//错误码
 }
 
 // 获取虚拟货币

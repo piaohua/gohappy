@@ -258,10 +258,12 @@ func (ws *WSConn) wxlogin(arg *pb.CWxLogin, ctx actor.Context) {
 		return
 	}
 	msg1 := new(pb.WxLogin)
-	msg1.Wxuid = wxdata.OpenId
+	msg1.Wxuid = wxdata.UnionId // Unionid or OpenId
 	msg1.Nickname = wxdata.Nickname
 	msg1.Photo = wxdata.HeadImagUrl
 	msg1.Sex = uint32(wxdata.Sex)
+	msg1.OpenId = wxdata.OpenId
+	msg1.UnionId = wxdata.UnionId
 	//登录
 	res1 := ws.reqRole(msg1, ctx)
 	var response1 *pb.WxLogined

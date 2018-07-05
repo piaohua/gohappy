@@ -179,6 +179,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentWeekUpdate)
 		glog.Debugf("AgentWeekUpdate %#v", arg)
 		a.agentWeekUpdate(arg, ctx)
+	case *pb.AgentConfirm:
+		arg := msg.(*pb.AgentConfirm)
+		glog.Debugf("AgentConfirm: %v", arg)
+		a.agentConfirm(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -556,7 +560,7 @@ func (a *RoleActor) loginPrizeUpdate(arg *pb.LoginPrizeUpdate) {
 	}
 	user.LoginTimes = arg.LoginTimes
 	user.LoginPrize = arg.LoginPrize
-	user.LoginIp = arg.LoginIP
+	user.LoginIP = arg.LoginIP
 	user.LoginTime = utils.Stamp2Time(arg.LoginTime).Local()
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateLogin()

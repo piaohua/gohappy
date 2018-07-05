@@ -73,7 +73,7 @@ func LoginPrizeUpdateMsg(user *data.User) (msg *pb.LoginPrizeUpdate) {
 		LoginTimes: user.LoginTimes,
 		LoginPrize: user.LoginPrize,
 		LoginTime:  utils.Time2Stamp(user.LoginTime),
-		LoginIP:    user.LoginIp,
+		LoginIP:    user.LoginIP,
 	}
 	return
 }

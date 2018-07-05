@@ -76,8 +76,8 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 		glog.Debugf("TradeOrder %#v", arg)
 		res1, err1 := a.callRole(arg)
 		if err1 != nil {
-			rsp := new(pb.TradedOrder)
 			glog.Errorf("TradeOrder response err %v", err1)
+			rsp := new(pb.TradedOrder)
 			ctx.Respond(rsp)
 			return
 		}
@@ -87,8 +87,32 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 		glog.Debugf("JtpayCallback: %v", arg)
 		res1, err1 := a.callRole(arg)
 		if err1 != nil {
-			rsp := new(pb.JtpayCalledback)
 			glog.Errorf("JtpayCallback response err %v", err1)
+			rsp := new(pb.JtpayCalledback)
+			ctx.Respond(rsp)
+			return
+		}
+		ctx.Respond(res1)
+	case *pb.AgentConfirm:
+		arg := msg.(*pb.AgentConfirm)
+		glog.Debugf("AgentConfirm: %v", arg)
+		res1, err1 := a.callRole(arg)
+		if err1 != nil {
+			glog.Errorf("AgentConfirm response err %v", err1)
+			rsp := new(pb.AgentConfirmed)
+			rsp.Error = pb.Failed
+			ctx.Respond(rsp)
+			return
+		}
+		ctx.Respond(res1)
+	case *pb.AgentOauth2Confirm:
+		arg := msg.(*pb.AgentOauth2Confirm)
+		glog.Debugf("AgentOauth2Confirm: %v", arg)
+		res1, err1 := a.callDbms(arg)
+		if err1 != nil {
+			glog.Errorf("AgentOauth2Confirm response err %v", err1)
+			rsp := new(pb.AgentOauth2Confirmed)
+			rsp.Error = pb.Failed
 			ctx.Respond(rsp)
 			return
 		}

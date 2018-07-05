@@ -5,9 +5,11 @@ import (
 	"net/http"
 
 	"gohappy/glog"
+	"gohappy/pb"
 
 	"github.com/valyala/fasthttp"
 	"github.com/wizjin/weixin"
+	"github.com/json-iterator/go"
 )
 
 //Echo 文本消息的处理函数
@@ -59,13 +61,64 @@ func wxmpOauth2(ctx *fasthttp.RequestCtx) {
 	glog.Debugf("RequestURI is %q\n", ctx.RequestURI())
 	code := string(ctx.QueryArgs().Peek("code"))
 	state := string(ctx.QueryArgs().Peek("state"))
+	if code == "" || state == "" {
+		glog.Errorf("wxmpOauth2 failed: %s", ctx.RequestURI())
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
 	glog.Debugf("code: %s, state: %s", code, state)
 	userAccessToken, err := mux.GetUserAccessToken(code)
 	glog.Debugf("userAccessToken %#v, err %v", userAccessToken, err)
+	if err != nil {
+		glog.Errorf("GetUserAccessToken err: %v", err)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	if userAccessToken.OpenId == "" {
+		glog.Errorf("GetUserAccessToken failed: %#v", userAccessToken)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
 	glog.Debugf("openid %s", userAccessToken.OpenId)
-	userInfo, err := mux.GetUserInfo(userAccessToken.OpenId)
+	userInfo, err := mux.GetSnsUserInfo(userAccessToken.OpenId, userAccessToken.AccessToken)
 	glog.Debugf("userInfo %#v, err %v", userInfo, err)
-	//TODO 存储关系
+	if err != nil {
+		glog.Errorf("GetUserInfo err: %v", err)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	if userInfo.UnionId == "" {
+		glog.Errorf("GetUserInfo failed: %#v", userInfo)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	//存储关系
+	result, err := jsoniter.Marshal(userInfo)
+	if err != nil {
+		glog.Errorf("userinfo marshal err: %v", err)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	msg := new(pb.AgentOauth2Confirm)
+	msg.Agentid = state
+	msg.Userinfo = result
+	res1, err1 := callNode(msg)
+	if err1 != nil {
+		glog.Errorf("shortURL err: %v", err1)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	if response1, ok := res1.(*pb.AgentOauth2Confirmed); ok {
+		if response1.Error != pb.OK {
+			glog.Errorf("Oauth2 err: %#v", response1)
+			ctx.Error("failure", fasthttp.StatusBadRequest)
+			return
+		}
+	} else {
+		glog.Errorf("Oauth2 res1 err: %#v", res1)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
 	//TODO 展示页面
 	fmt.Fprintf(ctx, "%s", "success")
 }
@@ -78,7 +131,26 @@ func wxmpShortURL(ctx *fasthttp.RequestCtx) {
 		ctx.Error("failure", fasthttp.StatusBadRequest)
 		return
 	}
-	//TODO 确认代理
+	//确认代理
+	msg := new(pb.AgentConfirm)
+	msg.Userid = state
+	res1, err1 := callNode(msg)
+	if err1 != nil {
+		glog.Errorf("shortURL err: %v", err1)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
+	if response1, ok := res1.(*pb.AgentConfirmed); ok {
+		if response1.Error != pb.OK {
+			glog.Errorf("shortURL err: %#v", response1)
+			ctx.Error("failure", fasthttp.StatusBadRequest)
+			return
+		}
+	} else {
+		glog.Errorf("shortURL res1 err: %#v", res1)
+		ctx.Error("failure", fasthttp.StatusBadRequest)
+		return
+	}
 	//urlStr string, scope string, state string
 	urlStr := cfg.Section("wxmp").Key("redirect_uri").Value()
 	scope := cfg.Section("wxmp").Key("scope").Value()

@@ -13,13 +13,15 @@ type User struct {
 	Nickname string `bson:"nickname" json:"nickname"`   // 用户昵称
 	Photo    string `bson:"photo" json:"photo"`         // 头像
 	Wxuid    string `bson:"wxuid" json:"wxuid"`         // 微信uid
+	OpenId   string `bson:"openid" json:"openid,omitempty"`  //微信openid nolint
+	UnionId  string `bson:"unionid" json:"unionid,omitempty"` //微信unionid nolint
 	Sex      uint32 `bson:"sex" json:"sex"`             // 用户性别,男1 女2 非男非女3
 	Phone    string `bson:"phone" json:"phone"`         // 绑定的手机号码
 	Tourist  string `bson:"tourist" json:"tourist"`     // 游客
 	Auth     string `bson:"auth" json:"auth"`           // 密码验证码
 	Password string `bson:"password" json:"password"`   // MD5密码
-	RegistIp string `bson:"regist_ip" json:"regist_ip"` // 注册账户时的IP地址
-	LoginIp  string `bson:"login_ip" json:"login_ip"`   // 登录账户时的IP地址
+	RegistIP string `bson:"regist_ip" json:"regist_ip"` // 注册账户时的IP地址
+	LoginIP  string `bson:"login_ip" json:"login_ip"`   // 登录账户时的IP地址
 	Diamond  int64  `bson:"diamond" json:"diamond"`     // 钻石
 	Coin     int64  `bson:"coin" json:"coin"`           // 金币
 	Chip     int64  `bson:"chip" json:"chip"`           // 筹码
@@ -106,7 +108,7 @@ func (this *User) UpdateLogin() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"login_times": this.LoginTimes,
 			"login_prize": this.LoginPrize, "login_time": this.LoginTime,
-			"login_ip": this.LoginIp}})
+			"login_ip": this.LoginIP}})
 }
 
 func (this *User) UpdateSign() bool {

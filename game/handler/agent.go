@@ -8,6 +8,8 @@ import (
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
+
+	jsoniter "github.com/json-iterator/go"
 )
 
 //PackAgentProfitRankMsg 获取排行榜信息
@@ -314,6 +316,22 @@ func UpdateWeekMsg(user *data.User) (msg *pb.AgentWeekUpdate) {
 		Userid: user.GetUserid(),
 		Start:  utils.Time2Str(user.WeekStart),
 		End:    utils.Time2Str(user.WeekEnd),
+	}
+	return
+}
+
+//AgentOauth2Confirm 代理授权关系确认
+func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirmed) {
+	msg = new(pb.AgentOauth2Confirmed)
+	userInfo := new(data.UserInfo)
+	err := jsoniter.Unmarshal(arg.Userinfo, userInfo)
+	if err != nil {
+		glog.Errorf("AgentOauth2Confirm err %v, arg %#v", err, arg)
+		msg.Error = pb.Failed
+	}
+	if !userInfo.Save() {
+		glog.Errorf("userInfo save failed %#v", userInfo)
+		msg.Error = pb.Failed
 	}
 	return
 }

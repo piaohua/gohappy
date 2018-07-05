@@ -39,6 +39,7 @@ var RoleRecords *mgo.Collection
 var RoundRecords *mgo.Collection
 
 var Agencys *mgo.Collection
+var UserInfos *mgo.Collection
 
 var Notices *mgo.Collection
 var Shops *mgo.Collection
@@ -106,6 +107,7 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	RoundRecords = Session.DB(dbName).C("col_round_record")
 	//
 	Agencys = Session.DB(dbName).C("t_user")
+	UserInfos = Session.DB(dbName).C("col_user_info")
 	//
 	Notices = Session.DB(dbName).C("col_notice")
 	Shops = Session.DB(dbName).C("col_shop")

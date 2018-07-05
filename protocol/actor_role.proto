@@ -160,6 +160,8 @@ message WxLogin {
     string Nickname = 2;
     string Photo = 3;
     uint32 Sex = 4;
+    string OpenId = 5;
+    string UnionId = 6;
 }
 
 message WxLogined {

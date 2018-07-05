@@ -99,7 +99,7 @@ func (rs *RoleActor) applePay(arg *pb.CApplePay) {
 }
 
 func (rs *RoleActor) wxPay(arg *pb.CWxpayOrder) {
-	var ip string = rs.User.LoginIp
+	var ip string = rs.User.LoginIP
 	rsp, trade := handler.WxOrder(arg, rs.User, ip)
 	if rsp.Error != pb.OK {
 		rs.Send(rsp)

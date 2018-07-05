@@ -12,15 +12,12 @@ import (
 //WxLogin 微信登录
 func WxLogin(ctos *pb.WxLogin, user *data.User) (stoc *pb.WxLogined) {
 	stoc = new(pb.WxLogined)
-	var wxuid string = ctos.GetWxuid()
-	var nickname string = ctos.GetNickname()
-	var photo string = ctos.GetPhoto()
-	var sex uint32 = ctos.GetSex()
-	//登录
-	user.Wxuid = wxuid
-	user.Nickname = nickname
-	user.Photo = photo
-	user.Sex = sex
+	user.Wxuid = ctos.GetWxuid()
+	user.OpenId = ctos.GetOpenId()
+	user.UnionId = ctos.GetUnionId()
+	user.Nickname = ctos.GetNickname()
+	user.Photo = ctos.GetPhoto()
+	user.Sex = ctos.GetSex()
 	stoc.IsRegist = false
 	stoc.Userid = user.Userid
 	return
@@ -30,26 +27,33 @@ func WxLogin(ctos *pb.WxLogin, user *data.User) (stoc *pb.WxLogined) {
 func WxRegist(ctos *pb.WxLogin, genid *data.IDGen) (stoc *pb.WxLogined,
 	user *data.User) {
 	stoc = new(pb.WxLogined)
-	var wxuid string = ctos.GetWxuid()
-	var nickname string = ctos.GetNickname()
-	var photo string = ctos.GetPhoto()
-	var sex uint32 = ctos.GetSex()
 	user = new(data.User)
-	//注册
 	userid := genid.GenID()
 	glog.Debugf("WxLogin userid %s", userid)
 	user.Userid = userid
-	user.Wxuid = wxuid
-	user.Nickname = nickname
-	user.Photo = photo
-	user.Sex = sex
+	user.Wxuid = ctos.GetWxuid()
+	user.OpenId = ctos.GetOpenId()
+	user.UnionId = ctos.GetUnionId()
+	user.Nickname = ctos.GetNickname()
+	user.Photo = ctos.GetPhoto()
+	user.Sex = ctos.GetSex()
 	user.Ctime = utils.BsonNow()
+	//agent 关系查找和建立
+	userInfo := new(data.UserInfo)
+	userInfo.UnionId = user.UnionId
+	userInfo.Get()
+	if userInfo.Agentid != "" {
+		glog.Debugf("userid %d is bound to agentid %s", userid, userInfo.Agentid)
+		user.Agent = userInfo.Agentid
+		user.Atime = utils.BsonNow()
+	} else {
+		glog.Errorf("userid %d build failed", userid)
+	}
 	if !user.Save() {
 		glog.Errorf("WxRegist failed : %s", userid)
 		stoc.Error = pb.GetWechatUserInfoFail
 		return
 	}
-	//TODO agent 关系查找和建立
 	stoc.IsRegist = true
 	stoc.Userid = user.Userid
 	return

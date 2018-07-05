@@ -86,6 +86,11 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		glog.Debugf("CAgentProfitOrder %#v", arg)
 		rsp := handler.PackAgentProfitOrderMsg(arg)
 		ctx.Respond(rsp)
+	case *pb.AgentOauth2Confirm:
+		arg := msg.(*pb.AgentOauth2Confirm)
+		glog.Debugf("AgentOauth2Confirm: %v", arg)
+		rsp := handler.AgentOauth2Confirm(arg)
+		ctx.Respond(rsp)
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

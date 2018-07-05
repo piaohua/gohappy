@@ -64,7 +64,7 @@ func tradeVerify(productID string, tradeRecord *data.TradeRecord,
 	tradeRecord.Diamond = d.Number
 	tradeRecord.Money = uint32(d.Price * 100) //转换为分
 	tradeRecord.Result = data.TradeSuccess
-	tradeRecord.Clientip = p.LoginIp
+	tradeRecord.Clientip = p.LoginIP
 	tradeRecord.Agent = p.GetAgent()
 	//tradeRecord.Atype = p.GetAtype()
 	tradeRecord.Userid = p.GetUserid()

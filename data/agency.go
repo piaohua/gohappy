@@ -231,3 +231,45 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 	}
 	return list, err
 }
+
+// UserInfo store user information.
+type UserInfo struct {
+	Agentid       string `bson:"agentid" json:"agentid,omitempty"`
+	Subscribe     int    `bson:"subscribe" json:"subscribe,omitempty"`
+	Language      string `bson:"language" json:"language,omitempty"`
+	OpenId        string `bson:"openid" json:"openid,omitempty"`  // nolint
+	UnionId       string `bson:"_id" json:"unionid,omitempty"` // nolint
+	Nickname      string `bson:"nickname" json:"nickname,omitempty"`
+	Sex           int    `bson:"sex" json:"sex,omitempty"`
+	City          string `bson:"city" json:"city,omitempty"`
+	Country       string `bson:"country" json:"country,omitempty"`
+	Province      string `bson:"province" json:"province,omitempty"`
+	HeadImageUrl  string `bson:"headimgurl" json:"headimgurl,omitempty"` // nolint
+	SubscribeTime int64  `bson:"subscribe_time" json:"subscribe_time,omitempty"`
+	Remark        string `bson:"remark" json:"remark,omitempty"`
+	GroupId       int    `bson:"groupid" json:"groupid,omitempty"` // nolint
+	Ctime         time.Time `bson:"ctime" json:"ctime"`         //本条记录生成unix时间戳
+}
+
+//Has 判断记录是否存在
+func (t *UserInfo) Has() bool {
+	return Has(UserInfos, bson.M{"_id": t.UnionId})
+}
+
+//Get 获取一条记录
+func (t *UserInfo) Get() {
+	Get(UserInfos, t.UnionId, t)
+}
+
+//GetAgentidByUnionid select agentid by unionid
+func GetAgentidByUnionid(unionid string) string {
+	var agentid string
+	GetByQWithFields(UserInfos, bson.M{"_id": unionid}, []string{"agentid"}, &agentid)
+	return agentid
+}
+
+//Save 写入新数据
+func (t *UserInfo) Save() bool {
+	t.Ctime = bson.Now()
+	return Insert(UserInfos, t)
+}

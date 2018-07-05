@@ -101,3 +101,26 @@ message AgentProfitReplyMsg
     int64 bank = 2;//银行收益
     int64 profit = 3;//收益返还
 }
+
+//代理确认
+message AgentConfirm
+{
+    string userid = 1;//玩家id
+}
+
+message AgentConfirmed
+{
+    ErrCode error = 1 ;// 错误码
+}
+
+//代理授权关系确认
+message AgentOauth2Confirm
+{
+    string agentid = 1;//玩家id
+    bytes userinfo = 2;//user information
+}
+
+message AgentOauth2Confirmed
+{
+    ErrCode error = 1 ;// 错误码
+}
