@@ -123,6 +123,12 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		} else {
 			//TODO 添加房间数据返回
 			rsp := handler.GetUserDataMsg(arg, rs.User)
+			if rs.gamePid != nil {
+				rsp.Game = true
+			}
+			if rs.BankPhone != "" {
+				rsp.Bank = true
+			}
 			rs.Send(rsp)
 		}
 	case *pb.GotUserData:
