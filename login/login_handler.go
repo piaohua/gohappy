@@ -109,7 +109,7 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 		smsHandler(ctx)
 	case "/happy/gate":
 		gateHandler(ctx)
-	case "/happy/wxpay":
+	case "/happy/wxpay/notice":
 		wxpayHandler(ctx)
 	case "/happy/jtpay/order":
 		jtpayOrder(ctx)
@@ -123,6 +123,8 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 		wxmpShortURL(ctx)
 	case "/happy/wxmp/qrcode":
 		wxmpQRcode(ctx)
+	case "/happy/download":
+		download(ctx)
 	//case "/wxmp/wx":
 	case "/happy/foo":
 		fooHandler(ctx)

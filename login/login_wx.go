@@ -57,7 +57,6 @@ func Wxmp() {
 
 // 授权回调处理函数, https://xxx.com/happy/wxmp/oauth2?code=xxx&state=103133
 func wxmpOauth2(ctx *fasthttp.RequestCtx) {
-	ctx.Response.Header.Set("Content-type", "text/html;charset=UTF-8")
 	glog.Debugf("RequestURI is %q\n", ctx.RequestURI())
 	code := string(ctx.QueryArgs().Peek("code"))
 	state := string(ctx.QueryArgs().Peek("state"))
@@ -119,8 +118,9 @@ func wxmpOauth2(ctx *fasthttp.RequestCtx) {
 		ctx.Error("failure", fasthttp.StatusBadRequest)
 		return
 	}
-	//TODO 展示页面
-	fmt.Fprintf(ctx, "%s", "success")
+	//重定向微信公众号设置的业务域名，防止被重新排版
+	downloadURL := cfg.Section("domain").Key("download").Value()
+	ctx.Redirect(downloadURL, fasthttp.StatusMovedPermanently)
 }
 
 // 获取链接地址, https://xxx.com/happy/wxmp/shorturl?userid=103133
@@ -171,4 +171,30 @@ func wxmpQRcode(ctx *fasthttp.RequestCtx) {
 	//qr, err := mux.CreateQRLimitSceneByString(userid)
 	//qrURL := qr.ToURL()
 	fmt.Fprintf(ctx, "%s", "success")
+}
+
+// 下载页面, https://xxx.com/happy/download
+func download(ctx *fasthttp.RequestCtx) {
+	ctx.Response.Header.Set("Content-type", "text/html;charset=UTF-8")
+	downloadHtml := downloadHtml()
+	fmt.Fprintf(ctx, "%s", downloadHtml)
+}
+
+//TODO use html/template
+func downloadHtml() (str string) {
+	str = `
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<base href="/">
+<title></title>
+</head>
+<body></body>
+</html>
+`
+	return
 }

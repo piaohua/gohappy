@@ -255,7 +255,7 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 	var itemid string = utils.String(shop.Propid) //货币类型
 	//订单数据
 	order.P3_money = utils.String(price) //RMB
-	order.P3_money = "1" //TODO test
+	//order.P3_money = "1" //TODO test
 	order.P16_customip = ip
 	//初始化订单
 	JTpay.InitOrder(order)
@@ -300,7 +300,7 @@ func ioswap(order *jtpay.JTpayOrder) (str string) {
 </head>
 <!--支付宝IOSwap支付请求提交页-->
 <body onLoad="document.yeepay.submit();">
-	<form name='yeepay' action='http://order.z.jtpay.com/jh-web-order/order/receiveOrder' method='post'  >
+	<form name='yeepay' action='https://order.z.jtpay.com/jh-web-order/order/receiveOrder' method='post'  >
 	`
 	str += fmt.Sprintf("<input type='hidden' name='p1_yingyongnum'				value='%s'>", order.P1_yingyongnum)
 	str += fmt.Sprintf("<input type='hidden' name='p2_ordernumber'				value='%s'>      ", order.P2_ordernumber)
