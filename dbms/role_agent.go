@@ -37,6 +37,11 @@ func (a *RoleActor) syncAgentJoin(arg *pb.AgentJoin, ctx actor.Context) {
 		glog.Errorf("get userid %s fail", arg.GetUserid())
 		return
 	}
+	if arg.GetAgentid() != "" {
+		//更新下级代理绑定
+		msg := handler.AgentBuildUpdateMsg(arg.GetAgentid(), 0, 0, 1)
+		ctx.Self().Tell(msg)
+	}
 	handler.AgentJoin2User(arg, user)
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateAgentJoin()
@@ -233,4 +238,21 @@ func (a *RoleActor) agentConfirm(arg *pb.AgentConfirm, ctx actor.Context) {
 		rsp.Error = pb.Failed
 	}
 	ctx.Respond(rsp)
+}
+
+//申请数据更新
+func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
+	user := a.getUserById(arg.GetAgentid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetAgentid())
+		return
+	}
+	if user.AgentState != 1 {
+		glog.Errorf("agentBuildUpdate %#v", arg)
+		//return
+	}
+	if v, ok := a.roles[user.GetUserid()]; ok {
+		v.Pid.Tell(arg)
+	}
+	handler.AgentBuildUpdate2(arg, user) //暂时实时写入, TODO 异步数据更新
 }

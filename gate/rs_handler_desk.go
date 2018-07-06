@@ -5,6 +5,7 @@ import (
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
+	"gohappy/game/handler"
 )
 
 //玩家桌子常用共有操作请求处理
@@ -34,6 +35,11 @@ func (rs *RoleActor) handlerDesk(msg interface{}, ctx actor.Context) {
 		if rs.User != nil {
 			rs.status = true
 			rs.User.SetRecord(arg.Rtype)
+		}
+		if rs.User.GetAgent() != "" && (rs.User.Win + rs.User.Lost + rs.User.Ping) == 10 {
+			//更新有效代理绑定
+			msg := handler.AgentBuildUpdateMsg(rs.User.GetAgent(), 0, 1, 0)
+			rs.rolePid.Tell(msg)
 		}
 	case *pb.GotRoomList:
 		arg := msg.(*pb.GotRoomList)

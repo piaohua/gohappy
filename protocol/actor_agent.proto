@@ -124,3 +124,12 @@ message AgentOauth2Confirmed
 {
     ErrCode error = 1 ;// 错误码
 }
+
+//代理绑定数量更新
+message AgentBuildUpdate
+{
+    string agentid = 1;//玩家id
+    uint32 AgentChild = 2;//AgentChild
+    uint32 BuildVaild = 3;//BuildVaild
+    uint32 Build = 4;//Build
+}

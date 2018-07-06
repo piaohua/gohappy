@@ -95,4 +95,9 @@ func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
 	}
 	//离线,直接处理
 	handler.WxpaySendGoods(false, trade, user)
+	if trade.First == 1 {
+		//更新有效代理绑定
+		msg := handler.AgentBuildUpdateMsg(user.GetAgent(), 0, 1, 0)
+		rolePid.Tell(msg)
+	}
 }

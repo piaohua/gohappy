@@ -10,6 +10,7 @@ import (
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
+	"gohappy/game/handler"
 )
 
 //登录后获取数据
@@ -178,6 +179,11 @@ func (a *RoleActor) loginByWx(arg *pb.WxLogin, ctx actor.Context) {
 		rsp, user2 := login.WxRegist(arg, a.uniqueid)
 		if rsp.Error == pb.OK {
 			a.loadingUser(user2)
+			//更新代理绑定数量
+			if user2.GetAgent() != "" {
+				msg := handler.AgentBuildUpdateMsg(user2.GetAgent(), 1, 0, 0)
+				ctx.Self().Tell(msg)
+			}
 		}
 		ctx.Respond(rsp)
 	}

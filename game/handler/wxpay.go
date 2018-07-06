@@ -259,7 +259,7 @@ func WxpaySendGoods(online bool, trade *data.TradeRecord, user *data.User) {
 		//vip变更 TODO
 		//lev2 := config.GetVipLevel(user.GetVip() + trade.Money)
 		//user.SetVip(lev2, trade.Money)
-		//user.AddMoney(trade.Money)
+		user.AddMoney(trade.Money)
 		//存储
 		user.Save()
 	}

@@ -71,6 +71,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentProfitReplyMsg)
 		glog.Debugf("AgentProfitReplyMsg %#v", arg)
 		rs.agentProfitReplyMsg(arg)
+	case *pb.AgentBuildUpdate:
+		arg := msg.(*pb.AgentBuildUpdate)
+		glog.Debugf("AgentBuildUpdate: %v", arg)
+		handler.AgentBuildUpdate(arg, rs.User)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -150,6 +154,9 @@ func (rs *RoleActor) agentInfo() {
 	rsp.SubAgentProfit = rs.User.SubAgentProfit
 	rsp.Level = rs.User.AgentLevel
 	rsp.State = handler.GetAgentState(rs.User.AgentState, rs.User.AgentLevel)
+	rsp.Build = rs.User.Build
+	rsp.BuildVaild = rs.User.BuildVaild
+	rsp.AgentChild = rs.User.AgentChild
 	rs.Send(rsp)
 }
 
@@ -161,7 +168,6 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		rs.Send(rsp)
 		return
 	}
-	//TODO rs.User.Agent 加入游戏时已经绑定
 	if rs.User.AgentLevel != 0 && rs.User.AgentState == 0 {
 		rsp.Error = pb.WaitForAudit
 		rs.Send(rsp)
@@ -171,6 +177,10 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		rsp.Error = pb.AlreadyAgent
 		rs.Send(rsp)
 		return
+	}
+	//rs.User.Agent 加入游戏时已经绑定
+	if rs.User.GetAgent() != "" && rs.User.GetAgent() != arg.GetAgentid() {
+		arg.Agentid = rs.User.GetAgent()
 	}
 	if arg.GetAgentid() == "" || arg.GetAgentname() == "" ||
 		arg.GetRealname() == "" || arg.GetWeixin() == "" {
@@ -285,7 +295,12 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
-	//TODO 权限限制(有效玩家3个以上)
+	//权限限制(有效玩家3个以上,绑定10个以上)
+	if rs.User.BuildVaild < 3 || rs.User.Build < 10 {
+		rsp.Error = pb.ProfitLimit
+		rs.Send(rsp)
+		return
+	}
 	msg := &pb.AgentProfitApply{
 		Agentid:  rs.User.GetAgent(),     //受理人userid
 		Userid:   rs.User.GetUserid(),    //申请人玩家id

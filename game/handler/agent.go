@@ -335,3 +335,43 @@ func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirme
 	}
 	return
 }
+
+//AgentBuildUpdateMsg 绑定数量消息
+func AgentBuildUpdateMsg(agentid string, build, vaild, child uint32) (msg *pb.AgentBuildUpdate) {
+	msg = &pb.AgentBuildUpdate{
+		AgentChild: child,
+		BuildVaild: vaild,
+		Build:      build,
+		Agentid:    agentid,
+	}
+	return
+}
+
+//AgentBuildUpdate 绑定数量更新
+func AgentBuildUpdate(msg *pb.AgentBuildUpdate, user *data.User) {
+	if msg.Build != 0 {
+		user.Build += msg.Build
+	}
+	if msg.BuildVaild != 0 {
+		user.BuildVaild += msg.BuildVaild
+	}
+	if msg.AgentChild != 0 {
+		user.AgentChild += msg.AgentChild
+	}
+}
+
+//AgentBuildUpdate2 绑定数量实时更新写入
+func AgentBuildUpdate2(msg *pb.AgentBuildUpdate, user *data.User) {
+	if msg.Build != 0 {
+		user.Build += msg.Build
+		user.UpdateBuild()
+	}
+	if msg.BuildVaild != 0 {
+		user.BuildVaild += msg.BuildVaild
+		user.UpdateBuildVaild()
+	}
+	if msg.AgentChild != 0 {
+		user.AgentChild += msg.AgentChild
+		user.UpdateAgentChild()
+	}
+}

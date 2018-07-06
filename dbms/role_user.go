@@ -183,6 +183,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentConfirm)
 		glog.Debugf("AgentConfirm: %v", arg)
 		a.agentConfirm(arg, ctx)
+	case *pb.AgentBuildUpdate:
+		arg := msg.(*pb.AgentBuildUpdate)
+		glog.Debugf("AgentBuildUpdate: %v", arg)
+		a.agentBuildUpdate(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

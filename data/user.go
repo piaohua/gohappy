@@ -51,6 +51,8 @@ type User struct {
 	AgentState       uint32    `bson:"agent_state" json:"agent_state"`               // 是否是代理状态1通过
 	AgentLevel       uint32    `bson:"agent_level" json:"agent_level"`               // 代理等级,1，2，3，4
 	Build            uint32    `bson:"build" json:"build"`                           // 下属绑定数量
+	AgentChild       uint32    `bson:"agent_child" json:"agent_child"`             // 下属代理数量
+	BuildVaild       uint32    `bson:"build_vaild" json:"build_vaild"`             // 下属有效绑定数量
 	AgentName        string    `bson:"agent_name" json:"agent_name"`                 // 代理名字
 	RealName         string    `bson:"real_name" json:"real_name"`                   // 真实姓名
 	Weixin           string    `bson:"weixin" json:"weixin"`                         // 微信
@@ -139,6 +141,21 @@ func (this *User) UpdateAgentWeek() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"week_start": this.WeekStart,
 			"week_end": this.WeekEnd}})
+}
+
+func (this *User) UpdateAgentChild() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"agent_child": this.AgentChild}})
+}
+
+func (this *User) UpdateBuildVaild() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"build_vaild": this.BuildVaild}})
+}
+
+func (this *User) UpdateBuild() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"build": this.Build}})
 }
 
 func (this *User) Get() {

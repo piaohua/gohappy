@@ -466,7 +466,8 @@
             "WaitForAudit": 105,
             "ProfitNotEnough": 106,
             "ProfitOrderNotExist": 107,
-            "ProfitOrderReplied": 108
+            "ProfitOrderReplied": 108,
+            "ProfitLimit": 109
           }
         },
         "SitType": {

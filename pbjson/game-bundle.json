@@ -296,7 +296,8 @@
             "WaitForAudit": 105,
             "ProfitNotEnough": 106,
             "ProfitOrderNotExist": 107,
-            "ProfitOrderReplied": 108
+            "ProfitOrderReplied": 108,
+            "ProfitLimit": 109
           }
         },
         "SitType": {
@@ -1409,9 +1410,21 @@
               "type": "uint32",
               "id": 12
             },
+            "Build": {
+              "type": "uint32",
+              "id": 13
+            },
+            "AgentChild": {
+              "type": "uint32",
+              "id": 14
+            },
+            "BuildVaild": {
+              "type": "uint32",
+              "id": 15
+            },
             "error": {
               "type": "ErrCode",
-              "id": 13
+              "id": 16
             }
           }
         },

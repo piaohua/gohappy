@@ -36,7 +36,10 @@ message SMyAgent
     string PopularizeURL = 10;//推广地址
     uint32 state = 11;//0不是代理,1开通代理,2审核中
     uint32 level = 12;//代理等级
-    ErrCode error= 13;//错误码 ,0:正常
+    uint32 Build = 13;//下属绑定玩家数量
+    uint32 AgentChild = 14;//下属代理数量
+    uint32 BuildVaild = 15;//下属有效绑定数量
+    ErrCode error= 16;//错误码 ,0:正常
 }
 
 // 代理管理
