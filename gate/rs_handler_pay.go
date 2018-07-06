@@ -153,7 +153,7 @@ func (rs *RoleActor) wxPayQuery(orderid string) {
 
 //发货
 func (rs *RoleActor) sendGoods(diamond, coin int64, money uint32, first int) {
-	rs.User.AddMoney(money)
+	rs.User.AddMoney(money) //TODO 同步money到数据库
 	//消息
 	rs.addCurrency(diamond, coin, 0, 0, int32(pb.LOG_TYPE4))
 	//消息

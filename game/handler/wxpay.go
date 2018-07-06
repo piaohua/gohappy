@@ -262,6 +262,9 @@ func WxpaySendGoods(online bool, trade *data.TradeRecord, user *data.User) {
 		user.AddMoney(trade.Money)
 		//存储
 		user.Save()
+	} else {
+		user.AddMoney(trade.Money) //TODO 在玩家进程中发消息同步
+		user.UpdateMoney()
 	}
 	//update record
 	if !trade.Upsert() {

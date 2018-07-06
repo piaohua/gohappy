@@ -158,6 +158,11 @@ func (this *User) UpdateBuild() bool {
 		bson.M{"$set": bson.M{"build": this.Build}})
 }
 
+func (this *User) UpdateMoney() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"money": this.Money}})
+}
+
 func (this *User) Get() {
 	Get(PlayerUsers, this.Userid, this)
 }
