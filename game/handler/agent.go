@@ -337,12 +337,13 @@ func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirme
 }
 
 //AgentBuildUpdateMsg 绑定数量消息
-func AgentBuildUpdateMsg(agentid string, build, vaild, child uint32) (msg *pb.AgentBuildUpdate) {
+func AgentBuildUpdateMsg(agentid, userid string, build, vaild, child uint32) (msg *pb.AgentBuildUpdate) {
 	msg = &pb.AgentBuildUpdate{
 		AgentChild: child,
 		BuildVaild: vaild,
 		Build:      build,
 		Agentid:    agentid,
+		Userid:     userid,
 	}
 	return
 }

@@ -39,7 +39,7 @@ func (a *RoleActor) syncAgentJoin(arg *pb.AgentJoin, ctx actor.Context) {
 	}
 	if arg.GetAgentid() != "" {
 		//更新下级代理绑定
-		msg := handler.AgentBuildUpdateMsg(arg.GetAgentid(), 0, 0, 1)
+		msg := handler.AgentBuildUpdateMsg(arg.GetAgentid(), user.GetUserid(), 0, 0, 1)
 		ctx.Self().Tell(msg)
 	}
 	handler.AgentJoin2User(arg, user)

@@ -154,7 +154,7 @@ func (a *RoleActor) regist(arg *pb.RoleRegist, ctx actor.Context) {
 		a.delCode(phone, smscode)
 		//更新代理绑定数量
 		if user.GetAgent() != "" {
-			msg := handler.AgentBuildUpdateMsg(user.GetAgent(), 1, 0, 0)
+			msg := handler.AgentBuildUpdateMsg(user.GetAgent(), user.GetUserid(), 1, 0, 0)
 			ctx.Self().Tell(msg)
 		}
 	}
@@ -186,7 +186,7 @@ func (a *RoleActor) loginByWx(arg *pb.WxLogin, ctx actor.Context) {
 			a.loadingUser(user2)
 			//更新代理绑定数量
 			if user2.GetAgent() != "" {
-				msg := handler.AgentBuildUpdateMsg(user2.GetAgent(), 1, 0, 0)
+				msg := handler.AgentBuildUpdateMsg(user2.GetAgent(), user2.GetUserid(), 1, 0, 0)
 				ctx.Self().Tell(msg)
 			}
 		}

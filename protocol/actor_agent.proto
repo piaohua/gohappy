@@ -128,8 +128,9 @@ message AgentOauth2Confirmed
 //代理绑定数量更新
 message AgentBuildUpdate
 {
-    string agentid = 1;//玩家id
+    string agentid = 1;// 代理id
     uint32 AgentChild = 2;//AgentChild
     uint32 BuildVaild = 3;//BuildVaild
     uint32 Build = 4;//Build
+    string userid = 5;//玩家id
 }
