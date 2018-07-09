@@ -152,6 +152,11 @@ func (a *RoleActor) regist(arg *pb.RoleRegist, ctx actor.Context) {
 		a.loadingUser(user)
 		//去掉验证码
 		a.delCode(phone, smscode)
+		//更新代理绑定数量
+		if user.GetAgent() != "" {
+			msg := handler.AgentBuildUpdateMsg(user.GetAgent(), 1, 0, 0)
+			ctx.Self().Tell(msg)
+		}
 	}
 	ctx.Respond(rsp)
 }
