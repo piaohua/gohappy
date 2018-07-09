@@ -328,7 +328,14 @@ func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirme
 	if err != nil {
 		glog.Errorf("AgentOauth2Confirm err %v, arg %#v", err, arg)
 		msg.Error = pb.Failed
+		return
 	}
+	userInfo.Agentid = arg.GetAgentid()
+	if userInfo.Agentid == "" {
+		msg.Error = pb.Failed
+		return
+	}
+	glog.Debugf("userInfo %#v", userInfo)
 	if !userInfo.Save() {
 		glog.Errorf("userInfo save failed %#v", userInfo)
 		msg.Error = pb.Failed
