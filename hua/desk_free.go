@@ -128,8 +128,8 @@ func (t *Desk) beDealer(userid string, st int32, num uint32) pb.ErrCode {
 		glog.Errorf("userid %s not exist", userid)
 		return pb.NotInRoom
 	}
-	//TODO 暂时全部带上庄
-	num = uint32(user.GetCoin())
+	//TODO 全部带上庄
+	//num = uint32(user.GetCoin())
 	switch st {
 	case int32(pb.DEALER_DOWN):
 		switch t.state {

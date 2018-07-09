@@ -383,7 +383,12 @@ func (t *Desk) findBeDealer() (userid string, carry int64) {
 				continue
 			}
 			//全部资金上庄
-			if val.GetCoin() > carry {
+			//if val.GetCoin() > carry {
+			//	userid = k
+			//	carry = val.GetCoin()
+			//}
+			//选择金额上庄
+			if v > carry && val.GetCoin() >= v {
 				userid = k
 				carry = val.GetCoin()
 			}
