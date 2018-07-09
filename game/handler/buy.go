@@ -85,12 +85,12 @@ func JtpayTradeVerify(t *jtpay.NotifyResult) *data.TradeRecord {
 	//glog.Infof("TradeResult  %#v", t)
 	if tradeRecord.Userid == "" {
 		//订单不存在或其它
-		glog.Errorf("not exist orderid %v", t)
+		glog.Errorf("not exist orderid %#v", t)
 		return nil
 	}
 	if tradeRecord.Result == 0 {
 		//重复发货
-		glog.Errorf("repeat resp %v", t)
+		glog.Errorf("repeat resp %#v", t)
 		return nil
 	}
 	//更新记录
@@ -99,10 +99,10 @@ func JtpayTradeVerify(t *jtpay.NotifyResult) *data.TradeRecord {
 	//tradeRecord.Paytype = t.P6_productcode
 	money, err := strconv.Atoi(t.P13_zfmoney)
 	if err != nil {
-		glog.Errorf("jtpay: %v, err: %v", t, err)
+		glog.Errorf("jtpay: %v, err: %#v", t, err)
 	}
 	if uint32(money*100) != tradeRecord.Money {
-		glog.Errorf("jtpay money : %v, err: %v", t, err)
+		glog.Errorf("jtpay money : %#v, err: %v", t, err)
 	}
 	//tradeRecord.Money = uint32(money)      //转换为分
 	tradeRecord.Result = data.TradeSuccess //交易成功
