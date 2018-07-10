@@ -33,7 +33,7 @@ message AgentProfitInfo {
     int32 gtype = 1;//game type
     string agentid = 2;//代理id, to
     uint32 rate = 3;//分佣比例
-    uint32 level = 4;//等级
+    uint32 level = 4;//等级,表示相对等级
     bool agent = 5;//是否是代理反佣
     int64 profit = 6;//收益
     string userid = 7;//玩家id, from

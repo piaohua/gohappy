@@ -35,7 +35,7 @@ func SendSms253(targetURL, account, password, phone, code string) bool {
 }
 
 func sendSms3(targetURL, account, password, phone, code string, n int) bool {
-	msg := fmt.Sprintf("你的验证码%s", code)
+	msg := fmt.Sprintf("【欢斗娱乐】你的验证码%s", code) //平台报备签名才能成功,否则不添加签名
 	err := sms253.SendSms(targetURL, account, password, phone, msg)
 	if err == nil {
 		glog.Debugf("send sms successfully phone %s, code %s", phone, code)

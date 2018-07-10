@@ -268,13 +268,14 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 //AgentProfitNumMsg 收益
 func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg *pb.AgentProfitInfo,
 	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate) {
-	num := int64(math.Trunc(float64(user.ProfitRate)/100) * float64(arg.Profit))
+	num := int64(math.Trunc(float64(user.ProfitRate)/float64(100) * float64(arg.Profit)))
 	profit := arg.Profit - num
 	user.AddProfit(arg.Agent, profit)
 	if UpdateWeekProfit(profit, user) {
 		//更新时间消息
 		msg3 = UpdateWeekMsg(user)
 	}
+	glog.Debugf("AddProfit num %d, profit %d, rate %d, arg %#v", num, profit, user.ProfitRate, arg)
 	//日志消息
 	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.Gtype, arg.Level, arg.Rate, profit)
 	//更新消息
@@ -288,7 +289,7 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg *pb.AgentProfitInf
 	}
 	//反给上级消息
 	msg = AgentProfitInfoMsg(user.GetUserid(), user.GetAgent(), false,
-		arg.Gtype, user.AgentLevel, user.ProfitRate, num)
+		arg.Gtype, arg.Level+1, user.ProfitRate, num)//level表示相对当前代理的等级,不是user.AgentLevel
 	if user.AgentState == 1 {
 		msg.Agent = true
 	}

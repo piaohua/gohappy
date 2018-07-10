@@ -129,7 +129,7 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	}
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, rs.User.AgentLevel, 100, rest)
+		false, arg.Gtype, 1, 100, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
 	if rs.User.AgentState == 1 {
 		msg2.Agent = true
 	}

@@ -349,7 +349,7 @@ type LogProfit struct {
 	Agentid string    `bson:"agentid"` //代理ID
 	Userid  string    `bson:"userid"`  //玩家ID
 	Gtype   int32     `bson:"gtype"`   //game type
-	Level   uint32    `bson:"level"`   //level type
+	Level   uint32    `bson:"level"`   //level type, 表示相对agentid的等级
 	Rate    uint32    `bson:"rate"`    //rate
 	Profit  int64     `bson:"profit"`  //Profit
 	Ctime   time.Time `bson:"ctime"`   //create Time
@@ -381,7 +381,7 @@ type LogSysProfit struct {
 	Agentid string    `bson:"agentid"` //代理ID
 	Userid  string    `bson:"userid"`  //玩家ID
 	Gtype   int32     `bson:"gtype"`   //game type
-	Level   uint32    `bson:"level"`   //level type
+	Level   uint32    `bson:"level"`   //level type, 表示userid等级
 	Rate    uint32    `bson:"rate"`    //rate
 	Profit  int64     `bson:"profit"`  //Profit
 	Rest    int64     `bson:"rest"`    //Rest
