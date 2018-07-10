@@ -7,6 +7,7 @@ import (
 	"gohappy/pb"
 
 	"github.com/globalsign/mgo/bson"
+	"utils"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -162,8 +163,8 @@ func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
 	if arg.GetLevel() != 0 {
 		q["level"] = arg.GetLevel()
 	}
-	if arg.GetTime() != 0 {
-		q["ctime"] = bson.M{"$gte": time.Unix(arg.GetTime(), 0), "$lt": time.Unix(arg.GetTime()+86400, 0)}
+	if arg.GetTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Str2Time(arg.GetTime()), "$lt": utils.Str2Time(arg.GetTime()).AddDate(0,0,1)}
 	}
 	err := LogProfits.
 		Find(q).

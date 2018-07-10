@@ -71,7 +71,7 @@ message AgentManage
 message CAgentProfit
 {
     uint32 page = 1;//页数
-    int64 time = 2;//收益日期时间截,查询参数
+    string time = 2;//收益日期时间,查询参数
     uint32 level = 3;//收益等级
     string agentid = 4;//代理id,server参数
 }

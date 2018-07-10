@@ -1496,7 +1496,7 @@
               "id": 1
             },
             "time": {
-              "type": "int64",
+              "type": "string",
               "id": 2
             },
             "level": {
