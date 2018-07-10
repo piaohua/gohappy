@@ -203,6 +203,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 			msg := handler.AgentJoinMsg(rs.User)
 			rs.rolePid.Request(msg, ctx.Self())
 			rs.User.AgentState = 1 //默认通过，不用审核
+			handler.SetAgentProfitRate(rs.User) //TODO 优化为消息同步
 		}
 	}
 	rs.Send(rsp)
