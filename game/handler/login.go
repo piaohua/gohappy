@@ -85,8 +85,8 @@ func SetLoginPrizeList() {
 		t := data.LoginPrize{
 			ID:    bson.NewObjectId().Hex(),
 			Ctime: bson.Now(),
-			//Diamond: 100 * int64((i + 1)),
-			Coin: 2000 * int64((i + 1)),
+			Diamond: 100 * int64((i + 1)),
+			//Coin: 2000 * int64((i + 1)),
 			Day:  i,
 		}
 		config.SetLogin(t)
