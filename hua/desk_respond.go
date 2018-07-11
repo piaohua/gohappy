@@ -58,6 +58,10 @@ func (t *Desk) chatText(arg *pb.CChatText, ctx actor.Context) {
 	//房间消息广播,聊天
 	msg := handler.ChatTextMsg(seat, userid, arg.Content)
 	msg.Error = t.chatEmoji(userid, arg.GetContent())
+	if msg.Error != pb.OK {
+		t.send2userid(userid, msg)
+		return
+	}
 	t.broadcast(msg)
 }
 
@@ -71,7 +75,7 @@ func (t *Desk) chatVoice(arg *pb.CChatVoice, ctx actor.Context) {
 
 // 表情包,TODO 严格验证或新加协议
 func (t *Desk) chatEmoji(userid, context string) pb.ErrCode {
-	if strings.HasPrefix(context, "_p") {
+	if !strings.HasPrefix(context, "_p") {
 		return pb.OK
 	}
 	s := strings.Split(context, "/")
@@ -91,7 +95,7 @@ func (t *Desk) chatEmoji(userid, context string) pb.ErrCode {
 		}
 	}
 	//TODO 货币变更消息广播
-	t.sendDiamond(userid, num, int32(pb.LOG_TYPE50))
+	t.sendDiamond(userid, -1 * num, int32(pb.LOG_TYPE50))
 	return pb.OK
 }
 
