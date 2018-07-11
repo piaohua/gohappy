@@ -8,6 +8,8 @@
 package main
 
 import (
+	"strings"
+
 	"gohappy/data"
 	"gohappy/game/algo"
 	"gohappy/game/handler"
@@ -63,7 +65,9 @@ func (t *Desk) chatText(arg *pb.CChatText, ctx actor.Context) {
 	seat := t.getSeat(userid)
 	glog.Debugf("CChatText %s, %d", userid, seat)
 	//房间消息广播,聊天
-	t.broadcast(handler.ChatTextMsg(seat, userid, arg.Content))
+	msg := handler.ChatTextMsg(seat, userid, arg.Content)
+	msg.Error = t.chatEmoji(userid, arg.GetContent())
+	t.broadcast(msg)
 }
 
 func (t *Desk) chatVoice(arg *pb.CChatVoice, ctx actor.Context) {
@@ -72,6 +76,32 @@ func (t *Desk) chatVoice(arg *pb.CChatVoice, ctx actor.Context) {
 	glog.Debugf("CChatVoice %s, %d", userid, seat)
 	//房间消息广播,聊天
 	t.broadcast(handler.ChatVoiceMsg(seat, userid, arg.Content))
+}
+
+// 表情包,TODO 严格验证或新加协议
+func (t *Desk) chatEmoji(userid, context string) pb.ErrCode {
+	if strings.HasPrefix(context, "_p") {
+		return pb.OK
+	}
+	s := strings.Split(context, "/")
+	if len(s) != 3 {
+		return pb.OK
+	}
+	var num int64 = 5 //TODO 消耗数量配置
+	if s[1] == "-1" {
+		n := len(t.seats) - 1
+		if n > 0 {
+			num *= int64(n)
+		}
+	}
+	if v, ok := t.roles[userid]; ok && v != nil {
+		if v.User.GetDiamond() < num {
+			return pb.NotEnoughDiamond
+		}
+	}
+	//TODO 货币变更消息广播
+	t.sendDiamond(userid, num, int32(pb.LOG_TYPE50))
+	return pb.OK
 }
 
 //.
