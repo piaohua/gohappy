@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"gohappy/pb"
+	"utils"
 
 	"github.com/globalsign/mgo/bson"
-	"utils"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -164,7 +164,7 @@ func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
 		q["level"] = arg.GetLevel()
 	}
 	if arg.GetTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Str2Time(arg.GetTime()), "$lt": utils.Str2Time(arg.GetTime()).AddDate(0,0,1)}
+		q["ctime"] = bson.M{"$gte": utils.Str2Time(arg.GetTime()), "$lt": utils.Str2Time(arg.GetTime()).AddDate(0, 0, 1)}
 	}
 	err := LogProfits.
 		Find(q).
@@ -235,21 +235,21 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 
 // UserInfo store user information.
 type UserInfo struct {
-	Agentid       string `bson:"agentid" json:"agentid,omitempty"`
-	Subscribe     int    `bson:"subscribe" json:"subscribe,omitempty"`
-	Language      string `bson:"language" json:"language,omitempty"`
-	OpenId        string `bson:"openid" json:"openid,omitempty"`  // nolint
-	UnionId       string `bson:"_id" json:"unionid,omitempty"` // nolint
-	Nickname      string `bson:"nickname" json:"nickname,omitempty"`
-	Sex           int    `bson:"sex" json:"sex,omitempty"`
-	City          string `bson:"city" json:"city,omitempty"`
-	Country       string `bson:"country" json:"country,omitempty"`
-	Province      string `bson:"province" json:"province,omitempty"`
-	HeadImageUrl  string `bson:"headimgurl" json:"headimgurl,omitempty"` // nolint
-	SubscribeTime int64  `bson:"subscribe_time" json:"subscribe_time,omitempty"`
-	Remark        string `bson:"remark" json:"remark,omitempty"`
-	GroupId       int    `bson:"groupid" json:"groupid,omitempty"` // nolint
-	Ctime         time.Time `bson:"ctime" json:"ctime"`         //本条记录生成unix时间戳
+	Agentid       string    `bson:"agentid" json:"agentid,omitempty"`
+	Subscribe     int       `bson:"subscribe" json:"subscribe,omitempty"`
+	Language      string    `bson:"language" json:"language,omitempty"`
+	OpenId        string    `bson:"openid" json:"openid,omitempty"` // nolint
+	UnionId       string    `bson:"_id" json:"unionid,omitempty"`   // nolint
+	Nickname      string    `bson:"nickname" json:"nickname,omitempty"`
+	Sex           int       `bson:"sex" json:"sex,omitempty"`
+	City          string    `bson:"city" json:"city,omitempty"`
+	Country       string    `bson:"country" json:"country,omitempty"`
+	Province      string    `bson:"province" json:"province,omitempty"`
+	HeadImageUrl  string    `bson:"headimgurl" json:"headimgurl,omitempty"` // nolint
+	SubscribeTime int64     `bson:"subscribe_time" json:"subscribe_time,omitempty"`
+	Remark        string    `bson:"remark" json:"remark,omitempty"`
+	GroupId       int       `bson:"groupid" json:"groupid,omitempty"` // nolint
+	Ctime         time.Time `bson:"ctime" json:"ctime"`               //本条记录生成unix时间戳
 }
 
 //Has 判断记录是否存在

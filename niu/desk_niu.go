@@ -833,9 +833,9 @@ func (t *Desk) powerAward() {
 		}
 		var num = t.DeskData.Ante
 		switch v.Power {
-		case algo.Straight,algo.FullHouse,
-		algo.Flush, algo.FiveFlower,algo.Bomb,
-		algo.StraightFlush,algo.FiveTiny:
+		case algo.Straight, algo.FullHouse,
+			algo.Flush, algo.FiveFlower, algo.Bomb,
+			algo.StraightFlush, algo.FiveTiny:
 			num += algo.Multiple1(v.Power)
 		default:
 			continue

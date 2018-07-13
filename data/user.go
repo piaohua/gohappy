@@ -9,26 +9,26 @@ import (
 )
 
 type User struct {
-	Userid   string `bson:"_id" json:"userid"`          // 用户id
-	Nickname string `bson:"nickname" json:"nickname"`   // 用户昵称
-	Photo    string `bson:"photo" json:"photo"`         // 头像
-	Wxuid    string `bson:"wxuid" json:"wxuid"`         // 微信uid
-	OpenId   string `bson:"openid" json:"openid,omitempty"`  //微信openid nolint
+	Userid   string `bson:"_id" json:"userid"`                // 用户id
+	Nickname string `bson:"nickname" json:"nickname"`         // 用户昵称
+	Photo    string `bson:"photo" json:"photo"`               // 头像
+	Wxuid    string `bson:"wxuid" json:"wxuid"`               // 微信uid
+	OpenId   string `bson:"openid" json:"openid,omitempty"`   //微信openid nolint
 	UnionId  string `bson:"unionid" json:"unionid,omitempty"` //微信unionid nolint
-	Sex      uint32 `bson:"sex" json:"sex"`             // 用户性别,男1 女2 非男非女3
-	Phone    string `bson:"phone" json:"phone"`         // 绑定的手机号码
-	Tourist  string `bson:"tourist" json:"tourist"`     // 游客
-	Auth     string `bson:"auth" json:"auth"`           // 密码验证码
-	Password string `bson:"password" json:"password"`   // MD5密码
-	RegistIP string `bson:"regist_ip" json:"regist_ip"` // 注册账户时的IP地址
-	LoginIP  string `bson:"login_ip" json:"login_ip"`   // 登录账户时的IP地址
-	Diamond  int64  `bson:"diamond" json:"diamond"`     // 钻石
-	Coin     int64  `bson:"coin" json:"coin"`           // 金币
-	Chip     int64  `bson:"chip" json:"chip"`           // 筹码
-	Card     int64  `bson:"card" json:"card"`           // 房卡
-	Vip      uint32 `bson:"vip" json:"vip"`             // vip
-	Status   uint32 `bson:"status" json:"status"`       // 正常1  锁定2  黑名单3
-	Robot    bool   `bson:"robot" json:"robot"`         // 是否是机器人
+	Sex      uint32 `bson:"sex" json:"sex"`                   // 用户性别,男1 女2 非男非女3
+	Phone    string `bson:"phone" json:"phone"`               // 绑定的手机号码
+	Tourist  string `bson:"tourist" json:"tourist"`           // 游客
+	Auth     string `bson:"auth" json:"auth"`                 // 密码验证码
+	Password string `bson:"password" json:"password"`         // MD5密码
+	RegistIP string `bson:"regist_ip" json:"regist_ip"`       // 注册账户时的IP地址
+	LoginIP  string `bson:"login_ip" json:"login_ip"`         // 登录账户时的IP地址
+	Diamond  int64  `bson:"diamond" json:"diamond"`           // 钻石
+	Coin     int64  `bson:"coin" json:"coin"`                 // 金币
+	Chip     int64  `bson:"chip" json:"chip"`                 // 筹码
+	Card     int64  `bson:"card" json:"card"`                 // 房卡
+	Vip      uint32 `bson:"vip" json:"vip"`                   // vip
+	Status   uint32 `bson:"status" json:"status"`             // 正常1  锁定2  黑名单3
+	Robot    bool   `bson:"robot" json:"robot"`               // 是否是机器人
 	//战绩
 	Win  uint32 `bson:"win" json:"win"`   // 赢
 	Lost uint32 `bson:"lost" json:"lost"` // 输
@@ -51,8 +51,8 @@ type User struct {
 	AgentState       uint32    `bson:"agent_state" json:"agent_state"`               // 是否是代理状态1通过
 	AgentLevel       uint32    `bson:"agent_level" json:"agent_level"`               // 代理等级,1，2，3，4
 	Build            uint32    `bson:"build" json:"build"`                           // 下属绑定数量
-	AgentChild       uint32    `bson:"agent_child" json:"agent_child"`             // 下属代理数量
-	BuildVaild       uint32    `bson:"build_vaild" json:"build_vaild"`             // 下属有效绑定数量
+	AgentChild       uint32    `bson:"agent_child" json:"agent_child"`               // 下属代理数量
+	BuildVaild       uint32    `bson:"build_vaild" json:"build_vaild"`               // 下属有效绑定数量
 	AgentName        string    `bson:"agent_name" json:"agent_name"`                 // 代理名字
 	RealName         string    `bson:"real_name" json:"real_name"`                   // 真实姓名
 	Weixin           string    `bson:"weixin" json:"weixin"`                         // 微信
@@ -132,7 +132,7 @@ func (this *User) UpdateAgentProfit() bool {
 		bson.M{"$set": bson.M{"week_profit": this.WeekProfit,
 			"week_player_profit": this.WeekPlayerProfit,
 			"history_profit":     this.HistoryProfit,
-			"profit": this.Profit,
+			"profit":             this.Profit,
 			"sub_player_profit":  this.SubPlayerProfit,
 			"sub_agent_profit":   this.SubAgentProfit}})
 }
