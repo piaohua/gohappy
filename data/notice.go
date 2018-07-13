@@ -36,7 +36,7 @@ type Notice struct {
 
 //Save 保存消息记录
 func (t *Notice) Save() bool {
-	//t.Id = bson.NewObjectId().Hex()
+	t.Id = bson.NewObjectId().Hex()
 	t.Ctime = bson.Now()
 	t.Etime = bson.Now().AddDate(0, 0, 7)
 	return Insert(Notices, t)

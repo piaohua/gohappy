@@ -7,9 +7,9 @@ import (
 	"gohappy/glog"
 	"gohappy/pb"
 
+	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
 	"github.com/wizjin/weixin"
-	"github.com/json-iterator/go"
 )
 
 //Echo 文本消息的处理函数

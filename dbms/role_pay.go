@@ -2,13 +2,13 @@ package main
 
 import (
 	"api/jtpay"
+	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/data"
 )
 
 //支付处理

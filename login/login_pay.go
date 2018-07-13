@@ -1,15 +1,15 @@
 package main
 
 import (
-	"errors"
-	"fmt"
-	"strings"
 	"api/jtpay"
 	"api/wxpay"
+	"errors"
+	"fmt"
 	"gohappy/data"
 	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
+	"strings"
 	"utils"
 
 	"github.com/json-iterator/go"
@@ -257,6 +257,7 @@ func jtpayOrderHandler(order *jtpay.JTpayOrder, ip string) error {
 	order.P3_money = utils.String(price) //RMB
 	//order.P3_money = "1" //TODO test
 	order.P16_customip = ip
+	//order.P26_ext1 = "1.1"
 	//初始化订单
 	JTpay.InitOrder(order)
 	glog.Infof("order %#v", order)

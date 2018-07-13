@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"strconv"
-
 	"api/jtpay"
 	"gohappy/data"
 	"gohappy/game/config"
@@ -97,13 +95,13 @@ func JtpayTradeVerify(t *jtpay.NotifyResult) *data.TradeRecord {
 	tradeRecord.Transid = t.P5_orderid
 	tradeRecord.Transtime = utils.Time2Str(utils.LocalTime())
 	//tradeRecord.Paytype = t.P6_productcode
-	money, err := strconv.Atoi(t.P13_zfmoney)
-	if err != nil {
-		glog.Errorf("jtpay: %v, err: %#v", t, err)
-	}
-	if uint32(money*100) != tradeRecord.Money {
-		glog.Errorf("jtpay money : %#v, err: %v", t, err)
-	}
+	//money, err := strconv.Atoi(t.P13_zfmoney)
+	//if err != nil {
+	//	glog.Errorf("jtpay: %v, err: %#v", t, err)
+	//}
+	//if uint32(money*100) != tradeRecord.Money {
+	//	glog.Errorf("jtpay money : %#v, err: %v", t, err)
+	//}
 	//tradeRecord.Money = uint32(money)      //转换为分
 	tradeRecord.Result = data.TradeSuccess //交易成功
 	//glog.Infof("tradeRecord  %#v", tradeRecord)

@@ -93,6 +93,6 @@ func BuyNotice(coin int64, userid string) (record *pb.LogNotice,
 	if coin <= 0 {
 		return
 	}
-	content := fmt.Sprintf("恭喜你成功兑换%d金币", coin)
+	content := fmt.Sprintf("恭喜你成功充值%d金币", coin)
 	return NewNotice(0, 0, userid, content)
 }
