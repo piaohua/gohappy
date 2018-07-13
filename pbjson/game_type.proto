@@ -162,6 +162,7 @@ enum LogType {
     LOG_TYPE48 = 48;//抽水
     LOG_TYPE49 = 49;//代理提现
     LOG_TYPE50 = 50;//使用道具
+    LOG_TYPE51 = 51;//牌型奖励
 }
 
 // 放看比加跟掩码
@@ -199,4 +200,5 @@ enum TaskType {
     TASK_TYPE18 =18;//百人三公押中混三公
     TASK_TYPE19 =19;//百人三公押中小三公
     TASK_TYPE20 =20;//百人三公押中大三公
+    TASK_TYPE21 =21;//大厅房玩牌场次
 }

@@ -281,6 +281,8 @@ func (t *Desk) gameOver() {
 	glog.Debugf("score %#v", score)
 	//个人记录
 	t.setRecord(score)
+	//牌型奖励
+	t.powerAward()
 	//结算消息
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0): //自由
@@ -526,6 +528,11 @@ func (t *Desk) setRecord(score map[uint32]int64) {
 		case int32(pb.ROOM_TYPE0): //自由
 			if v > 0 {
 				msg2 := handler.TaskUpdateMsg(1, pb.TASK_TYPE7, user.GetUserid())
+				pid.Tell(msg2)
+			}
+		case int32(pb.ROOM_TYPE1): //私人
+			if t.DeskData.Pub {
+				msg2 := handler.TaskUpdateMsg(1, pb.TASK_TYPE21, user.GetUserid())
 				pid.Tell(msg2)
 			}
 		}
@@ -815,6 +822,25 @@ func (t *Desk) drawfee() {
 		//反佣和收益消息
 		msg2 := handler.AgentProfitNumMsg(v.Userid, t.DeskData.Gtype, num)
 		t.send3userid(v.Userid, msg2)
+	}
+}
+
+//牌型奖励
+func (t *Desk) powerAward() {
+	for _, v := range t.seats {
+		if !v.Ready {
+			continue
+		}
+		var num = t.DeskData.Ante
+		switch v.Power {
+		case algo.Straight,algo.FullHouse,
+		algo.Flush, algo.FiveFlower,algo.Bomb,
+		algo.StraightFlush,algo.FiveTiny:
+			num += algo.Multiple1(v.Power)
+		default:
+			continue
+		}
+		t.sendDiamond(v.Userid, int64(num), int32(pb.LOG_TYPE51))
 	}
 }
 
