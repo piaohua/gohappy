@@ -11,6 +11,7 @@ const (
 	NOTICE_TYPE0 = 0 //购买消息
 	NOTICE_TYPE1 = 1 //公告消息
 	NOTICE_TYPE2 = 2 //广播消息
+	NOTICE_TYPE3 = 3 //系统消息
 )
 
 const (
@@ -45,8 +46,10 @@ func (t *Notice) Save() bool {
 //GetNoticeList 获取公共消息(系统消息)
 func GetNoticeList(rtype int) []Notice {
 	var list []Notice
-	q := bson.M{"del": 0, "rtype": rtype,
-		"userid": "",
+	//q := bson.M{"del": 0, "rtype": rtype,
+	//	"userid": "",
+	//	"etime":  bson.M{"$gt": bson.Now()}}
+	q := bson.M{"del": 0, "userid": "",
 		"etime":  bson.M{"$gt": bson.Now()}}
 	ListByQ(Notices, q, &list)
 	return list
