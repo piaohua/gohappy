@@ -141,6 +141,8 @@ func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context
 	} else {
 		rsp.Profit = arg.GetProfit()
 		user.Profit -= arg.GetProfit()
+		//暂时实时写入, TODO 异步数据更新
+		user.UpdateAgentProfit()
 	}
 	ctx.Respond(rsp)
 }
@@ -221,10 +223,12 @@ func (a *RoleActor) agentProfitReplyMsg(arg *pb.AgentProfitReplyMsg, ctx actor.C
 	}
 	if arg.GetProfit() != 0 {
 		user.Profit += arg.GetProfit()
+		//暂时实时写入, TODO 异步数据更新
+		user.UpdateAgentProfit()
 	}
 }
 
-//更新收益
+//代理确认
 func (a *RoleActor) agentConfirm(arg *pb.AgentConfirm, ctx actor.Context) {
 	rsp := new(pb.AgentConfirmed)
 	user := a.getUserById(arg.GetUserid())
