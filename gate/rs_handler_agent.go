@@ -291,7 +291,7 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.Profit < int64(arg.GetProfit()) {
+	if rs.User.Profit < int64(arg.GetProfit()) || rs.User.Profit < 10000 {
 		rsp.Error = pb.ProfitNotEnough
 		rs.Send(rsp)
 		return
