@@ -43,6 +43,7 @@ message Rank
     string nickname = 2;//昵称
     string photo    = 3;//头像
     string userid   = 4;//用户
+    string sign     = 5;//个性签名
 }
 
 // task

@@ -10,7 +10,7 @@ enum GameType {
     DOU  = 3; //斗地主 CDZ, SDZ
     HUA  = 4; //金花 CJH, SJH
     PAI  = 5; //比牌,接牌 CBP, SBP
-    ERBA = 6; //二八杠 CEB, SEB
+    EBG  = 6; //二八杠 CEB, SEB
 }
 
 //桌子状态

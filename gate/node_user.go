@@ -4,6 +4,8 @@ import (
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
+	"gohappy/data"
+	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 	"github.com/gogo/protobuf/proto"
@@ -16,6 +18,7 @@ func (a *GateActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SyncConfig)
 		glog.Debugf("SyncConfig %#v", arg)
 		handler.SyncConfig(arg)
+		a.pushNotice(arg)
 	case *pb.PayCurrency:
 		//后台或充值同步到game房间
 		arg := msg.(*pb.PayCurrency)
@@ -65,5 +68,47 @@ func (a *GateActor) handlerUser(msg interface{}, ctx actor.Context) {
 		a.handlerLogin(msg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
+	}
+}
+
+//节点广播消息
+func (a *GateActor) broadcast(msg interface{}) {
+	for _, v := range a.online {
+			v.Tell(msg)
+	}
+}
+
+//节点广播消息推送
+func (a *GateActor) pushNotice(arg *pb.SyncConfig) {
+	switch arg.Type {
+	case pb.CONFIG_NOTICE: //公告
+		b := make(map[string]data.Notice)
+		err = json.Unmarshal(arg.Data, &b)
+		if err != nil {
+			glog.Errorf("syncConfig Unmarshal err %v, data %#v", err, arg.Data)
+			return
+		}
+		for _, v := range b {
+			switch arg.Atype {
+			case pb.CONFIG_DELETE:
+			case pb.CONFIG_UPSERT:
+				msg := new(pb.SPushNotice)
+				msg.Info = &pb.Notice{
+					Time:    utils.Time2LocalStr(v.Ctime),
+					Rtype:   int32(v.Rtype),
+					Acttype: int32(v.Acttype),
+					Content: v.Content,
+				}
+				if v.Userid == "" {
+					//广播消息通知玩家,只发送新消息
+					a.broadcast(msg)
+				} else {
+					//玩家个人消息单独通知
+					if val, ok := a.online[v.Userid]; ok {
+						val.Tell(msg)
+					}
+				}
+			}
+		}
 	}
 }

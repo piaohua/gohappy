@@ -296,7 +296,8 @@ func GetRank() ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "coin", false)
 	var list []bson.M
-	selector := make(bson.M, 4)
+	selector := make(bson.M, 5)
+	selector["sign"] = true
 	selector["coin"] = true
 	selector["nickname"] = true
 	selector["photo"] = true

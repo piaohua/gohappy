@@ -348,7 +348,9 @@ func Init() {
 	var rpacketStr string
 	var runpackStr string
 	//request
-	for k, m := range protosUnpack {
+	for _, k := range []string{"game", "niu", "san", "hua"} {
+		m := protosUnpack[k] //有序
+	//for k, m := range protosUnpack {
 		//初始化
 		protoPacket = make(map[string]uint32) //响应协议
 		protoUnpack = make(map[string]uint32) //请求协议

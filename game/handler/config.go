@@ -43,6 +43,10 @@ func SyncConfig(arg *pb.SyncConfig) (err error) {
 			case pb.CONFIG_DELETE:
 				config.DelNotice(k)
 			case pb.CONFIG_UPSERT:
+				//玩家个人消息直接写数据库，不缓存在内存中
+				if v.Userid != "" {
+					continue
+				}
 				config.SetNotice(v)
 			}
 		}
