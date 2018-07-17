@@ -103,9 +103,12 @@ func (a *GateActor) pushNotice(arg *pb.SyncConfig) {
 					//广播消息通知玩家,只发送新消息
 					a.broadcast(msg)
 				} else {
-					//玩家个人消息单独通知
-					if val, ok := a.online[v.Userid]; ok {
-						val.Tell(msg)
+					s := utils.Split(v.Userid, ",")
+					for _, val := range s {
+						//玩家个人消息单独通知
+						if val, ok := a.online[val]; ok {
+							val.Tell(msg)
+						}
 					}
 				}
 			}
