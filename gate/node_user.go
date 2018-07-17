@@ -88,6 +88,7 @@ func (a *GateActor) pushNotice(arg *pb.SyncConfig) {
 			glog.Errorf("syncConfig Unmarshal err %v, data %#v", err, arg.Data)
 			return
 		}
+		glog.Debugf("pushNotice %#v", b)
 		for _, v := range b {
 			switch arg.Atype {
 			case pb.CONFIG_DELETE:
