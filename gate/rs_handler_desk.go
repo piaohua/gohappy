@@ -125,6 +125,20 @@ func (rs *RoleActor) enterdDeskMsg(msg *pb.EnteredDesk, ctx actor.Context) bool 
 		default:
 			glog.Errorf("enterdDesk match fail %#v", msg)
 		}
+	case int32(pb.EBG):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.CEBCoinEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.CEBEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.CEBFreeEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		default:
+			glog.Errorf("enterdDesk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enterdDesk match fail %#v", msg)
 	}
@@ -136,6 +150,7 @@ func (rs *RoleActor) selectDesk(msg *pb.MatchDesk, ctx actor.Context) {
 	msg.Sender = ctx.Self()
 	switch msg.Gtype {
 	case int32(pb.NIU),
+		int32(pb.EBG),
 		int32(pb.SAN),
 		int32(pb.HUA):
 		switch msg.Rtype {
@@ -267,6 +282,23 @@ func (rs *RoleActor) enterdDeskErr(msg *pb.EnteredDesk, ctx actor.Context) {
 		default:
 			glog.Errorf("enter Desk match fail %#v", msg)
 		}
+	case int32(pb.EBG):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.SEBCoinEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.SEBEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SEBFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("enter Desk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enter Desk match fail %#v", msg)
 	}
@@ -326,6 +358,23 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 		default:
 			glog.Errorf("matched DeskErr fail %#v", msg)
 		}
+	case int32(pb.EBG):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE0): //自由
+			msg2 := new(pb.SEBCoinEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE1): //私人
+			msg2 := new(pb.SEBEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SEBFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("matched DeskErr fail %#v", msg)
+		}
 	default:
 		glog.Errorf("matched DeskErr fail %#v", msg)
 	}
@@ -334,35 +383,41 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 //创建房间结果
 func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
-		rsp := new(pb.SNNCreateRoom)
-		rsp.Error = arg.Error
-		rs.Send(rsp)
+        rs.createdDeskMsg(arg.Gtype, arg.Error)
 		return
 	}
 	msg := new(pb.EnterDesk)
 	msg.Gtype = arg.Gtype
 	msg.Rtype = arg.Rtype
 	if !rs.enterDeskMsg(msg, ctx) || arg.Desk == nil {
-		//失败消息
-		switch msg.Gtype {
-		case int32(pb.NIU):
-			rsp := new(pb.SNNCreateRoom)
-			rsp.Error = pb.CreateRoomFail
-			rs.Send(rsp)
-		case int32(pb.SAN):
-			rsp := new(pb.SSGCreateRoom)
-			rsp.Error = pb.CreateRoomFail
-			rs.Send(rsp)
-		case int32(pb.HUA):
-			rsp := new(pb.SJHCreateRoom)
-			rsp.Error = pb.CreateRoomFail
-			rs.Send(rsp)
-		default:
-			glog.Errorf("matched DeskErr fail %#v", msg)
-		}
+        rs.createdDeskMsg(arg.Gtype, arg.Error)
 		return
 	}
 	arg.Desk.Request(msg, ctx.Self())
+}
+
+//失败消息
+func (rs *RoleActor) createdDeskMsg(Gtype int32, errcode pb.ErrCode) {
+    switch Gtype {
+    case int32(pb.NIU):
+        rsp := new(pb.SNNCreateRoom)
+        rsp.Error = pb.CreateRoomFail
+        rs.Send(rsp)
+    case int32(pb.SAN):
+        rsp := new(pb.SSGCreateRoom)
+        rsp.Error = pb.CreateRoomFail
+        rs.Send(rsp)
+    case int32(pb.HUA):
+        rsp := new(pb.SJHCreateRoom)
+        rsp.Error = pb.CreateRoomFail
+        rs.Send(rsp)
+    case int32(pb.EBG):
+        rsp := new(pb.SEBCreateRoom)
+        rsp.Error = pb.CreateRoomFail
+        rs.Send(rsp)
+    default:
+        glog.Errorf("matched DeskErr fail %d, %d", Gtype, errcode)
+    }
 }
 
 //换房间结果
@@ -397,6 +452,10 @@ func (rs *RoleActor) changedDeskMsg(arg *pb.ChangedDesk, errcode pb.ErrCode) {
 		rs.Send(rsp)
 	case int32(pb.HUA):
 		rsp := new(pb.SJHCoinChangeRoom)
+		rsp.Error = errcode
+		rs.Send(rsp)
+	case int32(pb.EBG):
+		rsp := new(pb.SEBCoinChangeRoom)
 		rsp.Error = errcode
 		rs.Send(rsp)
 	}

@@ -8,192 +8,172 @@ import (
 	"github.com/AsynkronIT/protoactor-go/actor"
 )
 
-//牛牛请求处理
-func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
+//ebg请求处理
+func (rs *RoleActor) handlerEbg(msg interface{}, ctx actor.Context) {
 	switch msg.(type) {
-	case *pb.CChatText:
-		arg := msg.(*pb.CChatText)
-		glog.Debugf("CChatText %#v", arg)
+	case *pb.CEBCoinEnterRoom:
+		arg := msg.(*pb.CEBCoinEnterRoom)
+		glog.Debugf("CEBCoinEnterRoom %#v", arg)
+		rs.enterEbgCoin(arg, ctx)
+	case *pb.CEBFreeEnterRoom:
+		arg := msg.(*pb.CEBFreeEnterRoom)
+		glog.Debugf("CEBFreeEnterRoom %#v", arg)
+		rs.enterEbgFree(arg, ctx)
+	case *pb.CEBFreeDealer:
+		arg := msg.(*pb.CEBFreeDealer)
+		glog.Debugf("CEBFreeDealer %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SChatText)
+			rsp := new(pb.SEBFreeDealer)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CChatVoice:
-		arg := msg.(*pb.CChatVoice)
-		glog.Debugf("CChatVoice %#v", arg)
+	case *pb.CEBFreeDealerList:
+		arg := msg.(*pb.CEBFreeDealerList)
+		glog.Debugf("CEBFreeDealerList %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SChatVoice)
+			rsp := new(pb.SEBFreeDealerList)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNCoinEnterRoom:
-		arg := msg.(*pb.CNNCoinEnterRoom)
-		glog.Debugf("CNNCoinEnterRoom %#v", arg)
-		rs.enterNNCoin(arg, ctx)
-	case *pb.CNNFreeEnterRoom:
-		arg := msg.(*pb.CNNFreeEnterRoom)
-		glog.Debugf("CNNFreeEnterRoom %#v", arg)
-		rs.enterNNFree(arg, ctx)
-	case *pb.CNNFreeDealer:
-		arg := msg.(*pb.CNNFreeDealer)
-		glog.Debugf("CNNFreeDealer %#v", arg)
+	case *pb.CEBSit:
+		arg := msg.(*pb.CEBSit)
+		glog.Debugf("CEBSit %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNFreeDealer)
+			rsp := new(pb.SEBSit)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNFreeDealerList:
-		arg := msg.(*pb.CNNFreeDealerList)
-		glog.Debugf("CNNFreeDealerList %#v", arg)
+	case *pb.CEBFreeBet:
+		arg := msg.(*pb.CEBFreeBet)
+		glog.Debugf("CEBFreeBet %#v", arg)
+		rs.ebgFreeBet(arg, ctx)
+	case *pb.CEBFreeTrend:
+		arg := msg.(*pb.CEBFreeTrend)
+		glog.Debugf("CEBFreeTrend %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNFreeDealerList)
+			rsp := new(pb.SEBFreeTrend)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNSit:
-		arg := msg.(*pb.CNNSit)
-		glog.Debugf("CNNSit %#v", arg)
+	case *pb.CEBFreeWiners:
+		arg := msg.(*pb.CEBFreeWiners)
+		glog.Debugf("CEBFreeWiners %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNSit)
+			rsp := new(pb.SEBFreeWiners)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNFreeBet:
-		arg := msg.(*pb.CNNFreeBet)
-		glog.Debugf("CNNFreeBet %#v", arg)
-		rs.nnFreeBet(arg, ctx)
-	case *pb.CNNFreeTrend:
-		arg := msg.(*pb.CNNFreeTrend)
-		glog.Debugf("CNNFreeTrend %#v", arg)
+	case *pb.CEBFreeRoles:
+		arg := msg.(*pb.CEBFreeRoles)
+		glog.Debugf("CEBFreeRoles %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNFreeTrend)
+			rsp := new(pb.SEBFreeRoles)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNFreeWiners:
-		arg := msg.(*pb.CNNFreeWiners)
-		glog.Debugf("CNNFreeWiners %#v", arg)
+	case *pb.CEBRoomList:
+		arg := msg.(*pb.CEBRoomList)
+		glog.Debugf("CEBRoomList %#v", arg)
+		rs.getEbgRoomList(arg, ctx)
+	case *pb.CEBEnterRoom:
+		arg := msg.(*pb.CEBEnterRoom)
+		glog.Debugf("CEBEnterRoom %#v", arg)
+		rs.enterEbgPriv(arg, ctx)
+	case *pb.CEBCreateRoom:
+		arg := msg.(*pb.CEBCreateRoom)
+		glog.Debugf("CEBCreateRoom %#v", arg)
+		rs.createEbgRoom(arg, ctx)
+	case *pb.CEBLeave:
+		arg := msg.(*pb.CEBLeave)
+		glog.Debugf("CEBLeave %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNFreeWiners)
+			rsp := new(pb.SEBLeave)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNFreeRoles:
-		arg := msg.(*pb.CNNFreeRoles)
-		glog.Debugf("CNNFreeRoles %#v", arg)
+	case *pb.CEBReady:
+		arg := msg.(*pb.CEBReady)
+		glog.Debugf("CEBReady %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNFreeRoles)
+			rsp := new(pb.SEBReady)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNRoomList:
-		arg := msg.(*pb.CNNRoomList)
-		glog.Debugf("CNNRoomList %#v", arg)
-		rs.getRoomList(arg, ctx)
-	case *pb.CNNEnterRoom:
-		arg := msg.(*pb.CNNEnterRoom)
-		glog.Debugf("CNNEnterRoom %#v", arg)
-		rs.enterNNPriv(arg, ctx)
-	case *pb.CNNCreateRoom:
-		arg := msg.(*pb.CNNCreateRoom)
-		glog.Debugf("CNNCreateRoom %#v", arg)
-		rs.createRoom(arg, ctx)
-	case *pb.CNNLeave:
-		arg := msg.(*pb.CNNLeave)
-		glog.Debugf("CNNLeave %#v", arg)
+	case *pb.CEBDealer:
+		arg := msg.(*pb.CEBDealer)
+		glog.Debugf("CEBDealer %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNLeave)
+			rsp := new(pb.SEBDealer)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNReady:
-		arg := msg.(*pb.CNNReady)
-		glog.Debugf("CNNReady %#v", arg)
+	case *pb.CEBBet:
+		arg := msg.(*pb.CEBBet)
+		glog.Debugf("CEBBet %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNReady)
+			rsp := new(pb.SEBBet)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNDealer:
-		arg := msg.(*pb.CNNDealer)
-		glog.Debugf("CNNDealer %#v", arg)
+	case *pb.CEBiu:
+		arg := msg.(*pb.CEBiu)
+		glog.Debugf("CEBiu %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNDealer)
+			rsp := new(pb.SEBiu)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNBet:
-		arg := msg.(*pb.CNNBet)
-		glog.Debugf("CNNBet %#v", arg)
-		if rs.gamePid == nil {
-			rsp := new(pb.SNNBet)
-			rsp.Error = pb.NotInRoom
-			rs.Send(rsp)
-			return
-		}
-		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNiu:
-		arg := msg.(*pb.CNNiu)
-		glog.Debugf("CNNiu %#v", arg)
-		if rs.gamePid == nil {
-			rsp := new(pb.SNNiu)
-			rsp.Error = pb.NotInRoom
-			rs.Send(rsp)
-			return
-		}
-		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNGameRecord:
-		arg := msg.(*pb.CNNGameRecord)
-		glog.Debugf("CNNGameRecord %#v", arg)
+	case *pb.CEBGameRecord:
+		arg := msg.(*pb.CEBGameRecord)
+		glog.Debugf("CEBGameRecord %#v", arg)
 		//TODO
-	case *pb.CNNLaunchVote:
-		arg := msg.(*pb.CNNLaunchVote)
-		glog.Debugf("CNNLaunchVote %#v", arg)
+	case *pb.CEBLaunchVote:
+		arg := msg.(*pb.CEBLaunchVote)
+		glog.Debugf("CEBLaunchVote %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNLaunchVote)
+			rsp := new(pb.SEBLaunchVote)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNVote:
-		arg := msg.(*pb.CNNVote)
-		glog.Debugf("CNNVote %#v", arg)
+	case *pb.CEBVote:
+		arg := msg.(*pb.CEBVote)
+		glog.Debugf("CEBVote %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNVote)
+			rsp := new(pb.SEBVote)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
-	case *pb.CNNCoinChangeRoom:
-		arg := msg.(*pb.CNNCoinChangeRoom)
-		glog.Debugf("CNNCoinChangeRoom %#v", arg)
+	case *pb.CEBCoinChangeRoom:
+		arg := msg.(*pb.CEBCoinChangeRoom)
+		glog.Debugf("CEBCoinChangeRoom %#v", arg)
 		if rs.gamePid == nil {
-			rsp := new(pb.SNNCoinChangeRoom)
+			rsp := new(pb.SEBCoinChangeRoom)
 			rsp.Error = pb.NotInRoom
 			rs.Send(rsp)
 			return
@@ -204,13 +184,13 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 	//	rs.Send(msg)
 	default:
 		//glog.Errorf("unknown message %v", msg)
-		rs.handlerEbg(msg, ctx)
+		rs.handlerSan(msg, ctx)
 	}
 }
 
 //进入百人房间
-func (rs *RoleActor) enterNNFree(arg *pb.CNNFreeEnterRoom, ctx actor.Context) {
-	msg := rs.enterMatchDesk(ctx)
+func (rs *RoleActor) enterEbgFree(arg *pb.CEBFreeEnterRoom, ctx actor.Context) {
+	msg := rs.enterEbgMatchDesk(ctx)
 	if msg != nil {
 		msg.Rtype = int32(pb.ROOM_TYPE2) //百人
 		rs.selectDesk(msg, ctx)
@@ -218,8 +198,8 @@ func (rs *RoleActor) enterNNFree(arg *pb.CNNFreeEnterRoom, ctx actor.Context) {
 }
 
 //进入私人房间
-func (rs *RoleActor) enterNNPriv(arg *pb.CNNEnterRoom, ctx actor.Context) {
-	msg := rs.enterMatchDesk(ctx)
+func (rs *RoleActor) enterEbgPriv(arg *pb.CEBEnterRoom, ctx actor.Context) {
+	msg := rs.enterEbgMatchDesk(ctx)
 	if msg != nil {
 		msg.Rtype = int32(pb.ROOM_TYPE1) //私人
 		msg.Code = arg.Code              //邀请码
@@ -228,8 +208,8 @@ func (rs *RoleActor) enterNNPriv(arg *pb.CNNEnterRoom, ctx actor.Context) {
 }
 
 //进入自由房间
-func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
-	msg := rs.enterMatchDesk(ctx)
+func (rs *RoleActor) enterEbgCoin(arg *pb.CEBCoinEnterRoom, ctx actor.Context) {
+	msg := rs.enterEbgMatchDesk(ctx)
 	if msg != nil {
 		msg.Rtype = int32(pb.ROOM_TYPE0) //自由
 		msg.Roomid = arg.Id              //房间id
@@ -238,7 +218,7 @@ func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
 		//msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
 		msg.Ltype = handler.MatchLevel(rs.User.GetCoin())
 		if msg.Ltype < 0 {
-			rsp := new(pb.SNNCoinEnterRoom)
+			rsp := new(pb.SEBCoinEnterRoom)
 			rsp.Error = pb.NotEnoughCoin
 			rs.Send(rsp)
 			return
@@ -248,7 +228,7 @@ func (rs *RoleActor) enterNNCoin(arg *pb.CNNCoinEnterRoom, ctx actor.Context) {
 }
 
 //进入或匹配桌子
-func (rs *RoleActor) enterMatchDesk(ctx actor.Context) *pb.MatchDesk {
+func (rs *RoleActor) enterEbgMatchDesk(ctx actor.Context) *pb.MatchDesk {
 	//已经在游戏中,直接加入
 	if rs.enterGame(ctx) {
 		return nil
@@ -256,34 +236,34 @@ func (rs *RoleActor) enterMatchDesk(ctx actor.Context) *pb.MatchDesk {
 	//获取游戏服节点或者房间进程
 	msg := new(pb.MatchDesk)
 	//TODO 优化查找规则
-	msg.Name = cfg.Section("game.niu").Name()
-	msg.Gtype = int32(pb.NIU) //牛牛
+	msg.Name = cfg.Section("game.ebg").Name()
+	msg.Gtype = int32(pb.EBG) //ebg
 	return msg
 }
 
 //进入或匹配桌子
-func (rs *RoleActor) getRoomList(arg *pb.CNNRoomList, ctx actor.Context) {
+func (rs *RoleActor) getEbgRoomList(arg *pb.CEBRoomList, ctx actor.Context) {
 	//获取游戏服节点或者房间进程
 	msg := new(pb.GetRoomList)
 	msg.Rtype = arg.Rtype
 	msg.Userid = rs.User.GetUserid()
 	msg.Sender = ctx.Self()
 	//TODO 优化查找规则
-	msg.Name = cfg.Section("game.niu").Name()
-	msg.Gtype = int32(pb.NIU) //牛牛
+	msg.Name = cfg.Section("game.ebg").Name()
+	msg.Gtype = int32(pb.EBG) //ebg
 	rs.dbmsPid.Request(msg, ctx.Self())
 }
 
 //百人场下注
-func (rs *RoleActor) nnFreeBet(arg *pb.CNNFreeBet, ctx actor.Context) {
+func (rs *RoleActor) ebgFreeBet(arg *pb.CEBFreeBet, ctx actor.Context) {
 	if rs.User.IsTourist() {
-		rsp := new(pb.SNNFreeBet)
+		rsp := new(pb.SEBFreeBet)
 		rsp.Error = pb.TouristInoperable
 		rs.Send(rsp)
 		return
 	}
 	if rs.gamePid == nil {
-		rsp := new(pb.SNNFreeBet)
+		rsp := new(pb.SEBFreeBet)
 		rsp.Error = pb.NotInRoom
 		rs.Send(rsp)
 		return
@@ -292,19 +272,19 @@ func (rs *RoleActor) nnFreeBet(arg *pb.CNNFreeBet, ctx actor.Context) {
 	seat := arg.GetSeat()
 	if !(seat >= uint32(pb.DESK_SEAT2) &&
 		seat <= uint32(pb.DESK_SEAT9)) {
-		rsp := new(pb.SNNFreeBet)
+		rsp := new(pb.SEBFreeBet)
 		rsp.Error = pb.OperateError
 		rs.Send(rsp)
 		return
 	}
 	if value <= 0 {
-		rsp := new(pb.SNNFreeBet)
+		rsp := new(pb.SEBFreeBet)
 		rsp.Error = pb.OperateError
 		rs.Send(rsp)
 		return
 	}
 	if rs.User.GetCoin() < int64(value) {
-		rsp := new(pb.SNNFreeBet)
+		rsp := new(pb.SEBFreeBet)
 		rsp.Error = pb.NotEnoughCoin
 		rs.Send(rsp)
 		return
@@ -313,7 +293,7 @@ func (rs *RoleActor) nnFreeBet(arg *pb.CNNFreeBet, ctx actor.Context) {
 }
 
 //创建房间
-func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
+func (rs *RoleActor) createEbgRoom(arg *pb.CEBCreateRoom, ctx actor.Context) {
 	//TODO 验证
 	msg := &pb.CreateDesk{
 		Rname:    arg.Rname,
@@ -334,11 +314,12 @@ func (rs *RoleActor) createRoom(arg *pb.CNNCreateRoom, ctx actor.Context) {
 	case int32(pb.DESK_TYPE0):
 	case int32(pb.DESK_TYPE1):
 	case int32(pb.DESK_TYPE2):
+	case int32(pb.DESK_TYPE3):
 	default:
 		msg.Dtype = int32(pb.DESK_TYPE0)
 	}
-	msg.Name = cfg.Section("game.niu").Name()
-	msg.Gtype = int32(pb.NIU)        //牛牛
+	msg.Name = cfg.Section("game.ebg").Name()
+	msg.Gtype = int32(pb.EBG)        //ebg
 	msg.Rtype = int32(pb.ROOM_TYPE1) //私人
 	msg.Cid = rs.User.GetUserid()
 	msg.Sender = ctx.Self()

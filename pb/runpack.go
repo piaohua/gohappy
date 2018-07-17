@@ -578,6 +578,138 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SJHPushDrawCoin)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 5500:
+		msg := new(SEBCoinEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5501:
+		msg := new(SEBCoinGameover)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5502:
+		msg := new(SEBFreeEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5503:
+		msg := new(SEBFreeCamein)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5504:
+		msg := new(SEBFreeDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5505:
+		msg := new(SEBFreeDealerList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5507:
+		msg := new(SEBFreeBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5508:
+		msg := new(SEBFreeGamestart)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5509:
+		msg := new(SEBFreeGameover)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5510:
+		msg := new(SEBFreeTrend)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5511:
+		msg := new(SEBRoomList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5512:
+		msg := new(SEBEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5513:
+		msg := new(SEBCreateRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5514:
+		msg := new(SEBCamein)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5515:
+		msg := new(SEBLeave)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5516:
+		msg := new(SEBReady)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5517:
+		msg := new(SEBDraw)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5518:
+		msg := new(SEBDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5519:
+		msg := new(SEBPushDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5520:
+		msg := new(SEBBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5521:
+		msg := new(SEBiu)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5522:
+		msg := new(SEBGameover)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5523:
+		msg := new(SEBGameRecord)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5524:
+		msg := new(SEBLaunchVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5525:
+		msg := new(SEBVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5526:
+		msg := new(SEBVoteResult)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5527:
+		msg := new(SEBPushState)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5528:
+		msg := new(SEBFreeWiners)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5529:
+		msg := new(SEBFreeRoles)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5530:
+		msg := new(SEBSit)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5531:
+		msg := new(SEBPushOffline)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5532:
+		msg := new(SEBCoinChangeRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5533:
+		msg := new(SEBPushDrawCoin)
+		err := msg.Unmarshal(b)
+		return msg, err
 	default:
 		return nil, errors.New("unknown message")
 	}

@@ -34,6 +34,7 @@ enum DeskType {
     DESK_TYPE0 = 0; //看牌抢庄
     DESK_TYPE1 = 1; //通比牛牛
     DESK_TYPE2 = 2; //抢庄看牌
+    DESK_TYPE3 = 3; //ebg:0随机庄,1固定庄,2轮流庄,3抢庄
 }
 
 //房间等级
@@ -97,6 +98,7 @@ enum NoticeType {
     NOTICE_TYPE0 = 0; //购买消息
     NOTICE_TYPE1 = 1; //公告消息
     NOTICE_TYPE2 = 2; //广播消息
+    NOTICE_TYPE3 = 3; //系统消息
 }
 
 //消息操作类型
@@ -202,4 +204,7 @@ enum TaskType {
     TASK_TYPE19 =19;//百人三公押中小三公
     TASK_TYPE20 =20;//百人三公押中大三公
     TASK_TYPE21 =21;//大厅房玩牌场次
+    TASK_TYPE22 =22;//百人二八杠押中二八杠
+    TASK_TYPE23 =23;//百人二八杠押中对子
+    TASK_TYPE24 =24;//百人二八杠押中对十
 }

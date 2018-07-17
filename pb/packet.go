@@ -436,6 +436,105 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SJHPushDrawCoin:
 		b, err := msg.(*SJHPushDrawCoin).Marshal()
 		return 4540, 4, b, err
+	case *SEBCoinEnterRoom:
+		b, err := msg.(*SEBCoinEnterRoom).Marshal()
+		return 5500, 6, b, err
+	case *SEBCoinGameover:
+		b, err := msg.(*SEBCoinGameover).Marshal()
+		return 5501, 6, b, err
+	case *SEBFreeEnterRoom:
+		b, err := msg.(*SEBFreeEnterRoom).Marshal()
+		return 5502, 6, b, err
+	case *SEBFreeCamein:
+		b, err := msg.(*SEBFreeCamein).Marshal()
+		return 5503, 6, b, err
+	case *SEBFreeDealer:
+		b, err := msg.(*SEBFreeDealer).Marshal()
+		return 5504, 6, b, err
+	case *SEBFreeDealerList:
+		b, err := msg.(*SEBFreeDealerList).Marshal()
+		return 5505, 6, b, err
+	case *SEBFreeBet:
+		b, err := msg.(*SEBFreeBet).Marshal()
+		return 5507, 6, b, err
+	case *SEBFreeGamestart:
+		b, err := msg.(*SEBFreeGamestart).Marshal()
+		return 5508, 6, b, err
+	case *SEBFreeGameover:
+		b, err := msg.(*SEBFreeGameover).Marshal()
+		return 5509, 6, b, err
+	case *SEBFreeTrend:
+		b, err := msg.(*SEBFreeTrend).Marshal()
+		return 5510, 6, b, err
+	case *SEBRoomList:
+		b, err := msg.(*SEBRoomList).Marshal()
+		return 5511, 6, b, err
+	case *SEBEnterRoom:
+		b, err := msg.(*SEBEnterRoom).Marshal()
+		return 5512, 6, b, err
+	case *SEBCreateRoom:
+		b, err := msg.(*SEBCreateRoom).Marshal()
+		return 5513, 6, b, err
+	case *SEBCamein:
+		b, err := msg.(*SEBCamein).Marshal()
+		return 5514, 6, b, err
+	case *SEBLeave:
+		b, err := msg.(*SEBLeave).Marshal()
+		return 5515, 6, b, err
+	case *SEBReady:
+		b, err := msg.(*SEBReady).Marshal()
+		return 5516, 6, b, err
+	case *SEBDraw:
+		b, err := msg.(*SEBDraw).Marshal()
+		return 5517, 6, b, err
+	case *SEBDealer:
+		b, err := msg.(*SEBDealer).Marshal()
+		return 5518, 6, b, err
+	case *SEBPushDealer:
+		b, err := msg.(*SEBPushDealer).Marshal()
+		return 5519, 6, b, err
+	case *SEBBet:
+		b, err := msg.(*SEBBet).Marshal()
+		return 5520, 6, b, err
+	case *SEBiu:
+		b, err := msg.(*SEBiu).Marshal()
+		return 5521, 6, b, err
+	case *SEBGameover:
+		b, err := msg.(*SEBGameover).Marshal()
+		return 5522, 6, b, err
+	case *SEBGameRecord:
+		b, err := msg.(*SEBGameRecord).Marshal()
+		return 5523, 6, b, err
+	case *SEBLaunchVote:
+		b, err := msg.(*SEBLaunchVote).Marshal()
+		return 5524, 6, b, err
+	case *SEBVote:
+		b, err := msg.(*SEBVote).Marshal()
+		return 5525, 6, b, err
+	case *SEBVoteResult:
+		b, err := msg.(*SEBVoteResult).Marshal()
+		return 5526, 6, b, err
+	case *SEBPushState:
+		b, err := msg.(*SEBPushState).Marshal()
+		return 5527, 6, b, err
+	case *SEBFreeWiners:
+		b, err := msg.(*SEBFreeWiners).Marshal()
+		return 5528, 6, b, err
+	case *SEBFreeRoles:
+		b, err := msg.(*SEBFreeRoles).Marshal()
+		return 5529, 6, b, err
+	case *SEBSit:
+		b, err := msg.(*SEBSit).Marshal()
+		return 5530, 6, b, err
+	case *SEBPushOffline:
+		b, err := msg.(*SEBPushOffline).Marshal()
+		return 5531, 6, b, err
+	case *SEBCoinChangeRoom:
+		b, err := msg.(*SEBCoinChangeRoom).Marshal()
+		return 5532, 6, b, err
+	case *SEBPushDrawCoin:
+		b, err := msg.(*SEBPushDrawCoin).Marshal()
+		return 5533, 6, b, err
 	default:
 		return 0, 0, []byte{}, errors.New("unknown message")
 	}

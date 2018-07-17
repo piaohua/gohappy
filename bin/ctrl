@@ -133,11 +133,17 @@ protojson() {
         hua_vote.proto hua_pub.proto \
         game_code.proto \
         > ../pbjson/hua-bundle.json
+    ${PBJS} -t json \
+        ebg_room.proto ebg_coin.proto ebg_free.proto \
+        ebg_vote.proto ebg_pub.proto \
+        game_code.proto \
+        > ../pbjson/ebg-bundle.json
     #
     cp game_*.proto ../pbjson/
     cp niu_*.proto ../pbjson/
     cp san_*.proto ../pbjson/
     cp hua_*.proto ../pbjson/
+    cp ebg_*.proto ../pbjson/
     #
     cd ${SUI_SRC_DIR}/tool
     go run gen.go

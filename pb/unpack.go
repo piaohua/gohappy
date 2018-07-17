@@ -414,6 +414,90 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CJHCoinChangeRoom)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 5000:
+		msg := new(CEBCoinEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5001:
+		msg := new(CEBFreeEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5002:
+		msg := new(CEBFreeDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5003:
+		msg := new(CEBFreeDealerList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5005:
+		msg := new(CEBFreeBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5006:
+		msg := new(CEBFreeTrend)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5007:
+		msg := new(CEBRoomList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5008:
+		msg := new(CEBEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5009:
+		msg := new(CEBCreateRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5010:
+		msg := new(CEBLeave)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5011:
+		msg := new(CEBReady)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5012:
+		msg := new(CEBDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5013:
+		msg := new(CEBBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5014:
+		msg := new(CEBiu)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5015:
+		msg := new(CEBGameRecord)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5016:
+		msg := new(CEBLaunchVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5017:
+		msg := new(CEBVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5018:
+		msg := new(CEBFreeWiners)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5019:
+		msg := new(CEBFreeRoles)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5020:
+		msg := new(CEBSit)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 5021:
+		msg := new(CEBCoinChangeRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
 	default:
 		return nil, errors.New("unknown message")
 	}

@@ -313,6 +313,69 @@ func Rpacket(msg interface{}) (uint32, []byte, error) {
 	case *CJHCoinChangeRoom:
 		b, err := msg.(*CJHCoinChangeRoom).Marshal()
 		return 4027, b, err
+	case *CEBCoinEnterRoom:
+		b, err := msg.(*CEBCoinEnterRoom).Marshal()
+		return 5000, b, err
+	case *CEBFreeEnterRoom:
+		b, err := msg.(*CEBFreeEnterRoom).Marshal()
+		return 5001, b, err
+	case *CEBFreeDealer:
+		b, err := msg.(*CEBFreeDealer).Marshal()
+		return 5002, b, err
+	case *CEBFreeDealerList:
+		b, err := msg.(*CEBFreeDealerList).Marshal()
+		return 5003, b, err
+	case *CEBFreeBet:
+		b, err := msg.(*CEBFreeBet).Marshal()
+		return 5005, b, err
+	case *CEBFreeTrend:
+		b, err := msg.(*CEBFreeTrend).Marshal()
+		return 5006, b, err
+	case *CEBRoomList:
+		b, err := msg.(*CEBRoomList).Marshal()
+		return 5007, b, err
+	case *CEBEnterRoom:
+		b, err := msg.(*CEBEnterRoom).Marshal()
+		return 5008, b, err
+	case *CEBCreateRoom:
+		b, err := msg.(*CEBCreateRoom).Marshal()
+		return 5009, b, err
+	case *CEBLeave:
+		b, err := msg.(*CEBLeave).Marshal()
+		return 5010, b, err
+	case *CEBReady:
+		b, err := msg.(*CEBReady).Marshal()
+		return 5011, b, err
+	case *CEBDealer:
+		b, err := msg.(*CEBDealer).Marshal()
+		return 5012, b, err
+	case *CEBBet:
+		b, err := msg.(*CEBBet).Marshal()
+		return 5013, b, err
+	case *CEBiu:
+		b, err := msg.(*CEBiu).Marshal()
+		return 5014, b, err
+	case *CEBGameRecord:
+		b, err := msg.(*CEBGameRecord).Marshal()
+		return 5015, b, err
+	case *CEBLaunchVote:
+		b, err := msg.(*CEBLaunchVote).Marshal()
+		return 5016, b, err
+	case *CEBVote:
+		b, err := msg.(*CEBVote).Marshal()
+		return 5017, b, err
+	case *CEBFreeWiners:
+		b, err := msg.(*CEBFreeWiners).Marshal()
+		return 5018, b, err
+	case *CEBFreeRoles:
+		b, err := msg.(*CEBFreeRoles).Marshal()
+		return 5019, b, err
+	case *CEBSit:
+		b, err := msg.(*CEBSit).Marshal()
+		return 5020, b, err
+	case *CEBCoinChangeRoom:
+		b, err := msg.(*CEBCoinChangeRoom).Marshal()
+		return 5021, b, err
 	default:
 		return 0, []byte{}, errors.New("unknown message")
 	}

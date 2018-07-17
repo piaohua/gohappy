@@ -163,6 +163,31 @@ var protosUnpack = map[string][]proto{
 		{code: 4026, name: "CJHSit"},
 		{code: 4027, name: "CJHCoinChangeRoom"},
 	},
+	//ebg
+	"ebg": {
+		{code: 5000, name: "CEBCoinEnterRoom"},
+		{code: 5001, name: "CEBFreeEnterRoom"},
+		{code: 5002, name: "CEBFreeDealer"},
+		{code: 5003, name: "CEBFreeDealerList"},
+		//{code: 5004, name: "CEBFreeSit"},
+		{code: 5005, name: "CEBFreeBet"},
+		{code: 5006, name: "CEBFreeTrend"},
+		{code: 5007, name: "CEBRoomList"},
+		{code: 5008, name: "CEBEnterRoom"},
+		{code: 5009, name: "CEBCreateRoom"},
+		{code: 5010, name: "CEBLeave"},
+		{code: 5011, name: "CEBReady"},
+		{code: 5012, name: "CEBDealer"},
+		{code: 5013, name: "CEBBet"},
+		{code: 5014, name: "CEBiu"},
+		{code: 5015, name: "CEBGameRecord"},
+		{code: 5016, name: "CEBLaunchVote"},
+		{code: 5017, name: "CEBVote"},
+		{code: 5018, name: "CEBFreeWiners"},
+		{code: 5019, name: "CEBFreeRoles"},
+		{code: 5020, name: "CEBSit"},
+		{code: 5021, name: "CEBCoinChangeRoom"},
+	},
 }
 
 var protosPacket = map[string][]proto{
@@ -331,6 +356,43 @@ var protosPacket = map[string][]proto{
 		{code: 4539, name: "SJHCoinChangeRoom"},
 		{code: 4540, name: "SJHPushDrawCoin"},
 	},
+	//ebg
+	"ebg": {
+		{code: 5500, name: "SEBCoinEnterRoom"},
+		{code: 5501, name: "SEBCoinGameover"},
+		{code: 5502, name: "SEBFreeEnterRoom"},
+		{code: 5503, name: "SEBFreeCamein"},
+		{code: 5504, name: "SEBFreeDealer"},
+		{code: 5505, name: "SEBFreeDealerList"},
+		//{code: 5506, name: "SEBFreeSit"},
+		{code: 5507, name: "SEBFreeBet"},
+		{code: 5508, name: "SEBFreeGamestart"},
+		{code: 5509, name: "SEBFreeGameover"},
+		{code: 5510, name: "SEBFreeTrend"},
+		{code: 5511, name: "SEBRoomList"},
+		{code: 5512, name: "SEBEnterRoom"},
+		{code: 5513, name: "SEBCreateRoom"},
+		{code: 5514, name: "SEBCamein"},
+		{code: 5515, name: "SEBLeave"},
+		{code: 5516, name: "SEBReady"},
+		{code: 5517, name: "SEBDraw"},
+		{code: 5518, name: "SEBDealer"},
+		{code: 5519, name: "SEBPushDealer"},
+		{code: 5520, name: "SEBBet"},
+		{code: 5521, name: "SEBiu"},
+		{code: 5522, name: "SEBGameover"},
+		{code: 5523, name: "SEBGameRecord"},
+		{code: 5524, name: "SEBLaunchVote"},
+		{code: 5525, name: "SEBVote"},
+		{code: 5526, name: "SEBVoteResult"},
+		{code: 5527, name: "SEBPushState"},
+		{code: 5528, name: "SEBFreeWiners"},
+		{code: 5529, name: "SEBFreeRoles"},
+		{code: 5530, name: "SEBSit"},
+		{code: 5531, name: "SEBPushOffline"},
+		{code: 5532, name: "SEBCoinChangeRoom"},
+		{code: 5533, name: "SEBPushDrawCoin"},
+	},
 }
 
 var sids = map[string]uint32{
@@ -339,6 +401,8 @@ var sids = map[string]uint32{
 	"san":  2,
 	"dou":  3,
 	"hua":  4,
+	"pai":  5,
+	"ebg":  6,
 }
 
 //Init 初始化
@@ -348,7 +412,7 @@ func Init() {
 	var rpacketStr string
 	var runpackStr string
 	//request
-	for _, k := range []string{"game", "niu", "san", "hua"} {
+	for _, k := range []string{"game", "niu", "san", "hua", "ebg"} {
 		m := protosUnpack[k] //有序
 	//for k, m := range protosUnpack {
 		//初始化

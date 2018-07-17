@@ -15,6 +15,11 @@
 		actor_robot.proto
 		actor_role.proto
 		actor_web.proto
+		ebg_coin.proto
+		ebg_free.proto
+		ebg_pub.proto
+		ebg_room.proto
+		ebg_vote.proto
 		game_agent.proto
 		game_buy.proto
 		game_chat.proto
@@ -183,6 +188,77 @@
 		WebResponse2
 		GetNumber
 		GotNumber
+		CEBCoinEnterRoom
+		SEBCoinEnterRoom
+		SEBCoinGameover
+		CEBCoinChangeRoom
+		SEBCoinChangeRoom
+		SEBPushDrawCoin
+		CEBFreeEnterRoom
+		SEBFreeEnterRoom
+		SEBFreeCamein
+		CEBFreeDealer
+		SEBFreeDealer
+		CEBFreeDealerList
+		SEBFreeDealerList
+		CEBSit
+		SEBSit
+		CEBFreeBet
+		SEBFreeBet
+		SEBFreeGamestart
+		SEBFreeGameover
+		CEBFreeTrend
+		SEBFreeTrend
+		CEBFreeWiners
+		SEBFreeWiners
+		CEBFreeRoles
+		SEBFreeRoles
+		EBRoomUser
+		EBRoomData
+		EBRoomBets
+		EBFreeUser
+		EBFreeRoom
+		EBRoomOver
+		EBFreeRoomOver
+		EBFreeSeatOver
+		EBRoomScore
+		EBCoinOver
+		EBOverList
+		EBRoomVote
+		EBDealerList
+		EBFreeTrend
+		EBFreeWiner
+		EBFreeRole
+		EBRecordList
+		CEBRoomList
+		SEBRoomList
+		CEBEnterRoom
+		SEBEnterRoom
+		CEBCreateRoom
+		SEBCreateRoom
+		SEBCamein
+		CEBLeave
+		SEBLeave
+		SEBPushOffline
+		CEBReady
+		SEBReady
+		SEBDraw
+		CEBDealer
+		SEBDealer
+		SEBPushDealer
+		SEBPushState
+		CEBBet
+		SEBBet
+		CEBiu
+		SEBiu
+		SEBGameover
+		CEBGameRecord
+		SEBGameRecord
+		CEBLaunchVote
+		SEBLaunchVote
+		CEBVote
+		SEBVote
+		SEBVoteResult
 		CAgentJoin
 		SAgentJoin
 		CMyAgent

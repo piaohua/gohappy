@@ -1,0 +1,47 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "ebg_pub.proto";
+
+//Coin 自由金币场
+
+// 进入房间
+message CEBCoinEnterRoom
+{
+    string id          = 2;//id为空自由分配
+}
+
+message SEBCoinEnterRoom
+{
+    EBRoomData roominfo = 1;//房间的详细资料
+    repeated EBRoomUser  userinfo = 2;//已在房间的玩家基础信息
+    repeated EBRoomBets  betsinfo = 3;//下注倍数
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 结算广播接口，游戏结束
+message SEBCoinGameover
+{
+    int32  state = 1;//房间状态
+    string dealer = 2;//庄家
+    repeated EBCoinOver data = 3;//结算
+}
+
+// 换房间
+message CEBCoinChangeRoom
+{
+}
+
+message SEBCoinChangeRoom
+{
+    ErrCode error= 1;//错误码 ,0:正常
+}
+
+// 开始前推送抽水变更
+message SEBPushDrawCoin
+{
+    uint32 rtype   = 1;//类型
+    uint32 seat    = 2;//位置
+    string userid  = 3;//玩家id
+    int64 coin     = 4;//扣除数量金币(负)
+}
