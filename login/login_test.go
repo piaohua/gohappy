@@ -8,9 +8,11 @@ import (
 	"net/http"
 	"testing"
 
+	"gohappy/data"
 	"gohappy/pb"
 
 	jsoniter "github.com/json-iterator/go"
+	"github.com/globalsign/mgo/bson"
 )
 
 func TestRun(t *testing.T) {
@@ -20,50 +22,79 @@ func TestRun(t *testing.T) {
 }
 
 func TestWebJson(t *testing.T) {
-	webJson("101418", 1000)
+	sendCoin("101418", 1000)
+    sendNotice()
 }
 
-func webJson(userid string, coin int64) {
-	//var userid string
-	//var coin int64
-	//flag.StringVar(&userid, "userid", "", "userid")
-	//flag.Int64Var(&coin, "coin", 0, "coin")
-	//flag.Parse()
-	log.Printf("userid %s, coin %d\n", userid, coin)
-	msg := &pb.PayCurrency{
-		Type:   int32(pb.LOG_TYPE9),
-		Userid: userid,
-		Coin:   coin,
-	}
+func sendCoin(userid string, coin int64) {
+    //var userid string
+    //var coin int64
+    //flag.StringVar(&userid, "userid", "", "userid")
+    //flag.Int64Var(&coin, "coin", 0, "coin")
+    //flag.Parse()
+    log.Printf("userid %s, coin %d\n", userid, coin)
+    msg := &pb.PayCurrency{
+        Type: int32(pb.LOG_TYPE9),
+        Userid: userid,
+        Coin: coin,
+    }
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
 	}
 	log.Printf("b %s\n", string(b))
-	msg2 := &pb.WebRequest2{
-		Code: pb.WebGive,
-		Data: string(b),
-	}
-	b, err = jsoniter.Marshal(msg2)
-	if err != nil {
-		log.Panic(err)
-	}
-	url := "http://127.0.0.1/happy/webjson"
-	b, err = doHTTPPost(url, b)
-	if err != nil {
-		log.Panic(err)
-	}
-	log.Printf("result %s", string(b))
-	msg3 := new(pb.WebResponse2)
-	err = jsoniter.Unmarshal(b, msg3)
-	if err != nil {
-		log.Panic(err)
-	}
-	if msg3.Code == msg2.Code {
+	if webRequest(pb.WebGive, b) {
 		log.Printf("userid %s, coin %d send successfully.", userid, coin)
 	} else {
 		log.Printf("userid %s, coin %d send failed.", userid, coin)
 	}
+}
+
+func sendNotice() {
+    msg := make(map[string]data.Notice) //key: Notice.Id
+    notice := data.Notice{
+        Id: bson.NewObjectId().Hex(),
+        Userid: "",
+        Rtype: data.NOTICE_TYPE3,
+        Content: "恭喜成功购买100金豆",
+        Ctime: bson.Now(),
+        Etime: bson.Now().AddDate(0, 0, 7),
+    }
+    msg[notice.Id] = notice
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebNotice, b) {
+		log.Printf("msg %#v send successfully.", msg)
+	} else {
+		log.Printf("msg %#v send failed.", msg)
+	}
+}
+
+func webRequest(code pb.WebCode, b []byte) bool {
+    msg2 := &pb.WebRequest2{
+        Code: code,
+        Atype: pb.CONFIG_UPSERT,
+        Data: string(b),
+    }
+    b, err := jsoniter.Marshal(msg2)
+    if err != nil {
+        log.Panic(err)
+    }
+	url := "http://127.0.0.1/happy/webjson"
+    b, err = doHTTPPost(url, b)
+    if err != nil {
+        log.Panic(err)
+    }
+    log.Printf("result %s", string(b))
+    msg3 := new(pb.WebResponse2)
+    err = jsoniter.Unmarshal(b, msg3)
+    if err != nil {
+        log.Panic(err)
+    }
+    return msg3.Code == msg2.Code
 }
 
 func doHTTPPost(targetURL string, body []byte) ([]byte, error) {
