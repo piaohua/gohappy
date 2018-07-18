@@ -119,28 +119,28 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 		g.Maximum = 1000
 	case int32(pb.ROOM_LEVEL1):
 		g.Ante = 100
-		g.Chip = 2000
-		g.Sit = 2000
-		g.Minimum = 1000
-		g.Maximum = 2000
+		g.Chip = 10000
+		g.Sit = 10000
+		g.Minimum = 5000
+		g.Maximum = 10000
 	case int32(pb.ROOM_LEVEL2):
 		g.Ante = 200
-		g.Chip = 4000
-		g.Sit = 4000
-		g.Minimum = 2000
-		g.Maximum = 4000
+		g.Chip = 20000
+		g.Sit = 20000
+		g.Minimum = 10000
+		g.Maximum = 20000
 	case int32(pb.ROOM_LEVEL3):
-		g.Ante = 400
-		g.Chip = 8000
-		g.Sit = 8000
-		g.Minimum = 4000
-		g.Maximum = 8000
+		g.Ante = 500
+		g.Chip = 50000
+		g.Sit = 50000
+		g.Minimum = 25000
+		g.Maximum = 50000
 	case int32(pb.ROOM_LEVEL4):
 		g.Ante = 600
-		g.Chip = 12000
-		g.Sit = 12000
-		g.Minimum = 6000
-		g.Maximum = 12000
+		g.Chip = 120000
+		g.Sit = 120000
+		g.Minimum = 60000
+		g.Maximum = 120000
 	}
 	return g
 }
