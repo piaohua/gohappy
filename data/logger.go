@@ -352,6 +352,7 @@ type LogProfit struct {
 	Level   uint32    `bson:"level"`   //level type, 表示相对agentid的等级
 	Rate    uint32    `bson:"rate"`    //rate
 	Profit  int64     `bson:"profit"`  //Profit
+	Type    int32     `bson:"type"`   //类型
 	Ctime   time.Time `bson:"ctime"`   //create Time
 }
 
@@ -363,7 +364,7 @@ func (t *LogProfit) Save() bool {
 }
 
 //ProfitRecord 代理收益记录
-func ProfitRecord(agentid, userid string, gtype int32, level, rate uint32, profit int64) {
+func ProfitRecord(agentid, userid string, gtype, rtype int32, level, rate uint32, profit int64) {
 	record := &LogProfit{
 		Userid:  userid,
 		Agentid: agentid,
@@ -371,6 +372,7 @@ func ProfitRecord(agentid, userid string, gtype int32, level, rate uint32, profi
 		Level:   level,
 		Rate:    rate,
 		Profit:  profit,
+		Type:   rtype,
 	}
 	record.Save()
 }

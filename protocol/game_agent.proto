@@ -39,7 +39,10 @@ message SMyAgent
     uint32 Build = 13;//下属绑定玩家数量
     uint32 AgentChild = 14;//下属代理数量
     uint32 BuildVaild = 15;//下属有效绑定数量
-    ErrCode error= 16;//错误码 ,0:正常
+    uint32 ProfitRate = 16;//区域百分比
+    int64 ProfitMonth = 17;//区域收益数量
+    int32 AgentTitle = 18;//代理头衔4玩家，3普通，2大代理，1合伙人
+    ErrCode error= 19;//错误码 ,0:正常
 }
 
 // 代理管理
@@ -91,6 +94,7 @@ message AgentProfitDetail
     uint32 level = 3;//收益等级
     int32  gtype = 4;//game type
     uint32 rate = 5;//收益比例
+    int32  type = 6;//type,(收益，区域，区域发放)
 }
 
 // 代理收益提现订单明细
@@ -215,4 +219,20 @@ message SAgentPlayerApprove
     AgentApproveState state = 1;//1同意，2拒绝
     string userid = 2;//玩家id
     ErrCode error= 3;//错误码 ,0:正常
+}
+
+//设置区域奖励
+message CSetAgentProfitRate
+{
+    string userid = 1;//玩家id
+    uint32 rate = 2;//百分比
+    string selfid = 3;//玩家id,server参数
+}
+
+message SSetAgentProfitRate
+{
+    string userid = 1;//玩家id
+    uint32 rate = 2;//百分比
+    uint32 rest = 3;//剩余百分比
+    ErrCode error= 4;//错误码 ,0:正常
 }

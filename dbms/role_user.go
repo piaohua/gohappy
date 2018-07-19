@@ -163,6 +163,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentProfitInfo)
 		glog.Debugf("AgentProfitInfo %#v", arg)
 		a.agentProfitInfo(arg, ctx)
+	case *pb.AgentProfitMonthInfo:
+		arg := msg.(*pb.AgentProfitMonthInfo)
+		glog.Debugf("AgentProfitMonthInfo %#v", arg)
+		a.agentProfitMonthInfo(arg, ctx)
 	case *pb.AgentProfitApply:
 		arg := msg.(*pb.AgentProfitApply)
 		glog.Debugf("AgentProfitApply %#v", arg)
@@ -171,10 +175,22 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentProfitReply)
 		glog.Debugf("AgentProfitReply %#v", arg)
 		a.agentProfitReply(arg, ctx)
+	case *pb.AgentProfitReplyMsg:
+		arg := msg.(*pb.AgentProfitReplyMsg)
+		glog.Debugf("AgentProfitReplyMsg %#v", arg)
+		a.agentProfitReplyMsg(arg, ctx)
 	case *pb.AgentProfitUpdate:
 		arg := msg.(*pb.AgentProfitUpdate)
 		glog.Debugf("AgentProfitUpdate %#v", arg)
 		a.agentProfitUpdate(arg, ctx)
+	case *pb.AgentProfitMonthUpdate:
+		arg := msg.(*pb.AgentProfitMonthUpdate)
+		glog.Debugf("AgentProfitMonthUpdate %#v", arg)
+		a.agentProfitMonthUpdate(arg, ctx)
+	case *pb.AgentProfitMonthSend:
+		arg := msg.(*pb.AgentProfitMonthSend)
+		glog.Debugf("AgentProfitMonthSend %#v", arg)
+		a.agentProfitMonthSend(arg, ctx)
 	case *pb.AgentWeekUpdate:
 		arg := msg.(*pb.AgentWeekUpdate)
 		glog.Debugf("AgentWeekUpdate %#v", arg)
@@ -187,6 +203,14 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentBuildUpdate)
 		glog.Debugf("AgentBuildUpdate: %v", arg)
 		a.agentBuildUpdate(arg)
+	case *pb.CSetAgentProfitRate:
+		arg := msg.(*pb.CSetAgentProfitRate)
+		glog.Debugf("CSetAgentProfitRate %#v", arg)
+		a.setAgentProfitRate(arg, ctx)
+	case *pb.SetAgentProfitRate:
+		arg := msg.(*pb.SetAgentProfitRate)
+		glog.Debugf("SetAgentProfitRate %#v", arg)
+		a.agentProfitRate(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

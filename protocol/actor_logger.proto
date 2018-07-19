@@ -98,6 +98,7 @@ message LogProfit {
     uint32 Rate   = 4;//rate
     int64  Profit = 5;//Profit
     string Agentid = 6;//代理ID
+    int32 Type    = 7;//类型
 }
 
 //银行操作日志

@@ -21,8 +21,14 @@ func (a *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		return
 	}
 	//等级1，2，3，4
-	if user.AgentLevel == 0 || user.AgentLevel >= 4 || user.AgentState != 1 {
-		rsp.Error = pb.AgentLevelLow
+	//if user.AgentLevel == 0 || user.AgentLevel >= 4 || !handler.IsAgent(user) {
+	//	rsp.Error = pb.AgentLevelLow
+	//	ctx.Respond(rsp)
+	//	return
+	//}
+	if !handler.IsAgent(user) {
+		glog.Errorf("get userid %s fail", arg.GetAgentid())
+		rsp.Error = pb.AgentNotExist
 		ctx.Respond(rsp)
 		return
 	}
@@ -65,7 +71,7 @@ func (a *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context)
 		ctx.Respond(rsp)
 		return
 	}
-	if user.AgentState == 1 {
+	if handler.IsAgent(user) {
 		glog.Errorf("get userid %s fail", arg.GetUserid())
 		rsp.Error = pb.AlreadyAgent
 		ctx.Respond(rsp)
@@ -97,7 +103,7 @@ func (a *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo, ctx actor.Context) 
 		glog.Errorf("get agentid %s fail", arg.GetAgentid())
 		return
 	}
-	if user.AgentState != 1 {
+	if !handler.IsAgent(user) {
 		return
 	}
 	msg1, msg2, msg3, msg4 := handler.AddProfit(arg, user)
@@ -115,6 +121,38 @@ func (a *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo, ctx actor.Context) 
 	if msg4 != nil {
 		//暂时实时写入, TODO 异步数据更新
 		user.UpdateAgentProfit()
+	}
+}
+
+//代理区域收益消息处理
+func (a *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo, ctx actor.Context) {
+	if v, ok := a.roles[arg.GetAgentid()]; ok && v != nil {
+		v.Pid.Tell(arg)
+		return
+	}
+	user := a.getUserById(arg.GetAgentid())
+	if user == nil {
+		glog.Errorf("get agentid %s fail", arg.GetAgentid())
+		return
+	}
+	if !handler.IsAgent(user) {
+		return
+	}
+	msg1, msg2, msg3, msg4, msg5 := handler.AddProfitMonth(arg, user)
+	//反给上级
+	if msg1 != nil {
+		rolePid.Tell(msg1)
+	}
+	//收益日志
+	if msg2 != nil {
+		loggerPid.Tell(msg2)
+	}
+	if msg3 != nil {
+		loggerPid.Tell(msg3)
+	}
+	if msg4 != nil || msg5 != nil {
+		//rolePid.Tell(msg4)
+		user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
 	}
 }
 
@@ -192,7 +230,7 @@ func (a *RoleActor) agentWeekUpdate(arg *pb.AgentWeekUpdate, ctx actor.Context) 
 	}
 	user.WeekStart = utils.Str2Time(arg.GetStart())
 	user.WeekEnd = utils.Str2Time(arg.GetEnd())
-	user.UpdateAgentWeek()
+	user.UpdateAgentWeek()//暂时实时写入, TODO 异步数据更新
 }
 
 //更新收益
@@ -203,7 +241,33 @@ func (a *RoleActor) agentProfitUpdate(arg *pb.AgentProfitUpdate, ctx actor.Conte
 		return
 	}
 	user.AddProfit(arg.GetIsagent(), arg.GetProfit())
-	user.UpdateAgentProfit()
+	user.UpdateAgentProfit()//暂时实时写入, TODO 异步数据更新
+}
+
+//更新区域收益
+func (a *RoleActor) agentProfitMonthUpdate(arg *pb.AgentProfitMonthUpdate, ctx actor.Context) {
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		return
+	}
+	user.AddProfitMonth(arg.GetProfit())
+	user.Month = int(arg.GetMonth())
+	user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
+}
+
+//更新区域收益发放
+func (a *RoleActor) agentProfitMonthSend(arg *pb.AgentProfitMonthSend, ctx actor.Context) {
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		return
+	}
+	msg1 := handler.AgentProfitMonthSend(arg, user)
+	if msg1 != nil {
+		loggerPid.Tell(msg1)
+	}
+	user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
 }
 
 //提现受理消息
@@ -238,7 +302,7 @@ func (a *RoleActor) agentConfirm(arg *pb.AgentConfirm, ctx actor.Context) {
 		ctx.Respond(rsp)
 		return
 	}
-	if user.AgentState != 1 {
+	if !handler.IsAgent(user) {
 		rsp.Error = pb.Failed
 	}
 	ctx.Respond(rsp)
@@ -251,7 +315,7 @@ func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
 		glog.Errorf("get userid %s fail", arg.GetAgentid())
 		return
 	}
-	if user.AgentState != 1 {
+	if !handler.IsAgent(user) {
 		glog.Errorf("agentBuildUpdate %#v", arg)
 		//return
 	}
@@ -259,4 +323,47 @@ func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
 		v.Pid.Tell(arg)
 	}
 	handler.AgentBuildUpdate2(arg, user) //暂时实时写入, TODO 异步数据更新
+}
+
+//区域设置
+func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Context) {
+	rsp := new(pb.SSetAgentProfitRate)
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		rsp.Error = pb.UserDataNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	if user.GetAgent() != arg.GetSelfid() {
+		rsp.Error = pb.ProfitLimit
+	}
+	if user.ProfitRate != 0 {
+		rsp.Error = pb.AlreadySetRate
+	}
+	if !handler.IsVaild(user) {
+		rsp.Error = pb.ProfitLimit
+	}
+	if !handler.IsAgent(user) {
+		rsp.Error = pb.NotAgent
+	}
+	ctx.Respond(rsp)
+	agent := a.getUserById(arg.GetSelfid())
+	if agent != nil {
+		agent.ProfitRate -= arg.GetRate()
+		agent.UpdateAgentProfitRate()
+	}
+}
+
+//更新区域设置
+func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
+	if v, ok := a.roles[arg.Userid]; ok && v != nil {
+		v.Pid.Tell(arg)
+		//return
+	}
+	agent := a.getUserById(arg.GetUserid())
+	if agent != nil {
+		agent.ProfitRate = arg.GetRate()
+		agent.UpdateAgentProfitRate()
+	}
 }

@@ -147,13 +147,13 @@ func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 
 //MatchLevel 匹配等级
 func MatchLevel(coin int64) int32 {
-	if coin >= 12000 {
+	if coin >= 120000 {
 		return int32(pb.ROOM_LEVEL4)
-	} else if coin >= 8000 {
+	} else if coin >= 50000 {
 		return int32(pb.ROOM_LEVEL3)
-	} else if coin >= 4000 {
+	} else if coin >= 20000 {
 		return int32(pb.ROOM_LEVEL2)
-	} else if coin >= 2000 {
+	} else if coin >= 10000 {
 		return int32(pb.ROOM_LEVEL1)
 	} else if coin >= 1000 {
 		return int32(pb.ROOM_LEVEL0)

@@ -116,6 +116,7 @@ enum ErrCode {
     ProfitOrderNotExist    =107; //收益订单不存在
     ProfitOrderReplied     =108; //收益订单已经处理过
     ProfitLimit            =109; //提取收益限制(有效玩家3个以上,绑定10个以上)
+    AlreadySetRate         =110; //已经设置
 }
 
 enum SitType {

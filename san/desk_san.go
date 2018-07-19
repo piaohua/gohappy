@@ -782,9 +782,9 @@ func (t *Desk) drawfee() {
 	var num int64
 	switch t.DeskData.Mode {
 	case 0: //普通
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.1))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.4 * 100))
 	default:
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.2))
+		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.8 * 100))
 	}
 	for k, v := range t.seats {
 		if !v.Ready {

@@ -297,7 +297,8 @@
             "ProfitNotEnough": 106,
             "ProfitOrderNotExist": 107,
             "ProfitOrderReplied": 108,
-            "ProfitLimit": 109
+            "ProfitLimit": 109,
+            "AlreadySetRate": 110
           }
         },
         "SitType": {
@@ -1426,9 +1427,21 @@
               "type": "uint32",
               "id": 15
             },
+            "ProfitRate": {
+              "type": "uint32",
+              "id": 16
+            },
+            "ProfitMonth": {
+              "type": "int64",
+              "id": 17
+            },
+            "AgentTitle": {
+              "type": "int32",
+              "id": 18
+            },
             "error": {
               "type": "ErrCode",
-              "id": 16
+              "id": 19
             }
           }
         },
@@ -1555,6 +1568,10 @@
             "rate": {
               "type": "uint32",
               "id": 5
+            },
+            "type": {
+              "type": "int32",
+              "id": 6
             }
           }
         },
@@ -1850,6 +1867,42 @@
             "error": {
               "type": "ErrCode",
               "id": 3
+            }
+          }
+        },
+        "CSetAgentProfitRate": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 2
+            },
+            "selfid": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SSetAgentProfitRate": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 2
+            },
+            "rest": {
+              "type": "uint32",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
             }
           }
         }

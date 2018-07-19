@@ -58,6 +58,8 @@ type User struct {
 	Weixin           string    `bson:"weixin" json:"weixin"`                         // 微信
 	ProfitRate       uint32    `bson:"profit_rate" json:"profit_rate"`               // 分佣比例
 	Profit           int64     `bson:"profit" json:"profit"`                         // 收益
+	ProfitMonth      int64     `bson:"profit_month" json:"profit_month"`           // 月收益
+	Month      		 int       `bson:"month" json:"month"`           // 当前月
 	WeekProfit       int64     `bson:"week_profit" json:"week_profit"`               // 本周收益
 	WeekPlayerProfit int64     `bson:"week_player_profit" json:"week_player_profit"` // 本周玩家收益
 	WeekStart        time.Time `bson:"week_start" json:"week_start"`                 // 每周日重置
@@ -135,6 +137,17 @@ func (this *User) UpdateAgentProfit() bool {
 			"profit":             this.Profit,
 			"sub_player_profit":  this.SubPlayerProfit,
 			"sub_agent_profit":   this.SubAgentProfit}})
+}
+
+func (this *User) UpdateAgentProfitMonth() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"profit_month": this.ProfitMonth,
+			"month": this.Month}})
+}
+
+func (this *User) UpdateAgentProfitRate() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"profit_rate": this.ProfitRate}})
 }
 
 func (this *User) UpdateAgentWeek() bool {
@@ -410,4 +423,16 @@ func (this *User) AddProfit(isagent bool, num int64) {
 	} else {
 		this.SubPlayerProfit += num
 	}
+}
+
+func (this *User) AddProfitMonth(num int64) {
+	this.ProfitMonth += num
+}
+
+func (this *User) GetMonth() int {
+	return this.Month
+}
+
+func (this *User) GetProfitMonth() int64 {
+	return this.ProfitMonth
 }

@@ -39,6 +39,17 @@ message AgentProfitInfo {
     string userid = 7;//玩家id, from
 }
 
+//代理区域奖励信息
+message AgentProfitMonthInfo {
+    int32 gtype = 1;//game type
+    string agentid = 2;//代理id, to
+    uint32 rate = 3;//分佣比例
+    uint32 level = 4;//等级,表示相对等级
+    bool agent = 5;//是否是代理反佣
+    int64 profit = 6;//收益
+    string userid = 7;//玩家id, from
+}
+
 //代理收益信息
 message AgentProfitNum {
     int32 gtype = 1;//game type
@@ -82,7 +93,7 @@ message AgentProfitReplied
 message AgentProfitUpdate
 {
     string userid = 1;//玩家id
-    int64 profit = 2;//
+    int64 profit = 2;//变动数量
     bool isagent = 3;//
 }
 
@@ -92,6 +103,29 @@ message AgentWeekUpdate
     string userid = 1;//玩家id
     string Start = 2;//
     string End = 3;//
+}
+
+//更新区域奖励
+message AgentProfitMonthUpdate
+{
+    string userid = 1;//玩家id
+    int64 profit = 2;//变动数量
+    int32 month = 3;//变动月份
+}
+
+//更新区域奖励发放
+message AgentProfitMonthSend
+{
+    string userid = 1;//玩家id
+    int64 profit = 2;//数量
+    int32 month = 3;//发放的月份
+}
+
+//更新区域奖励百分比
+message SetAgentProfitRate
+{
+    string userid = 1;//玩家id
+    uint32 rate = 2;//百分比
 }
 
 //代理提现受理消息

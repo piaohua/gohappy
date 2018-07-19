@@ -63,6 +63,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentProfitInfo)
 		glog.Debugf("AgentProfitInfo %#v", arg)
 		rs.agentProfitInfo(arg)
+	case *pb.AgentProfitMonthInfo:
+		arg := msg.(*pb.AgentProfitMonthInfo)
+		glog.Debugf("AgentProfitMonthInfo %#v", arg)
+		rs.agentProfitMonthInfo(arg)
 	case *pb.AgentProfitNum:
 		arg := msg.(*pb.AgentProfitNum)
 		glog.Debugf("AgentProfitNum %#v", arg)
@@ -75,6 +79,14 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentBuildUpdate)
 		glog.Debugf("AgentBuildUpdate: %v", arg)
 		handler.AgentBuildUpdate(arg, rs.User)
+	case *pb.CSetAgentProfitRate:
+		arg := msg.(*pb.CSetAgentProfitRate)
+		glog.Debugf("CSetAgentProfitRate %#v", arg)
+		rs.setAgentProfitRate(arg, ctx)
+	case *pb.SetAgentProfitRate:
+		arg := msg.(*pb.SetAgentProfitRate)
+		glog.Debugf("SetAgentProfitRate %#v", arg)
+		rs.agentProfitRate(arg, ctx)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -86,7 +98,7 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 
 //代理反佣收益消息处理
 func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
-	if rs.User.AgentState != 1 {
+	if !handler.IsAgent(rs.User) {
 		return
 	}
 	msg1, msg2, msg3, msg4 := handler.AddProfit(arg, rs.User)
@@ -105,6 +117,32 @@ func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
 	//更新数据
 	if msg4 != nil {
 		rs.rolePid.Tell(msg4)
+	}
+}
+
+//代理区域收益消息处理
+func (rs *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo) {
+	if !handler.IsAgent(rs.User) {
+		return
+	}
+	msg1, msg2, msg3, msg4, msg5 := handler.AddProfitMonth(arg, rs.User)
+	//反给上级
+	if msg1 != nil {
+		rs.rolePid.Tell(msg1)
+	}
+	//收益日志
+	if msg2 != nil {
+		rs.loggerPid.Tell(msg2)
+	}
+	if msg3 != nil {
+		rs.loggerPid.Tell(msg3)
+	}
+	//更新数据
+	if msg4 != nil {
+		rs.rolePid.Tell(msg4)
+	}
+	if msg5 != nil {
+		rs.rolePid.Tell(msg5)
 	}
 }
 
@@ -129,11 +167,15 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	}
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, 1, 100, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
-	if rs.User.AgentState == 1 {
+		false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+	msg3 := handler.AgentProfitMonthInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
+		false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+	if handler.IsAgent(rs.User) {
 		msg2.Agent = true
+		msg3.Agent = true
 	}
 	rs.rolePid.Tell(msg2)
+	rs.rolePid.Tell(msg3)
 }
 
 //基础信息
@@ -157,6 +199,9 @@ func (rs *RoleActor) agentInfo() {
 	rsp.Build = rs.User.Build
 	rsp.BuildVaild = rs.User.BuildVaild
 	rsp.AgentChild = rs.User.AgentChild
+	rsp.ProfitRate = rs.User.ProfitRate
+	rsp.ProfitMonth = rs.User.ProfitMonth
+	rsp.AgentTitle = handler.GetAgentTitle(rs.User)
 	rs.Send(rsp)
 }
 
@@ -168,12 +213,12 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.AgentLevel != 0 && rs.User.AgentState == 0 {
+	if rs.User.AgentLevel != 0 && !handler.IsAgent(rs.User) {
 		rsp.Error = pb.WaitForAudit
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.AgentState == 1 || rs.User.AgentLevel != 0 {
+	if rs.User.AgentLevel != 0 || handler.IsAgent(rs.User) {
 		rsp.Error = pb.AlreadyAgent
 		rs.Send(rsp)
 		return
@@ -192,7 +237,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 	if response1, ok := res1.(*pb.SAgentJoin); ok {
 		rsp.Error = response1.Error
 		if response1.Error == pb.OK {
-			rs.User.Agent = arg.GetAgentid()
+			//rs.User.Agent = arg.GetAgentid()
 			rs.User.AgentName = arg.GetAgentname()
 			rs.User.Weixin = arg.GetWeixin()
 			rs.User.RealName = arg.GetRealname()
@@ -203,7 +248,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 			msg := handler.AgentJoinMsg(rs.User)
 			rs.rolePid.Request(msg, ctx.Self())
 			rs.User.AgentState = 1 //默认通过，不用审核
-			handler.SetAgentProfitRate(rs.User) //TODO 优化为消息同步
+			//handler.SetAgentProfitRate(rs.User) //TODO 优化为消息同步
 		}
 	}
 	rs.Send(rsp)
@@ -211,7 +256,7 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 
 //排行榜
 func (rs *RoleActor) getProfitRank(arg *pb.CAgentProfitRank, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentProfitRank)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -222,7 +267,7 @@ func (rs *RoleActor) getProfitRank(arg *pb.CAgentProfitRank, ctx actor.Context) 
 
 //代理管理列表
 func (rs *RoleActor) agentManage(arg *pb.CAgentManage, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentManage)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -234,7 +279,7 @@ func (rs *RoleActor) agentManage(arg *pb.CAgentManage, ctx actor.Context) {
 
 //玩家管理列表
 func (rs *RoleActor) playerManage(arg *pb.CAgentPlayerManage, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentPlayerManage)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -246,7 +291,7 @@ func (rs *RoleActor) playerManage(arg *pb.CAgentPlayerManage, ctx actor.Context)
 
 //审批
 func (rs *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentPlayerApprove)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -259,7 +304,7 @@ func (rs *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context
 
 //代理收益明细列表
 func (rs *RoleActor) agentProfit(arg *pb.CAgentProfit, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentProfit)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -271,7 +316,7 @@ func (rs *RoleActor) agentProfit(arg *pb.CAgentProfit, ctx actor.Context) {
 
 //代理收益订单列表
 func (rs *RoleActor) agentProfitOrder(arg *pb.CAgentProfitOrder, ctx actor.Context) {
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp := new(pb.SAgentProfitOrder)
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
@@ -286,18 +331,19 @@ func (rs *RoleActor) agentProfitOrder(arg *pb.CAgentProfitOrder, ctx actor.Conte
 func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Context) {
 	rsp := new(pb.SAgentProfitApply)
 	rsp.Profit = arg.GetProfit()
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	profit := arg.GetProfit() * 100
+	if handler.IsNotAgent(rs.User) {
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.Profit < int64(arg.GetProfit()) || rs.User.Profit < 10000 {
+	if rs.User.Profit < int64(profit) || !handler.IsProfitApply(rs.User) {
 		rsp.Error = pb.ProfitNotEnough
 		rs.Send(rsp)
 		return
 	}
 	//权限限制(有效玩家3个以上,绑定10个以上)
-	if rs.User.BuildVaild < 3 || rs.User.Build < 10 {
+	if !handler.IsVaild(rs.User) {
 		rsp.Error = pb.ProfitLimit
 		rs.Send(rsp)
 		return
@@ -306,7 +352,7 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		Agentid:  rs.User.GetAgent(),     //受理人userid
 		Userid:   rs.User.GetUserid(),    //申请人玩家id
 		Nickname: rs.User.GetNickname(),  //玩家昵称
-		Profit:   int64(arg.GetProfit()), //提取金额
+		Profit:   int64(profit), //提取金额
 	}
 	res1 := rs.reqRole(msg, ctx)
 	if response1, ok := res1.(*pb.AgentProfitApplied); ok {
@@ -315,10 +361,52 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 			//扣除收益
 			rs.User.Profit -= response1.Profit
 			//默认直接发放,不再需要审批
-			rs.addBank(response1.Profit, int32(pb.LOG_TYPE49))
+			rs.addBank(response1.Profit / 100, int32(pb.LOG_TYPE49))
 		}
 	}
 	rs.Send(rsp)
+}
+
+//设置区域收益
+func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Context) {
+	rsp := new(pb.SSetAgentProfitRate)
+	rsp.Userid = arg.GetUserid()
+	rsp.Rate = arg.GetRate()
+	if handler.IsNotAgent(rs.User) {
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	if !handler.IsSetProfitRate(rs.User) {
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	if rs.User.ProfitRate <= arg.GetRate() {
+		rsp.Error = pb.Failed
+		rs.Send(rsp)
+		return
+	}
+	arg.Selfid = rs.User.GetUserid()
+	res1 := rs.reqRole(arg, ctx)
+	if response1, ok := res1.(*pb.SSetAgentProfitRate); ok {
+		rsp.Error = response1.Error
+		if response1.Error == pb.OK {
+			//更新同步数据
+			msg1 := &pb.SetAgentProfitRate{
+				Userid: arg.GetUserid(),
+				Rate:   arg.GetRate(),
+			}
+			rs.rolePid.Tell(msg1)
+			rs.User.ProfitRate -= arg.GetRate() //TODO 优化为消息同步
+		}
+	}
+	rs.Send(rsp)
+}
+
+//设置区域收益
+func (rs *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
+	rs.User.ProfitRate = arg.GetRate()
 }
 
 //收益提现受理
@@ -326,7 +414,7 @@ func (rs *RoleActor) agentProfitReply(arg *pb.CAgentProfitReply, ctx actor.Conte
 	rsp := new(pb.SAgentProfitReply)
 	rsp.Orderid = arg.GetOrderid()
 	rsp.State = arg.GetState()
-	if rs.User.AgentLevel == 0 || rs.User.AgentState != 1 {
+	if handler.IsNotAgent(rs.User) {
 		rsp.Error = pb.NotAgent
 		rs.Send(rsp)
 		return

@@ -166,6 +166,9 @@ enum LogType {
     LOG_TYPE49 = 49;//代理提现
     LOG_TYPE50 = 50;//使用道具
     LOG_TYPE51 = 51;//牌型奖励
+    LOG_TYPE52 = 52;//三级收益
+    LOG_TYPE53 = 53;//区域奖金
+    LOG_TYPE54 = 54;//区域奖金发放
 }
 
 // 放看比加跟掩码
