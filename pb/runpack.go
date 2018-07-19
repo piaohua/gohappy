@@ -170,6 +170,10 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SAgentProfitReply)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1560:
+		msg := new(SSetAgentProfitRate)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 2500:
 		msg := new(SNNCoinEnterRoom)
 		err := msg.Unmarshal(b)

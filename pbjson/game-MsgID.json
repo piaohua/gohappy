@@ -35,6 +35,7 @@
 	1057:{type:"room",		sendType:"pb.CAgentPlayerManage",		revType:"",		},
 	1058:{type:"room",		sendType:"pb.CAgentPlayerApprove",		revType:"",		},
 	1059:{type:"room",		sendType:"pb.CAgentProfitReply",		revType:"",		},
+	1060:{type:"room",		sendType:"pb.CSetAgentProfitRate",		revType:"",		},
 	1500:{type:"room",		sendType:"",		revType:"pb.SBuy",		},
 	1501:{type:"room",		sendType:"",		revType:"pb.SWxpayOrder",		},
 	1502:{type:"room",		sendType:"",		revType:"pb.SJtpayOrder",		},
@@ -74,5 +75,6 @@
 	1556:{type:"room",		sendType:"",		revType:"pb.SAgentProfitRank",		},
 	1557:{type:"room",		sendType:"",		revType:"pb.SAgentPlayerManage",		},
 	1558:{type:"room",		sendType:"",		revType:"pb.SAgentPlayerApprove",		},
-	1559:{type:"room",		sendType:"",		revType:"pb.SAgentProfitReply",		}
+	1559:{type:"room",		sendType:"",		revType:"pb.SAgentProfitReply",		},
+	1560:{type:"room",		sendType:"",		revType:"pb.SSetAgentProfitRate",		}
 }

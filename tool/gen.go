@@ -81,6 +81,7 @@ var protosUnpack = map[string][]proto{
 		{code: 1057, name: "CAgentPlayerManage"},
 		{code: 1058, name: "CAgentPlayerApprove"},
 		{code: 1059, name: "CAgentProfitReply"},
+		{code: 1060, name: "CSetAgentProfitRate"},
 	},
 	//niu
 	"niu": {
@@ -237,6 +238,7 @@ var protosPacket = map[string][]proto{
 		{code: 1557, name: "SAgentPlayerManage"},
 		{code: 1558, name: "SAgentPlayerApprove"},
 		{code: 1559, name: "SAgentProfitReply"},
+		{code: 1560, name: "SSetAgentProfitRate"},
 	},
 	//niu
 	"niu": {
