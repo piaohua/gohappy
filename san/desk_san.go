@@ -539,17 +539,17 @@ func (t *Desk) pailiOver1(score map[uint32]int64) map[uint32]int64 {
 		switch {
 		case v.Power > a:
 			val := int64(v.Bet * int64(algo.SanMultiple(v.Power)) * ante)
-			score = over3(k, dealerSeat, val, score)
+			score = t.over3(k, dealerSeat, val, score)
 		case v.Power < a:
 			val := int64(v.Bet * int64(algo.SanMultiple(a)) * ante)
-			score = over3(dealerSeat, k, val, score)
+			score = t.over3(dealerSeat, k, val, score)
 		case v.Power == a:
 			if t.pailiCompare(dealerSeat, k) {
 				val := int64(v.Bet * int64(algo.SanMultiple(a)) * ante)
-				score = over3(dealerSeat, k, val, score)
+				score = t.over3(dealerSeat, k, val, score)
 			} else {
 				val := int64(v.Bet * int64(algo.SanMultiple(v.Power)) * ante)
-				score = over3(k, dealerSeat, val, score)
+				score = t.over3(k, dealerSeat, val, score)
 			}
 		}
 	}
@@ -595,14 +595,20 @@ func (t *Desk) pailiOver3(score map[uint32]int64) (uint32, map[uint32]int64) {
 			continue
 		}
 		val := int64(v.Bet * bet1 * int64(algo.SanMultiple(a1)) * ante)
-		score = over3(seat, k, val, score)
+		score = t.over3(seat, k, val, score)
 	}
 	return seat, score
 }
 
 //积分结算
-func over3(win, lose uint32, v int64,
+func (t *Desk) over3(win, lose uint32, v int64,
 	score map[uint32]int64) map[uint32]int64 {
+	user := t.getUserBySeat(lose)
+	if user != nil {
+		if user.GetCoin() < v {
+			v = user.GetCoin() //不足赔付
+		}
+	}
 	score[win] += v
 	score[lose] -= v
 	return score
