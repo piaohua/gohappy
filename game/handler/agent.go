@@ -408,6 +408,9 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitIn
 		Profit:  profit,
 		Isagent: arg.Agent,
 	}
+	if user.GetAgent() == "" {
+		return
+	}
 	if arg.GetLevel() >= 3 {
 		return
 	}
