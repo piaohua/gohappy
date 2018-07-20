@@ -210,7 +210,7 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.SetAgentProfitRate:
 		arg := msg.(*pb.SetAgentProfitRate)
 		glog.Debugf("SetAgentProfitRate %#v", arg)
-		a.agentProfitRate(arg, ctx)
+		a.agentProfitRate(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

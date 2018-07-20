@@ -128,6 +128,21 @@ message SetAgentProfitRate
     uint32 rate = 2;//百分比
 }
 
+//设置绑定关系
+message SetAgentBuild
+{
+    string userid = 1;//玩家
+    string agent = 2;//代理
+}
+
+//设置成为代理/合伙人
+message SetAgentState
+{
+    string userid = 1;//玩家
+    uint32 state = 2;//状态0,1
+    uint32 level = 3;//等级1,2,3
+}
+
 //代理提现受理消息
 message AgentProfitReplyMsg
 {

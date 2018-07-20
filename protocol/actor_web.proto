@@ -44,6 +44,8 @@ enum WebCode {
     WebNumber   = 9; //在线人数
     WebTask     =10; //任务列表
     WebLogin    =11; //登录奖励列表
+    WebRate     =12; //设置区域比例
+    WebState    =13; //设置代理状态
 }
 
 //web请求

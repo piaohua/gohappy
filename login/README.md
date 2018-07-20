@@ -180,4 +180,34 @@ WebResponse 响应response消息(json格式)
     response.Result = []byte{} //空数据
     example: {}
 
+11、WebRate 请求Data数据 (json格式)
+    b := new(pb.SetAgentProfitRate)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"userid": "xxx", "rate": xxx}
+
+    WebRate 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
+12、WebBuild 请求Data数据 (json格式)
+    b := new(pb.SetAgentBuild)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"userid": "xxx", "agent": "xxx"}
+
+    WebBuild 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
+13、WebState 请求Data数据 (json格式)
+    b := new(pb.SetAgentState)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"userid": "xxx", "state": xxx, "level": xxx}
+
+    WebState 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
 ```

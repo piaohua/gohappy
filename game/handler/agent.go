@@ -542,3 +542,15 @@ func DrawCoin(rtype int32, mode uint32, val int64) (num int64) {
 	}
 	return
 }
+
+//SetAgentBuild 设置绑定关系
+func SetAgentBuild(arg *pb.SetAgentBuild, user *data.User) {
+	user.Agent = arg.GetAgent()
+	user.Atime = utils.BsonNow()
+}
+
+//SetAgentState 设置代理
+func SetAgentState(arg *pb.SetAgentState, user *data.User) {
+	user.AgentState = arg.GetState()
+	user.AgentLevel = arg.GetLevel()
+}

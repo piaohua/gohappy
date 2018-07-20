@@ -87,6 +87,14 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SetAgentProfitRate)
 		glog.Debugf("SetAgentProfitRate %#v", arg)
 		rs.agentProfitRate(arg, ctx)
+	case *pb.SetAgentBuild:
+		arg := msg.(*pb.SetAgentBuild)
+		glog.Debugf("SetAgentBuild %#v", arg)
+		handler.SetAgentBuild(arg, rs.User)
+	case *pb.SetAgentState:
+		arg := msg.(*pb.SetAgentState)
+		glog.Debugf("SetAgentState %#v", arg)
+		handler.SetAgentState(arg, rs.User)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)

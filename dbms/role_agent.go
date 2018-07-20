@@ -363,7 +363,7 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 }
 
 //更新区域设置
-func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
+func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate) {
 	if v, ok := a.roles[arg.Userid]; ok && v != nil {
 		v.Pid.Tell(arg)
 		//return

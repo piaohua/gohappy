@@ -7,6 +7,7 @@ import (
 
 	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
+	"github.com/gogo/protobuf/proto"
 )
 
 // web (protobuf格式请求响应)
@@ -75,22 +76,8 @@ func webJSONHandler(ctx *fasthttp.RequestCtx) {
 	msg1.Code = msg.Code
 	msg1.Atype = msg.Atype
 	msg1.Data = []byte(msg.Data)
-	//转换为pb格式,TODO 优化
-	switch msg1.Code {
-	case pb.WebGive:
-		msg3 := new(pb.PayCurrency)
-		err3 := jsoniter.Unmarshal(msg1.Data, msg3)
-		if err3 != nil {
-			fmt.Fprintf(ctx, "%v", err3)
-			return
-		}
-		body, err4 := msg3.Marshal()
-		if err4 != nil {
-			fmt.Fprintf(ctx, "%v", err4)
-			return
-		}
-		msg1.Data = body
-	}
+	//转换为pb格式
+	json2pb(msg1)
 	//请求响应
 	res2, err2 := callNode(msg1)
 	if err2 != nil {
@@ -115,4 +102,31 @@ func webJSONHandler(ctx *fasthttp.RequestCtx) {
 		return
 	}
 	fmt.Fprintf(ctx, "%s", body)
+}
+
+//转换为pb格式,TODO 优化
+func json2pb(msg1 *pb.WebRequest) error {
+	var msg3 proto.Message
+	switch msg1.Code {
+	case pb.WebGive:
+		msg3 = new(pb.PayCurrency)
+	case pb.WebBuild:
+		msg3 = new(pb.SetAgentBuild)
+	case pb.WebState:
+		msg3 = new(pb.SetAgentState)
+	case pb.WebRate:
+		msg3 = new(pb.SetAgentProfitRate)
+	default:
+		return nil
+	}
+	err3 := jsoniter.Unmarshal(msg1.Data, msg3)
+	if err3 != nil {
+		return err3
+	}
+	body, err4 := proto.Marshal(msg3)
+	if err4 != nil {
+		return err4
+	}
+	msg1.Data = body
+	return nil
 }
