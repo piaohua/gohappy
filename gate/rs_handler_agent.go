@@ -383,7 +383,7 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		return
 	}
 	if rs.User.ProfitRate <= arg.GetRate() {
-		rsp.Error = pb.Failed
+		rsp.Error = pb.ProfitRateNotEnough
 		rs.Send(rsp)
 		return
 	}
@@ -399,6 +399,11 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 			}
 			rs.rolePid.Tell(msg1)
 			rs.User.ProfitRate -= arg.GetRate() //TODO 优化为消息同步
+			if rs.User.ProfitRate > arg.GetRate() {
+				rs.User.ProfitRate -= arg.GetRate()
+			} else {
+				rs.User.ProfitRate = 1
+			}
 		}
 	}
 	rs.Send(rsp)

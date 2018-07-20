@@ -68,6 +68,7 @@ message AgentManage
     uint32 num = 3;//下级人数
     int64 profit = 4;//当前收益
     uint32 level = 5;//代理等级
+    uint32 rate = 6;//区域收益百分比
 }
 
 // 代理收益明细

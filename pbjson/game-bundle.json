@@ -298,7 +298,8 @@
             "ProfitOrderNotExist": 107,
             "ProfitOrderReplied": 108,
             "ProfitLimit": 109,
-            "AlreadySetRate": 110
+            "AlreadySetRate": 110,
+            "ProfitRateNotEnough": 111
           }
         },
         "SitType": {
@@ -1503,6 +1504,10 @@
             "level": {
               "type": "uint32",
               "id": 5
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 6
             }
           }
         },

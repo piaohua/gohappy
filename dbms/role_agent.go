@@ -348,9 +348,16 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 		rsp.Error = pb.NotAgent
 	}
 	ctx.Respond(rsp)
+	if rsp.Error != pb.OK {
+		return
+	}
 	agent := a.getUserById(arg.GetSelfid())
 	if agent != nil {
-		agent.ProfitRate -= arg.GetRate()
+		if agent.ProfitRate > arg.GetRate() {
+			agent.ProfitRate -= arg.GetRate()
+		} else {
+			agent.ProfitRate = 1
+		}
 		agent.UpdateAgentProfitRate()
 	}
 }

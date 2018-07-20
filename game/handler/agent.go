@@ -71,6 +71,9 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 		if val, ok := v["address"]; ok {
 			msg2.Address = val.(string)
 		}
+		if val, ok := v["profit_rate"]; ok {
+			msg2.Rate = uint32(val.(int))
+		}
 		if msg2.Agentid == "" {
 			continue
 		}

@@ -86,7 +86,8 @@ func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
 	var list []bson.M
-	selector := make(bson.M, 5)
+	selector := make(bson.M, 6)
+	selector["profit_rate"] = true
 	selector["profit"] = true
 	selector["build"] = true
 	selector["agent_level"] = true
