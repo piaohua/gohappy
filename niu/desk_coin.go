@@ -539,8 +539,8 @@ func (t *Desk) deal() {
 		//发牌消息
 		//(通比牛牛 | 牛牛坐庄)前4张牌不广播
 		switch t.DeskData.Dtype {
-		case int32(pb.DESK_TYPE2), //抢庄看牌
-			int32(pb.DESK_TYPE1): //通比牛牛
+		case int32(pb.DESK_TYPE2): //抢庄看牌
+			//int32(pb.DESK_TYPE1): //通比牛牛
 			if hand == 4 {
 				//看不到牌值
 				cards2 := make([]uint32, hand+1, hand+1)
@@ -562,8 +562,41 @@ func (t *Desk) deal() {
 			//自己可看到牌值
 			msg := resDraw(k, t.state, cards)
 			t.send2seat(k, msg)
+		case int32(pb.DESK_TYPE1): //通比牛牛
+			switch t.DeskData.Mode {
+			case 0://普通
+				t.deal2(k, hand, v.Cards)
+			default:
+				t.deal3(k, hand, cards)
+			}
 		}
 	}
+}
+
+func (t *Desk) deal2(k uint32, hand int, cards []uint32) {
+	if hand == 4 {
+		//看不到牌值
+		cards2 := make([]uint32, hand+1, hand+1)
+		msg := resDraw(k, t.state, cards2)
+		t.broadcast(msg)
+	} else {
+		//cards2 := make([]uint32, hand, hand)
+		//msg2 := resDraw(k, t.state, cards2)
+		//t.broadcast3(k, msg2)
+		//自己可看到全部牌值
+		msg := resDraw(k, t.state, cards)
+		t.send2seat(k, msg)
+	}
+}
+
+func (t *Desk) deal3(k uint32, hand int, cards []uint32) {
+	//看不到别人的牌值
+	cards2 := make([]uint32, hand, hand)
+	msg2 := resDraw(k, t.state, cards2)
+	t.broadcast3(k, msg2)
+	//自己可看到牌值
+	msg := resDraw(k, t.state, cards)
+	t.send2seat(k, msg)
 }
 
 //.
