@@ -203,16 +203,16 @@ func AgentJoin2User(msg *pb.AgentJoin, user *data.User) {
 }
 
 //SetAgentProfitRate 默认抽成设置，1级作为大代理不再分成
-func SetAgentProfitRate(user *data.User) {
-	switch user.AgentLevel {
-	case 2:
-		user.ProfitRate = 10 //TODO 优化可配置
-	case 3:
-		user.ProfitRate = 20
-	case 4:
-		user.ProfitRate = 50
-	}
-}
+//func SetAgentProfitRate(user *data.User) {
+//	switch user.AgentLevel {
+//	case 2:
+//		user.ProfitRate = 10 //TODO 优化可配置
+//	case 3:
+//		user.ProfitRate = 20
+//	case 4:
+//		user.ProfitRate = 50
+//	}
+//}
 
 //AgentApprove 审批,修改状态
 func AgentApprove(state pb.AgentApproveState, selfid string, user *data.User) pb.ErrCode {
@@ -337,7 +337,7 @@ func AgentProfitMonthInfoMsg(userid, agentid string, agent bool, gtype int32,
 func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentProfitNum) {
 	msg = &pb.AgentProfitNum{
 		Gtype:  gtype,
-		Profit: profit,
+		Profit: profit * 100, //保留两位小数
 		Userid: userid,
 	}
 	return
@@ -510,4 +510,32 @@ func AgentBuildUpdate2(msg *pb.AgentBuildUpdate, user *data.User) {
 		user.AgentChild += msg.AgentChild
 		user.UpdateAgentChild()
 	}
+}
+
+//DrawFee 开始前扣除抽水,计算反佣和收益
+func DrawFee(mode, ante uint32) (num int64) {
+	switch mode {
+	case 0: //普通
+		num = int64(math.Trunc(float64(ante) * 0.4))
+	default:
+		num = int64(math.Trunc(float64(ante) * 0.8))
+	}
+	return
+}
+
+//DrawCoin 抽水
+func DrawCoin(rtype int32, mode uint32, val int64) (num int64) {
+	switch rtype {
+	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1): //私人
+		switch mode {
+		case 0: //普通
+			num = int64(math.Trunc(float64(val) * 0.1))
+		default:
+			num = int64(math.Trunc(float64(val) * 0.2))
+		}
+	case int32(pb.ROOM_TYPE2): //百人
+		num = int64(math.Trunc(float64(val) * 0.05))
+	}
+	return
 }

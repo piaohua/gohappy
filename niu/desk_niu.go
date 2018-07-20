@@ -8,8 +8,6 @@
 package main
 
 import (
-	"math"
-
 	"gohappy/game/algo"
 	"gohappy/game/handler"
 	"gohappy/glog"
@@ -768,21 +766,14 @@ func (t *Desk) drawcoin(userid string, val int64) int64 {
 	if val <= 0 {
 		return val
 	}
-	var num int64
+	var num int64 = handler.DrawCoin(t.DeskData.Rtype, t.DeskData.Mode, val)
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0), //自由
 		int32(pb.ROOM_TYPE1): //私人
-		switch t.DeskData.Mode {
-		case 0: //普通
-			num = int64(math.Trunc(float64(val) * 0.1 * 100))
-		default:
-			num = int64(math.Trunc(float64(val) * 0.2 * 100)) //取2位小数
-		}
 		//反佣和收益消息,抽成日志记录 val - num
 		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, num)
 		t.send3userid(userid, msg2)
 	case int32(pb.ROOM_TYPE2): //百人
-		num = int64(math.Trunc(float64(val) * 0.05 * 100))
 		//反佣和收益消息,抽成日志记录 val - num
 		msg2 := handler.AgentProfitNumMsg(userid, t.DeskData.Gtype, num)
 		t.send3userid(userid, msg2)
@@ -802,13 +793,7 @@ func (t *Desk) drawfee() {
 		return
 	}
 	//计算反佣和收益
-	var num int64
-	switch t.DeskData.Mode {
-	case 0: //普通
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.4 * 100))
-	default:
-		num = int64(math.Trunc(float64(t.DeskData.Ante) * 0.8 * 100))
-	}
+	var num int64 = handler.DrawFee(t.DeskData.Mode, t.DeskData.Ante)
 	for k, v := range t.seats {
 		if !v.Ready {
 			continue
