@@ -357,10 +357,10 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		return
 	}
 	msg := &pb.AgentProfitApply{
-		Agentid:  rs.User.GetAgent(),     //受理人userid
-		Userid:   rs.User.GetUserid(),    //申请人玩家id
-		Nickname: rs.User.GetNickname(),  //玩家昵称
-		Profit:   int64(profit), //提取金额
+		Agentid:  rs.User.GetAgent(),    //受理人userid
+		Userid:   rs.User.GetUserid(),   //申请人玩家id
+		Nickname: rs.User.GetNickname(), //玩家昵称
+		Profit:   int64(profit),         //提取金额
 	}
 	res1 := rs.reqRole(msg, ctx)
 	if response1, ok := res1.(*pb.AgentProfitApplied); ok {
@@ -369,7 +369,7 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 			//扣除收益
 			rs.User.Profit -= response1.Profit
 			//默认直接发放,不再需要审批
-			rs.addBank(response1.Profit / 100, int32(pb.LOG_TYPE49))
+			rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49))
 		}
 	}
 	rs.Send(rsp)

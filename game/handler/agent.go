@@ -148,7 +148,7 @@ func PackAgentProfitMsg(arg *pb.CAgentProfit) (msg *pb.SAgentProfit) {
 		msg2.Level = v.Level   //收益等级
 		msg2.Gtype = v.Gtype   //game type
 		msg2.Rate = v.Rate     //收益比例
-		msg2.Type = v.Type   //type
+		msg2.Type = v.Type     //type
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -286,7 +286,7 @@ func GetRateByLevel(level uint32) uint32 {
 //IsSetProfitRate 是否可以设置，2大代理，1合伙人
 func IsSetProfitRate(user *data.User) bool {
 	switch GetAgentTitle(user) {
-	case 1,2:
+	case 1, 2:
 		return true
 	}
 	return false

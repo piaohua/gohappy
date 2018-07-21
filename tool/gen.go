@@ -416,7 +416,7 @@ func Init() {
 	//request
 	for _, k := range []string{"game", "niu", "san", "hua", "ebg"} {
 		m := protosUnpack[k] //有序
-	//for k, m := range protosUnpack {
+		//for k, m := range protosUnpack {
 		//初始化
 		protoPacket = make(map[string]uint32) //响应协议
 		protoUnpack = make(map[string]uint32) //请求协议

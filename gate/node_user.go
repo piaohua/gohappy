@@ -1,10 +1,10 @@
 package main
 
 import (
+	"gohappy/data"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
-	"gohappy/data"
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
@@ -74,7 +74,7 @@ func (a *GateActor) handlerUser(msg interface{}, ctx actor.Context) {
 //节点广播消息
 func (a *GateActor) broadcast(msg interface{}) {
 	for _, v := range a.online {
-			v.Tell(msg)
+		v.Tell(msg)
 	}
 }
 

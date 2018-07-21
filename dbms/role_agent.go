@@ -152,7 +152,7 @@ func (a *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo, ctx actor
 	}
 	if msg4 != nil || msg5 != nil {
 		//rolePid.Tell(msg4)
-		user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
+		user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
 	}
 }
 
@@ -230,7 +230,7 @@ func (a *RoleActor) agentWeekUpdate(arg *pb.AgentWeekUpdate, ctx actor.Context) 
 	}
 	user.WeekStart = utils.Str2Time(arg.GetStart())
 	user.WeekEnd = utils.Str2Time(arg.GetEnd())
-	user.UpdateAgentWeek()//暂时实时写入, TODO 异步数据更新
+	user.UpdateAgentWeek() //暂时实时写入, TODO 异步数据更新
 }
 
 //更新收益
@@ -241,7 +241,7 @@ func (a *RoleActor) agentProfitUpdate(arg *pb.AgentProfitUpdate, ctx actor.Conte
 		return
 	}
 	user.AddProfit(arg.GetIsagent(), arg.GetProfit())
-	user.UpdateAgentProfit()//暂时实时写入, TODO 异步数据更新
+	user.UpdateAgentProfit() //暂时实时写入, TODO 异步数据更新
 }
 
 //更新区域收益
@@ -253,7 +253,7 @@ func (a *RoleActor) agentProfitMonthUpdate(arg *pb.AgentProfitMonthUpdate, ctx a
 	}
 	user.AddProfitMonth(arg.GetProfit())
 	user.Month = int(arg.GetMonth())
-	user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
+	user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
 }
 
 //更新区域收益发放
@@ -267,7 +267,7 @@ func (a *RoleActor) agentProfitMonthSend(arg *pb.AgentProfitMonthSend, ctx actor
 	if msg1 != nil {
 		loggerPid.Tell(msg1)
 	}
-	user.UpdateAgentProfitMonth()//暂时实时写入, TODO 异步数据更新
+	user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
 }
 
 //提现受理消息

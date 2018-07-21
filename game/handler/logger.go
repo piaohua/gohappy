@@ -211,7 +211,7 @@ func RoleRecordMsg(msg *data.RoleRecord) *pb.RoleRecord {
 
 //LogProfitMsg 打包收益日志消息
 func LogProfitMsg(agentid, userid string, gtype, rtype int32,
-	level, rate uint32,	profit int64) (msg *pb.LogProfit) {
+	level, rate uint32, profit int64) (msg *pb.LogProfit) {
 	msg = &pb.LogProfit{
 		Agentid: agentid,
 		Userid:  userid,
@@ -252,9 +252,9 @@ func PackBankLogMsg(arg *pb.CBankLog) (msg *pb.SBankLog) {
 	for _, v := range list {
 		msg2 := new(pb.BankLog)
 		msg2.Ctime = utils.Time2LocalStr(v.Ctime) //时间
-		msg2.Type = v.Type                   //类型
-		msg2.Num = v.Num                     //数量
-		msg2.Rest = v.Rest                   //银行剩余数量
+		msg2.Type = v.Type                        //类型
+		msg2.Num = v.Num                          //数量
+		msg2.Rest = v.Rest                        //银行剩余数量
 		msg.List = append(msg.List, msg2)
 	}
 	return

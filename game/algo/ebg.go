@@ -13,7 +13,7 @@ package algo
 */
 
 const (
-	EBG0    uint32 = iota + 0x00
+	EBG0 uint32 = iota + 0x00
 	EBG1
 	EBG2
 	EBG3
@@ -23,9 +23,9 @@ const (
 	EBG7
 	EBG8
 	EBG9
-	EBG10   //28杠
-	EBGDui  //对子
-	BAIBAN  //白板对
+	EBG10  //28杠
+	EBGDui //对子
+	BAIBAN //白板对
 )
 
 const (
@@ -53,7 +53,7 @@ func Ebg(mode uint32, cs []uint32) uint32 {
 	}
 	if (cs[0] == 0x02 && cs[1] == 0x08) ||
 		(cs[0] == 0x08 && cs[1] == 0x02) {
-			return EBG10
+		return EBG10
 	}
 	return (cs[0] + cs[1]) % 10
 }

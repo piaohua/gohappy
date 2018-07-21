@@ -5,9 +5,9 @@ import (
 
 	"gohappy/pb"
 
+	"github.com/gogo/protobuf/proto"
 	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
-	"github.com/gogo/protobuf/proto"
 )
 
 // web (protobuf格式请求响应)
