@@ -363,7 +363,7 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) (msg2 *pb.LogProfit) {
 	user.AddProfitMonth(-1 * arg.GetProfit())
 	user.AddProfit(true, arg.GetProfit())
-	//区域奖金日志消息
+	//区域奖金日志消息,FIXME 重复
 	msg2 = LogProfitMsg(arg.Userid, arg.Userid, 0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
 	return
 }
@@ -374,7 +374,7 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 	profit := int64(math.Trunc(float64(user.ProfitRate) / float64(100) * float64(arg.Profit))) //区域奖励
 	if profit > 0 {
 		if user.GetMonth() != int(utils.Month()) {
-			//发放消息
+			//发放消息,TODO 登录检测发放
 			msg5 = &pb.AgentProfitMonthSend{
 				Userid: user.GetUserid(),
 				Profit: user.GetProfitMonth(),
