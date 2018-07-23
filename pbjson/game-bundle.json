@@ -1508,6 +1508,10 @@
             "rate": {
               "type": "uint32",
               "id": 6
+            },
+            "AgentTitle": {
+              "type": "int32",
+              "id": 7
             }
           }
         },

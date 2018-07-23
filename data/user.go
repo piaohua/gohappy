@@ -44,7 +44,7 @@ type User struct {
 	TopWinDiamond int64 `bson:"top_win_diamond" json:"top_win_diamond"` // 单局赢最高钻石金额
 	TopWinCoin    int64 `bson:"top_win_coin" json:"top_win_coin"`       // 单局赢最高金币金额
 	TopWinChip    int64 `bson:"top_win_chip" json:"top_win_chip"`       // 单局赢最高筹码金额
-	//代理, TODO 分佣设置，上级和上级分佣
+	//代理
 	Agent            string    `bson:"agent" json:"agent"`                           // 绑定的代理ID
 	Atime            time.Time `bson:"atime" json:"atime"`                           // 绑定代理时间
 	AgentJoinTime    time.Time `bson:"agent_join_time" json:"agent_join_time"`       // 申请成为代理时间

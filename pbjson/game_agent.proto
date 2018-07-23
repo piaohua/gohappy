@@ -69,6 +69,7 @@ message AgentManage
     int64 profit = 4;//当前收益
     uint32 level = 5;//代理等级
     uint32 rate = 6;//区域收益百分比
+    int32 AgentTitle = 7;//代理头衔4玩家，3普通，2大代理，1合伙人
 }
 
 // 代理收益明细

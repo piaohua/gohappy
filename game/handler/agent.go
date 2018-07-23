@@ -77,6 +77,7 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 		if msg2.Agentid == "" {
 			continue
 		}
+		msg2.AgentTitle = agentTitle(msg2.Level, 1, arg.Userid, int64(msg2.Rate))
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -306,6 +307,18 @@ func GetAgentTitle(user *data.User) int32 {
 	return 3
 }
 
+func agentTitle(AgentLevel, AgentState uint32, Agent string, ProfitRate int64) int32 {
+	if AgentLevel == 0 || AgentState != 1 {
+		return 4
+	}
+	if Agent == "" || AgentLevel == 1 {
+		return 1
+	}
+	if ProfitRate != 0 {
+		return 2
+	}
+	return 3
+}
 //AgentProfitInfoMsg 代理收益消息
 func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
 	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
