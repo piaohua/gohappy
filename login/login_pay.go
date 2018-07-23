@@ -11,6 +11,7 @@ import (
 	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
+	"gohappy/login/templates"
 	"utils"
 
 	"github.com/json-iterator/go"
@@ -85,6 +86,8 @@ func jtpayReturn(ctx *fasthttp.RequestCtx) {
 	//结果页面展示
 	result := returnHtml(tradeResult)
 	fmt.Fprintf(ctx, "%s", result)
+    //TODO use template
+    //jtpayreturnPageHandler(tradeResult, ctx)
 }
 
 // 接收交易结果通知（异步）
@@ -202,6 +205,8 @@ func jtpayOrder(ctx *fasthttp.RequestCtx) {
 	result := ioswap(order)
 	glog.Debugf("result %s", result)
 	fmt.Fprintf(ctx, "%s", result)
+    //TODO use template
+    //jtpayOrderPageHandler(order, ctx)
 }
 
 // ParseOrder convert the string to struct
@@ -412,4 +417,30 @@ func returnHtml(order *jtpay.NotifyResult) (str string) {
 </body>
 </html>`
 	return
+}
+
+func jtpayreturnPageHandler(order *jtpay.NotifyResult, ctx *fasthttp.RequestCtx) {
+	p := &templates.JtpayReturn{
+        P3_money: order.P3_money,
+        P5_orderid: order.P5_orderid,
+        P6_productcode: order.P6_productcode,
+        LocalTime: utils.Time2Str(utils.LocalTime()),
+	}
+	templates.WriteJtpayReturnTemplate(ctx, p)
+	ctx.SetContentType("text/html; charset=utf-8")
+}
+
+func jtpayOrderPageHandler(order *jtpay.JTpayOrder, ctx *fasthttp.RequestCtx) {
+	p := &templates.JtpayOrder{
+        P1_yingyongnum: order.P1_yingyongnum,
+        P2_ordernumber: order.P2_ordernumber,
+        P3_money: order.P3_money,
+        P6_ordertime: order.P6_ordertime,
+        P7_productcode: order.P7_productcode,
+        P8_sign: order.P8_sign,
+        P9_signtype: order.P9_signtype,
+        P25_terminal: order.P25_terminal,
+	}
+	templates.WriteJtpayOrderTemplate(ctx, p)
+	ctx.SetContentType("text/html; charset=utf-8")
 }

@@ -7,6 +7,15 @@
 ## Installation
 
 ```
+go get -u github.com/valyala/quicktemplate
+go get -u github.com/valyala/quicktemplate/qtc
+
+cd $GOPATH/bin
+./qtc -file ../src/gohappy/login/templates/download.qtpl
+./qtc -file ../src/gohappy/login/templates/jtpayorder.qtpl
+./qtc -file ../src/gohappy/login/templates/jtpayreturn.qtpl
+
+cd $GOPATH/src/gohappy/bin
 ./ctrl build login linux
 ```
 

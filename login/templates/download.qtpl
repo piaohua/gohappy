@@ -1,0 +1,145 @@
+{% code
+    type Download struct {
+        Title string
+    }
+%}
+
+{% func DownloadTemplate(p *Download) %}
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<base href="/">
+<title>欢斗棋牌</title>
+<link rel="stylesheet" type="text/css" href="assets/niuniu/istl_lib.css">
+<script type="text/javascript" src="assets/niuniu/niuniu_config.js"></script>
+<script type="text/javascript" src="assets/niuniu/istl_lib.js"></script>
+<style>
+            *
+            {
+                margin:0;
+                padding:0;
+            }
+
+            html, body
+            {
+                background: rgb(248, 248, 248);
+                font-family: "Microsoft YaHei" ! important;
+                text-align: center;
+            }
+            .hp{
+
+            }
+            .common-center{
+                margin-left:auto;
+                margin-right:auto;
+                text-align:center;
+            }
+            .common-hide{
+                display: none;
+            }
+            .hp-head{
+                padding-top: 24px;
+                padding-bottom: 24px;
+                position: relative;
+                text-align: center;
+                background: #fff;
+            }
+
+            .hp-head img{
+                width: 160px;
+                height: 56px;
+            }
+            .hp-desc{
+                padding-top: 24px;
+                padding-bottom: 24px;
+                background: rgb(248, 248, 248);
+                text-align: center;
+            }
+            .hp-desc-title{
+                color: #464646;
+                font-size: 24px;
+                margin-bottom: 20px;
+            }
+
+            .hp-desc-detail{
+                font-size: 13px;
+                color: #9f9f9f;
+                margin-bottom: 10px;
+            }
+
+            .hp-desc-logo{
+                margin-top: 24px;
+                width: 108px;
+                height: 108px;
+            }
+
+            .hp-download{
+                text-align: center;
+                margin-left: 12px;
+                margin-right: 12px;
+            }
+            .hp-download-btn{
+                width: 300px;
+                height: 64px;
+            }
+
+            .hp-guid{
+
+            }
+
+            .hp-guid img{
+                max-width: 300px;
+                display: block;
+                margin-top: 16px;
+            }
+            .hp-guid-title{
+                margin-top: 10px;
+                color: #ffa323;
+                font-size:15px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        </style>
+        <link rel="stylesheet" href="assets/niuniu/istl_lib.css">
+</head>
+<body onload="istl_load()">
+<section class="hp-desc">
+<p class="hp-desc-title">欢斗棋牌</p>
+<p class="hp-desc-detail">
+欢乐畅快的开房棋牌，给你一种不一样的感觉
+</p>
+<p class="hp-desc-detail">
+简简单单的画风，简简单单的操作，让你有种身临其境的感觉
+</p>
+<p class="hp-desc-detail">
+与现实中好友一起组局线上游戏。
+</p>
+<p class="hp-desc-detail">
+全面支持安卓、ios客户端，随时随地想玩就玩。
+</p>
+<img class="common-center hp-desc-logo" src="assets/niuniu/share.png">
+</section>
+<section id="sec_download">
+<img id="download-ios" class="common-center hp-download-btn" src="assets/niuniu/btn_download.png" onclick="istl_install()">
+</section>
+<section id="sec_ios_guid" class="hp-guid common-ios common-hide">
+<p class="hp-guid-title">
+安装教程（iOS9用户必看）
+</p>
+<img class="common-center" src="assets/niuniu/ios_guid.jpg">
+</section>
+<section>
+<p class="hp-desc-detail">
+使用手机扫描二维码免费安装游戏
+</p>
+<div id="sec_qrcode" class="common-center" title="{%s p.Title %}"><canvas width="200" height="200" style="display: none;"></canvas><img alt="Scan me!" src="assets/niuniu/download.png"></div>
+</section>
+<div class="wxtip" id="JweixinTip">
+<span class="wxtip-icon"></span>
+<p class="wxtip-txt">点击右上角<br>选择在浏览器中打开</p>
+</div>
+</body></html>
+{% endfunc %}

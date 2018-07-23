@@ -1,0 +1,93 @@
+{% code
+    type JtpayReturn struct {
+        P3_money       string
+        P5_orderid     string
+        P6_productcode string
+        LocalTime      string
+    }
+%}
+
+{% func JtpayReturnTemplate(p *JtpayReturn) %}
+<html>
+<head>
+	{% switch p.P6_productcode %}
+	{% case "WX" %}
+		<title>微信支付成功</title>
+	{% case "ZFB" %}
+		<title>支付宝支付成功</title>
+	{% default %}
+		<title>支付成功</title>
+	{% endswitch %}
+<base href="/">
+<meta charset="utf-8" />
+<meta name="viewport" content="initial-scale=1.0, width=device-width, user-scalable=no" />
+<link rel="stylesheet" type="text/css" href="jtpay/css/wxzf.css">
+<script src="jtpay/js/jquery.js"></script>
+</head>
+<body >
+<div class="header">
+  <div class="all_w" style="position:relative; z-index:1;">
+    <div class="ttwenz" style=" text-align:center; width:100%;">
+      <h4>交易详情</h4>
+	{% switch p.P6_productcode %}
+	{% case "WX" %}
+		<h5>微信安全支付</h5>
+	{% case "ZFB" %}
+		<h5>支付宝安全支付</h5>
+	{% default %}
+		<h5>安全支付</h5>
+	{% endswitch %}
+    </div>
+    </div>
+</div>
+
+<div class="zfcg_box ">
+<div class="all_w">
+<img src="jtpay/images/cg_03.jpg" > 支付成功 </div>
+
+</div>
+<div class="cgzf_info">
+<div class="wenx_xx">
+  <div class="mz">欢乐商城</div>
+	<div class='wxzf_price'>￥{%s p.P3_money %}</div>
+</div>
+
+<div class="spxx_shop">
+ <div class=" mlr_pm">
+
+ <table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>商   品</td>
+    <td align="right">金豆</td>
+  </tr>
+   <tr>
+    <td>交易时间</td>
+	<td align='right'>{%s p.LocalTime %}</td>
+  </tr>
+   <tr>
+    <td>支付方式</td>
+	{% switch p.P6_productcode %}
+	{% case "WX" %}
+		<td align="right">微信支付</td>
+	{% case "ZFB" %}
+		<td align="right">支付宝支付</td>
+	{% default %}
+		<td align="right">支付</td>
+	{% endswitch %}
+  </tr>
+   <tr>
+    <td>交易单号</td>
+	<td align='right'>{%s p.P5_orderid %}</td>
+  </tr>
+</table>
+
+</div>
+
+</div>
+</div>
+
+<div class="wzxfcgde_tb"><img src="jtpay/images/cg_07.jpg" ></div>
+
+</body>
+</html>
+{% endfunc %}

@@ -1,0 +1,34 @@
+{% code
+    type JtpayOrder struct {
+        P1_yingyongnum string
+        P2_ordernumber string
+        P3_money       string
+        P6_ordertime   string
+        P7_productcode string
+        P8_sign        string
+        P9_signtype    string
+        P25_terminal   string
+    }
+%}
+
+{% func JtpayOrderTemplate(p *JtpayOrder) %}
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>竣付通</title>
+</head>
+<!--支付宝IOSwap支付请求提交页-->
+<body onLoad="document.yeepay.submit();">
+	<form name='yeepay' action='https://order.z.jtpay.com/jh-web-order/order/receiveOrder' method='post'>
+	<input type='hidden' name='p1_yingyongnum' value='{%s p.P1_yingyongnum %}'>
+	<input type='hidden' name='p2_ordernumber' value='{%s p.P2_ordernumber %}'>
+	<input type='hidden' name='p3_money' value='{%s p.P3_money %}'>
+	<input type='hidden' name='p6_ordertime' value='{%s p.P6_ordertime %}'>
+	<input type='hidden' name='p7_productcode' value='{%s p.P7_productcode %}'>
+	<input type='hidden' name='p8_sign' value='{%s p.P8_sign %}'>
+	<input type='hidden' name='p9_signtype' value='{%s p.P9_signtype %}'>
+	<input type='hidden' name='p25_terminal' value='{%s p.P25_terminal %}'>
+	</form>
+</body>
+</html>
+{% endfunc %}

@@ -124,7 +124,8 @@ func requestHandler(ctx *fasthttp.RequestCtx) {
 	case "/happy/wxmp/qrcode":
 		wxmpQRcode(ctx)
 	case "/happy/download":
-		download(ctx)
+		//download(ctx)
+        downloadPageHandler(ctx)
 	//case "/wxmp/wx":
 	case "/happy/foo":
 		fooHandler(ctx)
