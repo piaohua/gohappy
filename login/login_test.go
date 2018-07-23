@@ -24,6 +24,9 @@ func TestRun(t *testing.T) {
 func TestWebJson(t *testing.T) {
 	sendCoin("101418", 1000)
     sendNotice()
+	//sendBuild("101418", "101133")
+	//sendState("101418", 1, 1)
+	//sendRate("101418", 23)
 }
 
 func sendCoin(userid string, coin int64) {
@@ -70,6 +73,61 @@ func sendNotice() {
 		log.Printf("msg %#v send successfully.", msg)
 	} else {
 		log.Printf("msg %#v send failed.", msg)
+	}
+}
+
+func sendRate(userid string, rate uint32) {
+    log.Printf("userid %s, rate %d\n", userid, rate)
+    msg := &pb.SetAgentProfitRate{
+        Userid: userid,
+        Rate: rate,
+    }
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebRate, b) {
+		log.Printf("userid %s, rate %d send successfully.", userid, rate)
+	} else {
+		log.Printf("userid %s, rate %d send failed.", userid, rate)
+	}
+}
+
+func sendBuild(userid, agent string) {
+    log.Printf("userid %s, agent %s\n", userid, agent)
+    msg := &pb.SetAgentBuild{
+        Userid: userid,
+        Agent: agent,
+    }
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebBuild, b) {
+		log.Printf("userid %s, agent %s send successfully.", userid, agent)
+	} else {
+		log.Printf("userid %s, agent %s send failed.", userid, agent)
+	}
+}
+
+func sendState(userid string, state, level uint32) {
+    log.Printf("userid %s, state %d, level %d\n", userid, state, level)
+    msg := &pb.SetAgentState{
+        Userid: userid,
+        State: state,
+        Level: level,
+    }
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebState, b) {
+		log.Printf("userid %s, state %d, level %d send successfully.", userid, state, level)
+	} else {
+		log.Printf("userid %s, state %d, level %d send failed.", userid, state, level)
 	}
 }
 
