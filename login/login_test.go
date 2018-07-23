@@ -11,8 +11,8 @@ import (
 	"gohappy/data"
 	"gohappy/pb"
 
-	jsoniter "github.com/json-iterator/go"
 	"github.com/globalsign/mgo/bson"
+	jsoniter "github.com/json-iterator/go"
 )
 
 func TestRun(t *testing.T) {
@@ -23,24 +23,24 @@ func TestRun(t *testing.T) {
 
 func TestWebJson(t *testing.T) {
 	sendCoin("101418", 1000)
-    sendNotice()
+	sendNotice()
 	//sendBuild("101418", "101133")
 	//sendState("101418", 1, 1)
 	//sendRate("101418", 23)
 }
 
 func sendCoin(userid string, coin int64) {
-    //var userid string
-    //var coin int64
-    //flag.StringVar(&userid, "userid", "", "userid")
-    //flag.Int64Var(&coin, "coin", 0, "coin")
-    //flag.Parse()
-    log.Printf("userid %s, coin %d\n", userid, coin)
-    msg := &pb.PayCurrency{
-        Type: int32(pb.LOG_TYPE9),
-        Userid: userid,
-        Coin: coin,
-    }
+	//var userid string
+	//var coin int64
+	//flag.StringVar(&userid, "userid", "", "userid")
+	//flag.Int64Var(&coin, "coin", 0, "coin")
+	//flag.Parse()
+	log.Printf("userid %s, coin %d\n", userid, coin)
+	msg := &pb.PayCurrency{
+		Type:   int32(pb.LOG_TYPE9),
+		Userid: userid,
+		Coin:   coin,
+	}
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
@@ -54,16 +54,16 @@ func sendCoin(userid string, coin int64) {
 }
 
 func sendNotice() {
-    msg := make(map[string]data.Notice) //key: Notice.Id
-    notice := data.Notice{
-        Id: bson.NewObjectId().Hex(),
-        Userid: "",
-        Rtype: data.NOTICE_TYPE3,
-        Content: "恭喜成功购买100金豆",
-        Ctime: bson.Now(),
-        Etime: bson.Now().AddDate(0, 0, 7),
-    }
-    msg[notice.Id] = notice
+	msg := make(map[string]data.Notice) //key: Notice.Id
+	notice := data.Notice{
+		Id:      bson.NewObjectId().Hex(),
+		Userid:  "",
+		Rtype:   data.NOTICE_TYPE3,
+		Content: "恭喜成功购买100金豆",
+		Ctime:   bson.Now(),
+		Etime:   bson.Now().AddDate(0, 0, 7),
+	}
+	msg[notice.Id] = notice
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
@@ -77,11 +77,11 @@ func sendNotice() {
 }
 
 func sendRate(userid string, rate uint32) {
-    log.Printf("userid %s, rate %d\n", userid, rate)
-    msg := &pb.SetAgentProfitRate{
-        Userid: userid,
-        Rate: rate,
-    }
+	log.Printf("userid %s, rate %d\n", userid, rate)
+	msg := &pb.SetAgentProfitRate{
+		Userid: userid,
+		Rate:   rate,
+	}
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
@@ -95,11 +95,11 @@ func sendRate(userid string, rate uint32) {
 }
 
 func sendBuild(userid, agent string) {
-    log.Printf("userid %s, agent %s\n", userid, agent)
-    msg := &pb.SetAgentBuild{
-        Userid: userid,
-        Agent: agent,
-    }
+	log.Printf("userid %s, agent %s\n", userid, agent)
+	msg := &pb.SetAgentBuild{
+		Userid: userid,
+		Agent:  agent,
+	}
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
@@ -113,12 +113,12 @@ func sendBuild(userid, agent string) {
 }
 
 func sendState(userid string, state, level uint32) {
-    log.Printf("userid %s, state %d, level %d\n", userid, state, level)
-    msg := &pb.SetAgentState{
-        Userid: userid,
-        State: state,
-        Level: level,
-    }
+	log.Printf("userid %s, state %d, level %d\n", userid, state, level)
+	msg := &pb.SetAgentState{
+		Userid: userid,
+		State:  state,
+		Level:  level,
+	}
 	b, err := jsoniter.Marshal(msg)
 	if err != nil {
 		log.Panic(err)
@@ -132,27 +132,27 @@ func sendState(userid string, state, level uint32) {
 }
 
 func webRequest(code pb.WebCode, b []byte) bool {
-    msg2 := &pb.WebRequest2{
-        Code: code,
-        Atype: pb.CONFIG_UPSERT,
-        Data: string(b),
-    }
-    b, err := jsoniter.Marshal(msg2)
-    if err != nil {
-        log.Panic(err)
-    }
+	msg2 := &pb.WebRequest2{
+		Code:  code,
+		Atype: pb.CONFIG_UPSERT,
+		Data:  string(b),
+	}
+	b, err := jsoniter.Marshal(msg2)
+	if err != nil {
+		log.Panic(err)
+	}
 	url := "http://127.0.0.1/happy/webjson"
-    b, err = doHTTPPost(url, b)
-    if err != nil {
-        log.Panic(err)
-    }
-    log.Printf("result %s", string(b))
-    msg3 := new(pb.WebResponse2)
-    err = jsoniter.Unmarshal(b, msg3)
-    if err != nil {
-        log.Panic(err)
-    }
-    return msg3.Code == msg2.Code
+	b, err = doHTTPPost(url, b)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("result %s", string(b))
+	msg3 := new(pb.WebResponse2)
+	err = jsoniter.Unmarshal(b, msg3)
+	if err != nil {
+		log.Panic(err)
+	}
+	return msg3.Code == msg2.Code
 }
 
 func doHTTPPost(targetURL string, body []byte) ([]byte, error) {

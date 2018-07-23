@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"gohappy/glog"
-	"gohappy/pb"
 	"gohappy/login/templates"
+	"gohappy/pb"
 
 	"github.com/json-iterator/go"
 	"github.com/valyala/fasthttp"
@@ -203,7 +203,7 @@ func downloadHtml() (str string) {
 func downloadPageHandler(ctx *fasthttp.RequestCtx) {
 	downloadURL := cfg.Section("domain").Key("download").Value()
 	p := &templates.Download{
-        Title: downloadURL,
+		Title: downloadURL,
 	}
 	templates.WriteDownloadTemplate(ctx, p)
 	ctx.SetContentType("text/html; charset=utf-8")

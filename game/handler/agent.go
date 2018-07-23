@@ -319,6 +319,7 @@ func agentTitle(AgentLevel, AgentState uint32, Agent string, ProfitRate int64) i
 	}
 	return 3
 }
+
 //AgentProfitInfoMsg 代理收益消息
 func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
 	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
