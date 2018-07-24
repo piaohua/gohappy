@@ -7,6 +7,7 @@ import (
 	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
+	"gohappy/game/handler"
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
@@ -158,7 +159,6 @@ func (rs *RoleActor) logined(arg *pb.LoginSuccess, ctx actor.Context) {
 	rs.loginedLog(arg)
 	//登录成功
 	rs.online = true
-	//TODO agent build 处理, 给上级代理发送绑定消息
 }
 
 //登录后获取数据
@@ -269,6 +269,14 @@ func (rs *RoleActor) loginedLog(arg *pb.LoginSuccess) {
 	rs.loggerPid.Tell(msg2)
 	//TODO test
 	//rs.loginedLog2()
+	//登录检测区域奖励发放
+	msg3, msg5 := handler.AgentProfitMonthSendCheck(rs.User)
+	if msg3 != nil {
+		rs.loggerPid.Tell(msg3)
+	}
+	if msg5 != nil {
+		rs.rolePid.Tell(msg5)
+	}
 }
 
 //test

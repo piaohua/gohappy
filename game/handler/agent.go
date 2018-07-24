@@ -361,11 +361,38 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 }
 
 //AgentProfitMonthSend 区域奖励发放
-func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) (msg2 *pb.LogProfit) {
+func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 	user.AddProfitMonth(-1 * arg.GetProfit())
-	user.AddProfit(true, arg.GetProfit())
-	//区域奖金日志消息,FIXME 重复
+	isAgent := IsAgent(user)
+	user.AddProfit(isAgent, arg.GetProfit())
+	user.Month = int(utils.Month())
+}
+
+//AgentProfitMonthSendLog 区域奖励发放日志
+func AgentProfitMonthSendLog(arg *pb.AgentProfitMonthSend, user *data.User) (msg2 *pb.LogProfit) {
 	msg2 = LogProfitMsg(arg.Userid, arg.Userid, 0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
+	return
+}
+
+//AgentProfitMonthSendCheck 区域奖励登录检测发放
+func AgentProfitMonthSendCheck(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.AgentProfitMonthSend) {
+	if IsNotAgent(user) {
+		return
+	}
+	if user.GetMonth() == 0 {
+		return
+	}
+	if user.GetMonth() == int(utils.Month()) {
+		return
+	}
+	//发放消息
+	msg5 = &pb.AgentProfitMonthSend{
+		Userid: user.GetUserid(),
+		Profit: user.GetProfitMonth(),
+		Month:  int32(user.GetMonth()),
+	}
+	AgentProfitMonthSend(msg5, user)
+	msg3 = AgentProfitMonthSendLog(msg5, user)
 	return
 }
 
@@ -375,13 +402,14 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 	profit := int64(math.Trunc(float64(user.ProfitRate) / float64(100) * float64(arg.Profit))) //区域奖励
 	if profit > 0 {
 		if user.GetMonth() != int(utils.Month()) {
-			//发放消息,TODO 登录检测发放
+			//发放消息
 			msg5 = &pb.AgentProfitMonthSend{
 				Userid: user.GetUserid(),
 				Profit: user.GetProfitMonth(),
 				Month:  int32(user.GetMonth()),
 			}
-			msg3 = AgentProfitMonthSend(msg5, user)
+			AgentProfitMonthSend(msg5, user)
+			msg3 = AgentProfitMonthSendLog(msg5, user)
 		}
 		user.AddProfitMonth(profit)
 		glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)

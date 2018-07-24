@@ -263,10 +263,7 @@ func (a *RoleActor) agentProfitMonthSend(arg *pb.AgentProfitMonthSend, ctx actor
 		glog.Errorf("get userid %s fail", arg.GetUserid())
 		return
 	}
-	msg1 := handler.AgentProfitMonthSend(arg, user)
-	if msg1 != nil {
-		loggerPid.Tell(msg1)
-	}
+	handler.AgentProfitMonthSend(arg, user)
 	user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
 }
 
