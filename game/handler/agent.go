@@ -365,7 +365,8 @@ func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 	user.AddProfitMonth(-1 * arg.GetProfit())
 	isAgent := IsAgent(user)
 	user.AddProfit(isAgent, arg.GetProfit())
-	user.Month = int(utils.Month())
+	//user.Month = int(utils.Month())
+	user.Month = int(utils.Day()) //TODO test
 }
 
 //AgentProfitMonthSendLog 区域奖励发放日志
@@ -382,7 +383,13 @@ func AgentProfitMonthSendCheck(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.Ag
 	if user.GetMonth() == 0 {
 		return
 	}
-	if user.GetMonth() == int(utils.Month()) {
+	msg3, msg5 = agentProfitMonthSendCheck2(user)
+	return
+}
+
+func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.AgentProfitMonthSend) {
+	//if user.GetMonth() == int(utils.Month()) {
+	if user.GetMonth() == int(utils.Day()) { //TODO test
 		return
 	}
 	//发放消息
@@ -393,6 +400,7 @@ func AgentProfitMonthSendCheck(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.Ag
 	}
 	AgentProfitMonthSend(msg5, user)
 	msg3 = AgentProfitMonthSendLog(msg5, user)
+	glog.Debugf("profit month send msg3 %#v, msg5 %#v", msg3, msg5)
 	return
 }
 
@@ -401,16 +409,7 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 	msg2, msg3 *pb.LogProfit, msg4 *pb.AgentProfitMonthUpdate, msg5 *pb.AgentProfitMonthSend) {
 	profit := int64(math.Trunc(float64(user.ProfitRate) / float64(100) * float64(arg.Profit))) //区域奖励
 	if profit > 0 {
-		if user.GetMonth() != int(utils.Month()) {
-			//发放消息
-			msg5 = &pb.AgentProfitMonthSend{
-				Userid: user.GetUserid(),
-				Profit: user.GetProfitMonth(),
-				Month:  int32(user.GetMonth()),
-			}
-			AgentProfitMonthSend(msg5, user)
-			msg3 = AgentProfitMonthSendLog(msg5, user)
-		}
+		msg3, msg5 = agentProfitMonthSendCheck2(user)
 		user.AddProfitMonth(profit)
 		glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)
 		//区域奖金日志消息
@@ -419,7 +418,8 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 		msg4 = &pb.AgentProfitMonthUpdate{
 			Userid: user.GetUserid(),
 			Profit: profit,
-			Month:  int32(utils.Month()),
+			//Month:  int32(utils.Month()),
+			Month:  int32(utils.Day()), //TODO test
 		}
 	}
 	if user.GetAgent() != "" {
