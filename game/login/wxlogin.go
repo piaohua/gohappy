@@ -13,8 +13,8 @@ import (
 func WxLogin(ctos *pb.WxLogin, user *data.User) (stoc *pb.WxLogined) {
 	stoc = new(pb.WxLogined)
 	user.Wxuid = ctos.GetWxuid()
-	user.OpenId = ctos.GetOpenId()
-	user.UnionId = ctos.GetUnionId()
+	user.OpenID = ctos.GetOpenId()
+	user.UnionID = ctos.GetUnionId()
 	user.Nickname = ctos.GetNickname()
 	user.Photo = ctos.GetPhoto()
 	user.Sex = ctos.GetSex()
@@ -32,15 +32,15 @@ func WxRegist(ctos *pb.WxLogin, genid *data.IDGen) (stoc *pb.WxLogined,
 	glog.Debugf("WxLogin userid %s", userid)
 	user.Userid = userid
 	user.Wxuid = ctos.GetWxuid()
-	user.OpenId = ctos.GetOpenId()
-	user.UnionId = ctos.GetUnionId()
+	user.OpenID = ctos.GetOpenId()
+	user.UnionID = ctos.GetUnionId()
 	user.Nickname = ctos.GetNickname()
 	user.Photo = ctos.GetPhoto()
 	user.Sex = ctos.GetSex()
 	user.Ctime = utils.BsonNow()
 	//agent 关系查找和建立
 	userInfo := new(data.UserInfo)
-	userInfo.UnionId = user.UnionId
+	userInfo.UnionId = user.UnionID
 	userInfo.Get()
 	if userInfo.Agentid != "" {
 		glog.Debugf("userid %d is bound to agentid %s", userid, userInfo.Agentid)

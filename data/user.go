@@ -13,8 +13,8 @@ type User struct {
 	Nickname string `bson:"nickname" json:"nickname"`         // 用户昵称
 	Photo    string `bson:"photo" json:"photo"`               // 头像
 	Wxuid    string `bson:"wxuid" json:"wxuid"`               // 微信uid
-	OpenId   string `bson:"openid" json:"openid,omitempty"`   //微信openid nolint
-	UnionId  string `bson:"unionid" json:"unionid,omitempty"` //微信unionid nolint
+	OpenID   string `bson:"openid" json:"openid,omitempty"`   //微信openid nolint
+	UnionID  string `bson:"unionid" json:"unionid,omitempty"` //微信unionid nolint
 	Sex      uint32 `bson:"sex" json:"sex"`                   // 用户性别,男1 女2 非男非女3
 	Phone    string `bson:"phone" json:"phone"`               // 绑定的手机号码
 	Tourist  string `bson:"tourist" json:"tourist"`           // 游客
