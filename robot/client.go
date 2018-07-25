@@ -105,7 +105,7 @@ func (ws *Robot) Close() {
 }
 
 //Router 接收消息路由
-func (ws *Robot) Router(id uint32, body []byte) {
+func (ws *Robot) router(id uint32, body []byte) {
 	//body = pbAesDe(body) //解密
 	msg, err := pb.Runpack(id, body)
 	if err != nil {
@@ -153,7 +153,7 @@ func (ws *Robot) ticker() {
 			glog.Info("ticker closed")
 			return
 		case <-tick:
-			ws.SendPing()
+			ws.sendPing()
 		}
 	}
 }
@@ -178,7 +178,7 @@ func (ws *Robot) readPump() {
 			return
 		}
 		//路由
-		ws.Router(decodeUint32(message[:4]), message[5:])
+		ws.router(decodeUint32(message[:4]), message[5:])
 	}
 }
 

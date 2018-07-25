@@ -25,6 +25,7 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 		msg1 := a.coinEnterMsg(userid)
 		ctx.Respond(msg1)
 		a.coinCameinMsg(userid)
+		a.callRobot()
 	case *pb.CNNFreeEnterRoom:
 		arg := msg.(*pb.CNNFreeEnterRoom)
 		glog.Debugf("CNNFreeEnterRoom %#v", arg)
@@ -32,6 +33,7 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 		msg1 := a.freeEnterMsg(userid)
 		ctx.Respond(msg1)
 		a.freeCameinMsg(userid)
+		a.callRobot()
 	case *pb.CNNFreeDealer:
 		arg := msg.(*pb.CNNFreeDealer)
 		glog.Debugf("CNNFreeDealer %#v", arg)

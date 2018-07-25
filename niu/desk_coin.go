@@ -136,6 +136,30 @@ func (t *Desk) coinCameinMsg(userid string) {
 	t.broadcast(msg)
 }
 
+//召唤机器人
+func (t *Desk) callRobot() {
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE0):
+		if len(t.roles) > 1 {
+			return
+		}
+	case int32(pb.ROOM_TYPE1):
+		return
+	case int32(pb.ROOM_TYPE2):
+		if len(t.roles) > 5 {
+			return
+		}
+	}
+	msg := new(pb.RobotMsg)
+	msg.Roomid = t.DeskData.Rid
+	msg.Code = t.DeskData.Code
+	msg.Rtype = t.DeskData.Rtype
+	msg.Ltype = t.DeskData.Ltype
+	msg.EnvBet = int32(t.DeskData.Multiple)
+	msg.Num = 2
+	t.dbmsPid.Tell(msg)
+}
+
 //位置上玩家数据
 func (t *Desk) coinRoleMsg(userid string) (msg *pb.NNRoomUser) {
 	if v, ok := t.roles[userid]; ok {

@@ -8,60 +8,48 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
-
 	"gohappy/pb"
 	"utils"
+	"gohappy/glog"
 )
 
 //' 登录
 
-//SendRegist 发送注册请求
-func (c *Robot) SendRegist() {
-	ctos := new(pb.CRegist)
-	ctos.Phone = c.data.Phone
-	ctos.Nickname = c.data.Nickname
-	h := md5.New()
+//sendRegist 发送注册请求
+func (c *Robot) sendRegist() {
+	c2s := new(pb.CRegist)
+	c2s.Phone = c.data.Phone
+	c2s.Nickname = c.data.Nickname
 	passwd := cfg.Section("robot").Key("passwd").Value()
-	h.Write([]byte(passwd)) // 需要加密的字符串为
-	pwd := hex.EncodeToString(h.Sum(nil))
-	ctos.Password = pwd
-	c.Sender(ctos)
+	c2s.Password = utils.Md5(passwd)
+	c.Sender(c2s)
 }
 
-//SendLogin 发送登录请求
-func (c *Robot) SendLogin() {
-	ctos := new(pb.CLogin)
-	ctos.Phone = c.data.Phone
-	h := md5.New()
+//sendLogin 发送登录请求
+func (c *Robot) sendLogin() {
+	c2s := new(pb.CLogin)
+	c2s.Phone = c.data.Phone
 	passwd := cfg.Section("robot").Key("passwd").Value()
-	h.Write([]byte(passwd)) // 需要加密的字符串为
-	pwd := hex.EncodeToString(h.Sum(nil))
-	ctos.Password = pwd
-	//glog.Infof("ctos -> %#v", ctos)
-	utils.Sleep(2)
-	c.Sender(ctos)
+	c2s.Password = utils.Md5(passwd)
+	c.SendDefer(c2s)
 }
 
-//SendUserData 获取玩家数据
-func (c *Robot) SendUserData() {
-	ctos := new(pb.CUserData)
-	ctos.Userid = c.data.Userid
-	c.Sender(ctos)
+//sendUserData 获取玩家数据
+func (c *Robot) sendUserData() {
+	c2s := new(pb.CUserData)
+	c2s.Userid = c.data.Userid
+	c.Sender(c2s)
 }
 
 //SendPing 心跳
-func (c *Robot) SendPing() {
-	ctos := new(pb.CPing)
-	//ctos.Time := uint32(utils.Timestamp())
-	ctos.Time = 1
-	//glog.Debugf("ping : %#v", ctos)
-	c.Sender(ctos)
+func (c *Robot) sendPing() {
+	c2s := new(pb.CPing)
+	c2s.Time = 1 //uint32(utils.Timestamp())
+	c.Sender(c2s)
 }
 
-//AddCurrency 添加货币
-func (c *Robot) AddCurrency() {
+//addCurrency 添加货币
+func (c *Robot) addCurrency() {
 	msg4 := &pb.PayCurrency{
 		Userid: c.data.Userid,
 		Type:   int32(pb.LOG_TYPE44),
@@ -70,58 +58,100 @@ func (c *Robot) AddCurrency() {
 	rolePid.Tell(msg4)
 }
 
+//SendDefer 延迟发送
+func (c *Robot) SendDefer(msg interface{}) {
+	utils.Sleep(utils.RandIntN(4) + 1) //随机
+	c.Sender(msg)
+}
+
 //.
 
-//' 百人
+//' niu
 
-//SendNNLeave 离开
-func (c *Robot) SendNNLeave() {
-	ctos := new(pb.CNNLeave)
-	c.Sender(ctos)
+//sendNNLeave 离开
+func (c *Robot) sendNNLeave() {
+	c2s := new(pb.CNNLeave)
+	c.Sender(c2s)
 }
 
-//SendNNEntryRoom 进入房间
-func (c *Robot) SendNNEntryRoom() {
-	ctos := new(pb.CNNFreeEnterRoom)
-	//glog.Debugf("enter roomid %s", roomid)
-	utils.Sleep(2)
-	c.Sender(ctos)
+//sendNNReady 准备
+func (c *Robot) sendNNReady() {
+	c2s := new(pb.CNNReady)
+	c2s.Ready = true
+	c.SendDefer(c2s)
 }
 
-//SendNNSitDown 玩家入坐
-func (c *Robot) SendNNSitDown() {
-	seat := uint32(utils.RandInt32N(4) + 1) //随机
-	ctos := &pb.CNNFreeSit{
-		State: true,
-		Seat:  seat,
+//sendNNDealer 抢庄
+func (c *Robot) sendNNDealer() {
+	c2s := new(pb.CNNDealer)
+	if utils.RandIntN(100) > 50 {
+		c2s.Dealer = true
+		c2s.Num = uint32(utils.RandIntN(3) + 1)
 	}
-	c.sits++ //尝试次数
-	utils.Sleep(2)
-	c.Sender(ctos)
+	c.SendDefer(c2s)
 }
 
-//SendNNStandup 玩家离坐
-func (c *Robot) SendNNStandup() {
-	ctos := &pb.CNNFreeSit{
-		State: false,
-		Seat:  c.seat,
-	}
-	utils.Sleep(2)
-	c.Sender(ctos)
-	utils.Sleep(2)
-	c.SendNNLeave()
+//sendNNiu 提交
+func (c *Robot) sendNNiu() {
+	c2s := new(pb.CNNiu)
+	c.SendDefer(c2s)
+}
+
+//sendNNStandup 玩家离坐
+func (c *Robot) sendNNStandup() {
+	c.sendNNLeave()
 	utils.Sleep(2)
 	c.Close() //下线
 }
 
-//SendNNRoomBet 玩家下注
-func (c *Robot) SendNNRoomBet() {
+//sendNNEntryRoom 进入房间
+func (c *Robot) sendNNEntryRoom() {
+	switch c.rtype {
+	case int32(pb.ROOM_TYPE0):
+		glog.Debugf("enter roomid %s", c.roomid)
+		c2s := new(pb.CNNCoinEnterRoom)
+		c2s.Id = c.roomid
+		c.SendDefer(c2s)
+	case int32(pb.ROOM_TYPE1):
+		glog.Debugf("enter room code %s", c.code)
+		c2s := new(pb.CNNEnterRoom)
+		c2s.Code = c.code
+		c.SendDefer(c2s)
+	case int32(pb.ROOM_TYPE2):
+		c2s := new(pb.CNNFreeEnterRoom)
+		c.SendDefer(c2s)
+	}
+}
+
+//sendNNBet 玩家下注
+func (c *Robot) sendNNBet() {
+	switch c.rtype {
+	case int32(pb.ROOM_TYPE0):
+		c2s := new(pb.CNNBet)
+		c2s.Seatbet = c.seat
+		c2s.Value = uint32(utils.RandIntN(10))
+		c.SendDefer(c2s)
+	case int32(pb.ROOM_TYPE1):
+		c2s := new(pb.CNNBet)
+		c2s.Seatbet = c.seat
+		c2s.Value = 1
+		c.SendDefer(c2s)
+	case int32(pb.ROOM_TYPE2):
+		//随机下注次数
+		c.bits = uint32(utils.RandInt32N(20) + 1)
+		c.bitNum = uint32(utils.RandInt32N(7) * 5000)
+		c.sendNNFreeBet() //下注
+	}
+}
+
+//sendNNBet 玩家下注
+func (c *Robot) sendNNFreeBet() {
 	//不同游戏位置不同
 	var seats = []uint32{2, 3, 4, 5, 6, 7, 8, 9}
-	var bets = []uint32{100, 1000, 10000, 50000, 100000, 200000}
+	var bets = []uint32{100, 500, 1000, 5000, 10000}
 	var coin uint32 = uint32(c.data.Coin) / 4
 	var max int
-	for i := 5; i >= 0; i-- {
+	for i := 4; i >= 0; i-- {
 		if coin >= bets[i] {
 			max = i
 			break
@@ -135,13 +165,11 @@ func (c *Robot) SendNNRoomBet() {
 		v = utils.RandIntN(max) //随机
 	}
 	var k = utils.RandIntN(len(seats)) //随机
-	ctos := &pb.CNNFreeBet{
+	c2s := &pb.CNNFreeBet{
 		Value: bets[v],
 		Seat:  seats[k],
 	}
-	var t1 int = utils.RandIntN(4) + 1 //随机
-	utils.Sleep(t1)
-	c.Sender(ctos)
+	c.SendDefer(c2s)
 }
 
 //.

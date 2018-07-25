@@ -90,7 +90,7 @@ func (server *RobotServer) Close() {
 }
 
 //RunRobot //' 启动一个机器人
-func (server *RobotServer) RunRobot(roomid, phone, code string, rtype, ltype, envBet int32, regist bool) {
+func (server *RobotServer) runRobot(roomid, phone, code string, rtype, ltype, envBet int32, regist bool) {
 	//host := getHost()
 	//TODO test
 	host := cfg.Section("gate.node1").Key("host").Value()
@@ -127,9 +127,9 @@ func (server *RobotServer) RunRobot(roomid, phone, code string, rtype, ltype, en
 	regist = true //TODO test
 	go robot.writePump()
 	if !regist {
-		go robot.SendRegist() //发起请求,注册-登录-进入房间
+		go robot.sendRegist() //发起请求,注册-登录-进入房间
 	} else {
-		go robot.SendLogin() //登录
+		go robot.sendLogin() //登录
 	}
 	go robot.ticker()
 	go robot.pingPump()

@@ -96,6 +96,13 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		glog.Debugf("GetRoomRecord %#v", arg)
 		rsp := handler.PackRecordMsg(arg)
 		ctx.Respond(rsp)
+	case *pb.RobotMsg:
+		arg := msg.(*pb.RobotMsg)
+		glog.Debugf("RobotMsg %#v", arg)
+		robotName := cfg.Section("robot").Name()
+		if v, ok := a.serve[robotName]; ok {
+			v.Tell(arg)
+		}
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

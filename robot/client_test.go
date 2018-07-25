@@ -25,8 +25,8 @@ func callRobot(code string) {
 		Num:  3,
 	}
 	remote := actor.NewPID("127.0.0.1:7070", "RobotMsg")
-	remote.Tell(msg)
-	remote.Stop(msg)
+	remote.Tell(message)
+	remote.Stop()
 }
 
 //创建远程连接消息通道
