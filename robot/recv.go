@@ -129,7 +129,7 @@ func (r *Robot) recvdata(s2c *pb.SUserData) {
 	r.data.Card = userdata.GetCard()
 	//chip 单位为分
 	if r.data.Coin < 650000 {
-		r.addCurrency()	//充值
+		r.addCurrency() //充值
 	}
 	//进入房间
 	r.sendNNEntryRoom()
@@ -354,6 +354,7 @@ func (r *Robot) recvNNDealer(s2c *pb.SNNDealer) {
 //庄家
 func (r *Robot) recvNNPushDealer(s2c *pb.SNNPushDealer) {
 }
+
 //.
 
 // vim: set foldmethod=marker foldmarker=//',//.:

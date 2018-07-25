@@ -419,7 +419,7 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 			Userid: user.GetUserid(),
 			Profit: profit,
 			//Month:  int32(utils.Month()),
-			Month:  int32(utils.Day()), //TODO test
+			Month: int32(utils.Day()), //TODO test
 		}
 	}
 	if user.GetAgent() != "" {

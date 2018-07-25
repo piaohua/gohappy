@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/game/handler"
 )
 
 //web请求处理
@@ -153,12 +153,14 @@ func (a *RoleActor) setBuild(arg *pb.SetAgentBuild) error {
 		return fmt.Errorf("userid %s not exist", arg.GetUserid())
 	}
 	//TODO 限制条件,绑定数量统计和日志
-	agent := a.getUserById(arg.GetAgent())
-	if agent == nil {
-		return fmt.Errorf("agent %s not exist", arg.GetAgent())
-	}
-	if !handler.IsAgent(agent) {
-		return fmt.Errorf("NotAgent")
+	if arg.GetAgent() != "" {
+		agent := a.getUserById(arg.GetAgent())
+		if agent == nil {
+			return fmt.Errorf("agent %s not exist", arg.GetAgent())
+		}
+		if !handler.IsAgent(agent) {
+			return fmt.Errorf("NotAgent")
+		}
 	}
 	if v, ok := a.roles[arg.Userid]; ok && v != nil {
 		v.Pid.Tell(arg)
