@@ -444,6 +444,7 @@
 		CNNCoinChangeRoom
 		SNNCoinChangeRoom
 		SNNPushDrawCoin
+		SNNPushAward
 		CNNFreeEnterRoom
 		SNNFreeEnterRoom
 		SNNFreeCamein

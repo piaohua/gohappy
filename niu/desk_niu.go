@@ -818,7 +818,7 @@ func (t *Desk) drawfee() {
 
 //牌型奖励
 func (t *Desk) powerAward() {
-	for _, v := range t.seats {
+	for k, v := range t.seats {
 		if !v.Ready {
 			continue
 		}
@@ -832,6 +832,13 @@ func (t *Desk) powerAward() {
 			continue
 		}
 		t.sendDiamond(v.Userid, int64(num), int32(pb.LOG_TYPE51))
+		msg := &pb.SNNPushAward{
+			Power:   v.Power,
+			Seat:    k,
+			Userid:  v.Userid,
+			Diamond: int64(num),
+		}
+		t.broadcast(msg)
 	}
 }
 

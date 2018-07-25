@@ -52,5 +52,6 @@
 	2530:{type:"room",		sendType:"",		revType:"pb.SNNSit",		},
 	2531:{type:"room",		sendType:"",		revType:"pb.SNNPushOffline",		},
 	2532:{type:"room",		sendType:"",		revType:"pb.SNNCoinChangeRoom",		},
-	2533:{type:"room",		sendType:"",		revType:"pb.SNNPushDrawCoin",		}
+	2533:{type:"room",		sendType:"",		revType:"pb.SNNPushDrawCoin",		},
+	2534:{type:"room",		sendType:"",		revType:"pb.SNNPushAward",		}
 }

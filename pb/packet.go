@@ -232,6 +232,9 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SNNPushDrawCoin:
 		b, err := msg.(*SNNPushDrawCoin).Marshal()
 		return 2533, 1, b, err
+	case *SNNPushAward:
+		b, err := msg.(*SNNPushAward).Marshal()
+		return 2534, 1, b, err
 	case *SSGCoinEnterRoom:
 		b, err := msg.(*SSGCoinEnterRoom).Marshal()
 		return 3500, 2, b, err

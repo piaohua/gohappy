@@ -45,3 +45,13 @@ message SNNPushDrawCoin
     string userid  = 3;//玩家id
     int64 coin     = 4;//扣除数量金币(负)
 }
+
+// 特殊牌型奖励
+message SNNPushAward
+{
+    uint32 power   = 1;//牌型
+    uint32 seat    = 2;//位置
+    string userid  = 3;//玩家id
+    int64 coin     = 4;//数量
+    int64 diamond  = 5;//数量
+}

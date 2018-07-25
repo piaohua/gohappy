@@ -276,6 +276,7 @@ var protosPacket = map[string][]proto{
 		{code: 2531, name: "SNNPushOffline"},
 		{code: 2532, name: "SNNCoinChangeRoom"},
 		{code: 2533, name: "SNNPushDrawCoin"},
+		{code: 2534, name: "SNNPushAward"},
 	},
 	//san
 	"san": {

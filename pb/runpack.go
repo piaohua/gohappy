@@ -306,6 +306,10 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SNNPushDrawCoin)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 2534:
+		msg := new(SNNPushAward)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 3500:
 		msg := new(SSGCoinEnterRoom)
 		err := msg.Unmarshal(b)

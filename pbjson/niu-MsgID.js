@@ -53,5 +53,6 @@ msgID = {
 	SNNSit : 2530,
 	SNNPushOffline : 2531,
 	SNNCoinChangeRoom : 2532,
-	SNNPushDrawCoin : 2533
+	SNNPushDrawCoin : 2533,
+	SNNPushAward : 2534
 }

@@ -1217,6 +1217,30 @@
             }
           }
         },
+        "SNNPushAward": {
+          "fields": {
+            "power": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            },
+            "coin": {
+              "type": "int64",
+              "id": 4
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 5
+            }
+          }
+        },
         "CNNFreeEnterRoom": {
           "fields": {}
         },
