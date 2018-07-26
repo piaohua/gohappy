@@ -227,6 +227,7 @@ message BankGive {
     string Userid = 1;
     int32 Type = 2;//变动类型
     int64 Coin = 3;//变动金币数量
+    string From = 4;
 }
 
 message BankGiven {
@@ -253,6 +254,7 @@ message BankChange {
     string Userid = 1;
     int32 Type = 2;//变动类型
     int64 Coin = 3;//变动金币数量
+    string From = 4;
 }
 
 //完成任务

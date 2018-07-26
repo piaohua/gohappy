@@ -62,7 +62,7 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.BankGive:
 		arg := msg.(*pb.BankGive)
 		glog.Debugf("BankGive %#v", arg)
-		rs.addBank(arg.Coin, arg.Type)
+		rs.addBank(arg.Coin, arg.Type, arg.From)
 	case *pb.CBank:
 		arg := msg.(*pb.CBank)
 		glog.Debugf("CBank %#v", arg)
@@ -243,7 +243,7 @@ func (rs *RoleActor) syncUser() {
 //'银行
 
 //银行发放
-func (rs *RoleActor) addBank(coin int64, ltype int32) {
+func (rs *RoleActor) addBank(coin int64, ltype int32, from string) {
 	if rs.User == nil {
 		glog.Errorf("add addBank user err: %d", ltype)
 		return
@@ -255,7 +255,7 @@ func (rs *RoleActor) addBank(coin int64, ltype int32) {
 	rs.User.AddBank(coin)
 	//银行变动及时同步
 	msg2 := handler.BankChangeMsg(coin,
-		ltype, rs.User.GetUserid())
+		ltype, rs.User.GetUserid(), from)
 	rs.rolePid.Tell(msg2)
 }
 
@@ -276,7 +276,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.DepositNumberError
 		} else {
 			rs.addCurrency(0, -1*amount, 0, 0, int32(pb.LOG_TYPE12))
-			rs.addBank(amount, int32(pb.LOG_TYPE12))
+			rs.addBank(amount, int32(pb.LOG_TYPE12), "")
 		}
 	case pb.BankDraw: //取出
 		if rs.User.BankPhone == "" {
@@ -289,7 +289,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.DrawMoneyNumberError
 		} else {
 			rs.addCurrency(0, amount, 0, 0, int32(pb.LOG_TYPE13))
-			rs.addBank(-1*amount, int32(pb.LOG_TYPE13))
+			rs.addBank(-1*amount, int32(pb.LOG_TYPE13), "")
 		}
 	case pb.BankGift: //赠送
 		if rs.User.BankPhone == "" {
@@ -303,9 +303,9 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 		} else if userid == "" {
 			msg.Error = pb.GiveUseridError
 		} else {
-			msg1 := handler.GiveBankMsg(amount, int32(pb.LOG_TYPE15), userid)
+			msg1 := handler.GiveBankMsg(amount, int32(pb.LOG_TYPE15), userid, rs.User.GetUserid())
 			if rs.bank2give(msg1) {
-				rs.addBank(-1*amount, int32(pb.LOG_TYPE15))
+				rs.addBank(-1*amount, int32(pb.LOG_TYPE15), "")
 			} else {
 				msg.Error = pb.GiveUseridError
 			}

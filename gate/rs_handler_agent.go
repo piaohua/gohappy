@@ -369,7 +369,7 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 			//扣除收益
 			rs.User.Profit -= response1.Profit
 			//默认直接发放,不再需要审批
-			rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49))
+			rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49), "")
 		}
 	}
 	rs.Send(rsp)

@@ -127,7 +127,7 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.BankChange:
 		arg := msg.(*pb.BankChange)
 		glog.Debugf("BankChange %#v", arg)
-		a.syncBank(arg.Coin, arg.Type, arg.Userid)
+		a.syncBank(arg.Coin, arg.Type, arg.Userid, arg.From)
 	case *pb.BankCheck:
 		arg := msg.(*pb.BankCheck)
 		glog.Debugf("BankCheck %#v", arg)
@@ -489,17 +489,23 @@ func (a *RoleActor) offlineBank(arg *pb.BankGive, ctx actor.Context) {
 		ctx.Respond(rsp)
 		return
 	}
+	//充值消息提醒
+	record, msg2 := handler.BankNotice(arg.Coin, arg.Userid, arg.From)
+	if record != nil {
+		loggerPid.Tell(record)
+	}
 	if v, ok := a.roles[arg.Userid]; ok && v != nil {
 		v.Pid.Tell(arg)
+		v.Pid.Tell(msg2)
 		ctx.Respond(rsp)
 		return
 	}
-	a.syncBank(arg.Coin, arg.Type, arg.Userid)
+	a.syncBank(arg.Coin, arg.Type, arg.Userid, arg.From)
 	ctx.Respond(rsp)
 }
 
 //银行变更
-func (a *RoleActor) syncBank(coin int64, ltype int32, userid string) {
+func (a *RoleActor) syncBank(coin int64, ltype int32, userid, from string) {
 	//日志记录
 	user := a.getUserById(userid)
 	if user == nil {
@@ -522,7 +528,7 @@ func (a *RoleActor) syncBank(coin int64, ltype int32, userid string) {
 	//}
 	//日志记录
 	if coin != 0 {
-		msg1 := handler.LogBankMsg(coin, ltype, user)
+		msg1 := handler.LogBankMsg(coin, ltype, from, user)
 		loggerPid.Tell(msg1)
 	}
 }

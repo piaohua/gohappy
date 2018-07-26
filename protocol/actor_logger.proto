@@ -107,6 +107,7 @@ message LogBank {
     int32  Type   = 2; //类型
     int64  Num    = 3; //数量
     int64  Rest   = 4; //银行剩余数量
+    string From   = 5; //赠送者
 }
 
 //系统收益记录

@@ -280,7 +280,7 @@ func (a *RoleActor) agentProfitReplyMsg(arg *pb.AgentProfitReplyMsg, ctx actor.C
 	}
 	//TODO 优化
 	if arg.GetBank() != 0 {
-		a.syncBank(arg.GetBank(), int32(pb.LOG_TYPE49), arg.GetUserid())
+		a.syncBank(arg.GetBank(), int32(pb.LOG_TYPE49), arg.GetUserid(), "")
 	}
 	if arg.GetProfit() != 0 {
 		user.Profit += arg.GetProfit()

@@ -418,6 +418,7 @@ type LogBank struct {
 	Type   int32     `bson:"type"`   //类型
 	Num    int64     `bson:"num"`    //数量
 	Rest   int64     `bson:"rest"`   //剩余数量
+	From   string    `bson:"from"`   //赠送者
 	Ctime  time.Time `bson:"ctime"`  //create Time
 }
 
@@ -428,12 +429,13 @@ func (t *LogBank) Save() bool {
 }
 
 //银行记录
-func BankRecord(userid string, rtype int32, rest, num int64) {
+func BankRecord(userid, from string, rtype int32, rest, num int64) {
 	record := &LogBank{
 		Userid: userid,
 		Type:   rtype,
 		Num:    num,
 		Rest:   rest,
+		From:   from,
 	}
 	record.Save()
 }

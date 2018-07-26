@@ -203,21 +203,21 @@ func PackRankMsg() (msg *pb.SRank) {
 }
 
 //GiveBankMsg 银行变动消息
-func GiveBankMsg(coin int64,
-	ltype int32, userid string) (msg *pb.BankGive) {
+func GiveBankMsg(coin int64,	ltype int32, userid, from string) (msg *pb.BankGive) {
 	msg = new(pb.BankGive)
 	msg.Type = ltype
 	msg.Coin = coin
 	msg.Userid = userid
+	msg.From = from
 	return
 }
 
 //BankChangeMsg 银行变动消息
-func BankChangeMsg(coin int64,
-	ltype int32, userid string) (msg *pb.BankChange) {
+func BankChangeMsg(coin int64,	ltype int32, userid, from string) (msg *pb.BankChange) {
 	msg = new(pb.BankChange)
 	msg.Type = ltype
 	msg.Coin = coin
 	msg.Userid = userid
+	msg.From = from
 	return
 }

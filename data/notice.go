@@ -12,6 +12,8 @@ const (
 	NOTICE_TYPE1 = 1 //公告消息
 	NOTICE_TYPE2 = 2 //广播消息
 	NOTICE_TYPE3 = 3 //系统消息
+	NOTICE_TYPE4 = 4 //活动消息
+	NOTICE_TYPE5 = 5 //赠送消息
 )
 
 const (

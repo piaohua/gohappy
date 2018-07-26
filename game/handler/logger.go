@@ -56,13 +56,13 @@ func LogChipMsg(num int64, ltype int32,
 }
 
 //LogBankMsg 打包银行日志消息
-func LogBankMsg(num int64, ltype int32,
-	p *data.User) (msg *pb.LogBank) {
+func LogBankMsg(num int64, ltype int32, from string,	p *data.User) (msg *pb.LogBank) {
 	msg = &pb.LogBank{
 		Userid: p.GetUserid(),
 		Type:   int32(ltype),
 		Num:    num,
 		Rest:   p.GetBank(),
+		From:   from,
 	}
 	return
 }
@@ -255,6 +255,7 @@ func PackBankLogMsg(arg *pb.CBankLog) (msg *pb.SBankLog) {
 		msg2.Type = v.Type                        //类型
 		msg2.Num = v.Num                          //数量
 		msg2.Rest = v.Rest                        //银行剩余数量
+		msg2.From = v.From                        //赠送者
 		msg.List = append(msg.List, msg2)
 	}
 	return

@@ -9,7 +9,6 @@ import (
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 	"github.com/gogo/protobuf/proto"
-	"gohappy/data"
 )
 
 //Handler 消息处理
@@ -68,7 +67,7 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Infof("dbms start: %v", ctx.Self().String())
 	//TODO 设置测试数据,正式后台配置
 	//handler.SetGameList()
-	handler.SetShopList()
+	/*handler.SetShopList()
 	handler.SetTaskList()
 	handler.SetLoginPrizeList()
 	//head := cfg.Section("domain").Key("headimag").Value()
@@ -76,7 +75,7 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	rs := data.RegistRobots4("", passwd)
 	for _, v := range rs {
 		rolePid.Tell(v)
-	}
+	}*/
 	//启动
 	go a.ticker(ctx)
 }

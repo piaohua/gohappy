@@ -41,7 +41,7 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 		handler.SaveNotice(arg)
 	case *pb.LogBank:
 		arg := msg.(*pb.LogBank)
-		data.BankRecord(arg.Userid, arg.Type, arg.Rest, arg.Num)
+		data.BankRecord(arg.Userid, arg.From, arg.Type, arg.Rest, arg.Num)
 	case *pb.RoomRecordInfo:
 		arg := msg.(*pb.RoomRecordInfo)
 		handler.Log2RoomRecord(arg)
