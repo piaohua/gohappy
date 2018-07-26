@@ -40,6 +40,7 @@ message SSGFreeDealer
     uint32 coin     = 5;  //上/下庄金额
     ErrCode error= 6;//错误码 ,0:正常
     string photo   = 7;//庄家头像
+    bool down   = 8;//结束后下庄
 }
 
 //上庄列表

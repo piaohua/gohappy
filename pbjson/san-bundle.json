@@ -1291,6 +1291,10 @@
             "photo": {
               "type": "string",
               "id": 7
+            },
+            "down": {
+              "type": "bool",
+              "id": 8
             }
           }
         },

@@ -43,7 +43,7 @@ func WxRegist(ctos *pb.WxLogin, genid *data.IDGen) (stoc *pb.WxLogined,
 	userInfo.UnionId = user.UnionID
 	userInfo.Get()
 	if userInfo.Agentid != "" {
-		glog.Debugf("userid %d is bound to agentid %s", userid, userInfo.Agentid)
+		glog.Debugf("userid %s is bound to agentid %s", userid, userInfo.Agentid)
 		user.Agent = userInfo.Agentid
 		user.Atime = utils.BsonNow()
 	} else {

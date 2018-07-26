@@ -141,6 +141,8 @@ type DeskFree struct {
 	Trends []*FreeTrend
 	//上局赢家
 	Winers []*FreeWiner
+	//结束下庄
+	DealerDown bool
 }
 
 //FreeTrend 输赢趋势, //true 赢 false 输

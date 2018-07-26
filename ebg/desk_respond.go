@@ -480,7 +480,9 @@ func (t *Desk) checkBeDealer() {
 		//离线或者不足
 		if v.Offline || t.leftDealerTimes() == 0 ||
 			t.DeskFree.Carry <= int64(t.DeskData.Down) ||
-			t.DeskFree.Carry >= int64(t.DeskData.Top) {
+			t.DeskFree.Carry >= int64(t.DeskData.Top) ||
+			t.DeskFree.DealerDown {
+			t.DeskFree.DealerDown = false
 			t.delBeDealer(t.DeskGame.Dealer, v.User)
 		} else {
 			return
