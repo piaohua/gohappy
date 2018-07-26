@@ -70,3 +70,17 @@ message RobotFake
 	uint32 Type = 5; //类型1添加,2设置
     //actor.PID RoomPid = 6;
 }
+
+//机器人注册
+message RobotRegist {
+	int32 ID = 1;
+    string Nickname  = 2;
+    uint32 Sex = 3;
+    int64 Coin = 4;
+    int64 Diamond = 5;
+    uint32 Vip = 6;
+	string Phone = 7;
+	string Photo = 8;
+	string Password = 9;
+	string Auth = 10;
+}

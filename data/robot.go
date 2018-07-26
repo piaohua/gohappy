@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"gohappy/glog"
+	"gohappy/pb"
 	"utils"
 
 	jsoniter "github.com/json-iterator/go"
@@ -235,4 +236,31 @@ func RegistRobots3(head, phone, passwd string, genid *IDGen) {
 		}
 		phone = utils.StringAdd(phone)
 	}
+}
+
+//RegistRobots4 robot regist
+func RegistRobots4(photo, passwd string) (ls []*pb.RobotRegist) {
+	rs := make([]RobotInfo, 0)
+	err := LoadRobotInfo("./robot.json", &rs)
+	if err != nil {
+		panic(err)
+	}
+	for _, v := range rs {
+		r := &pb.RobotRegist{
+			ID: v.ID,
+			Nickname: v.Nickname,
+			Sex: v.Sex,
+			Coin: v.Coin,
+			Diamond: v.Diamond,
+			Vip: v.Vip,
+			Phone: v.Phone,
+			Photo: photo,
+			Password: passwd,
+		}
+		//HeadImagList := RegistPhotos()
+		//i := utils.RandIntN(len(HeadImagList))
+		//r.Photo = photo + "/" + HeadImagList[i].Photo
+		ls = append(ls, r)
+	}
+	return
 }

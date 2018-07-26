@@ -135,6 +135,7 @@ func (t *Desk) beDealer(userid string, st int32, num uint32) pb.ErrCode {
 		switch t.state {
 		case int32(pb.STATE_BET): //下注中
 			if userid == t.DeskGame.Dealer {
+				t.DeskFree.DealerDown = true
 				msg := handler.BeJHDealerMsg(0, int64(num), t.DeskGame.Dealer,
 					userid, user.GetNickname(), user.GetPhoto())
 				msg.Down = true

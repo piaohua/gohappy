@@ -96,5 +96,6 @@ func SetLoginPrizeList() {
 			Day: i,
 		}
 		config.SetLogin(t)
+		t.Save()
 	}
 }

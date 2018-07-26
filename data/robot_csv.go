@@ -1,5 +1,11 @@
 package data
 
+import (
+	"io/ioutil"
+
+	"github.com/json-iterator/go"
+)
+
 var robotmap map[string]RobotData
 
 type RobotData struct {
@@ -57,3 +63,23 @@ func init() {
 	}
 }
 */
+
+//RobotInfo robot info
+type RobotInfo struct {
+	ID int32 `json:"id"`
+	Nickname string `json:"nickname"`
+	Sex uint32 `json:"sex"`
+	Coin int64 `json:"coin"`
+	Diamond int64 `json:"diamond"`
+	Vip uint32 `json:"vip"`
+	Phone string `json:"phone"`
+}
+
+//LoadRobotInfo load robot info by robot.json
+func LoadRobotInfo(filePath string, v interface{}) error {
+	data, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		return err
+	}
+	return jsoniter.Unmarshal(data, v)
+}

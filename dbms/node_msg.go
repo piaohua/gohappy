@@ -9,6 +9,7 @@ import (
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 	"github.com/gogo/protobuf/proto"
+	"gohappy/data"
 )
 
 //Handler 消息处理
@@ -70,6 +71,12 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	handler.SetShopList()
 	handler.SetTaskList()
 	handler.SetLoginPrizeList()
+	//head := cfg.Section("domain").Key("headimag").Value()
+	passwd := cfg.Section("robot").Key("passwd").Value()
+	rs := data.RegistRobots4("", passwd)
+	for _, v := range rs {
+		rolePid.Tell(v)
+	}
 	//启动
 	go a.ticker(ctx)
 }

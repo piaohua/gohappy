@@ -35,3 +35,9 @@ type TaskInfo struct {
 	Num    uint32    `bson:"num" json:"num"`       //完成数值
 	Utime  time.Time `bson:"utime" json:"utime"`   //更新时间
 }
+
+//Save 写入数据库
+func (t *Task) Save() bool {
+	//t.Ctime = bson.Now()
+	return Insert(Tasks, t)
+}

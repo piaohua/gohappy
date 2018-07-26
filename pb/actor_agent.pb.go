@@ -148,6 +148,7 @@
 		RobotEnterRoom
 		RobotAllot
 		RobotFake
+		RobotRegist
 		SetLogin
 		SetLogined
 		LoginHall

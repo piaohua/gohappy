@@ -44,7 +44,6 @@ func Data2Desk(deskDataStr []byte) *data.DeskData {
 
 //NewDeskData 转换为桌子数据
 func NewDeskData(d *data.Game) *data.DeskData {
-	//TODO 新加字段
 	return &data.DeskData{
 		Unique:   d.Id,
 		Gtype:    d.Gtype,
@@ -402,4 +401,5 @@ func NewShop(id string, status, propid, payway int,
 		Ctime:  time.Now(),
 	}
 	config.SetShop(t)
+	t.Save()
 }

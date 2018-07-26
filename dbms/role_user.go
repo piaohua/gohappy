@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"gohappy/data"
+	"gohappy/game/login"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
@@ -211,6 +212,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SetAgentProfitRate)
 		glog.Debugf("SetAgentProfitRate %#v", arg)
 		a.agentProfitRate(arg)
+	case *pb.RobotRegist:
+		arg := msg.(*pb.RobotRegist)
+		glog.Debugf("RobotRegist %#v", arg)
+		login.RobotRegist(arg, a.uniqueid)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

@@ -22,3 +22,9 @@ func GetLoginPrizeList() []LoginPrize {
 	ListByQ(LoginPrizes, bson.M{"del": 0}, &list)
 	return list
 }
+
+//Save 写入数据库
+func (t *LoginPrize) Save() bool {
+	//t.Ctime = bson.Now()
+	return Insert(LoginPrizes, t)
+}

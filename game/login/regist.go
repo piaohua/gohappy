@@ -106,3 +106,33 @@ func Regist(arg *pb.RoleRegist, genid *data.IDGen) (stoc *pb.RoleRegisted,
 	stoc.Userid = user.Userid
 	return
 }
+
+//RobotRegist Robot注册处理
+func RobotRegist(arg *pb.RobotRegist, genid *data.IDGen) {
+	user := new(data.User)
+	user.Phone = arg.GetPhone()
+	user.GetByPhone() //数据库中取
+	if user.Userid != "" {
+		glog.Debugf("account %s exist", arg.GetPhone())
+		return
+	}
+	userid := genid.GenID()
+	glog.Debugf("RobotRegist userid %s", userid)
+	user.Userid = userid
+	user.Nickname = arg.GetNickname()
+	user.Phone = arg.GetPhone()
+	user.Photo = arg.GetPhoto()
+	user.Password = utils.Md5(arg.GetPassword() + arg.GetAuth())
+	user.Auth = arg.GetAuth()
+	user.Sex = arg.GetSex()
+	user.Vip = arg.GetVip()
+	user.Coin = arg.GetCoin()
+	user.Diamond = arg.GetDiamond()
+	user.Ctime = utils.BsonNow()
+	user.Robot = true
+	if !user.Save() {
+		glog.Errorf("RobotRegist save failed %#v, userid %s", arg, userid)
+		return
+	}
+	glog.Debugf("RobotRegist successfully userid %s, phone %s", userid, arg.GetPhone())
+}

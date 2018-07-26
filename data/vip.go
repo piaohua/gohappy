@@ -19,3 +19,9 @@ func GetVipList() []Vip {
 	ListByQ(Vips, nil, &list)
 	return list
 }
+
+//Save 写入数据库
+func (t *Vip) Save() bool {
+	//t.Ctime = bson.Now()
+	return Insert(Vips, t)
+}

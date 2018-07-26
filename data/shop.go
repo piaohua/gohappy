@@ -38,3 +38,9 @@ func GetShopList() []Shop {
 	ListByQ(Shops, bson.M{"del": 0, "etime": bson.M{"$gt": bson.Now()}}, &list)
 	return list
 }
+
+//Save 写入数据库
+func (t *Shop) Save() bool {
+	//t.Ctime = bson.Now()
+	return Insert(Shops, t)
+}

@@ -43,3 +43,9 @@ func GetGameList() []Game {
 	ListByQ(Games, bson.M{"del": 0}, &list)
 	return list
 }
+
+//Save 写入数据库
+func (t *Game) Save() bool {
+	//t.Ctime = bson.Now()
+	return Insert(Games, t)
+}
