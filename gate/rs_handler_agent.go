@@ -247,6 +247,12 @@ func (rs *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		rs.Send(rsp)
 		return
 	}
+	if len(arg.GetAgentname()) > 50 || len(arg.GetRealname()) > 50 ||
+		len(arg.GetWeixin()) > 50 {
+		rsp.Error = pb.NameTooLong
+		rs.Send(rsp)
+		return
+	}
 	//rs.User.Agent 加入游戏时已经绑定
 	if rs.User.GetAgent() != "" && rs.User.GetAgent() != arg.GetAgentid() {
 		arg.Agentid = rs.User.GetAgent()
@@ -537,6 +543,11 @@ func (rs *RoleActor) getAgentInfo(arg *pb.CGetAgent, ctx actor.Context) {
 
 //设置代理备注
 func (rs *RoleActor) setAgentNotes(arg *pb.CSetAgentNote, ctx actor.Context) {
+	if len(arg.GetAgentnote()) > 50 {
+		rsp := new(pb.SSetAgentNote)
+		rsp.Error = pb.NameTooLong
+		return
+	}
 	arg.Selfid = rs.User.GetUserid()
 	rs.rolePid.Request(arg, ctx.Self())
 }
