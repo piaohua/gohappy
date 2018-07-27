@@ -273,6 +273,12 @@
 		CAgentManage
 		SAgentManage
 		AgentManage
+		CAgentProfitManage
+		SAgentProfitManage
+		AgentProfitManage
+		CSetAgentNote
+		SSetAgentNote
+		SetAgentNote
 		CAgentProfit
 		SAgentProfit
 		AgentProfitDetail
@@ -293,6 +299,8 @@
 		SAgentPlayerApprove
 		CSetAgentProfitRate
 		SSetAgentProfitRate
+		CGetAgent
+		SGetAgent
 		CBuy
 		SBuy
 		CWxpayOrder

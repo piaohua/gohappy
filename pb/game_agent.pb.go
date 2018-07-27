@@ -381,6 +381,234 @@ func (m *AgentManage) GetAgentTitle() int32 {
 	return 0
 }
 
+// 代理管理
+type CAgentProfitManage struct {
+	Page      uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Agentid   string `protobuf:"bytes,2,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Agentnote string `protobuf:"bytes,3,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Rate      uint32 `protobuf:"varint,4,opt,name=rate,proto3" json:"rate,omitempty"`
+	Userid    string `protobuf:"bytes,5,opt,name=userid,proto3" json:"userid,omitempty"`
+}
+
+func (m *CAgentProfitManage) Reset()                    { *m = CAgentProfitManage{} }
+func (*CAgentProfitManage) ProtoMessage()               {}
+func (*CAgentProfitManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{7} }
+
+func (m *CAgentProfitManage) GetPage() uint32 {
+	if m != nil {
+		return m.Page
+	}
+	return 0
+}
+
+func (m *CAgentProfitManage) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+func (m *CAgentProfitManage) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *CAgentProfitManage) GetRate() uint32 {
+	if m != nil {
+		return m.Rate
+	}
+	return 0
+}
+
+func (m *CAgentProfitManage) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+type SAgentProfitManage struct {
+	Page  uint32               `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Count uint32               `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	List  []*AgentProfitManage `protobuf:"bytes,3,rep,name=list" json:"list,omitempty"`
+	Error ErrCode              `protobuf:"varint,4,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SAgentProfitManage) Reset()                    { *m = SAgentProfitManage{} }
+func (*SAgentProfitManage) ProtoMessage()               {}
+func (*SAgentProfitManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{8} }
+
+func (m *SAgentProfitManage) GetPage() uint32 {
+	if m != nil {
+		return m.Page
+	}
+	return 0
+}
+
+func (m *SAgentProfitManage) GetCount() uint32 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+func (m *SAgentProfitManage) GetList() []*AgentProfitManage {
+	if m != nil {
+		return m.List
+	}
+	return nil
+}
+
+func (m *SAgentProfitManage) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+type AgentProfitManage struct {
+	Agentid    string `protobuf:"bytes,1,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Nickname   string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Agentnote  string `protobuf:"bytes,3,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Rate       uint32 `protobuf:"varint,4,opt,name=rate,proto3" json:"rate,omitempty"`
+	Level      uint32 `protobuf:"varint,5,opt,name=level,proto3" json:"level,omitempty"`
+	AgentTitle int32  `protobuf:"varint,6,opt,name=AgentTitle,json=agentTitle,proto3" json:"AgentTitle,omitempty"`
+}
+
+func (m *AgentProfitManage) Reset()                    { *m = AgentProfitManage{} }
+func (*AgentProfitManage) ProtoMessage()               {}
+func (*AgentProfitManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{9} }
+
+func (m *AgentProfitManage) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+func (m *AgentProfitManage) GetNickname() string {
+	if m != nil {
+		return m.Nickname
+	}
+	return ""
+}
+
+func (m *AgentProfitManage) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *AgentProfitManage) GetRate() uint32 {
+	if m != nil {
+		return m.Rate
+	}
+	return 0
+}
+
+func (m *AgentProfitManage) GetLevel() uint32 {
+	if m != nil {
+		return m.Level
+	}
+	return 0
+}
+
+func (m *AgentProfitManage) GetAgentTitle() int32 {
+	if m != nil {
+		return m.AgentTitle
+	}
+	return 0
+}
+
+// 代理备注
+type CSetAgentNote struct {
+	Userid    string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Agentnote string `protobuf:"bytes,2,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Selfid    string `protobuf:"bytes,3,opt,name=selfid,proto3" json:"selfid,omitempty"`
+}
+
+func (m *CSetAgentNote) Reset()                    { *m = CSetAgentNote{} }
+func (*CSetAgentNote) ProtoMessage()               {}
+func (*CSetAgentNote) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{10} }
+
+func (m *CSetAgentNote) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *CSetAgentNote) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *CSetAgentNote) GetSelfid() string {
+	if m != nil {
+		return m.Selfid
+	}
+	return ""
+}
+
+type SSetAgentNote struct {
+	Userid    string  `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Agentnote string  `protobuf:"bytes,2,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Error     ErrCode `protobuf:"varint,3,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SSetAgentNote) Reset()                    { *m = SSetAgentNote{} }
+func (*SSetAgentNote) ProtoMessage()               {}
+func (*SSetAgentNote) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{11} }
+
+func (m *SSetAgentNote) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *SSetAgentNote) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *SSetAgentNote) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+type SetAgentNote struct {
+	Userid    string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Agentnote string `protobuf:"bytes,2,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+}
+
+func (m *SetAgentNote) Reset()                    { *m = SetAgentNote{} }
+func (*SetAgentNote) ProtoMessage()               {}
+func (*SetAgentNote) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{12} }
+
+func (m *SetAgentNote) GetUserid() string {
+	if m != nil {
+		return m.Userid
+	}
+	return ""
+}
+
+func (m *SetAgentNote) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
 // 代理收益明细
 type CAgentProfit struct {
 	Page    uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
@@ -391,7 +619,7 @@ type CAgentProfit struct {
 
 func (m *CAgentProfit) Reset()                    { *m = CAgentProfit{} }
 func (*CAgentProfit) ProtoMessage()               {}
-func (*CAgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{7} }
+func (*CAgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{13} }
 
 func (m *CAgentProfit) GetPage() uint32 {
 	if m != nil {
@@ -430,7 +658,7 @@ type SAgentProfit struct {
 
 func (m *SAgentProfit) Reset()                    { *m = SAgentProfit{} }
 func (*SAgentProfit) ProtoMessage()               {}
-func (*SAgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{8} }
+func (*SAgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{14} }
 
 func (m *SAgentProfit) GetPage() uint32 {
 	if m != nil {
@@ -471,7 +699,7 @@ type AgentProfitDetail struct {
 
 func (m *AgentProfitDetail) Reset()                    { *m = AgentProfitDetail{} }
 func (*AgentProfitDetail) ProtoMessage()               {}
-func (*AgentProfitDetail) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{9} }
+func (*AgentProfitDetail) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{15} }
 
 func (m *AgentProfitDetail) GetUserid() string {
 	if m != nil {
@@ -524,7 +752,7 @@ type CAgentProfitOrder struct {
 
 func (m *CAgentProfitOrder) Reset()                    { *m = CAgentProfitOrder{} }
 func (*CAgentProfitOrder) ProtoMessage()               {}
-func (*CAgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{10} }
+func (*CAgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{16} }
 
 func (m *CAgentProfitOrder) GetPage() uint32 {
 	if m != nil {
@@ -557,7 +785,7 @@ type SAgentProfitOrder struct {
 
 func (m *SAgentProfitOrder) Reset()                    { *m = SAgentProfitOrder{} }
 func (*SAgentProfitOrder) ProtoMessage()               {}
-func (*SAgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{11} }
+func (*SAgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{17} }
 
 func (m *SAgentProfitOrder) GetPage() uint32 {
 	if m != nil {
@@ -606,7 +834,7 @@ type AgentProfitOrder struct {
 
 func (m *AgentProfitOrder) Reset()                    { *m = AgentProfitOrder{} }
 func (*AgentProfitOrder) ProtoMessage()               {}
-func (*AgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{12} }
+func (*AgentProfitOrder) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{18} }
 
 func (m *AgentProfitOrder) GetOrderid() string {
 	if m != nil {
@@ -664,7 +892,7 @@ type CAgentProfitApply struct {
 
 func (m *CAgentProfitApply) Reset()                    { *m = CAgentProfitApply{} }
 func (*CAgentProfitApply) ProtoMessage()               {}
-func (*CAgentProfitApply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{13} }
+func (*CAgentProfitApply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{19} }
 
 func (m *CAgentProfitApply) GetProfit() uint32 {
 	if m != nil {
@@ -680,7 +908,7 @@ type SAgentProfitApply struct {
 
 func (m *SAgentProfitApply) Reset()                    { *m = SAgentProfitApply{} }
 func (*SAgentProfitApply) ProtoMessage()               {}
-func (*SAgentProfitApply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{14} }
+func (*SAgentProfitApply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{20} }
 
 func (m *SAgentProfitApply) GetProfit() uint32 {
 	if m != nil {
@@ -704,7 +932,7 @@ type CAgentProfitReply struct {
 
 func (m *CAgentProfitReply) Reset()                    { *m = CAgentProfitReply{} }
 func (*CAgentProfitReply) ProtoMessage()               {}
-func (*CAgentProfitReply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{15} }
+func (*CAgentProfitReply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{21} }
 
 func (m *CAgentProfitReply) GetOrderid() string {
 	if m != nil {
@@ -729,7 +957,7 @@ type SAgentProfitReply struct {
 
 func (m *SAgentProfitReply) Reset()                    { *m = SAgentProfitReply{} }
 func (*SAgentProfitReply) ProtoMessage()               {}
-func (*SAgentProfitReply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{16} }
+func (*SAgentProfitReply) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{22} }
 
 func (m *SAgentProfitReply) GetOrderid() string {
 	if m != nil {
@@ -766,7 +994,7 @@ type CAgentProfitRank struct {
 
 func (m *CAgentProfitRank) Reset()                    { *m = CAgentProfitRank{} }
 func (*CAgentProfitRank) ProtoMessage()               {}
-func (*CAgentProfitRank) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{17} }
+func (*CAgentProfitRank) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{23} }
 
 func (m *CAgentProfitRank) GetPage() uint32 {
 	if m != nil {
@@ -784,7 +1012,7 @@ type SAgentProfitRank struct {
 
 func (m *SAgentProfitRank) Reset()                    { *m = SAgentProfitRank{} }
 func (*SAgentProfitRank) ProtoMessage()               {}
-func (*SAgentProfitRank) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{18} }
+func (*SAgentProfitRank) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{24} }
 
 func (m *SAgentProfitRank) GetPage() uint32 {
 	if m != nil {
@@ -823,7 +1051,7 @@ type AgentProfit struct {
 
 func (m *AgentProfit) Reset()                    { *m = AgentProfit{} }
 func (*AgentProfit) ProtoMessage()               {}
-func (*AgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{19} }
+func (*AgentProfit) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{25} }
 
 func (m *AgentProfit) GetNickname() string {
 	if m != nil {
@@ -863,7 +1091,7 @@ type CAgentPlayerManage struct {
 
 func (m *CAgentPlayerManage) Reset()                    { *m = CAgentPlayerManage{} }
 func (*CAgentPlayerManage) ProtoMessage()               {}
-func (*CAgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{20} }
+func (*CAgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{26} }
 
 func (m *CAgentPlayerManage) GetPage() uint32 {
 	if m != nil {
@@ -903,7 +1131,7 @@ type SAgentPlayerManage struct {
 
 func (m *SAgentPlayerManage) Reset()                    { *m = SAgentPlayerManage{} }
 func (*SAgentPlayerManage) ProtoMessage()               {}
-func (*SAgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{21} }
+func (*SAgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{27} }
 
 func (m *SAgentPlayerManage) GetPage() uint32 {
 	if m != nil {
@@ -955,7 +1183,7 @@ type AgentPlayerManage struct {
 
 func (m *AgentPlayerManage) Reset()                    { *m = AgentPlayerManage{} }
 func (*AgentPlayerManage) ProtoMessage()               {}
-func (*AgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{22} }
+func (*AgentPlayerManage) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{28} }
 
 func (m *AgentPlayerManage) GetUserid() string {
 	if m != nil {
@@ -1036,7 +1264,7 @@ type CAgentPlayerApprove struct {
 
 func (m *CAgentPlayerApprove) Reset()                    { *m = CAgentPlayerApprove{} }
 func (*CAgentPlayerApprove) ProtoMessage()               {}
-func (*CAgentPlayerApprove) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{23} }
+func (*CAgentPlayerApprove) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{29} }
 
 func (m *CAgentPlayerApprove) GetState() AgentApproveState {
 	if m != nil {
@@ -1067,7 +1295,7 @@ type SAgentPlayerApprove struct {
 
 func (m *SAgentPlayerApprove) Reset()                    { *m = SAgentPlayerApprove{} }
 func (*SAgentPlayerApprove) ProtoMessage()               {}
-func (*SAgentPlayerApprove) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{24} }
+func (*SAgentPlayerApprove) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{30} }
 
 func (m *SAgentPlayerApprove) GetState() AgentApproveState {
 	if m != nil {
@@ -1099,7 +1327,7 @@ type CSetAgentProfitRate struct {
 
 func (m *CSetAgentProfitRate) Reset()                    { *m = CSetAgentProfitRate{} }
 func (*CSetAgentProfitRate) ProtoMessage()               {}
-func (*CSetAgentProfitRate) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{25} }
+func (*CSetAgentProfitRate) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{31} }
 
 func (m *CSetAgentProfitRate) GetUserid() string {
 	if m != nil {
@@ -1131,7 +1359,7 @@ type SSetAgentProfitRate struct {
 
 func (m *SSetAgentProfitRate) Reset()                    { *m = SSetAgentProfitRate{} }
 func (*SSetAgentProfitRate) ProtoMessage()               {}
-func (*SSetAgentProfitRate) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{26} }
+func (*SSetAgentProfitRate) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{32} }
 
 func (m *SSetAgentProfitRate) GetUserid() string {
 	if m != nil {
@@ -1161,6 +1389,85 @@ func (m *SSetAgentProfitRate) GetError() ErrCode {
 	return OK
 }
 
+// 获取上级代理
+type CGetAgent struct {
+	Agentid string `protobuf:"bytes,1,opt,name=agentid,proto3" json:"agentid,omitempty"`
+}
+
+func (m *CGetAgent) Reset()                    { *m = CGetAgent{} }
+func (*CGetAgent) ProtoMessage()               {}
+func (*CGetAgent) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{33} }
+
+func (m *CGetAgent) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+type SGetAgent struct {
+	Agentid   string  `protobuf:"bytes,1,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Nickname  string  `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Agentname string  `protobuf:"bytes,3,opt,name=agentname,proto3" json:"agentname,omitempty"`
+	Realname  string  `protobuf:"bytes,4,opt,name=realname,proto3" json:"realname,omitempty"`
+	Weixin    string  `protobuf:"bytes,5,opt,name=weixin,proto3" json:"weixin,omitempty"`
+	Vaild     bool    `protobuf:"varint,6,opt,name=vaild,proto3" json:"vaild,omitempty"`
+	Error     ErrCode `protobuf:"varint,7,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SGetAgent) Reset()                    { *m = SGetAgent{} }
+func (*SGetAgent) ProtoMessage()               {}
+func (*SGetAgent) Descriptor() ([]byte, []int) { return fileDescriptorGameAgent, []int{34} }
+
+func (m *SGetAgent) GetAgentid() string {
+	if m != nil {
+		return m.Agentid
+	}
+	return ""
+}
+
+func (m *SGetAgent) GetNickname() string {
+	if m != nil {
+		return m.Nickname
+	}
+	return ""
+}
+
+func (m *SGetAgent) GetAgentname() string {
+	if m != nil {
+		return m.Agentname
+	}
+	return ""
+}
+
+func (m *SGetAgent) GetRealname() string {
+	if m != nil {
+		return m.Realname
+	}
+	return ""
+}
+
+func (m *SGetAgent) GetWeixin() string {
+	if m != nil {
+		return m.Weixin
+	}
+	return ""
+}
+
+func (m *SGetAgent) GetVaild() bool {
+	if m != nil {
+		return m.Vaild
+	}
+	return false
+}
+
+func (m *SGetAgent) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
 func init() {
 	proto.RegisterType((*CAgentJoin)(nil), "pb.CAgentJoin")
 	proto.RegisterType((*SAgentJoin)(nil), "pb.SAgentJoin")
@@ -1169,6 +1476,12 @@ func init() {
 	proto.RegisterType((*CAgentManage)(nil), "pb.CAgentManage")
 	proto.RegisterType((*SAgentManage)(nil), "pb.SAgentManage")
 	proto.RegisterType((*AgentManage)(nil), "pb.AgentManage")
+	proto.RegisterType((*CAgentProfitManage)(nil), "pb.CAgentProfitManage")
+	proto.RegisterType((*SAgentProfitManage)(nil), "pb.SAgentProfitManage")
+	proto.RegisterType((*AgentProfitManage)(nil), "pb.AgentProfitManage")
+	proto.RegisterType((*CSetAgentNote)(nil), "pb.CSetAgentNote")
+	proto.RegisterType((*SSetAgentNote)(nil), "pb.SSetAgentNote")
+	proto.RegisterType((*SetAgentNote)(nil), "pb.SetAgentNote")
 	proto.RegisterType((*CAgentProfit)(nil), "pb.CAgentProfit")
 	proto.RegisterType((*SAgentProfit)(nil), "pb.SAgentProfit")
 	proto.RegisterType((*AgentProfitDetail)(nil), "pb.AgentProfitDetail")
@@ -1189,6 +1502,8 @@ func init() {
 	proto.RegisterType((*SAgentPlayerApprove)(nil), "pb.SAgentPlayerApprove")
 	proto.RegisterType((*CSetAgentProfitRate)(nil), "pb.CSetAgentProfitRate")
 	proto.RegisterType((*SSetAgentProfitRate)(nil), "pb.SSetAgentProfitRate")
+	proto.RegisterType((*CGetAgent)(nil), "pb.CGetAgent")
+	proto.RegisterType((*SGetAgent)(nil), "pb.SGetAgent")
 }
 func (this *CAgentJoin) Equal(that interface{}) bool {
 	if that == nil {
@@ -1455,6 +1770,206 @@ func (this *AgentManage) Equal(that interface{}) bool {
 		return false
 	}
 	if this.AgentTitle != that1.AgentTitle {
+		return false
+	}
+	return true
+}
+func (this *CAgentProfitManage) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CAgentProfitManage)
+	if !ok {
+		that2, ok := that.(CAgentProfitManage)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Page != that1.Page {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Rate != that1.Rate {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	return true
+}
+func (this *SAgentProfitManage) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SAgentProfitManage)
+	if !ok {
+		that2, ok := that.(SAgentProfitManage)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Page != that1.Page {
+		return false
+	}
+	if this.Count != that1.Count {
+		return false
+	}
+	if len(this.List) != len(that1.List) {
+		return false
+	}
+	for i := range this.List {
+		if !this.List[i].Equal(that1.List[i]) {
+			return false
+		}
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *AgentProfitManage) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*AgentProfitManage)
+	if !ok {
+		that2, ok := that.(AgentProfitManage)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	if this.Nickname != that1.Nickname {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Rate != that1.Rate {
+		return false
+	}
+	if this.Level != that1.Level {
+		return false
+	}
+	if this.AgentTitle != that1.AgentTitle {
+		return false
+	}
+	return true
+}
+func (this *CSetAgentNote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CSetAgentNote)
+	if !ok {
+		that2, ok := that.(CSetAgentNote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Selfid != that1.Selfid {
+		return false
+	}
+	return true
+}
+func (this *SSetAgentNote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SSetAgentNote)
+	if !ok {
+		that2, ok := that.(SSetAgentNote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *SetAgentNote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SetAgentNote)
+	if !ok {
+		that2, ok := that.(SetAgentNote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
 		return false
 	}
 	return true
@@ -2136,6 +2651,72 @@ func (this *SSetAgentProfitRate) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *CGetAgent) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CGetAgent)
+	if !ok {
+		that2, ok := that.(CGetAgent)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	return true
+}
+func (this *SGetAgent) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SGetAgent)
+	if !ok {
+		that2, ok := that.(SGetAgent)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Agentid != that1.Agentid {
+		return false
+	}
+	if this.Nickname != that1.Nickname {
+		return false
+	}
+	if this.Agentname != that1.Agentname {
+		return false
+	}
+	if this.Realname != that1.Realname {
+		return false
+	}
+	if this.Weixin != that1.Weixin {
+		return false
+	}
+	if this.Vaild != that1.Vaild {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
 func (this *CAgentJoin) GoString() string {
 	if this == nil {
 		return "nil"
@@ -2237,6 +2818,85 @@ func (this *AgentManage) GoString() string {
 	s = append(s, "Level: "+fmt.Sprintf("%#v", this.Level)+",\n")
 	s = append(s, "Rate: "+fmt.Sprintf("%#v", this.Rate)+",\n")
 	s = append(s, "AgentTitle: "+fmt.Sprintf("%#v", this.AgentTitle)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CAgentProfitManage) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 9)
+	s = append(s, "&pb.CAgentProfitManage{")
+	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Rate: "+fmt.Sprintf("%#v", this.Rate)+",\n")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SAgentProfitManage) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 8)
+	s = append(s, "&pb.SAgentProfitManage{")
+	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
+	s = append(s, "Count: "+fmt.Sprintf("%#v", this.Count)+",\n")
+	if this.List != nil {
+		s = append(s, "List: "+fmt.Sprintf("%#v", this.List)+",\n")
+	}
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *AgentProfitManage) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 10)
+	s = append(s, "&pb.AgentProfitManage{")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "Nickname: "+fmt.Sprintf("%#v", this.Nickname)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Rate: "+fmt.Sprintf("%#v", this.Rate)+",\n")
+	s = append(s, "Level: "+fmt.Sprintf("%#v", this.Level)+",\n")
+	s = append(s, "AgentTitle: "+fmt.Sprintf("%#v", this.AgentTitle)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CSetAgentNote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.CSetAgentNote{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Selfid: "+fmt.Sprintf("%#v", this.Selfid)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SSetAgentNote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.SSetAgentNote{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SetAgentNote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&pb.SetAgentNote{")
+	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -2503,6 +3163,32 @@ func (this *SSetAgentProfitRate) GoString() string {
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
 	s = append(s, "Rate: "+fmt.Sprintf("%#v", this.Rate)+",\n")
 	s = append(s, "Rest: "+fmt.Sprintf("%#v", this.Rest)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CGetAgent) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.CGetAgent{")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SGetAgent) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 11)
+	s = append(s, "&pb.SGetAgent{")
+	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
+	s = append(s, "Nickname: "+fmt.Sprintf("%#v", this.Nickname)+",\n")
+	s = append(s, "Agentname: "+fmt.Sprintf("%#v", this.Agentname)+",\n")
+	s = append(s, "Realname: "+fmt.Sprintf("%#v", this.Realname)+",\n")
+	s = append(s, "Weixin: "+fmt.Sprintf("%#v", this.Weixin)+",\n")
+	s = append(s, "Vaild: "+fmt.Sprintf("%#v", this.Vaild)+",\n")
 	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -2859,6 +3545,249 @@ func (m *AgentManage) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x38
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.AgentTitle))
+	}
+	return i, nil
+}
+
+func (m *CAgentProfitManage) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CAgentProfitManage) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Page != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Page))
+	}
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if m.Rate != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Rate))
+	}
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	return i, nil
+}
+
+func (m *SAgentProfitManage) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SAgentProfitManage) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Page != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Page))
+	}
+	if m.Count != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Count))
+	}
+	if len(m.List) > 0 {
+		for _, msg := range m.List {
+			dAtA[i] = 0x1a
+			i++
+			i = encodeVarintGameAgent(dAtA, i, uint64(msg.Size()))
+			n, err := msg.MarshalTo(dAtA[i:])
+			if err != nil {
+				return 0, err
+			}
+			i += n
+		}
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *AgentProfitManage) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *AgentProfitManage) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	if len(m.Nickname) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Nickname)))
+		i += copy(dAtA[i:], m.Nickname)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if m.Rate != 0 {
+		dAtA[i] = 0x20
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Rate))
+	}
+	if m.Level != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Level))
+	}
+	if m.AgentTitle != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.AgentTitle))
+	}
+	return i, nil
+}
+
+func (m *CSetAgentNote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CSetAgentNote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if len(m.Selfid) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Selfid)))
+		i += copy(dAtA[i:], m.Selfid)
+	}
+	return i, nil
+}
+
+func (m *SSetAgentNote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SSetAgentNote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *SetAgentNote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SetAgentNote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Userid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Userid)))
+		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
 	}
 	return i, nil
 }
@@ -3674,6 +4603,93 @@ func (m *SSetAgentProfitRate) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *CGetAgent) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CGetAgent) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	return i, nil
+}
+
+func (m *SGetAgent) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SGetAgent) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0xa
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentid)))
+		i += copy(dAtA[i:], m.Agentid)
+	}
+	if len(m.Nickname) > 0 {
+		dAtA[i] = 0x12
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Nickname)))
+		i += copy(dAtA[i:], m.Nickname)
+	}
+	if len(m.Agentname) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentname)))
+		i += copy(dAtA[i:], m.Agentname)
+	}
+	if len(m.Realname) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Realname)))
+		i += copy(dAtA[i:], m.Realname)
+	}
+	if len(m.Weixin) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Weixin)))
+		i += copy(dAtA[i:], m.Weixin)
+	}
+	if m.Vaild {
+		dAtA[i] = 0x30
+		i++
+		if m.Vaild {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
+		i++
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x38
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
 func encodeVarintGameAgent(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -3853,6 +4869,127 @@ func (m *AgentManage) Size() (n int) {
 	}
 	if m.AgentTitle != 0 {
 		n += 1 + sovGameAgent(uint64(m.AgentTitle))
+	}
+	return n
+}
+
+func (m *CAgentProfitManage) Size() (n int) {
+	var l int
+	_ = l
+	if m.Page != 0 {
+		n += 1 + sovGameAgent(uint64(m.Page))
+	}
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.Rate != 0 {
+		n += 1 + sovGameAgent(uint64(m.Rate))
+	}
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *SAgentProfitManage) Size() (n int) {
+	var l int
+	_ = l
+	if m.Page != 0 {
+		n += 1 + sovGameAgent(uint64(m.Page))
+	}
+	if m.Count != 0 {
+		n += 1 + sovGameAgent(uint64(m.Count))
+	}
+	if len(m.List) > 0 {
+		for _, e := range m.List {
+			l = e.Size()
+			n += 1 + l + sovGameAgent(uint64(l))
+		}
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameAgent(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *AgentProfitManage) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Nickname)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.Rate != 0 {
+		n += 1 + sovGameAgent(uint64(m.Rate))
+	}
+	if m.Level != 0 {
+		n += 1 + sovGameAgent(uint64(m.Level))
+	}
+	if m.AgentTitle != 0 {
+		n += 1 + sovGameAgent(uint64(m.AgentTitle))
+	}
+	return n
+}
+
+func (m *CSetAgentNote) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Selfid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *SSetAgentNote) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameAgent(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *SetAgentNote) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
 	}
 	return n
 }
@@ -4254,6 +5391,48 @@ func (m *SSetAgentProfitRate) Size() (n int) {
 	return n
 }
 
+func (m *CGetAgent) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	return n
+}
+
+func (m *SGetAgent) Size() (n int) {
+	var l int
+	_ = l
+	l = len(m.Agentid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Nickname)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentname)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Realname)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Weixin)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.Vaild {
+		n += 2
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameAgent(uint64(m.Error))
+	}
+	return n
+}
+
 func sovGameAgent(x uint64) (n int) {
 	for {
 		n++
@@ -4365,6 +5544,83 @@ func (this *AgentManage) String() string {
 		`Level:` + fmt.Sprintf("%v", this.Level) + `,`,
 		`Rate:` + fmt.Sprintf("%v", this.Rate) + `,`,
 		`AgentTitle:` + fmt.Sprintf("%v", this.AgentTitle) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CAgentProfitManage) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CAgentProfitManage{`,
+		`Page:` + fmt.Sprintf("%v", this.Page) + `,`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Rate:` + fmt.Sprintf("%v", this.Rate) + `,`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SAgentProfitManage) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SAgentProfitManage{`,
+		`Page:` + fmt.Sprintf("%v", this.Page) + `,`,
+		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
+		`List:` + strings.Replace(fmt.Sprintf("%v", this.List), "AgentProfitManage", "AgentProfitManage", 1) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *AgentProfitManage) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&AgentProfitManage{`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`Nickname:` + fmt.Sprintf("%v", this.Nickname) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Rate:` + fmt.Sprintf("%v", this.Rate) + `,`,
+		`Level:` + fmt.Sprintf("%v", this.Level) + `,`,
+		`AgentTitle:` + fmt.Sprintf("%v", this.AgentTitle) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CSetAgentNote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CSetAgentNote{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Selfid:` + fmt.Sprintf("%v", this.Selfid) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SSetAgentNote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SSetAgentNote{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SetAgentNote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SetAgentNote{`,
+		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -4623,6 +5879,32 @@ func (this *SSetAgentProfitRate) String() string {
 		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
 		`Rate:` + fmt.Sprintf("%v", this.Rate) + `,`,
 		`Rest:` + fmt.Sprintf("%v", this.Rest) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CGetAgent) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CGetAgent{`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SGetAgent) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SGetAgent{`,
+		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
+		`Nickname:` + fmt.Sprintf("%v", this.Nickname) + `,`,
+		`Agentname:` + fmt.Sprintf("%v", this.Agentname) + `,`,
+		`Realname:` + fmt.Sprintf("%v", this.Realname) + `,`,
+		`Weixin:` + fmt.Sprintf("%v", this.Weixin) + `,`,
+		`Vaild:` + fmt.Sprintf("%v", this.Vaild) + `,`,
 		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
 		`}`,
 	}, "")
@@ -5838,6 +7120,885 @@ func (m *AgentManage) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CAgentProfitManage) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CAgentProfitManage: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CAgentProfitManage: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Page", wireType)
+			}
+			m.Page = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Page |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Rate", wireType)
+			}
+			m.Rate = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Rate |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SAgentProfitManage) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SAgentProfitManage: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SAgentProfitManage: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Page", wireType)
+			}
+			m.Page = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Page |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Count", wireType)
+			}
+			m.Count = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Count |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field List", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + msglen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.List = append(m.List, &AgentProfitManage{})
+			if err := m.List[len(m.List)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *AgentProfitManage) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: AgentProfitManage: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: AgentProfitManage: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nickname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Nickname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Rate", wireType)
+			}
+			m.Rate = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Rate |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			m.Level = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Level |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field AgentTitle", wireType)
+			}
+			m.AgentTitle = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.AgentTitle |= (int32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CSetAgentNote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CSetAgentNote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CSetAgentNote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Selfid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Selfid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SSetAgentNote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SSetAgentNote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SSetAgentNote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SetAgentNote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SetAgentNote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SetAgentNote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGameAgent(dAtA[iNdEx:])
@@ -8688,6 +10849,319 @@ func (m *SSetAgentProfitRate) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *CGetAgent) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CGetAgent: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CGetAgent: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SGetAgent) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameAgent
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SGetAgent: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SGetAgent: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nickname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Nickname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Realname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Realname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Weixin", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Weixin = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vaild", wireType)
+			}
+			var v int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				v |= (int(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			m.Vaild = bool(v != 0)
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameAgent(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipGameAgent(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -8796,76 +11270,85 @@ var (
 func init() { proto.RegisterFile("game_agent.proto", fileDescriptorGameAgent) }
 
 var fileDescriptorGameAgent = []byte{
-	// 1123 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x57, 0xc1, 0x6e, 0xe4, 0x44,
-	0x10, 0x4d, 0x8f, 0xed, 0xc9, 0xa4, 0x26, 0x93, 0x4c, 0x3a, 0x61, 0x65, 0x45, 0xc8, 0x0a, 0x06,
-	0xad, 0x02, 0x8b, 0x72, 0x58, 0xbe, 0x20, 0x3b, 0xac, 0x84, 0x10, 0x81, 0x95, 0xbd, 0x0b, 0xe2,
-	0x84, 0x3c, 0x99, 0x4e, 0x62, 0xe2, 0xd8, 0x96, 0xed, 0xd9, 0x24, 0x48, 0xa0, 0x3d, 0x00, 0x67,
-	0x2e, 0x88, 0x1b, 0x67, 0x7e, 0x80, 0x03, 0x7f, 0x80, 0x38, 0xed, 0x91, 0x23, 0x19, 0x84, 0xc4,
-	0x71, 0x3f, 0x01, 0x75, 0x75, 0xdb, 0xee, 0x9e, 0x1d, 0x0f, 0xde, 0x45, 0xdc, 0xba, 0xaa, 0xda,
-	0xd5, 0x55, 0xf5, 0x5e, 0x57, 0xb5, 0x61, 0x78, 0x1a, 0x5c, 0xb0, 0xcf, 0x82, 0x53, 0x16, 0x17,
-	0x07, 0x69, 0x96, 0x14, 0x09, 0xed, 0xa4, 0xe3, 0xdd, 0x4d, 0xd4, 0x1e, 0x27, 0x13, 0x26, 0x94,
-	0xee, 0x15, 0xc0, 0xe8, 0x90, 0x6f, 0x7a, 0x3f, 0x09, 0x63, 0xfa, 0x2a, 0xac, 0xe1, 0x17, 0x71,
-	0x70, 0xc1, 0x6c, 0xb2, 0x47, 0xf6, 0xd7, 0xbc, 0x5a, 0x41, 0x6d, 0x58, 0x45, 0x21, 0x9c, 0xd8,
-	0x1d, 0xb4, 0x95, 0x22, 0xdd, 0x85, 0x5e, 0xc6, 0x82, 0x08, 0x3f, 0x33, 0xd0, 0x54, 0xc9, 0xf4,
-	0x16, 0x74, 0x2f, 0x59, 0x78, 0x15, 0xc6, 0xb6, 0x89, 0x16, 0x29, 0xb9, 0xf7, 0x01, 0xfc, 0xfa,
-	0xe4, 0x1d, 0xb0, 0x22, 0xf6, 0x98, 0x45, 0x78, 0xea, 0xc0, 0x13, 0x02, 0x7d, 0x0d, 0x2c, 0x96,
-	0x65, 0x49, 0x86, 0xe7, 0x6d, 0xdc, 0xed, 0x1f, 0xa4, 0xe3, 0x83, 0xfb, 0x59, 0x36, 0x4a, 0x26,
-	0xcc, 0x13, 0x16, 0x17, 0xa0, 0x37, 0x3a, 0xba, 0x46, 0x47, 0xee, 0x5f, 0x26, 0xf4, 0x7c, 0x29,
-	0xbc, 0x74, 0x2e, 0xdc, 0x32, 0x99, 0x64, 0x2c, 0xcf, 0x65, 0x2a, 0xa5, 0xc8, 0x33, 0x49, 0xb3,
-	0xe4, 0x24, 0x2c, 0x30, 0x13, 0xc3, 0x93, 0x12, 0x75, 0x00, 0x3e, 0x61, 0xec, 0xfc, 0x81, 0xb0,
-	0x59, 0x68, 0x83, 0xcb, 0x4a, 0x43, 0xdf, 0x82, 0x21, 0xda, 0xa3, 0xe0, 0x9a, 0x65, 0x72, 0x57,
-	0x17, 0x77, 0x0d, 0x2f, 0xe7, 0xf4, 0xf4, 0x0d, 0x18, 0xbc, 0x17, 0xe6, 0x45, 0x92, 0x5d, 0xcb,
-	0x8d, 0xab, 0xb8, 0x71, 0x70, 0xa6, 0x2a, 0xe9, 0x3e, 0x6c, 0xfa, 0xd3, 0xb1, 0xe6, 0xb0, 0x87,
-	0xfb, 0x36, 0x73, 0x5d, 0x4d, 0x6f, 0xc3, 0x86, 0x3f, 0x1d, 0x63, 0x45, 0xe4, 0xc6, 0x35, 0xdc,
-	0xb8, 0x91, 0x6b, 0x5a, 0x7e, 0xee, 0x83, 0x24, 0x9d, 0x46, 0x41, 0x16, 0x7e, 0xc1, 0x1e, 0x79,
-	0x1f, 0xd8, 0x80, 0xb9, 0x0f, 0x52, 0x55, 0xc9, 0x51, 0xca, 0x8b, 0xa0, 0x60, 0x76, 0x5f, 0xa0,
-	0x84, 0x42, 0x8d, 0xdd, 0xba, 0x8a, 0xdd, 0x0e, 0x58, 0xf7, 0xa6, 0x61, 0x34, 0xb1, 0x07, 0x42,
-	0x3b, 0xe6, 0x02, 0xaf, 0x15, 0x1e, 0x3b, 0x3a, 0xe3, 0xa6, 0x0d, 0x34, 0x41, 0x50, 0x69, 0xb8,
-	0x1d, 0xbf, 0xfa, 0x38, 0xe0, 0xf6, 0x4d, 0x61, 0x1f, 0x57, 0x1a, 0x6e, 0x17, 0x11, 0x7b, 0x3c,
-	0x8c, 0xa1, 0xb0, 0xa7, 0x95, 0x86, 0xee, 0x41, 0x5f, 0xd8, 0x8f, 0x92, 0xb8, 0x38, 0xb3, 0xb7,
-	0x30, 0xd9, 0x7e, 0x5a, 0xab, 0xaa, 0x08, 0x1e, 0x86, 0x45, 0xc4, 0x6c, 0xba, 0x47, 0xf6, 0x2d,
-	0x19, 0x01, 0x6a, 0x6a, 0xce, 0x6d, 0x37, 0x72, 0xee, 0x21, 0xac, 0x8b, 0x4b, 0x73, 0x14, 0xc4,
-	0xc1, 0x29, 0xa3, 0x14, 0xcc, 0x34, 0x38, 0x65, 0x92, 0xbb, 0xb8, 0x5e, 0x42, 0xb0, 0x5b, 0xd0,
-	0x9d, 0xe6, 0x2c, 0x0b, 0x27, 0x92, 0x5f, 0x52, 0x72, 0x9f, 0x10, 0x58, 0xf7, 0xff, 0xcd, 0xed,
-	0x0e, 0x58, 0xc7, 0xc9, 0x34, 0x2e, 0xd0, 0xe9, 0xc0, 0x13, 0x02, 0x7d, 0x1d, 0xcc, 0x28, 0xcc,
-	0x0b, 0xdb, 0xd8, 0x33, 0xf6, 0xfb, 0x77, 0x37, 0x79, 0xc8, 0x8a, 0x23, 0x0f, 0x8d, 0x75, 0x62,
-	0x66, 0x63, 0x62, 0x3f, 0x13, 0xe8, 0xab, 0x11, 0x28, 0x49, 0x90, 0xc6, 0x5b, 0xd2, 0xd1, 0x6f,
-	0xc9, 0x10, 0x8c, 0x78, 0x7a, 0x81, 0xb9, 0x0d, 0x3c, 0xbe, 0x6c, 0xbc, 0x37, 0x15, 0x6f, 0x2c,
-	0x95, 0x37, 0x14, 0xcc, 0x8c, 0x63, 0xdb, 0x15, 0x59, 0xf3, 0xf5, 0x1c, 0x66, 0xab, 0xf3, 0x98,
-	0xb9, 0x27, 0x25, 0x20, 0x92, 0xcd, 0x8b, 0x2a, 0x47, 0xc1, 0x2c, 0xc2, 0x0b, 0x26, 0xc3, 0xc5,
-	0x75, 0x1d, 0x81, 0xa1, 0x46, 0xa0, 0x64, 0x6d, 0x6a, 0x59, 0xbb, 0xdf, 0x56, 0x10, 0x2d, 0x39,
-	0x68, 0x31, 0x44, 0x6f, 0x6a, 0x10, 0xbd, 0x52, 0x41, 0x24, 0x1c, 0xbd, 0xcb, 0x8a, 0x20, 0x8c,
-	0xda, 0x03, 0xf5, 0x03, 0x81, 0xad, 0xe7, 0x3e, 0x57, 0x98, 0x45, 0x54, 0x66, 0x29, 0x00, 0x74,
-	0x16, 0x03, 0x60, 0xcc, 0x5d, 0xdc, 0xd3, 0xe2, 0x3a, 0x65, 0x78, 0xbc, 0xe5, 0x09, 0xa1, 0x82,
-	0xc5, 0x52, 0x60, 0xe1, 0x25, 0xe5, 0x1b, 0xbb, 0xb8, 0x11, 0xd7, 0xee, 0x23, 0xd8, 0x52, 0xa1,
-	0xf8, 0x28, 0x9b, 0xb0, 0xac, 0x11, 0x0f, 0xfe, 0xb1, 0xa8, 0x12, 0xae, 0xd5, 0xca, 0x1b, 0x7a,
-	0xe5, 0x7f, 0x24, 0xb0, 0xe5, 0xb7, 0xf2, 0xbb, 0xb8, 0xfc, 0xfb, 0x5a, 0xf9, 0x77, 0xe6, 0xca,
-	0x8f, 0xde, 0x64, 0xf5, 0xcb, 0xb8, 0x4c, 0x25, 0xae, 0x0a, 0x11, 0xab, 0x11, 0x91, 0xdf, 0x08,
-	0x0c, 0x9f, 0x8b, 0xcf, 0x86, 0xd5, 0x84, 0x2f, 0xea, 0xfb, 0x23, 0x45, 0x05, 0xaa, 0x8e, 0x06,
-	0xd5, 0x2e, 0xf4, 0xe2, 0xf0, 0xf8, 0x5c, 0x9d, 0xa4, 0xa5, 0xdc, 0x78, 0x8f, 0xf8, 0xa4, 0x4b,
-	0xd3, 0xe8, 0x1a, 0xe9, 0x6d, 0xc9, 0x49, 0x57, 0x2a, 0xb8, 0x35, 0x63, 0xa5, 0xb5, 0x2b, 0xac,
-	0x95, 0xa2, 0xee, 0xe8, 0xe2, 0x52, 0x09, 0xc1, 0xbd, 0xa3, 0x83, 0x78, 0xc8, 0x9d, 0x29, 0xc7,
-	0x8b, 0x72, 0x4b, 0xc9, 0xfd, 0x50, 0x47, 0x66, 0xe9, 0xe6, 0x36, 0x13, 0x7d, 0xa4, 0x1f, 0xee,
-	0xf1, 0x58, 0x97, 0x54, 0xb2, 0xca, 0xa0, 0xa3, 0x66, 0xf0, 0x95, 0x1e, 0xd4, 0x4b, 0x39, 0x51,
-	0x92, 0x30, 0xb4, 0x82, 0xb7, 0xb8, 0xa0, 0xb7, 0x61, 0xa8, 0x25, 0x11, 0xc4, 0xe7, 0x8b, 0xd8,
-	0xea, 0x7e, 0x4d, 0x60, 0xe8, 0xb7, 0xd8, 0xf8, 0x82, 0x8d, 0x5f, 0x3a, 0x6b, 0xdd, 0x4f, 0x72,
-	0xd9, 0xf7, 0x65, 0x5b, 0x53, 0x59, 0x48, 0xe6, 0x58, 0xd8, 0xdc, 0xf9, 0x1b, 0x06, 0x5b, 0x13,
-	0x6f, 0xdd, 0x6f, 0x08, 0x50, 0x59, 0x24, 0x7c, 0xb2, 0x2c, 0x19, 0x7b, 0x4d, 0xd7, 0xe5, 0x4e,
-	0x89, 0x9b, 0x81, 0xa9, 0xd5, 0x6d, 0xf5, 0x30, 0x4d, 0xb3, 0xe4, 0x31, 0xf3, 0xb9, 0x51, 0x81,
-	0x33, 0x67, 0xd1, 0x49, 0xd5, 0xd6, 0xa5, 0xe4, 0xfe, 0x42, 0x80, 0xfa, 0xed, 0xe2, 0x78, 0xc1,
-	0xde, 0xae, 0xb8, 0x93, 0x58, 0x54, 0x01, 0x9b, 0x2d, 0x02, 0x6e, 0xd1, 0x76, 0xbe, 0xef, 0x94,
-	0x83, 0x40, 0x0d, 0xbd, 0x69, 0x10, 0xa8, 0xb8, 0x76, 0xe6, 0x70, 0xa5, 0x60, 0x1e, 0x27, 0x61,
-	0x2c, 0xa9, 0x8e, 0xeb, 0xe6, 0x49, 0xa8, 0xb2, 0xc0, 0xd2, 0x59, 0xa0, 0xbd, 0xbb, 0xbb, 0xf3,
-	0xef, 0xee, 0x6a, 0xe4, 0xac, 0xaa, 0x23, 0xc7, 0x01, 0xe5, 0x0d, 0x87, 0x4f, 0x59, 0xfd, 0x55,
-	0xb7, 0x0b, 0xbd, 0xcf, 0x93, 0x30, 0xc6, 0x16, 0xb6, 0x26, 0xe2, 0x2e, 0xe5, 0xfa, 0xea, 0x82,
-	0xf2, 0x26, 0x75, 0x33, 0xd8, 0x56, 0xa9, 0x25, 0xab, 0x5b, 0x97, 0x9f, 0xb4, 0xe3, 0xcb, 0x42,
-	0xd2, 0xd5, 0x3c, 0x32, 0x34, 0x1e, 0x7d, 0x09, 0xdb, 0xfe, 0xff, 0x75, 0x66, 0x45, 0x05, 0xa3,
-	0x91, 0x0a, 0x9f, 0xc2, 0xf6, 0xc8, 0x67, 0x85, 0xd6, 0x4c, 0x8a, 0x66, 0x2e, 0x94, 0x03, 0xbd,
-	0xa3, 0x0c, 0xf4, 0xa6, 0xcc, 0xae, 0x60, 0xdb, 0xff, 0x8f, 0xae, 0xb9, 0x8e, 0xe5, 0x85, 0x7c,
-	0x6a, 0xe0, 0xba, 0x45, 0x63, 0xba, 0xf7, 0xf6, 0xd3, 0x1b, 0x67, 0xe5, 0xf7, 0x1b, 0x67, 0xe5,
-	0xd9, 0x8d, 0x43, 0x9e, 0xcc, 0x1c, 0xf2, 0xd3, 0xcc, 0x21, 0xbf, 0xce, 0x1c, 0xf2, 0x74, 0xe6,
-	0x90, 0x3f, 0x66, 0x0e, 0xf9, 0x7b, 0xe6, 0xac, 0x3c, 0x9b, 0x39, 0xe4, 0xbb, 0x3f, 0x9d, 0x95,
-	0x71, 0x17, 0x7f, 0x6a, 0xdf, 0xf9, 0x27, 0x00, 0x00, 0xff, 0xff, 0xb9, 0xf6, 0xf8, 0x5e, 0xfd,
-	0x0e, 0x00, 0x00,
+	// 1277 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x4d, 0x6f, 0xe4, 0x44,
+	0x13, 0x4e, 0x8f, 0xed, 0xf9, 0xa8, 0xc9, 0x24, 0x13, 0x27, 0x6f, 0x64, 0x45, 0xaf, 0xac, 0x60,
+	0x60, 0x15, 0x58, 0x94, 0xc3, 0xf2, 0x0b, 0xb2, 0xb3, 0x2b, 0x10, 0x22, 0xcb, 0xca, 0xde, 0x05,
+	0x71, 0x40, 0xc8, 0x93, 0xe9, 0x24, 0x26, 0x8e, 0x6d, 0xd9, 0x9e, 0x7c, 0x20, 0x81, 0xf6, 0x00,
+	0x9c, 0x38, 0x70, 0x41, 0xdc, 0x38, 0x73, 0xe5, 0xc0, 0x81, 0x7f, 0x80, 0x10, 0x87, 0x3d, 0x72,
+	0x24, 0x83, 0x90, 0x38, 0xee, 0x4f, 0x40, 0xfd, 0x61, 0x77, 0xf7, 0x64, 0x3c, 0xf1, 0xce, 0xc2,
+	0xad, 0xab, 0xaa, 0xdd, 0x5d, 0x55, 0xcf, 0xd3, 0xd5, 0xd5, 0x86, 0xfe, 0x91, 0x7f, 0x8a, 0x3f,
+	0xf6, 0x8f, 0x70, 0x94, 0xef, 0x26, 0x69, 0x9c, 0xc7, 0x66, 0x23, 0x19, 0x6e, 0xad, 0x52, 0xed,
+	0x41, 0x3c, 0xc2, 0x4c, 0xe9, 0x5c, 0x00, 0x0c, 0xf6, 0xc8, 0xa4, 0x77, 0xe2, 0x20, 0x32, 0xff,
+	0x0f, 0x1d, 0xfa, 0x45, 0xe4, 0x9f, 0x62, 0x0b, 0x6d, 0xa3, 0x9d, 0x8e, 0x2b, 0x14, 0xa6, 0x05,
+	0x2d, 0x2a, 0x04, 0x23, 0xab, 0x41, 0x6d, 0x85, 0x68, 0x6e, 0x41, 0x3b, 0xc5, 0x7e, 0x48, 0x3f,
+	0xd3, 0xa8, 0xa9, 0x94, 0xcd, 0x4d, 0x68, 0x9e, 0xe3, 0xe0, 0x22, 0x88, 0x2c, 0x9d, 0x5a, 0xb8,
+	0xe4, 0xdc, 0x07, 0xf0, 0xc4, 0xce, 0x1b, 0x60, 0x84, 0xf8, 0x0c, 0x87, 0x74, 0xd7, 0x9e, 0xcb,
+	0x04, 0xf3, 0x25, 0x30, 0x70, 0x9a, 0xc6, 0x29, 0xdd, 0x6f, 0xe5, 0x4e, 0x77, 0x37, 0x19, 0xee,
+	0xde, 0x4f, 0xd3, 0x41, 0x3c, 0xc2, 0x2e, 0xb3, 0x38, 0x00, 0xed, 0xc1, 0xfe, 0x25, 0x5d, 0xc8,
+	0xf9, 0x4b, 0x87, 0xb6, 0xc7, 0x85, 0x85, 0x63, 0x21, 0x96, 0xd1, 0x28, 0xc5, 0x59, 0xc6, 0x43,
+	0x29, 0x44, 0x12, 0x49, 0x92, 0xc6, 0x87, 0x41, 0x4e, 0x23, 0xd1, 0x5c, 0x2e, 0x99, 0x36, 0xc0,
+	0x07, 0x18, 0x9f, 0x3c, 0x64, 0x36, 0x83, 0xda, 0xe0, 0xbc, 0xd4, 0x98, 0xaf, 0x43, 0x9f, 0xda,
+	0x43, 0xff, 0x12, 0xa7, 0x7c, 0x56, 0x93, 0xce, 0xea, 0x9f, 0x4f, 0xe9, 0xcd, 0x57, 0xa0, 0xf7,
+	0x76, 0x90, 0xe5, 0x71, 0x7a, 0xc9, 0x27, 0xb6, 0xe8, 0xc4, 0xde, 0xb1, 0xac, 0x34, 0x77, 0x60,
+	0xd5, 0x1b, 0x0f, 0x95, 0x05, 0xdb, 0x74, 0xde, 0x6a, 0xa6, 0xaa, 0xcd, 0x5b, 0xb0, 0xe2, 0x8d,
+	0x87, 0x34, 0x23, 0x7c, 0x62, 0x87, 0x4e, 0x5c, 0xc9, 0x14, 0x2d, 0xd9, 0xf7, 0x61, 0x9c, 0x8c,
+	0x43, 0x3f, 0x0d, 0x3e, 0xc5, 0x8f, 0xdd, 0x77, 0x2d, 0xa0, 0xb1, 0xf7, 0x12, 0x59, 0x49, 0x50,
+	0xca, 0x72, 0x3f, 0xc7, 0x56, 0x97, 0xa1, 0x44, 0x05, 0x81, 0xdd, 0xb2, 0x8c, 0xdd, 0x06, 0x18,
+	0x77, 0xc7, 0x41, 0x38, 0xb2, 0x7a, 0x4c, 0x3b, 0x24, 0x02, 0xc9, 0x15, 0xdd, 0x76, 0x70, 0x4c,
+	0x4c, 0x2b, 0xd4, 0x04, 0x7e, 0xa9, 0x21, 0x76, 0xfa, 0xd5, 0xfb, 0x3e, 0xb1, 0xaf, 0x32, 0xfb,
+	0xb0, 0xd4, 0x10, 0x3b, 0xf3, 0xd8, 0x25, 0x6e, 0xf4, 0x99, 0x3d, 0x29, 0x35, 0xe6, 0x36, 0x74,
+	0x99, 0x7d, 0x3f, 0x8e, 0xf2, 0x63, 0x6b, 0x8d, 0x06, 0xdb, 0x4d, 0x84, 0xaa, 0xf4, 0xe0, 0x51,
+	0x90, 0x87, 0xd8, 0x32, 0xb7, 0xd1, 0x8e, 0xc1, 0x3d, 0xa0, 0x1a, 0xc1, 0xb9, 0xf5, 0x4a, 0xce,
+	0x3d, 0x82, 0x65, 0x76, 0x68, 0xf6, 0xfd, 0xc8, 0x3f, 0xc2, 0xa6, 0x09, 0x7a, 0xe2, 0x1f, 0x61,
+	0xce, 0x5d, 0x3a, 0x9e, 0x43, 0xb0, 0x4d, 0x68, 0x8e, 0x33, 0x9c, 0x06, 0x23, 0xce, 0x2f, 0x2e,
+	0x39, 0x4f, 0x10, 0x2c, 0x7b, 0x37, 0x2d, 0xbb, 0x01, 0xc6, 0x41, 0x3c, 0x8e, 0x72, 0xba, 0x68,
+	0xcf, 0x65, 0x82, 0xf9, 0x32, 0xe8, 0x61, 0x90, 0xe5, 0x96, 0xb6, 0xad, 0xed, 0x74, 0xef, 0xac,
+	0x12, 0x97, 0xa5, 0x85, 0x5c, 0x6a, 0x14, 0x81, 0xe9, 0x95, 0x81, 0xfd, 0x84, 0xa0, 0x2b, 0x7b,
+	0x20, 0x05, 0x81, 0x2a, 0x4f, 0x49, 0x43, 0x3d, 0x25, 0x7d, 0xd0, 0xa2, 0xf1, 0x29, 0x8d, 0xad,
+	0xe7, 0x92, 0x61, 0xe5, 0xb9, 0x29, 0x79, 0x63, 0xc8, 0xbc, 0x31, 0x41, 0x4f, 0x09, 0xb6, 0x4d,
+	0x16, 0x35, 0x19, 0x4f, 0x61, 0xd6, 0x9a, 0xc6, 0xcc, 0xf9, 0x1a, 0x81, 0x39, 0x90, 0xe8, 0xbc,
+	0x10, 0x2e, 0x65, 0xc1, 0x88, 0xf3, 0xa2, 0x8a, 0x09, 0x45, 0xe9, 0x96, 0x2e, 0xb9, 0x25, 0x90,
+	0x34, 0x14, 0x24, 0x89, 0x3b, 0x5e, 0x3d, 0x77, 0x66, 0xe3, 0xf9, 0x9a, 0x82, 0xe7, 0xff, 0x4a,
+	0x3c, 0xe5, 0xe5, 0xea, 0xa3, 0xfa, 0x23, 0x82, 0xb5, 0xeb, 0xde, 0x54, 0x63, 0xbb, 0x05, 0xed,
+	0x28, 0x38, 0x38, 0xa1, 0x85, 0x93, 0xe5, 0xa8, 0x94, 0x17, 0x48, 0xd2, 0x6c, 0x94, 0x55, 0x44,
+	0x9b, 0xd7, 0x10, 0xfd, 0x08, 0x7a, 0x03, 0x0f, 0xe7, 0x74, 0xce, 0x83, 0x58, 0xc9, 0x35, 0x92,
+	0x73, 0xad, 0x3a, 0xd4, 0x98, 0x76, 0x68, 0x13, 0x9a, 0x19, 0x0e, 0x0f, 0xc5, 0x59, 0x63, 0x92,
+	0x73, 0x0c, 0x3d, 0xef, 0x5f, 0x58, 0xbe, 0x4c, 0xbe, 0x56, 0x99, 0xfc, 0x7b, 0xb0, 0xfc, 0xe2,
+	0x1b, 0x39, 0x87, 0x45, 0xc5, 0xe1, 0xe5, 0x7a, 0x16, 0x95, 0x4c, 0xd0, 0xf3, 0xa0, 0x84, 0x8c,
+	0x8e, 0x45, 0xf2, 0x35, 0x39, 0xf9, 0x12, 0xf4, 0xba, 0x02, 0xbd, 0xf3, 0x55, 0x59, 0x83, 0xe6,
+	0x6c, 0xb4, 0x08, 0x67, 0xef, 0xe1, 0xdc, 0x0f, 0xc2, 0xfa, 0x9c, 0xfd, 0x4e, 0xe5, 0x2c, 0xfb,
+	0xbc, 0x32, 0x79, 0xa2, 0xc2, 0x34, 0x66, 0x57, 0x18, 0x6d, 0xea, 0x66, 0x3a, 0xca, 0x2f, 0x13,
+	0x46, 0x53, 0xc3, 0x65, 0x42, 0xc9, 0x5d, 0x43, 0xe2, 0x2e, 0x49, 0x29, 0x99, 0xc8, 0xf8, 0x49,
+	0xc7, 0xce, 0x63, 0x58, 0x93, 0xa1, 0x78, 0x2f, 0x1d, 0xe1, 0xb4, 0x12, 0x0f, 0xf2, 0x31, 0xcb,
+	0x12, 0x1d, 0xcb, 0x99, 0xd7, 0xd4, 0xcc, 0x7f, 0x8f, 0x60, 0xcd, 0xab, 0xb5, 0xee, 0xec, 0xf4,
+	0xef, 0x28, 0xe9, 0xdf, 0x98, 0x4a, 0x3f, 0x5d, 0x8d, 0x67, 0xbf, 0xf0, 0x4b, 0x97, 0xfc, 0x2a,
+	0x11, 0x31, 0x2a, 0x11, 0xf9, 0x15, 0x41, 0xff, 0x9a, 0x7f, 0x16, 0xb4, 0x62, 0x32, 0x10, 0x45,
+	0x84, 0x8b, 0x12, 0x54, 0x0d, 0x05, 0x2a, 0xb9, 0xb8, 0x68, 0x53, 0xc5, 0xa5, 0xea, 0xa2, 0x20,
+	0x67, 0x23, 0x49, 0xc2, 0x4b, 0x4a, 0x6f, 0x83, 0x9f, 0x8d, 0x42, 0x41, 0xac, 0x29, 0x2e, 0xac,
+	0x4d, 0x66, 0x2d, 0x15, 0xa2, 0x65, 0x61, 0xb7, 0x06, 0x13, 0x9c, 0xdb, 0x2a, 0x88, 0x7b, 0x64,
+	0x31, 0x69, 0x7b, 0x96, 0x6e, 0x2e, 0x39, 0x0f, 0x54, 0x64, 0xe6, 0x4e, 0xae, 0xd3, 0xb2, 0x0e,
+	0xd4, 0xcd, 0x5d, 0xe2, 0xeb, 0x9c, 0x4c, 0x96, 0x11, 0x34, 0xe4, 0x08, 0x3e, 0x57, 0x9d, 0x5a,
+	0x68, 0x11, 0x29, 0x08, 0x4d, 0x49, 0x78, 0x8d, 0x03, 0x7a, 0x0b, 0xfa, 0x4a, 0x10, 0x7e, 0x74,
+	0x32, 0x8b, 0xad, 0xce, 0x17, 0x08, 0xfa, 0x5e, 0x8d, 0x89, 0xcf, 0xd9, 0xd9, 0xf0, 0xc5, 0x6a,
+	0xd7, 0x93, 0x8c, 0x37, 0x36, 0xbc, 0xac, 0xc9, 0x2c, 0x44, 0x53, 0x2c, 0xac, 0x6e, 0x6d, 0x2a,
+	0x3a, 0xb7, 0x2a, 0xde, 0x3a, 0x5f, 0x8a, 0xb6, 0x84, 0xf6, 0xe4, 0x73, 0xfa, 0x80, 0xaa, 0xe3,
+	0x72, 0xbb, 0xc0, 0x8d, 0xdd, 0x30, 0xa2, 0xac, 0xee, 0x25, 0x49, 0x1a, 0x9f, 0x61, 0x8f, 0x18,
+	0x25, 0x38, 0xf9, 0x6d, 0xa7, 0x2b, 0xb7, 0xdd, 0xcf, 0xa2, 0x1f, 0xb9, 0xc9, 0x8f, 0xe7, 0xac,
+	0xed, 0xd2, 0x72, 0x1c, 0x8b, 0xd2, 0x61, 0xbd, 0x86, 0xc3, 0x35, 0xca, 0xce, 0xb7, 0x8d, 0xe2,
+	0x22, 0x90, 0x5d, 0xaf, 0xba, 0x08, 0xe6, 0xb5, 0x2e, 0x26, 0xe8, 0x07, 0x71, 0x10, 0x71, 0xaa,
+	0xd3, 0x71, 0xf5, 0x4d, 0x28, 0xb3, 0xc0, 0x50, 0x59, 0xa0, 0x3c, 0x2c, 0x9b, 0xd3, 0x0f, 0xcb,
+	0xf2, 0xca, 0x69, 0x4d, 0xb5, 0x3b, 0xe2, 0x91, 0x42, 0xdf, 0x6a, 0xea, 0xb3, 0x65, 0x0b, 0xda,
+	0x9f, 0xc4, 0x41, 0x44, 0x4b, 0x58, 0x87, 0xf9, 0x5d, 0xc8, 0xe2, 0xe8, 0x82, 0xf4, 0xe8, 0x72,
+	0x52, 0x58, 0x97, 0xa9, 0xc5, 0xb3, 0x2b, 0xd2, 0x8f, 0xea, 0xf1, 0x65, 0x26, 0xe9, 0xaa, 0xba,
+	0xa6, 0xcf, 0x60, 0xdd, 0xfb, 0xaf, 0xf6, 0xac, 0xd1, 0x4a, 0x7d, 0x08, 0xeb, 0x65, 0x4f, 0x28,
+	0x1e, 0x81, 0x95, 0x5c, 0x28, 0x2e, 0xf4, 0x86, 0xda, 0xb1, 0xcf, 0x8c, 0xec, 0x02, 0xd6, 0xbd,
+	0x17, 0x5c, 0x9a, 0xe8, 0x70, 0x96, 0xf3, 0x56, 0x83, 0x8e, 0xeb, 0x14, 0xa6, 0x57, 0xa1, 0x33,
+	0x78, 0x8b, 0xef, 0x5c, 0xdd, 0x93, 0x3b, 0xbf, 0x21, 0xe8, 0x78, 0x37, 0xcf, 0xab, 0xd7, 0xbb,
+	0x8b, 0xbb, 0x57, 0x22, 0xae, 0xfc, 0x0f, 0x47, 0xaf, 0xfc, 0x87, 0x63, 0xc8, 0xff, 0x70, 0x08,
+	0x35, 0xcf, 0xe8, 0x43, 0x9d, 0x1c, 0x83, 0xb6, 0xcb, 0x04, 0x11, 0x75, 0xab, 0x2a, 0xea, 0xbb,
+	0x6f, 0x3c, 0xbd, 0xb2, 0x97, 0x7e, 0xbf, 0xb2, 0x97, 0x9e, 0x5d, 0xd9, 0xe8, 0xc9, 0xc4, 0x46,
+	0x3f, 0x4c, 0x6c, 0xf4, 0xcb, 0xc4, 0x46, 0x4f, 0x27, 0x36, 0xfa, 0x63, 0x62, 0xa3, 0xbf, 0x27,
+	0xf6, 0xd2, 0xb3, 0x89, 0x8d, 0xbe, 0xf9, 0xd3, 0x5e, 0x1a, 0x36, 0xe9, 0xbf, 0xaa, 0x37, 0xff,
+	0x09, 0x00, 0x00, 0xff, 0xff, 0x4e, 0x8c, 0x5b, 0xde, 0xd4, 0x12, 0x00, 0x00,
 }

@@ -114,6 +114,47 @@ func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
 	return list, nil
 }
 
+//GetAgentProfitManage 代理管理
+func GetAgentProfitManage(arg *pb.CAgentProfitManage) ([]bson.M, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
+	var list []bson.M
+	selector := make(bson.M, 5)
+	selector["profit_rate"] = true
+	selector["nickname"] = true
+	selector["agent_level"] = true
+	selector["agent_note"] = true
+	selector["_id"] = true
+	q := bson.M{"agent_level": bson.M{"$gt": 0},
+		"agent":       bson.M{"$eq": arg.Userid},
+		"agent_state": bson.M{"$eq": 1}}
+	if arg.Agentid != "" {
+		q["_id"] = bson.M{"$eq": arg.Agentid}
+	}
+	if arg.Agentnote != "" {
+		q["agent_note"] = bson.M{"$eq": arg.GetAgentnote()}
+	}
+	if arg.GetRate() != 0 {
+		q["profit_rate"] = bson.M{"$eq": arg.GetRate()}
+	}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
+}
+
 //GetPlayerManage 玩家管理列表信息查询
 func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	if arg.Page == 0 {
@@ -132,8 +173,9 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	selector["agent_state"] = true
 	selector["agent_join_time"] = true
 	selector["_id"] = true
-	q := bson.M{"agent": bson.M{"$eq": arg.Selfid},
-		"agent_state": bson.M{"$eq": uint32(arg.State)}}
+	//q := bson.M{"agent": bson.M{"$eq": arg.Selfid},
+	//	"agent_state": bson.M{"$eq": uint32(arg.State)}}
+	q := bson.M{"agent": bson.M{"$eq": arg.Selfid}}
 	if arg.Userid != "" {
 		q["_id"] = bson.M{"$eq": arg.Userid}
 	}

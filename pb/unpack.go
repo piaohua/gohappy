@@ -158,6 +158,18 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CSetAgentProfitRate)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1061:
+		msg := new(CGetAgent)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1062:
+		msg := new(CAgentProfitManage)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1063:
+		msg := new(CSetAgentNote)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 2000:
 		msg := new(CNNCoinEnterRoom)
 		err := msg.Unmarshal(b)

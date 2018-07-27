@@ -87,6 +87,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SetAgentProfitRate)
 		glog.Debugf("SetAgentProfitRate %#v", arg)
 		rs.agentProfitRate(arg, ctx)
+	case *pb.SetAgentNote:
+		arg := msg.(*pb.SetAgentNote)
+		glog.Debugf("SetAgentNote %#v", arg)
+		rs.setAgentNote(arg, ctx)
 	case *pb.SetAgentBuild:
 		arg := msg.(*pb.SetAgentBuild)
 		glog.Debugf("SetAgentBuild %#v", arg)
@@ -95,6 +99,18 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SetAgentState)
 		glog.Debugf("SetAgentState %#v", arg)
 		handler.SetAgentState(arg, rs.User)
+	case *pb.CGetAgent:
+		arg := msg.(*pb.CGetAgent)
+		glog.Debugf("CGetAgent %#v", arg)
+		rs.getAgentInfo(arg, ctx)
+	case *pb.CSetAgentNote:
+		arg := msg.(*pb.CSetAgentNote)
+		glog.Debugf("CSetAgentNote %#v", arg)
+		rs.setAgentNotes(arg, ctx)
+	case *pb.CAgentProfitManage:
+		arg := msg.(*pb.CAgentProfitManage)
+		glog.Debugf("CAgentProfitManage %#v", arg)
+		rs.agentProfitManage(arg, ctx)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -305,7 +321,13 @@ func (rs *RoleActor) agentApprove(arg *pb.CAgentPlayerApprove, ctx actor.Context
 		rs.Send(rsp)
 		return
 	}
-	//TODO 权限限制(有效玩家3个以上)
+	//权限限制(有效玩家3个以上)
+	if !handler.IsVaild(rs.User) {
+		rsp := new(pb.SAgentPlayerApprove)
+		rsp.Error = pb.ProfitLimit
+		rs.Send(rsp)
+		return
+	}
 	arg.Selfid = rs.User.GetUserid()
 	rs.rolePid.Request(arg, ctx.Self())
 }
@@ -350,8 +372,8 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
-	//权限限制(有效玩家3个以上,绑定10个以上)
-	if !handler.IsVaild(rs.User) {
+	//权限限制(有效玩家3个以上,绑定10个以上),合伙人无限制
+	if !handler.IsVaild(rs.User) && handler.GetAgentTitle(rs.User) != 1 {
 		rsp.Error = pb.ProfitLimit
 		rs.Send(rsp)
 		return
@@ -390,8 +412,13 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.ProfitRate <= arg.GetRate() {
+	if rs.User.ProfitRate <= (arg.GetRate() + 5) { //保留5%
 		rsp.Error = pb.ProfitRateNotEnough
+		rs.Send(rsp)
+		return
+	}
+	if !handler.IsVaild(rs.User) {
+		rsp.Error = pb.ProfitLimit
 		rs.Send(rsp)
 		return
 	}
@@ -419,7 +446,12 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 
 //设置区域收益
 func (rs *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
-	rs.User.ProfitRate = arg.GetRate()
+	rs.User.ProfitRate += arg.GetRate()
+}
+
+//设置区域备注
+func (rs *RoleActor) setAgentNote(arg *pb.SetAgentNote, ctx actor.Context) {
+	rs.User.AgentNote = arg.GetAgentnote()
 }
 
 //收益提现受理
@@ -490,4 +522,33 @@ func (rs *RoleActor) reqRole(msg interface{}, ctx actor.Context) interface{} {
 		return nil
 	}
 	return res1
+}
+
+//查询代理信息
+func (rs *RoleActor) getAgentInfo(arg *pb.CGetAgent, ctx actor.Context) {
+	if rs.User.GetAgent() == "" {
+		rsp := new(pb.SGetAgent)
+		rsp.Error = pb.AgentNotExist
+		return
+	}
+	arg.Agentid = rs.User.GetAgent()
+	rs.rolePid.Request(arg, ctx.Self())
+}
+
+//设置代理备注
+func (rs *RoleActor) setAgentNotes(arg *pb.CSetAgentNote, ctx actor.Context) {
+	arg.Selfid = rs.User.GetUserid()
+	rs.rolePid.Request(arg, ctx.Self())
+}
+
+//代理管理列表
+func (rs *RoleActor) agentProfitManage(arg *pb.CAgentProfitManage, ctx actor.Context) {
+	if handler.IsNotAgent(rs.User) {
+		rsp := new(pb.SAgentProfitManage)
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	arg.Userid = rs.User.GetUserid()
+	rs.dbmsPid.Request(arg, ctx.Self())
 }

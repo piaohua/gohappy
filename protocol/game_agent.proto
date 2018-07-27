@@ -72,6 +72,55 @@ message AgentManage
     int32 AgentTitle = 7;//代理头衔4玩家，3普通，2大代理，1合伙人
 }
 
+// 代理管理
+message CAgentProfitManage
+{
+    uint32 page = 1;//页数
+    string agentid = 2;//id,查询参数
+    string agentnote = 3;//查询参数
+    uint32 rate = 4;//查询参数
+    string userid = 5;//玩家id,server参数
+}
+
+message SAgentProfitManage
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    repeated AgentProfitManage list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentProfitManage
+{
+    string agentid = 1;//id
+    string nickname = 2;//昵称
+    string agentnote = 3;//备注
+    uint32 rate = 4;//区域收益百分比
+    uint32 level = 5;//代理等级
+    int32 AgentTitle = 6;//代理头衔4玩家，3普通，2大代理，1合伙人
+}
+
+// 代理备注
+message CSetAgentNote
+{
+    string userid = 1;//玩家id
+    string agentnote = 2;//备注
+    string selfid = 3;//审批玩家id,server参数
+}
+
+message SSetAgentNote
+{
+    string userid = 1;//玩家id
+    string agentnote = 2;//备注
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+message SetAgentNote
+{
+    string userid = 1;//玩家id
+    string agentnote = 2;//备注
+}
+
 // 代理收益明细
 message CAgentProfit
 {
@@ -227,7 +276,7 @@ message SAgentPlayerApprove
 message CSetAgentProfitRate
 {
     string userid = 1;//玩家id
-    uint32 rate = 2;//百分比
+    uint32 rate = 2;//百分比,增量
     string selfid = 3;//玩家id,server参数
 }
 
@@ -237,4 +286,21 @@ message SSetAgentProfitRate
     uint32 rate = 2;//百分比
     uint32 rest = 3;//剩余百分比
     ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 获取上级代理
+message CGetAgent
+{
+    string agentid = 1;//代理id,server参数
+}
+
+message SGetAgent
+{
+    string agentid = 1;//
+    string nickname = 2;//
+    string agentname = 3;//
+    string realname = 4;//真实姓名
+    string weixin = 5;//微信
+    bool vaild = 6;//是否合格
+    ErrCode error= 7;//错误码 ,0:正常
 }

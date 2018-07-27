@@ -1519,6 +1519,123 @@
             }
           }
         },
+        "CAgentProfitManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agentid": {
+              "type": "string",
+              "id": 2
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 3
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 4
+            },
+            "userid": {
+              "type": "string",
+              "id": 5
+            }
+          }
+        },
+        "SAgentProfitManage": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentProfitManage",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentProfitManage": {
+          "fields": {
+            "agentid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 3
+            },
+            "rate": {
+              "type": "uint32",
+              "id": 4
+            },
+            "level": {
+              "type": "uint32",
+              "id": 5
+            },
+            "AgentTitle": {
+              "type": "int32",
+              "id": 6
+            }
+          }
+        },
+        "CSetAgentNote": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 2
+            },
+            "selfid": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SSetAgentNote": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SetAgentNote": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
         "CAgentProfit": {
           "fields": {
             "page": {
@@ -1916,6 +2033,46 @@
             "error": {
               "type": "ErrCode",
               "id": 4
+            }
+          }
+        },
+        "CGetAgent": {
+          "fields": {
+            "agentid": {
+              "type": "string",
+              "id": 1
+            }
+          }
+        },
+        "SGetAgent": {
+          "fields": {
+            "agentid": {
+              "type": "string",
+              "id": 1
+            },
+            "nickname": {
+              "type": "string",
+              "id": 2
+            },
+            "agentname": {
+              "type": "string",
+              "id": 3
+            },
+            "realname": {
+              "type": "string",
+              "id": 4
+            },
+            "weixin": {
+              "type": "string",
+              "id": 5
+            },
+            "vaild": {
+              "type": "bool",
+              "id": 6
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 7
             }
           }
         }

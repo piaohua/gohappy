@@ -216,6 +216,14 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.RobotRegist)
 		glog.Debugf("RobotRegist %#v", arg)
 		login.RobotRegist(arg, a.uniqueid)
+	case *pb.CGetAgent:
+		arg := msg.(*pb.CGetAgent)
+		glog.Debugf("CGetAgent %#v", arg)
+		a.getAgentInfo(arg, ctx)
+	case *pb.CSetAgentNote:
+		arg := msg.(*pb.CSetAgentNote)
+		glog.Debugf("CSetAgentNote %#v", arg)
+		a.setAgentNote(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -626,4 +634,13 @@ func (a *RoleActor) setLatLng(arg *pb.CLatLng) {
 	user.Lng = arg.GetLng()
 	user.Address = arg.GetAddress()
 	//暂时实时写入, TODO 异步数据更新
+}
+
+func (a *RoleActor) send2userid(userid string, msg interface{}) {
+	if msg == nil {
+		return
+	}
+	if v, ok := a.roles[userid]; ok {
+		v.Pid.Tell(msg)
+	}
 }

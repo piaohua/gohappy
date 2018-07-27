@@ -121,6 +121,15 @@ func Rpacket(msg interface{}) (uint32, []byte, error) {
 	case *CSetAgentProfitRate:
 		b, err := msg.(*CSetAgentProfitRate).Marshal()
 		return 1060, b, err
+	case *CGetAgent:
+		b, err := msg.(*CGetAgent).Marshal()
+		return 1061, b, err
+	case *CAgentProfitManage:
+		b, err := msg.(*CAgentProfitManage).Marshal()
+		return 1062, b, err
+	case *CSetAgentNote:
+		b, err := msg.(*CSetAgentNote).Marshal()
+		return 1063, b, err
 	case *CNNCoinEnterRoom:
 		b, err := msg.(*CNNCoinEnterRoom).Marshal()
 		return 2000, b, err

@@ -32,6 +32,11 @@ func (a *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		ctx.Respond(rsp)
 		return
 	}
+	if !handler.IsVaild(user) {
+		rsp.Error = pb.ProfitLimit
+		ctx.Respond(rsp)
+		return
+	}
 	rsp.Level = user.AgentLevel + 1
 	ctx.Respond(rsp)
 }
@@ -320,6 +325,18 @@ func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
 		v.Pid.Tell(arg)
 	}
 	handler.AgentBuildUpdate2(arg, user) //暂时实时写入, TODO 异步数据更新
+	//邀请每10人，奖励100豆子
+	if arg.Build != 0 && (user.Build % 10 == 0) {
+		a.sendCurrency(user.GetUserid(), 0, 100, int32(pb.LOG_TYPE55))
+		//消息提醒
+		record, msg2 := handler.BuildNotice(100, user.Build, arg.Userid)
+		if record != nil {
+			loggerPid.Tell(record)
+		}
+		if msg2 != nil {
+			a.send2userid(user.GetUserid(), msg2)
+		}
+	}
 }
 
 //区域设置
@@ -367,7 +384,50 @@ func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate) {
 	}
 	agent := a.getUserById(arg.GetUserid())
 	if agent != nil {
-		agent.ProfitRate = arg.GetRate()
+		agent.ProfitRate += arg.GetRate()
 		agent.UpdateAgentProfitRate()
 	}
+}
+
+//查询代理信息
+func (a *RoleActor) getAgentInfo(arg *pb.CGetAgent, ctx actor.Context) {
+	user := a.getUserById(arg.GetAgentid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetAgentid())
+		rsp := new(pb.SGetAgent)
+		rsp.Error = pb.AgentNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	rsp := handler.GetAgentMsg(user)
+	ctx.Respond(rsp)
+}
+
+//设置备注
+func (a *RoleActor) setAgentNote(arg *pb.CSetAgentNote, ctx actor.Context) {
+	rsp := new(pb.SSetAgentNote)
+	rsp.Userid = arg.GetUserid()
+	rsp.Agentnote = arg.GetAgentnote()
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		rsp.Error = pb.AgentNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	if user.GetAgent() != arg.GetSelfid() {
+		rsp.Error = pb.AgentNotExist
+		ctx.Respond(rsp)
+		return
+	}
+	if v, ok := a.roles[arg.Userid]; ok && v != nil {
+		msg := new(pb.SetAgentNote)
+		msg.Userid = arg.GetUserid()
+		msg.Agentnote = arg.GetAgentnote()
+		v.Pid.Tell(msg)
+		//return
+	}
+	user.AgentNote = arg.GetAgentnote()
+	ctx.Respond(rsp)
+	user.UpdateAgentNote()
 }

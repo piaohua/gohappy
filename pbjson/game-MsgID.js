@@ -36,6 +36,9 @@ msgID = {
 	CAgentPlayerApprove : 1058,
 	CAgentProfitReply : 1059,
 	CSetAgentProfitRate : 1060,
+	CGetAgent : 1061,
+	CAgentProfitManage : 1062,
+	CSetAgentNote : 1063,
 
 	SBuy : 1500,
 	SWxpayOrder : 1501,
@@ -77,5 +80,8 @@ msgID = {
 	SAgentPlayerManage : 1557,
 	SAgentPlayerApprove : 1558,
 	SAgentProfitReply : 1559,
-	SSetAgentProfitRate : 1560
+	SSetAgentProfitRate : 1560,
+	SGetAgent : 1561,
+	SAgentProfitManage : 1562,
+	SSetAgentNote : 1563
 }

@@ -83,6 +83,42 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 	return
 }
 
+//PackAgentProfitManageMsg 获取代理管理列表信息
+func PackAgentProfitManageMsg(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfitManage) {
+	msg = new(pb.SAgentProfitManage)
+	list, err := data.GetAgentProfitManage(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("PackAgentProfitManageMsg err %v", err)
+	}
+	glog.Debugf("PackAgentProfitManageMsg list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.AgentProfitManage)
+		if val, ok := v["_id"]; ok {
+			msg2.Agentid = val.(string)
+		}
+		if val, ok := v["agent_level"]; ok {
+			msg2.Level = uint32(val.(int))
+		}
+		if val, ok := v["nickname"]; ok {
+			msg2.Nickname = val.(string)
+		}
+		if val, ok := v["agent_note"]; ok {
+			msg2.Agentnote = val.(string)
+		}
+		if val, ok := v["profit_rate"]; ok {
+			msg2.Rate = uint32(val.(int))
+		}
+		if msg2.Agentid == "" {
+			continue
+		}
+		msg2.AgentTitle = agentTitle(msg2.Level, 1, arg.Userid, int64(msg2.Rate))
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
 //PackPlayerManageMsg 获取玩家管理列表信息
 func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage) {
 	msg = new(pb.SAgentPlayerManage)
@@ -263,7 +299,8 @@ func IsAgent(user *data.User) bool {
 
 //IsVaild 权限限制(有效玩家3个以上,绑定10个以上)
 func IsVaild(user *data.User) bool {
-	return user.BuildVaild >= 3 && user.Build >= 10
+	//return user.BuildVaild >= 3 && user.Build >= 10
+	return user.BuildVaild >= 3
 }
 
 //IsProfitApply 是否可以提现,达到10000方可提取
@@ -595,4 +632,17 @@ func SetAgentBuild(arg *pb.SetAgentBuild, user *data.User) {
 func SetAgentState(arg *pb.SetAgentState, user *data.User) {
 	user.AgentState = arg.GetState()
 	user.AgentLevel = arg.GetLevel()
+}
+
+//GetAgentMsg 获取代理信息
+func GetAgentMsg(user *data.User) (msg *pb.SGetAgent) {
+	msg = &pb.SGetAgent{
+		Agentid: user.GetUserid(),
+		Nickname: user.GetNickname(),
+		Agentname: user.AgentName,
+		Realname: user.RealName,
+		Weixin: user.Weixin,
+		Vaild: IsVaild(user),
+	}
+	return
 }

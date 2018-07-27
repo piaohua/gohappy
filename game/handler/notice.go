@@ -107,3 +107,13 @@ func BankNotice(coin int64, userid, from string) (record *pb.LogNotice,
 	content := fmt.Sprintf("%s给您赠送了%d金豆，已入保险箱请查收。", from, coin)
 	return NewNotice(data.NOTICE_TYPE5, 0, userid, content)
 }
+
+//BuildNotice 赠送消息
+func BuildNotice(coin int64, build uint32, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("恭喜你成功邀请%d人获得%d金豆", build, coin)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
+}

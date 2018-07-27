@@ -69,18 +69,29 @@ func (a *RoleActor) jtpayHandler(arg *pb.JtpayCallback) bool {
 //订单发货处理
 func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
 	user := a.getUserById(trade.Userid)
+	//充值数量
 	var diamond, coin int64 = handler.GetGoods(trade)
 	//充值消息提醒
-	record, msg2 := handler.BuyNotice(coin, user.GetUserid())
+	record, msg1 := handler.BuyNotice(coin, trade.Userid)
 	if record != nil {
 		loggerPid.Tell(record)
 	}
-	//在线
+	//订单状态更新
+	handler.WxpaySendGoods(trade, user)
+	//充值赠送,TODO 区分日志记录
+	diamond2, coin2, msg2 := handler.FirstPay(trade.First, user)
+	diamond += diamond2
+	coin += coin2
+	//更新有效代理绑定
+	if msg2 != nil {
+		rolePid.Tell(msg2)
+	}
+	//在线处理
 	if v, ok := a.roles[trade.Userid]; ok {
-		handler.WxpaySendGoods(true, trade, user)
+		handler.WxpaySendGoodsOnline(trade, user)
 		//在线,发送给玩家pid处理
 		msg := new(pb.WxpayGoods)
-		msg.Userid = user.GetUserid()
+		msg.Userid = trade.Userid
 		msg.Orderid = trade.Id
 		msg.Money = trade.Money
 		//msg.Diamond = int64(trade.Diamond)
@@ -88,16 +99,27 @@ func (a *RoleActor) tradeHandler(trade *data.TradeRecord) {
 		msg.Diamond = diamond
 		msg.Coin = coin
 		v.Pid.Tell(msg)
-		if msg2 != nil {
-			v.Pid.Tell(msg2)
+		if msg1 != nil {
+			v.Pid.Tell(msg1)
 		}
 		return
 	}
-	//离线,直接处理
-	handler.WxpaySendGoods(false, trade, user)
-	if trade.First == 1 {
-		//更新有效代理绑定
-		msg := handler.AgentBuildUpdateMsg(user.GetAgent(), user.GetUserid(), 0, 1, 0)
-		rolePid.Tell(msg)
+	//离线处理
+	handler.WxpaySendGoodsOffline(trade, user)
+	//货币变更及时同步
+	msg3 := handler.ChangeCurrencyMsg(diamond, coin,
+		0, 0, int32(pb.LOG_TYPE4), trade.Userid)
+	//msg3.Money = int64(trade.Money)
+	rolePid.Tell(msg3)
+}
+
+//货币变更及时同步
+func (a *RoleActor) sendCurrency(userid string, diamond, coin int64, ltype int32) {
+	msg := handler.ChangeCurrencyMsg(diamond, coin,0, 0, ltype, userid)
+	//msg.Money = int64(trade.Money)
+	if v, ok := a.roles[userid]; ok {
+		v.Pid.Tell(msg)
+		return
 	}
+	rolePid.Tell(msg)
 }

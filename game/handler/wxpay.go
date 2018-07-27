@@ -228,9 +228,9 @@ func WxpayTradeVerify(t *wxpay.TradeResult) *data.TradeRecord {
 }
 
 //WxpaySendGoods 发货
-func WxpaySendGoods(online bool, trade *data.TradeRecord, user *data.User) {
+func WxpaySendGoods(trade *data.TradeRecord, user *data.User) {
 	if user == nil || user.Userid == "" {
-		glog.Errorf("user empty %v, trade %#v", online, trade)
+		glog.Errorf("userid not exist trade %#v", trade)
 		trade.Result = data.TradeGoods //发货失败
 	} else {
 		if user.GetMoney() == 0 {
@@ -240,41 +240,37 @@ func WxpaySendGoods(online bool, trade *data.TradeRecord, user *data.User) {
 		trade.Agent = user.GetAgent()
 		//trade.Atype = user.GetAtype()
 	}
-	if !online {
-		//离线状态
-		//TODO 日志记录
-		var diamond, coin int64 = GetGoods(trade)
-		//首充
-		if trade.First == 1 {
-			diamond += int64(config.GetEnv(data.ENV4))
-			coin += int64(config.GetEnv(data.ENV5))
-		}
-		//充值数量
-		//diamond += int64(trade.Diamond)
-		//vip赠送 TODO
-		//diamond += getVipGive(user.GetVipLevel(), diamond)
-		//货币变更
-		user.AddDiamond(diamond)
-		user.AddCoin(coin)
-		//vip变更 TODO
-		//lev2 := config.GetVipLevel(user.GetVip() + trade.Money)
-		//user.SetVip(lev2, trade.Money)
-		user.AddMoney(trade.Money)
-		//存储
-		user.Save()
-	} else {
-		user.AddMoney(trade.Money) //TODO 在玩家进程中发消息同步
-		user.UpdateMoney()
-	}
 	//update record
 	if !trade.Upsert() {
 		glog.Errorf("trade save failed: %#v", trade)
 	}
 }
 
+//WxpaySendGoodsOnline 在线状态发货
+func WxpaySendGoodsOnline(trade *data.TradeRecord, user *data.User) {
+	if user == nil {
+		return
+	}
+	user.AddMoney(trade.Money) //TODO 在玩家进程中发消息同步
+	user.UpdateMoney()
+}
+
+//WxpaySendGoodsOffline 离线状态发货
+func WxpaySendGoodsOffline(trade *data.TradeRecord, user *data.User) {
+	if user == nil {
+		return
+	}
+	// TODO vip赠送
+	//diamond += getVipGive(user.GetVipLevel(), diamond)
+	//TODO vip变更
+	//lev2 := config.GetVipLevel(user.GetVip() + trade.Money)
+	//user.SetVip(lev2, trade.Money)
+	user.AddMoney(trade.Money)
+}
+
 /*
-TODO
-//vip赠送
+
+//TODO vip赠送
 func getVipGive(level int, num int32) int32 {
 	if level <= 0 {
 		return 0
@@ -294,4 +290,19 @@ func GetGoods(trade *data.TradeRecord) (int64, int64) {
 		return 0, int64(trade.Diamond)
 	}
 	return 0, 0
+}
+
+//FirstPay 首充
+func FirstPay(first int, user *data.User) (diamond, coin int64, msg *pb.AgentBuildUpdate) {
+	if first != 1 {
+		return
+	}
+	if user == nil {
+		return
+	}
+	diamond += int64(config.GetEnv(data.ENV6))
+	coin += int64(config.GetEnv(data.ENV7))
+	//更新有效代理绑定
+	msg = AgentBuildUpdateMsg(user.GetAgent(), user.GetUserid(), 0, 1, 0)
+	return
 }

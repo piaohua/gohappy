@@ -174,6 +174,18 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SSetAgentProfitRate)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1561:
+		msg := new(SGetAgent)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1562:
+		msg := new(SAgentProfitManage)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1563:
+		msg := new(SSetAgentNote)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 2500:
 		msg := new(SNNCoinEnterRoom)
 		err := msg.Unmarshal(b)

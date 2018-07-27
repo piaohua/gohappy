@@ -67,6 +67,7 @@ type User struct {
 	HistoryProfit    int64     `bson:"history_profit" json:"history_profit"`         // 历史收益
 	SubPlayerProfit  int64     `bson:"sub_player_profit" json:"sub_player_profit"`   // 下属玩家业绩收益
 	SubAgentProfit   int64     `bson:"sub_agent_profit" json:"sub_agent_profit"`     // 下属代理业绩收益
+	AgentNote        string    `bson:"agent_note" json:"agent_note"`                 // 代理备注
 	//时间
 	Ctime     time.Time `bson:"ctime" json:"ctime"`           // 注册时间
 	LoginTime time.Time `bson:"login_time" json:"login_time"` // 最后登录时间
@@ -174,6 +175,11 @@ func (this *User) UpdateBuild() bool {
 func (this *User) UpdateMoney() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"money": this.Money}})
+}
+
+func (this *User) UpdateAgentNote() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"agent_note": this.AgentNote}})
 }
 
 func (this *User) Get() {

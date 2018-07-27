@@ -14,21 +14,21 @@ const (
 //设置变量
 //key             value
 const (
-	ENV1  = "regist_diamond"  //注册赠送钻石
-	ENV2  = "regist_coin"     //注册赠送金币
-	ENV3  = "regist_chip"     //注册赠送筹码
-	ENV4  = "regist_card"     //注册赠送房卡
-	ENV5  = "build"           //绑定赠送
-	ENV6  = "first_pay_multi" //首充送n倍
-	ENV7  = "first_pay_coin"  //首充送金币
-	ENV8  = "relieve"         //救济金次数
-	ENV9  = "prizedraw"       //转盘抽奖次数
-	ENV10 = "bankrupt_coin"   //破产金额
-	ENV11 = "relieve_coin"    //救济金额
-	ENV12 = "robot_num"       //虚假人数
-	ENV13 = "robot_allot1"    //机器人分配规则1
-	ENV14 = "robot_allot2"    //机器人分配规则2
-	ENV15 = "robot_bet"       //机器人下注AI
+	ENV1  = "Regist_diamond"  //注册赠送钻石
+	ENV2  = "Regist_coin"     //注册赠送金币
+	ENV3  = "Regist_chip"     //注册赠送筹码
+	ENV4  = "Regist_card"     //注册赠送房卡
+	ENV5  = "Build"           //绑定赠送
+	ENV6  = "First_pay_multi" //首充送n倍
+	ENV7  = "First_pay_coin"  //首充送金币
+	ENV8  = "Relieve"         //救济金次数
+	ENV9  = "Prizedraw"       //转盘抽奖次数
+	ENV10 = "Bankrupt_coin"   //破产金额
+	ENV11 = "Relieve_coin"    //救济金额
+	ENV12 = "Robot_num"       //虚假人数
+	ENV13 = "Robot_allot1"    //机器人分配规则1
+	ENV14 = "Robot_allot2"    //机器人分配规则2
+	ENV15 = "Robot_bet"       //机器人下注AI
 )
 
 type Env struct {
