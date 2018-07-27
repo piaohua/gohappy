@@ -305,7 +305,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 		} else {
 			msg1 := handler.GiveBankMsg(amount, int32(pb.LOG_TYPE15), userid, rs.User.GetUserid())
 			if rs.bank2give(msg1) {
-				rs.addBank(-1*amount, int32(pb.LOG_TYPE15), "")
+				rs.addBank(-1*amount, int32(pb.LOG_TYPE15), userid)
 			} else {
 				msg.Error = pb.GiveUseridError
 			}

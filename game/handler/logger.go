@@ -56,7 +56,7 @@ func LogChipMsg(num int64, ltype int32,
 }
 
 //LogBankMsg 打包银行日志消息
-func LogBankMsg(num int64, ltype int32, from string,	p *data.User) (msg *pb.LogBank) {
+func LogBankMsg(num int64, ltype int32, from string, p *data.User) (msg *pb.LogBank) {
 	msg = &pb.LogBank{
 		Userid: p.GetUserid(),
 		Type:   int32(ltype),
