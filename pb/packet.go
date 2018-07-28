@@ -100,6 +100,9 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SBankLog:
 		b, err := msg.(*SBankLog).Marshal()
 		return 1529, 0, b, err
+	case *SLucky:
+		b, err := msg.(*SLucky).Marshal()
+		return 1530, 0, b, err
 	case *SAgentJoin:
 		b, err := msg.(*SAgentJoin).Marshal()
 		return 1550, 0, b, err
@@ -142,6 +145,9 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SSetAgentNote:
 		b, err := msg.(*SSetAgentNote).Marshal()
 		return 1563, 0, b, err
+	case *SAgentDayProfit:
+		b, err := msg.(*SAgentDayProfit).Marshal()
+		return 1564, 0, b, err
 	case *SNNCoinEnterRoom:
 		b, err := msg.(*SNNCoinEnterRoom).Marshal()
 		return 2500, 1, b, err

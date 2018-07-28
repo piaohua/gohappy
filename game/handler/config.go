@@ -112,6 +112,22 @@ func SyncConfig(arg *pb.SyncConfig) (err error) {
 				config.SetTask(v)
 			}
 		}
+	case pb.CONFIG_LUCKY: //lucky
+		b := make(map[int32]data.Lucky)
+		err = jsoniter.Unmarshal(arg.Data, &b)
+		glog.Debugf("Sync Lucky %#v", b)
+		if err != nil {
+			glog.Errorf("syncConfig Unmarshal err %v, data %#v", err, arg.Data)
+			return
+		}
+		for k, v := range b {
+			switch arg.Atype {
+			case pb.CONFIG_DELETE:
+				config.DelLucky(k)
+			case pb.CONFIG_UPSERT:
+				config.SetLucky(v)
+			}
+		}
 	case pb.CONFIG_LOGIN: //登录奖励
 		b := make(map[uint32]data.LoginPrize)
 		err = jsoniter.Unmarshal(arg.Data, &b)
@@ -172,6 +188,8 @@ func GetSyncConfig2(ctype pb.ConfigType) (msg *pb.SyncConfig, err error) {
 		msg.Data, err = syncConfigMsg(config.GetVips2())
 	case pb.CONFIG_TASK: //任务列表
 		msg.Data, err = syncConfigMsg(config.GetTasks2())
+	case pb.CONFIG_LUCKY: //lucky列表
+		msg.Data, err = syncConfigMsg(config.GetLuckys2())
 	case pb.CONFIG_LOGIN: //登录奖励列表
 		msg.Data, err = syncConfigMsg(config.GetLogins2())
 	default:

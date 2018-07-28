@@ -10,6 +10,7 @@ enum ConfigType {
     CONFIG_VIP     = 5; //VIP
     CONFIG_TASK    = 6; //task
     CONFIG_LOGIN   = 7; //登录奖励
+    CONFIG_LUCKY   = 8; //lucky
 }
 
 enum ConfigAtype {
@@ -46,6 +47,7 @@ enum WebCode {
     WebLogin    =11; //登录奖励列表
     WebRate     =12; //设置区域比例
     WebState    =13; //设置代理状态
+    WebLucky    =14; //lucky列表
 }
 
 //web请求

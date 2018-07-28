@@ -25,6 +25,7 @@ msgID = {
 	CSignature : 1023,
 	CLatLng : 1024,
 	CBankLog : 1025,
+	CLucky : 1026,
 	CAgentJoin : 1050,
 	CMyAgent : 1051,
 	CAgentManage : 1052,
@@ -39,6 +40,7 @@ msgID = {
 	CGetAgent : 1061,
 	CAgentProfitManage : 1062,
 	CSetAgentNote : 1063,
+	CAgentDayProfit : 1064,
 
 	SBuy : 1500,
 	SWxpayOrder : 1501,
@@ -70,6 +72,7 @@ msgID = {
 	SSignature : 1527,
 	SLatLng : 1528,
 	SBankLog : 1529,
+	SLucky : 1530,
 	SAgentJoin : 1550,
 	SMyAgent : 1551,
 	SAgentManage : 1552,
@@ -83,5 +86,6 @@ msgID = {
 	SSetAgentProfitRate : 1560,
 	SGetAgent : 1561,
 	SAgentProfitManage : 1562,
-	SSetAgentNote : 1563
+	SSetAgentNote : 1563,
+	SAgentDayProfit : 1564
 }

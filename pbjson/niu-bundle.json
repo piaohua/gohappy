@@ -469,7 +469,9 @@
             "ProfitOrderReplied": 108,
             "ProfitLimit": 109,
             "AlreadySetRate": 110,
-            "ProfitRateNotEnough": 111
+            "ProfitRateNotEnough": 111,
+            "AgentJoinLimit": 112,
+            "AgentSetLimit": 113
           }
         },
         "SitType": {

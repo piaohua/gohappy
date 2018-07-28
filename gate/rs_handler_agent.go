@@ -30,6 +30,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CAgentProfit)
 		glog.Debugf("CAgentProfit: %v", arg)
 		rs.agentProfit(arg, ctx)
+	case *pb.CAgentDayProfit:
+		arg := msg.(*pb.CAgentDayProfit)
+		glog.Debugf("CAgentDayProfit: %v", arg)
+		rs.agentDayProfit(arg, ctx)
 	case *pb.CAgentProfitOrder:
 		arg := msg.(*pb.CAgentProfitOrder)
 		glog.Debugf("CAgentProfitOrder %#v", arg)
@@ -350,6 +354,18 @@ func (rs *RoleActor) agentProfit(arg *pb.CAgentProfit, ctx actor.Context) {
 	rs.dbmsPid.Request(arg, ctx.Self())
 }
 
+//代理天收益明细列表
+func (rs *RoleActor) agentDayProfit(arg *pb.CAgentDayProfit, ctx actor.Context) {
+	if handler.IsNotAgent(rs.User) {
+		rsp := new(pb.SAgentDayProfit)
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	arg.Userid = rs.User.GetUserid()
+	rs.dbmsPid.Request(arg, ctx.Self())
+}
+
 //代理收益订单列表
 func (rs *RoleActor) agentProfitOrder(arg *pb.CAgentProfitOrder, ctx actor.Context) {
 	if handler.IsNotAgent(rs.User) {
@@ -424,7 +440,7 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		return
 	}
 	if !handler.IsVaild(rs.User) {
-		rsp.Error = pb.ProfitLimit
+		rsp.Error = pb.AgentSetLimit
 		rs.Send(rsp)
 		return
 	}

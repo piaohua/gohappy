@@ -220,6 +220,30 @@ func GetAgentProfit(arg *pb.CAgentProfit) ([]LogProfit, error) {
 	return list, err
 }
 
+//GetAgentDayProfit 代理天收益明细
+func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
+	if arg.Page == 0 {
+		arg.Page = 1
+	}
+	pageSize := 20 //取前20条
+	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
+	var list []LogDayProfit
+	q := bson.M{"userid": arg.GetUserid()}
+	if arg.GetTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetTime())),
+		"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetTime()).AddDate(0, 0, 1))}
+	}
+	err := LogDayProfits.
+		Find(q).
+		Sort(sortFieldR).
+		Skip(skipNum).
+		Limit(pageSize).
+		All(&list)
+	if err != nil {
+	}
+	return list, err
+}
+
 //LogProfitOrder 提取收益订单
 type LogProfitOrder struct {
 	Id        string    `bson:"_id" json:"id"`                // AUTO_INCREMENT, PRIMARY KEY (`id`),
@@ -235,7 +259,8 @@ type LogProfitOrder struct {
 
 //Save 保存消息记录
 func (t *LogProfitOrder) Save() bool {
-	t.Id = bson.NewObjectId().String()
+	//t.Id = bson.NewObjectId().String()
+	t.Id = ObjectIdString(bson.NewObjectId())
 	t.Ctime = bson.Now()
 	t.ApplyTime = bson.Now()
 	return Insert(LogProfitsOrders, t)

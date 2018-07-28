@@ -185,6 +185,7 @@
 		BankChecked
 		BankChange
 		TaskUpdate
+		LuckyUpdate
 		LoginPrizeUpdate
 		GetRoomRecord
 		SyncConfig
@@ -282,6 +283,9 @@
 		CAgentProfit
 		SAgentProfit
 		AgentProfitDetail
+		CAgentDayProfit
+		SAgentDayProfit
+		AgentDayProfitDetail
 		CAgentProfitOrder
 		SAgentProfitOrder
 		AgentProfitOrder
@@ -339,6 +343,7 @@
 		TopInfo
 		Rank
 		Task
+		Lucky
 		LoginPrize
 		RoomRecord
 		RoomRecordInfo
@@ -363,6 +368,8 @@
 		STask
 		CTaskPrize
 		STaskPrize
+		CLucky
+		SLucky
 		CLoginPrize
 		SLoginPrize
 		CRoomRecord

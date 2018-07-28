@@ -388,7 +388,7 @@ func (t *Desk) checkPubOver() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE1): //私人
 		if !t.DeskData.Pub {
-			return
+			//return
 		}
 	default:
 		return

@@ -128,6 +128,17 @@ message STaskPrize
     ErrCode error = 5;//错误码
 }
 
+// lucky
+message CLucky
+{
+}
+
+message SLucky
+{
+    repeated Lucky list = 1;//
+    ErrCode error = 2;//错误码
+}
+
 enum LoginPrizeType {
     LoginPrizeSelect = 0;//查询
     LoginPrizeDraw = 1;//领取

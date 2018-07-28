@@ -299,7 +299,9 @@
             "ProfitOrderReplied": 108,
             "ProfitLimit": 109,
             "AlreadySetRate": 110,
-            "ProfitRateNotEnough": 111
+            "ProfitRateNotEnough": 111,
+            "AgentJoinLimit": 112,
+            "AgentSetLimit": 113
           }
         },
         "SitType": {
@@ -834,6 +836,22 @@
             }
           }
         },
+        "CLucky": {
+          "fields": {}
+        },
+        "SLucky": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Lucky",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
         "LoginPrizeType": {
           "values": {
             "LoginPrizeSelect": 0,
@@ -1081,6 +1099,38 @@
               "id": 1
             },
             "type": {
+              "type": "int32",
+              "id": 2
+            },
+            "name": {
+              "type": "string",
+              "id": 3
+            },
+            "count": {
+              "type": "uint32",
+              "id": 4
+            },
+            "coin": {
+              "type": "int64",
+              "id": 5
+            },
+            "diamond": {
+              "type": "int64",
+              "id": 6
+            },
+            "num": {
+              "type": "uint32",
+              "id": 7
+            }
+          }
+        },
+        "Lucky": {
+          "fields": {
+            "luckyid": {
+              "type": "int32",
+              "id": 1
+            },
+            "gtype": {
               "type": "int32",
               "id": 2
             },
@@ -1702,6 +1752,59 @@
             "type": {
               "type": "int32",
               "id": 6
+            }
+          }
+        },
+        "CAgentDayProfit": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "time": {
+              "type": "string",
+              "id": 2
+            },
+            "userid": {
+              "type": "string",
+              "id": 3
+            }
+          }
+        },
+        "SAgentDayProfit": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "count": {
+              "type": "uint32",
+              "id": 2
+            },
+            "list": {
+              "rule": "repeated",
+              "type": "AgentDayProfitDetail",
+              "id": 3
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 4
+            }
+          }
+        },
+        "AgentDayProfitDetail": {
+          "fields": {
+            "userid": {
+              "type": "string",
+              "id": 1
+            },
+            "profit": {
+              "type": "int64",
+              "id": 2
+            },
+            "day": {
+              "type": "uint32",
+              "id": 3
             }
           }
         },

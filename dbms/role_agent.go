@@ -33,7 +33,7 @@ func (a *RoleActor) agentJoin(arg *pb.CAgentJoin, ctx actor.Context) {
 		return
 	}
 	if !handler.IsVaild(user) {
-		rsp.Error = pb.ProfitLimit
+		rsp.Error = pb.AgentJoinLimit
 		ctx.Respond(rsp)
 		return
 	}
@@ -350,13 +350,13 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 		return
 	}
 	if user.GetAgent() != arg.GetSelfid() {
-		rsp.Error = pb.ProfitLimit
+		rsp.Error = pb.AgentSetLimit
 	}
 	if user.ProfitRate != 0 {
 		rsp.Error = pb.AlreadySetRate
 	}
 	if !handler.IsVaild(user) {
-		rsp.Error = pb.ProfitLimit
+		rsp.Error = pb.AgentSetLimit
 	}
 	if !handler.IsAgent(user) {
 		rsp.Error = pb.NotAgent

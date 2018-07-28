@@ -130,6 +130,10 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SBankLog)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1530:
+		msg := new(SLucky)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 1550:
 		msg := new(SAgentJoin)
 		err := msg.Unmarshal(b)
@@ -184,6 +188,10 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		return msg, err
 	case 1563:
 		msg := new(SSetAgentNote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1564:
+		msg := new(SAgentDayProfit)
 		err := msg.Unmarshal(b)
 		return msg, err
 	case 2500:

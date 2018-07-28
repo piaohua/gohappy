@@ -65,7 +65,8 @@ func SetTaskList() {
 func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 	diamond, coin int64) {
 	t := data.Task{
-		ID:      bson.NewObjectId().Hex(),
+		//ID:      bson.NewObjectId().String(),
+		ID:      data.ObjectIdString(bson.NewObjectId()),
 		Ctime:   bson.Now(),
 		Taskid:  taskid,
 		Nextid:  nextid,

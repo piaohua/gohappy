@@ -7,10 +7,10 @@ import (
 	"gohappy/data"
 )
 
-//TaskMap 游戏列表
+//TaskMap 任务列表
 var TaskMap *sync.Map
 
-//TaskList 游戏列表
+//TaskList 任务列表
 var TaskList []data.Task
 
 //InitTask 启动初始化

@@ -191,6 +191,26 @@ func PackAgentProfitMsg(arg *pb.CAgentProfit) (msg *pb.SAgentProfit) {
 	return
 }
 
+//PackAgentDayProfitMsg 获取代理天收益明细列表
+func PackAgentDayProfitMsg(arg *pb.CAgentDayProfit) (msg *pb.SAgentDayProfit) {
+	msg = new(pb.SAgentDayProfit)
+	list, err := data.GetAgentDayProfit(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("PackAgentProfitMsg err %v", err)
+	}
+	glog.Debugf("PackAgentProfitMsg list %#v", list)
+	for _, v := range list {
+		msg2 := new(pb.AgentDayProfitDetail)
+		msg2.Userid = v.Userid //代理id
+		msg2.Profit = v.Profit //收益
+		msg2.Day = uint32(v.Day) //日期20180728
+		msg.List = append(msg.List, msg2)
+	}
+	return
+}
+
 //PackAgentProfitOrderMsg 获取收益订单列表
 func PackAgentProfitOrderMsg(arg *pb.CAgentProfitOrder) (msg *pb.SAgentProfitOrder) {
 	msg = new(pb.SAgentProfitOrder)

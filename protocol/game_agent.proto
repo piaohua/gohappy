@@ -148,6 +148,29 @@ message AgentProfitDetail
     int32  type = 6;//type,(收益，区域，区域发放)
 }
 
+// 代理天收益明细
+message CAgentDayProfit
+{
+    uint32 page = 1;//页数
+    string time = 2;//收益日期时间,查询参数
+    string userid = 3;//玩家id,server参数
+}
+
+message SAgentDayProfit
+{
+    uint32 page = 1;//页数
+    uint32 count = 2;//总数
+    repeated AgentDayProfitDetail list = 3;//列表
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+message AgentDayProfitDetail
+{
+    string userid = 1;//代理id
+    int64 profit = 2;//收益
+    uint32 day = 3;//日期20180728
+}
+
 // 代理收益提现订单明细
 message CAgentProfitOrder
 {

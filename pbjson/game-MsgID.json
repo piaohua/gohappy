@@ -25,6 +25,7 @@
 	1023:{type:"room",		sendType:"pb.CSignature",		revType:"",		},
 	1024:{type:"room",		sendType:"pb.CLatLng",		revType:"",		},
 	1025:{type:"room",		sendType:"pb.CBankLog",		revType:"",		},
+	1026:{type:"room",		sendType:"pb.CLucky",		revType:"",		},
 	1050:{type:"room",		sendType:"pb.CAgentJoin",		revType:"",		},
 	1051:{type:"room",		sendType:"pb.CMyAgent",		revType:"",		},
 	1052:{type:"room",		sendType:"pb.CAgentManage",		revType:"",		},
@@ -39,6 +40,7 @@
 	1061:{type:"room",		sendType:"pb.CGetAgent",		revType:"",		},
 	1062:{type:"room",		sendType:"pb.CAgentProfitManage",		revType:"",		},
 	1063:{type:"room",		sendType:"pb.CSetAgentNote",		revType:"",		},
+	1064:{type:"room",		sendType:"pb.CAgentDayProfit",		revType:"",		},
 	1500:{type:"room",		sendType:"",		revType:"pb.SBuy",		},
 	1501:{type:"room",		sendType:"",		revType:"pb.SWxpayOrder",		},
 	1502:{type:"room",		sendType:"",		revType:"pb.SJtpayOrder",		},
@@ -69,6 +71,7 @@
 	1527:{type:"room",		sendType:"",		revType:"pb.SSignature",		},
 	1528:{type:"room",		sendType:"",		revType:"pb.SLatLng",		},
 	1529:{type:"room",		sendType:"",		revType:"pb.SBankLog",		},
+	1530:{type:"room",		sendType:"",		revType:"pb.SLucky",		},
 	1550:{type:"room",		sendType:"",		revType:"pb.SAgentJoin",		},
 	1551:{type:"room",		sendType:"",		revType:"pb.SMyAgent",		},
 	1552:{type:"room",		sendType:"",		revType:"pb.SAgentManage",		},
@@ -82,5 +85,6 @@
 	1560:{type:"room",		sendType:"",		revType:"pb.SSetAgentProfitRate",		},
 	1561:{type:"room",		sendType:"",		revType:"pb.SGetAgent",		},
 	1562:{type:"room",		sendType:"",		revType:"pb.SAgentProfitManage",		},
-	1563:{type:"room",		sendType:"",		revType:"pb.SSetAgentNote",		}
+	1563:{type:"room",		sendType:"",		revType:"pb.SSetAgentNote",		},
+	1564:{type:"room",		sendType:"",		revType:"pb.SAgentDayProfit",		}
 }

@@ -118,6 +118,8 @@ enum ErrCode {
     ProfitLimit            =109; //提取收益限制(有效玩家3个以上,绑定10个以上)
     AlreadySetRate         =110; //已经设置
     ProfitRateNotEnough    =111; //区域奖励比例不足
+    AgentJoinLimit         =112; //申请代理限制(有效玩家3个以上)
+    AgentSetLimit          =113; //设置代理区域限制(有效玩家3个以上)
 }
 
 enum SitType {

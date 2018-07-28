@@ -136,6 +136,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.TaskUpdate)
 		glog.Debugf("TaskUpdate %#v", arg)
 		a.taskUpdate(arg)
+	case *pb.LuckyUpdate:
+		arg := msg.(*pb.LuckyUpdate)
+		glog.Debugf("LuckyUpdate %#v", arg)
+		a.luckyUpdate(arg)
 	case *pb.LoginPrizeUpdate:
 		arg := msg.(*pb.LoginPrizeUpdate)
 		glog.Debugf("LoginPrizeUpdate %#v", arg)
@@ -294,6 +298,7 @@ func (a *RoleActor) getUserById(userid string) *data.User {
 	}
 	newUser := new(data.User)
 	newUser.Task = make(map[string]data.TaskInfo)
+	newUser.Lucky = make(map[string]data.LuckyInfo)
 	newUser.GetById(userid) //数据库中取
 	if newUser.Userid == "" {
 		glog.Debugf("getUserById failed %s", userid)
@@ -310,6 +315,7 @@ func (a *RoleActor) getUserByTourist(account string) *data.User {
 	}
 	user := new(data.User)
 	user.Task = make(map[string]data.TaskInfo)
+	user.Lucky = make(map[string]data.LuckyInfo)
 	user.Tourist = account
 	user.GetByTourist() //数据库中取
 	if user.Userid == "" {
@@ -327,6 +333,7 @@ func (a *RoleActor) getUserByPhone(account string) *data.User {
 	}
 	user := new(data.User)
 	user.Task = make(map[string]data.TaskInfo)
+	user.Lucky = make(map[string]data.LuckyInfo)
 	user.Phone = account
 	user.GetByPhone() //数据库中取
 	if user.Userid == "" {
@@ -344,6 +351,7 @@ func (a *RoleActor) getUserByWx(account string) *data.User {
 	}
 	user := new(data.User)
 	user.Task = make(map[string]data.TaskInfo)
+	user.Lucky = make(map[string]data.LuckyInfo)
 	user.Wxuid = account
 	user.GetByWechat() //数据库中取
 	if user.GetUserid() == "" {
@@ -498,17 +506,18 @@ func (a *RoleActor) offlineBank(arg *pb.BankGive, ctx actor.Context) {
 		return
 	}
 	//充值消息提醒
-	record, msg2 := handler.BankNotice(arg.Coin, arg.Userid, arg.From)
-	if record != nil {
-		loggerPid.Tell(record)
+	record1, msg1 := handler.BankNotice(arg.Coin, arg.Userid, arg.From)
+	if record1 != nil {
+		loggerPid.Tell(record1)
 	}
 	if v, ok := a.roles[arg.Userid]; ok && v != nil {
 		v.Pid.Tell(arg)
-		v.Pid.Tell(msg2)
+		v.Pid.Tell(msg1)
 		ctx.Respond(rsp)
 		return
 	}
-	a.syncBank(arg.Coin, arg.Type, arg.Userid, arg.From)
+	//a.syncBank(arg.Coin, arg.Type, arg.Userid, arg.From)
+	a.syncCurrency(0, arg.GetCoin(), 0, 0, arg.GetType(), arg.GetUserid())
 	ctx.Respond(rsp)
 }
 
@@ -597,6 +606,31 @@ func (a *RoleActor) taskUpdate(arg *pb.TaskUpdate) {
 	}
 	//暂时实时写入, TODO 异步数据更新
 	user.UpdateTask()
+}
+
+//同步lucky数据
+func (a *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
+	user := a.getUserById(arg.Userid)
+	if user == nil {
+		glog.Errorf("luckyUpdate err userid %#v", arg)
+		return
+	}
+	if user.Lucky == nil {
+		user.Lucky = make(map[string]data.LuckyInfo)
+	}
+	luckyidStr := utils.String(int32(arg.GetLuckyid()))
+	if val, ok := user.Lucky[luckyidStr]; ok {
+		val.Num += arg.Num
+		user.Lucky[luckyidStr] = val
+	} else {
+		luckyInfo := data.LuckyInfo{
+			Luckyid: int32(arg.GetLuckyid()),
+			Num:    arg.Num,
+		}
+		user.Lucky[luckyidStr] = luckyInfo
+	}
+	//暂时实时写入, TODO 异步数据更新
+	user.UpdateLucky()
 }
 
 func (a *RoleActor) loginPrizeUpdate(arg *pb.LoginPrizeUpdate) {

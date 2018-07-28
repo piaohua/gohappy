@@ -375,6 +375,49 @@ func ProfitRecord(agentid, userid string, gtype, rtype int32, level, rate uint32
 		Type:   rtype,
 	}
 	record.Save()
+	//添加天统计
+	DayProfitRecord(agentid, profit)
+}
+
+//LogDayProfit 代理收益统计日志
+type LogDayProfit struct {
+	//Id       string    `bson:"_id"`
+	Userid  string    `bson:"userid"`  //玩家ID
+	Day     int       `bson:"day"`     //day
+	Profit  int64     `bson:"profit"`  //Profit
+	Utime   time.Time `bson:"utime"`   //update Time
+	Ctime   time.Time `bson:"ctime"`   //create Time
+}
+
+//Save 保存消息记录
+func (t *LogDayProfit) Save() bool {
+	//t.Id = bson.NewObjectId().String()
+	t.Ctime = bson.Now()
+	return Insert(LogDayProfits, t)
+}
+
+func (t *LogDayProfit) Has() bool {
+	return Has(LogDayProfits, bson.M{"userid": t.Userid, "day": t.Day})
+}
+
+func (t *LogDayProfit) Update() bool {
+	return Update(LogDayProfits, bson.M{"userid": t.Userid, "day": t.Day},
+		bson.M{"$set": bson.M{"utime": t.Utime}, "$inc": bson.M{"profit": t.Profit}})
+}
+
+//DayProfitRecord 代理收益统计记录
+func DayProfitRecord(userid string, profit int64) {
+	record := &LogDayProfit{
+		Userid: userid,
+		Profit: profit,
+	}
+	record.Utime = bson.Now()
+	record.Day = utils.Time2DayDate(record.Utime)
+	if record.Has() {
+		record.Update()
+	} else {
+		record.Save()
+	}
 }
 
 //LogSysProfit 系统收益日志

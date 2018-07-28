@@ -66,9 +66,10 @@ func (a *DBMSActor) Handler(msg interface{}, ctx actor.Context) {
 func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Infof("dbms start: %v", ctx.Self().String())
 	//TODO 设置测试数据,正式后台配置
-	handler.SetNiuCoinGame()
+	/*handler.SetNiuCoinGame()
+	handler.SetLuckyList()
 	//handler.SetGameList()
-	/*handler.SetShopList()
+	handler.SetShopList()
 	handler.SetTaskList()
 	handler.SetLoginPrizeList()
 	//head := cfg.Section("domain").Key("headimag").Value()
@@ -147,4 +148,5 @@ func (a *DBMSActor) syncConfig2(pid *actor.PID) {
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_GAMES))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_TASK))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_LOGIN))
+	pid.Tell(handler.GetSyncConfig(pb.CONFIG_LUCKY))
 }

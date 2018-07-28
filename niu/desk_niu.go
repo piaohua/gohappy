@@ -386,7 +386,7 @@ func (t *Desk) checkPubOver() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE1): //私人
 		if !t.DeskData.Pub {
-			return
+			//return
 		}
 	default:
 		return
@@ -839,6 +839,8 @@ func (t *Desk) powerAward() {
 			Diamond: int64(num),
 		}
 		t.broadcast(msg)
+		msg2 := handler.LuckyUpdateMsg(1, int32(pb.NIU), v.Userid)
+		t.send3userid(v.Userid, msg2)
 	}
 }
 

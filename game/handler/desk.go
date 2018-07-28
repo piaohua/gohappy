@@ -72,7 +72,8 @@ func NewDeskData(d *data.Game) *data.DeskData {
 //NewFreeGameData 百人房间桌子数据
 func NewFreeGameData(node string, gtype int32) *data.Game {
 	return &data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		//Id:     bson.NewObjectId().String(),
+		Id: 	data.ObjectIdString(bson.NewObjectId()),
 		Gtype:  gtype,
 		Rtype:  int32(pb.ROOM_TYPE2),
 		Status: 1,
@@ -93,7 +94,8 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 //NewCoinGameData 自由房间桌子数据
 func NewCoinGameData(node string, gtype, dtype, ltype int32) *data.Game {
 	g := &data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		//Id:     bson.NewObjectId().String(),
+		Id: 	data.ObjectIdString(bson.NewObjectId()),
 		Gtype:  gtype,
 		Rtype:  int32(pb.ROOM_TYPE0),
 		Dtype:  dtype,
@@ -163,7 +165,8 @@ func MatchLevel(coin int64) int32 {
 //NewPrivGameData 私人房间桌子数据
 func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 	return &data.DeskData{
-		Unique:   bson.NewObjectId().Hex(),
+		//Unique:   bson.NewObjectId().String(),
+		Unique:   data.ObjectIdString(bson.NewObjectId()),
 		Gtype:    arg.Gtype,
 		Rtype:    arg.Rtype,
 		Dtype:    arg.Dtype,
@@ -188,6 +191,9 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 //SetNiuCoinGame 初始化房间配置
 func SetNiuCoinGame() {
 	for _, v := range pb.DeskType_value {
+		if v == 3 {
+			continue
+		}
 		for _, l := range pb.RoomLevel_value {
 			gameData := NewCoinGameData("game.niu1", int32(pb.NIU), v, l)
 			config.SetGame(*gameData)
@@ -200,7 +206,7 @@ func SetNiuCoinGame() {
 //SetGameList 游戏房间配置，测试数据
 func SetGameList() {
 	g1 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_NIU,
 		Rtype:  data.ROOM_TYPE0,
 		Ltype:  data.GAME_BJPK10,
@@ -220,7 +226,7 @@ func SetGameList() {
 		Ctime:  time.Now(),
 	}
 	g2 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_SAN,
 		Rtype:  data.ROOM_TYPE0,
 		Ltype:  data.GAME_BJPK10,
@@ -240,7 +246,7 @@ func SetGameList() {
 		Ctime:  time.Now(),
 	}
 	g3 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_JIU,
 		Rtype:  data.ROOM_TYPE0, //免佣房间
 		Ltype:  data.GAME_BJPK10,
@@ -261,7 +267,7 @@ func SetGameList() {
 		Ctime:  time.Now(),
 	}
 	g4 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_JIU,
 		Rtype:  data.ROOM_TYPE1, //抽佣房间
 		Ltype:  data.GAME_BJPK10,
@@ -282,7 +288,7 @@ func SetGameList() {
 		Ctime:  time.Now(),
 	}
 	g5 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_JIU,
 		Rtype:  data.ROOM_TYPE0, //免佣房间
 		Ltype:  data.GAME_MLAFT,
@@ -303,7 +309,7 @@ func SetGameList() {
 		Ctime:  time.Now(),
 	}
 	g6 := data.Game{
-		Id:     bson.NewObjectId().Hex(),
+		Id:     bson.NewObjectId().String(),
 		Gtype:  data.GAME_JIU,
 		Rtype:  data.ROOM_TYPE1, //抽佣房间
 		Ltype:  data.GAME_MLAFT,

@@ -58,6 +58,18 @@ message Task
     uint32 num     = 7;//完成数值
 }
 
+// lucky
+message Lucky
+{
+    int32  luckyid = 1;//unique
+    int32  gtype   = 2;//类型
+    string name    = 3;//名称描述
+    uint32 count   = 4;//数值
+    int64  coin    = 5;//金币奖励
+    int64  diamond = 6;//钻石奖励
+    uint32 num     = 7;//完成数值
+}
+
 message LoginPrize
 {
     enum LoginPrizeStatus {

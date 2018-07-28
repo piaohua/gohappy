@@ -1,6 +1,8 @@
 package data
 
 import (
+	"fmt"
+
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
@@ -64,4 +66,10 @@ func InitIDGen(key string) (r *IDGen) {
 		r.Curr = r.Max
 	}
 	return
+}
+
+// String returns a hex string representation of the id.
+// Example: ObjectId("4d88e15b60f486e428412dc9").
+func ObjectIdString(id bson.ObjectId) string {
+	return fmt.Sprintf(`ObjectId("%x")`, string(id))
 }

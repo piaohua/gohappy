@@ -85,6 +85,7 @@ type User struct {
 	Address string `bson:"address" json:"address"` //Address
 	//任务
 	Task map[string]TaskInfo `bson:"task" json:"task"` // 已经完成或者还在继续的任务
+	Lucky map[string]LuckyInfo `bson:"lucky" json:"lucky"` // 幸运星
 }
 
 // 数据库操作
@@ -107,6 +108,11 @@ func (this *User) UpdateBank() bool {
 func (this *User) UpdateTask() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"task": this.Task}})
+}
+
+func (this *User) UpdateLucky() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"lucky": this.Lucky}})
 }
 
 func (this *User) UpdateLogin() bool {

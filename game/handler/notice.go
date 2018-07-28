@@ -104,7 +104,17 @@ func BankNotice(coin int64, userid, from string) (record *pb.LogNotice,
 	if coin <= 0 {
 		return
 	}
-	content := fmt.Sprintf("%s给您赠送了%d金豆，已入保险箱请查收。", from, coin)
+	content := fmt.Sprintf("%s赠送给你%d金豆", from, coin)
+	return NewNotice(data.NOTICE_TYPE5, 0, userid, content)
+}
+
+//GiveNotice 赠送消息
+func GiveNotice(coin int64, userid, to string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("恭喜成功赠送%d金豆给%s", coin, to)
 	return NewNotice(data.NOTICE_TYPE5, 0, userid, content)
 }
 
@@ -115,5 +125,15 @@ func BuildNotice(coin int64, build uint32, userid string) (record *pb.LogNotice,
 		return
 	}
 	content := fmt.Sprintf("恭喜你成功邀请%d人获得%d金豆", build, coin)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
+}
+
+//LuckyNotice lucky消息
+func LuckyNotice(coin int64, name, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("恭喜你完成幸运星%s获得%d金币", name, coin)
 	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }

@@ -63,6 +63,10 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.BankGive)
 		glog.Debugf("BankGive %#v", arg)
 		rs.addBank(arg.Coin, arg.Type, arg.From)
+		rs.addCurrency(0, arg.GetCoin(), 0, 0, arg.GetType())
+		if rs.gamePid != nil {
+			rs.gamePid.Tell(arg)
+		}
 	case *pb.CBank:
 		arg := msg.(*pb.CBank)
 		glog.Debugf("CBank %#v", arg)
@@ -84,6 +88,14 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CTask)
 		glog.Debugf("CTask %#v", arg)
 		rs.task()
+	case *pb.LuckyUpdate:
+		arg := msg.(*pb.LuckyUpdate)
+		glog.Debugf("LuckyUpdate %#v", arg)
+		rs.luckyUpdate(arg)
+	case *pb.CLucky:
+		arg := msg.(*pb.CLucky)
+		glog.Debugf("CLucky %#v", arg)
+		rs.lucky()
 	case *pb.CTaskPrize:
 		arg := msg.(*pb.CTaskPrize)
 		glog.Debugf("CTaskPrize %#v", arg)
@@ -296,7 +308,8 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.BankNotOpen
 		} else if arg.GetPassword() != rs.User.BankPassword {
 			msg.Error = pb.PwdError
-		} else if amount > rs.User.GetBank() {
+		//} else if amount > rs.User.GetBank() {
+		} else if amount > rs.User.GetCoin() { //修改成赠送bank外面的
 			msg.Error = pb.NotEnoughCoin
 		} else if amount < data.DRAW_MONEY {
 			msg.Error = pb.GiveNumberError
@@ -305,7 +318,14 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 		} else {
 			msg1 := handler.GiveBankMsg(amount, int32(pb.LOG_TYPE15), userid, rs.User.GetUserid())
 			if rs.bank2give(msg1) {
-				rs.addBank(-1*amount, int32(pb.LOG_TYPE15), userid)
+				//rs.addBank(-1*amount, int32(pb.LOG_TYPE15), userid)
+				rs.addCurrency(0, -1*amount, 0, 0, int32(pb.LOG_TYPE15))
+				//充值消息提醒
+				record1, msg1 := handler.GiveNotice(amount, rs.User.GetUserid(), userid)
+				if record1 != nil {
+					rs.loggerPid.Tell(record1)
+				}
+				rs.Send(msg1)
 			} else {
 				msg.Error = pb.GiveUseridError
 			}
@@ -542,6 +562,70 @@ func (rs *RoleActor) taskInit() {
 	if rs.User.Task == nil {
 		rs.User.Task = make(map[string]data.TaskInfo)
 	}
+}
+
+func (rs *RoleActor) luckyInit() {
+	if rs.User.Lucky == nil {
+		rs.User.Lucky = make(map[string]data.LuckyInfo)
+	}
+}
+
+//lucky信息
+func (rs *RoleActor) lucky() {
+	rs.luckyInit()
+	msg := new(pb.SLucky)
+	list := config.GetLuckys()
+	for _, v := range list {
+		msg2 := &pb.Lucky{
+			Luckyid:  v.Luckyid,
+			Name:    v.Name,
+			Count:   v.Count,
+			Coin:    v.Coin,
+			Diamond: v.Diamond,
+		}
+		if val, ok := rs.User.Task[utils.String(v.Luckyid)]; ok {
+			msg2.Num = val.Num
+		}
+		msg.List = append(msg.List, msg2)
+	}
+	rs.Send(msg)
+}
+
+//更新lucky数据
+func (rs *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
+	rs.luckyInit()
+	luckyidStr := utils.String(int32(arg.GetLuckyid()))
+	lucky := config.GetLucky(arg.GetLuckyid())
+	if lucky.Luckyid != arg.GetLuckyid() {
+		return
+	}
+	if val, ok := rs.User.Lucky[luckyidStr]; ok {
+		//数值超出不再更新
+		if val.Num >= lucky.Count {
+			return
+		}
+		val.Num += arg.Num
+		rs.User.Lucky[luckyidStr] = val
+		if val.Num == lucky.Count {
+			//奖励发放
+			rs.addCurrency(lucky.Diamond, lucky.Coin, 0, 0, int32(pb.LOG_TYPE51))
+			//消息提醒
+			record, msg2 := handler.LuckyNotice(lucky.Diamond, lucky.Name, arg.Userid)
+			if record != nil {
+				rs.loggerPid.Tell(record)
+			}
+			if msg2 != nil {
+				rs.Send(msg2)
+			}
+		}
+	} else {
+		luckyInfo := data.LuckyInfo{
+			Luckyid: arg.GetLuckyid(),
+			Num:    arg.Num,
+		}
+		rs.User.Lucky[luckyidStr] = luckyInfo
+	}
+	rs.rolePid.Tell(arg)
 }
 
 //.

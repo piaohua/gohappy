@@ -58,6 +58,9 @@ enum WebCode {
     WebNumber   = 9; //在线人数
     WebTask     =10; //任务列表
     WebLogin    =11; //登录奖励列表
+    WebRate     =12; //设置区域比例
+    WebState    =13; //设置代理状态
+    WebLucky    =14; //lucky列表
 }
 
 enum ConfigAtype {
@@ -216,6 +219,16 @@ WebResponse 响应response消息(json格式)
     example: {"userid": "xxx", "state": xxx, "level": xxx}
 
     WebState 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
+14、WebLucky 请求Data数据 (json格式)
+    b := make(map[int32]data.Lucky) //key: Lucky.Luckyid
+    d, err := json.Marshal(&b)
+    request.Data = d
+    example: {"luckyid1": {xxx}, "luckyid2": {xxx}}
+
+   WebLucky 响应Data数据 (json格式)
     response.Result = []byte{} //空数据
     example: {}
 

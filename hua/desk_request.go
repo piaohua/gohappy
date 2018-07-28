@@ -172,6 +172,12 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CJHCoinChangeRoom)
 		glog.Debugf("CJHCoinChangeRoom %#v", arg)
 		a.changeDesk(ctx)
+	case *pb.BankGive:
+		arg := msg.(*pb.BankGive)
+		glog.Debugf("BankGive %#v", arg)
+		if v, ok := a.roles[arg.GetUserid()]; ok && v != nil {
+			v.User.AddCoin(arg.GetCoin())
+		}
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

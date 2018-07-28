@@ -114,6 +114,10 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CBankLog)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1026:
+		msg := new(CLucky)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 1050:
 		msg := new(CAgentJoin)
 		err := msg.Unmarshal(b)
@@ -168,6 +172,10 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		return msg, err
 	case 1063:
 		msg := new(CSetAgentNote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1064:
+		msg := new(CAgentDayProfit)
 		err := msg.Unmarshal(b)
 		return msg, err
 	case 2000:

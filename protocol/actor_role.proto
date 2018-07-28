@@ -267,6 +267,14 @@ message TaskUpdate {
     int32 Nextid = 6;//unique
 }
 
+//lucky任务
+message LuckyUpdate {
+    string Userid = 1;
+    int32 Luckyid = 2;//unique
+    uint32 Num = 3; //更新数量
+    int32 Gtype = 4;//game type
+}
+
 //登录数据更新
 message LoginPrizeUpdate {
     string Userid = 1;

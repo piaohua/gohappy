@@ -89,7 +89,8 @@ func SetLoginPrizeList() {
 	var i uint32
 	for i = 0; i < 7; i++ {
 		t := data.LoginPrize{
-			ID:      bson.NewObjectId().Hex(),
+			//ID:      bson.NewObjectId().String(),
+			ID:      data.ObjectIdString(bson.NewObjectId()),
 			Ctime:   bson.Now(),
 			Diamond: 100 * int64((i + 1)),
 			//Coin: 2000 * int64((i + 1)),
