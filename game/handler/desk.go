@@ -185,6 +185,17 @@ func NewPrivGameData(arg *pb.CreateDesk) *data.DeskData {
 	}
 }
 
+//SetNiuCoinGame 初始化房间配置
+func SetNiuCoinGame() {
+	for _, v := range pb.DeskType_value {
+		for _, l := range pb.RoomLevel_value {
+			gameData := NewCoinGameData("game.niu1", int32(pb.NIU), v, l)
+			config.SetGame(*gameData)
+			gameData.Save()
+		}
+	}
+}
+
 /*
 //SetGameList 游戏房间配置，测试数据
 func SetGameList() {

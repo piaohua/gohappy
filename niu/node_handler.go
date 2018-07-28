@@ -113,7 +113,7 @@ func (a *DeskActor) syncDesk(arg *pb.SyncConfig, ctx actor.Context) {
 						continue
 					}
 				}
-				//a.spawnDesk(&v2, ctx)
+				a.spawnDesk(&v2, ctx)
 			}
 		}
 	default:
