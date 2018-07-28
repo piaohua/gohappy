@@ -322,7 +322,7 @@ func (t *Desk) gameOver() {
 		//踢出不足坐下玩家或超额玩家
 		t.limitOver()
 		//关闭房间
-		t.gameStop()
+		//t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
 	}
 }
