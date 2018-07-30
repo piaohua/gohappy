@@ -51,7 +51,7 @@ func PackUserNotice(arg *pb.CNotice) (msg *pb.SNotice) {
 			Rtype:   int32(v.Rtype),
 			Acttype: int32(v.Acttype),
 			Content: v.Content,
-			Time:    utils.Time2Str(v.Ctime),
+			Time:    utils.Time2LocalStr(v.Ctime),
 		}
 		msg.List = append(msg.List, body)
 	}
@@ -80,7 +80,7 @@ func NewNotice(rtype, atype int32, userid,
 	}
 	msg = new(pb.SPushNotice)
 	msg.Info = &pb.Notice{
-		Time:    utils.Time2Str(utils.LocalTime()),
+		Time:    utils.Time2LocalStr(utils.LocalTime()),
 		Rtype:   rtype,
 		Acttype: atype,
 		Content: content,
