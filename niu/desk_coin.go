@@ -406,7 +406,8 @@ func (t *Desk) dealerHandler() {
 		t.dealer1()
 	case int32(pb.DESK_TYPE1): //通比牛牛
 	case int32(pb.DESK_TYPE2): //抢庄看牌
-		t.dealer4()
+		//t.dealer4()
+		t.dealer1()
 	}
 	glog.Debugf("dealer -> %s", t.DeskGame.Dealer)
 	glog.Debugf("dealer seat -> %d", t.DeskGame.DealerSeat)

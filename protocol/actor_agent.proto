@@ -37,6 +37,8 @@ message AgentProfitInfo {
     bool agent = 5;//是否是代理反佣
     int64 profit = 6;//收益
     string userid = 7;//玩家id, from
+    string agentnote = 8;//备注, from
+    string nickname = 9;//昵称, from
 }
 
 //代理区域奖励信息
@@ -48,6 +50,8 @@ message AgentProfitMonthInfo {
     bool agent = 5;//是否是代理反佣
     int64 profit = 6;//收益
     string userid = 7;//玩家id, from
+    string agentnote = 8;//备注, from
+    string nickname = 9;//昵称, from    
 }
 
 //代理收益信息
@@ -64,12 +68,16 @@ message AgentProfitApply
     string userid = 2;//申请人玩家id
     string nickname = 3;//玩家昵称
     int64 profit = 4;//提取金额
+    int64 profitFirst = 5;//提取金额
+    int64 profitSecond = 6;//提取金额
 }
 
 message AgentProfitApplied
 {
     int64 profit = 1;//提取金额
-    ErrCode error = 2 ;// 错误码
+    int64 profitFirst = 2;//提取金额
+    int64 profitSecond = 3;//提取金额
+    ErrCode error = 4 ;// 错误码
 }
 
 //代理提现受理
@@ -95,6 +103,7 @@ message AgentProfitUpdate
     string userid = 1;//玩家id
     int64 profit = 2;//变动数量
     bool isagent = 3;//
+    uint32 level = 4;//
 }
 
 //更新周时间
@@ -182,4 +191,10 @@ message AgentBuildUpdate
     uint32 BuildVaild = 3;//BuildVaild
     uint32 Build = 4;//Build
     string userid = 5;//玩家id
+}
+
+//代理下属贡献收益数量
+message AgentBringProfitNum {
+    string userid = 1;//玩家id
+    int64 profit = 2;//收益
 }

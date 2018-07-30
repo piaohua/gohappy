@@ -9,12 +9,13 @@ import (
 )
 
 //LuckyUpdateMsg 任务变动消息
-func LuckyUpdateMsg(num uint32, gtype int32,
+func LuckyUpdateMsg(num uint32, gtype, luckyid int32,
 	userid string) (msg *pb.LuckyUpdate) {
 	msg = new(pb.LuckyUpdate)
 	msg.Userid = userid
 	msg.Num = num
 	msg.Gtype = gtype
+	msg.Luckyid = luckyid
 	return
 }
 

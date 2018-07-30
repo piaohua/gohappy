@@ -159,6 +159,15 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 		if val, ok := v["agent_join_time"]; ok {
 			msg2.Jointime = utils.Time2LocalStr(val.(time.Time))
 		}
+		if val, ok := v["login_time"]; ok {
+			msg2.LoginTime = utils.Time2LocalStr(val.(time.Time))
+		}
+		if val, ok := v["agent_note"]; ok {
+			msg2.Agentnote = val.(string)
+		}
+		if val, ok := v["bring_profit"]; ok {
+			msg2.BringProfit = val.(int64)
+		}
 		if msg2.Userid == "" {
 			continue
 		}
@@ -206,6 +215,11 @@ func PackAgentDayProfitMsg(arg *pb.CAgentDayProfit) (msg *pb.SAgentDayProfit) {
 		msg2.Userid = v.Userid //代理id
 		msg2.Profit = v.Profit //收益
 		msg2.Day = uint32(v.Day) //日期20180728
+		msg2.Agentnote = v.AgentNote
+		msg2.Nickname = v.Nickname
+		msg2.ProfitFirst = v.ProfitFirst
+		msg2.ProfitSecond = v.ProfitSecond
+		msg2.ProfitMonth = v.ProfitMonth
 		msg.List = append(msg.List, msg2)
 	}
 	return
@@ -325,7 +339,8 @@ func IsVaild(user *data.User) bool {
 
 //IsProfitApply 是否可以提现,达到10000方可提取
 func IsProfitApply(user *data.User) bool {
-	return user.Profit >= 1000000
+	//return user.Profit >= 1000000
+	return (user.Profit + user.ProfitFirst + user.ProfitSecond) >= 1000000
 }
 
 //GetRateByLevel 三级收益比例
@@ -378,8 +393,8 @@ func agentTitle(AgentLevel, AgentState uint32, Agent string, ProfitRate int64) i
 }
 
 //AgentProfitInfoMsg 代理收益消息
-func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
-	level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
+func AgentProfitInfoMsg(userid, nickname, agentnote, agentid string, agent bool,
+	gtype int32, level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
 	msg = &pb.AgentProfitInfo{
 		Userid:  userid,
 		Agentid: agentid,
@@ -388,13 +403,15 @@ func AgentProfitInfoMsg(userid, agentid string, agent bool, gtype int32,
 		Rate:    rate,
 		Profit:  profit,
 		Agent:   agent,
+		Nickname: nickname,
+		Agentnote:agentnote,
 	}
 	return
 }
 
 //AgentProfitMonthInfoMsg 代理区域奖励消息
-func AgentProfitMonthInfoMsg(userid, agentid string, agent bool, gtype int32,
-	level, rate uint32, profit int64) (msg *pb.AgentProfitMonthInfo) {
+func AgentProfitMonthInfoMsg(userid, nickname, agentnote, agentid string, agent bool,
+	gtype int32, level, rate uint32, profit int64) (msg *pb.AgentProfitMonthInfo) {
 	msg = &pb.AgentProfitMonthInfo{
 		Userid:  userid,
 		Agentid: agentid,
@@ -403,6 +420,8 @@ func AgentProfitMonthInfoMsg(userid, agentid string, agent bool, gtype int32,
 		Rate:    rate,
 		Profit:  profit,
 		Agent:   agent,
+		Nickname: nickname,
+		Agentnote:agentnote,
 	}
 	return
 }
@@ -421,14 +440,15 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 	user.AddProfitMonth(-1 * arg.GetProfit())
 	isAgent := IsAgent(user)
-	user.AddProfit(isAgent, arg.GetProfit())
+	user.AddProfit(isAgent, 1, arg.GetProfit())
 	//user.Month = int(utils.Month())
 	user.Month = int(utils.Day()) //TODO test
 }
 
 //AgentProfitMonthSendLog 区域奖励发放日志
 func AgentProfitMonthSendLog(arg *pb.AgentProfitMonthSend, user *data.User) (msg2 *pb.LogProfit) {
-	msg2 = LogProfitMsg(arg.Userid, arg.Userid, 0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
+	msg2 = LogProfitMsg(arg.Userid, arg.Userid, user.GetNickname(), user.GetAgentNote(),
+		0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
 	return
 }
 
@@ -463,14 +483,15 @@ func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.A
 
 //AddProfitMonth 区域奖励
 func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.AgentProfitMonthInfo,
-	msg2, msg3 *pb.LogProfit, msg4 *pb.AgentProfitMonthUpdate, msg5 *pb.AgentProfitMonthSend) {
+	msg2, msg3 *pb.LogProfit, msg4 *pb.AgentProfitMonthUpdate, msg5 *pb.AgentProfitMonthSend, msg6 *pb.AgentBringProfitNum) {
 	profit := int64(math.Trunc(float64(user.ProfitRate) / float64(100) * float64(arg.Profit))) //区域奖励
 	if profit > 0 {
 		msg3, msg5 = agentProfitMonthSendCheck2(user)
 		user.AddProfitMonth(profit)
 		glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)
 		//区域奖金日志消息
-		msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.Gtype, int32(pb.LOG_TYPE53), arg.Level, user.ProfitRate, profit)
+		msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
+			arg.Gtype, int32(pb.LOG_TYPE53), arg.Level, user.ProfitRate, profit)
 		//更新消息
 		msg4 = &pb.AgentProfitMonthUpdate{
 			Userid: user.GetUserid(),
@@ -478,13 +499,17 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 			//Month:  int32(utils.Month()),
 			Month: int32(utils.Day()), //TODO test
 		}
+		msg6 = &pb.AgentBringProfitNum{
+			Userid: arg.GetUserid(),
+			Profit: profit,
+		}
 	}
 	if user.GetAgent() != "" {
 		return
 	}
 	//反给上级消息
-	msg1 = AgentProfitMonthInfoMsg(user.GetUserid(), user.GetAgent(), false,
-		arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
+	msg1 = AgentProfitMonthInfoMsg(user.GetUserid(), user.GetNickname(), user.GetAgentNote(),
+		user.GetAgent(), false, arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
 	if IsAgent(user) {
 		msg1.Agent = true
 	}
@@ -493,22 +518,28 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 
 //AddProfit 三级收益
 func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitInfo,
-	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate) {
+	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate, msg5 *pb.AgentBringProfitNum) {
 	rate := GetRateByLevel(arg.GetLevel())
 	profit := int64(math.Trunc(float64(rate) / float64(100) * float64(arg.Profit))) //三级收益
-	user.AddProfit(arg.Agent, profit)
+	user.AddProfit(arg.Agent, arg.GetLevel(), profit)
+	msg5 = &pb.AgentBringProfitNum{
+		Userid: arg.GetUserid(),
+		Profit: profit,
+	}
 	if UpdateWeekProfit(profit, user) {
 		//更新时间消息
 		msg3 = UpdateWeekMsg(user)
 	}
 	glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, rate, arg)
 	//三级收益日志消息
-	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.Gtype, int32(pb.LOG_TYPE52), arg.Level, rate, profit)
+	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
+		arg.Gtype, int32(pb.LOG_TYPE52), arg.Level, rate, profit)
 	//更新消息
 	msg4 = &pb.AgentProfitUpdate{
 		Userid:  user.GetUserid(),
 		Profit:  profit,
 		Isagent: arg.Agent,
+		Level: arg.GetLevel(),
 	}
 	if user.GetAgent() == "" {
 		return
@@ -517,8 +548,8 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitIn
 		return
 	}
 	//反给上级消息
-	msg1 = AgentProfitInfoMsg(user.GetUserid(), user.GetAgent(), false,
-		arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
+	msg1 = AgentProfitInfoMsg(user.GetUserid(), user.GetNickname(), user.GetAgentNote(),
+		user.GetAgent(),false, arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
 	if IsAgent(user) {
 		msg1.Agent = true
 	}

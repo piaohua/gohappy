@@ -1497,6 +1497,14 @@
             "error": {
               "type": "ErrCode",
               "id": 19
+            },
+            "profitFirst": {
+              "type": "int64",
+              "id": 20
+            },
+            "profitSecond": {
+              "type": "int64",
+              "id": 21
             }
           }
         },
@@ -1761,13 +1769,25 @@
               "type": "uint32",
               "id": 1
             },
-            "time": {
+            "startTime": {
               "type": "string",
               "id": 2
             },
-            "userid": {
+            "endTime": {
               "type": "string",
               "id": 3
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 4
+            },
+            "userid": {
+              "type": "string",
+              "id": 5
+            },
+            "selfid": {
+              "type": "string",
+              "id": 6
             }
           }
         },
@@ -1789,6 +1809,10 @@
             "error": {
               "type": "ErrCode",
               "id": 4
+            },
+            "total": {
+              "type": "int64",
+              "id": 5
             }
           }
         },
@@ -1805,6 +1829,26 @@
             "day": {
               "type": "uint32",
               "id": 3
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 4
+            },
+            "nickname": {
+              "type": "string",
+              "id": 5
+            },
+            "profitFirst": {
+              "type": "int64",
+              "id": 6
+            },
+            "profitSecond": {
+              "type": "int64",
+              "id": 7
+            },
+            "profitMonth": {
+              "type": "int64",
+              "id": 8
             }
           }
         },
@@ -1818,9 +1862,17 @@
               "type": "uint32",
               "id": 2
             },
-            "agentid": {
+            "startTime": {
               "type": "string",
               "id": 3
+            },
+            "endTime": {
+              "type": "string",
+              "id": 4
+            },
+            "agentid": {
+              "type": "string",
+              "id": 5
             }
           }
         },
@@ -1996,9 +2048,17 @@
               "type": "AgentApproveState",
               "id": 3
             },
-            "selfid": {
+            "agentnote": {
               "type": "string",
               "id": 4
+            },
+            "level": {
+              "type": "uint32",
+              "id": 5
+            },
+            "selfid": {
+              "type": "string",
+              "id": 6
             }
           }
         },
@@ -2068,6 +2128,18 @@
             "state": {
               "type": "uint32",
               "id": 10
+            },
+            "loginTime": {
+              "type": "string",
+              "id": 11
+            },
+            "agentnote": {
+              "type": "string",
+              "id": 12
+            },
+            "bringProfit": {
+              "type": "int64",
+              "id": 13
             }
           }
         },

@@ -839,7 +839,8 @@ func (t *Desk) powerAward() {
 			Diamond: int64(num),
 		}
 		t.broadcast(msg)
-		msg2 := handler.LuckyUpdateMsg(1, int32(pb.NIU), v.Userid)
+		luckyid := int32(v.Power) * t.DeskData.Gtype * 10
+		msg2 := handler.LuckyUpdateMsg(1, t.DeskData.Gtype, luckyid, v.Userid)
 		t.send3userid(v.Userid, msg2)
 	}
 }

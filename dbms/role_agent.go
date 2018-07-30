@@ -111,7 +111,7 @@ func (a *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo, ctx actor.Context) 
 	if !handler.IsAgent(user) {
 		return
 	}
-	msg1, msg2, msg3, msg4 := handler.AddProfit(arg, user)
+	msg1, msg2, msg3, msg4, msg5 := handler.AddProfit(arg, user)
 	//反给上级
 	if msg1 != nil {
 		rolePid.Tell(msg1)
@@ -126,6 +126,9 @@ func (a *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo, ctx actor.Context) 
 	if msg4 != nil {
 		//暂时实时写入, TODO 异步数据更新
 		user.UpdateAgentProfit()
+	}
+	if msg5 != nil {
+		rolePid.Tell(msg5)
 	}
 }
 
@@ -143,7 +146,7 @@ func (a *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo, ctx actor
 	if !handler.IsAgent(user) {
 		return
 	}
-	msg1, msg2, msg3, msg4, msg5 := handler.AddProfitMonth(arg, user)
+	msg1, msg2, msg3, msg4, msg5, msg6 := handler.AddProfitMonth(arg, user)
 	//反给上级
 	if msg1 != nil {
 		rolePid.Tell(msg1)
@@ -158,6 +161,9 @@ func (a *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo, ctx actor
 	if msg4 != nil || msg5 != nil {
 		//rolePid.Tell(msg4)
 		user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
+	}
+	if msg6 != nil {
+		rolePid.Tell(msg6)
 	}
 }
 
@@ -183,7 +189,8 @@ func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context
 		rsp.Error = pb.Failed
 	} else {
 		rsp.Profit = arg.GetProfit()
-		user.Profit -= arg.GetProfit()
+		//user.Profit -= arg.GetProfit()
+		user.SubProfit(arg.GetProfit(), arg.GetProfitFirst(), arg.GetProfitSecond())
 		//暂时实时写入, TODO 异步数据更新
 		user.UpdateAgentProfit()
 	}
@@ -245,7 +252,7 @@ func (a *RoleActor) agentProfitUpdate(arg *pb.AgentProfitUpdate, ctx actor.Conte
 		glog.Errorf("get userid %s fail", arg.GetUserid())
 		return
 	}
-	user.AddProfit(arg.GetIsagent(), arg.GetProfit())
+	user.AddProfit(arg.GetIsagent(), arg.GetLevel(), arg.GetProfit())
 	user.UpdateAgentProfit() //暂时实时写入, TODO 异步数据更新
 }
 
@@ -430,4 +437,19 @@ func (a *RoleActor) setAgentNote(arg *pb.CSetAgentNote, ctx actor.Context) {
 	user.AgentNote = arg.GetAgentnote()
 	ctx.Respond(rsp)
 	user.UpdateAgentNote()
+}
+
+//更新收益贡献值
+func (a *RoleActor) bringProfit(arg *pb.AgentBringProfitNum) {
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		return
+	}
+	if v, ok := a.roles[arg.GetUserid()]; ok && v != nil {
+		v.Pid.Tell(arg)
+		//return
+	}
+	user.AddBringProfit(arg.GetProfit())
+	user.UpdateBringProfit()
 }

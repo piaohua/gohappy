@@ -228,6 +228,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CSetAgentNote)
 		glog.Debugf("CSetAgentNote %#v", arg)
 		a.setAgentNote(arg, ctx)
+	case *pb.AgentBringProfitNum:
+		arg := msg.(*pb.AgentBringProfitNum)
+		glog.Debugf("AgentBringProfitNum %#v", arg)
+		a.bringProfit(arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

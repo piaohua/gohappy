@@ -53,8 +53,7 @@ func (a *LoggerActor) Handler(msg interface{}, ctx actor.Context) {
 		handler.Log2RoundRecord(arg)
 	case *pb.LogProfit:
 		arg := msg.(*pb.LogProfit)
-		data.ProfitRecord(arg.Agentid, arg.Userid, arg.Gtype,
-			arg.Type, arg.Level, arg.Rate, arg.Profit)
+		data.ProfitRecord(arg)
 	case *pb.LogSysProfit:
 		arg := msg.(*pb.LogSysProfit)
 		data.SysProfitRecord(arg.Agentid, arg.Userid, arg.Gtype,

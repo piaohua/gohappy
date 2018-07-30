@@ -115,6 +115,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CAgentProfitManage)
 		glog.Debugf("CAgentProfitManage %#v", arg)
 		rs.agentProfitManage(arg, ctx)
+	case *pb.AgentBringProfitNum:
+		arg := msg.(*pb.AgentBringProfitNum)
+		glog.Debugf("AgentBringProfitNum %#v", arg)
+		rs.User.AddBringProfit(arg.GetProfit())
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -129,7 +133,7 @@ func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
 	if !handler.IsAgent(rs.User) {
 		return
 	}
-	msg1, msg2, msg3, msg4 := handler.AddProfit(arg, rs.User)
+	msg1, msg2, msg3, msg4, msg5 := handler.AddProfit(arg, rs.User)
 	//反给上级
 	if msg1 != nil {
 		rs.rolePid.Tell(msg1)
@@ -146,6 +150,9 @@ func (rs *RoleActor) agentProfitInfo(arg *pb.AgentProfitInfo) {
 	if msg4 != nil {
 		rs.rolePid.Tell(msg4)
 	}
+	if msg5 != nil {
+		rs.rolePid.Tell(msg5)
+	}
 }
 
 //代理区域收益消息处理
@@ -153,7 +160,7 @@ func (rs *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo) {
 	if !handler.IsAgent(rs.User) {
 		return
 	}
-	msg1, msg2, msg3, msg4, msg5 := handler.AddProfitMonth(arg, rs.User)
+	msg1, msg2, msg3, msg4, msg5, msg6 := handler.AddProfitMonth(arg, rs.User)
 	//反给上级
 	if msg1 != nil {
 		rs.rolePid.Tell(msg1)
@@ -171,6 +178,9 @@ func (rs *RoleActor) agentProfitMonthInfo(arg *pb.AgentProfitMonthInfo) {
 	}
 	if msg5 != nil {
 		rs.rolePid.Tell(msg5)
+	}
+	if msg6 != nil {
+		rs.rolePid.Tell(msg6)
 	}
 }
 
@@ -194,10 +204,10 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 		return
 	}
 	//发送消息给代理
-	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
-	msg3 := handler.AgentProfitMonthInfoMsg(rs.User.GetUserid(), rs.User.GetAgent(),
-		false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetNickname(), rs.User.GetAgentNote(),
+		rs.User.GetAgent(),false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+	msg3 := handler.AgentProfitMonthInfoMsg(rs.User.GetUserid(), rs.User.GetNickname(), rs.User.GetAgentNote(),
+		rs.User.GetAgent(),false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
 	if handler.IsAgent(rs.User) {
 		msg2.Agent = true
 		msg3.Agent = true
@@ -230,6 +240,8 @@ func (rs *RoleActor) agentInfo() {
 	rsp.ProfitRate = rs.User.ProfitRate
 	rsp.ProfitMonth = rs.User.ProfitMonth
 	rsp.AgentTitle = handler.GetAgentTitle(rs.User)
+	rsp.ProfitFirst = rs.User.ProfitFirst
+	rsp.ProfitSecond = rs.User.ProfitSecond
 	rs.Send(rsp)
 }
 
@@ -389,7 +401,9 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.Profit < int64(profit) || !handler.IsProfitApply(rs.User) {
+	profit = uint32(rs.User.Profit + rs.User.ProfitFirst + rs.User.ProfitSecond) //默认全部提取
+	//if rs.User.Profit < int64(profit) || !handler.IsProfitApply(rs.User) {
+	if profit <= 0 || !handler.IsProfitApply(rs.User) {
 		rsp.Error = pb.ProfitNotEnough
 		rs.Send(rsp)
 		return
@@ -404,18 +418,23 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		Agentid:  rs.User.GetAgent(),    //受理人userid
 		Userid:   rs.User.GetUserid(),   //申请人玩家id
 		Nickname: rs.User.GetNickname(), //玩家昵称
-		Profit:   int64(profit),         //提取金额
+		//Profit:   int64(profit),         //提取金额
+		Profit: rs.User.GetProfit(),
+		ProfitFirst: rs.User.GetProfitFirst(),
+		ProfitSecond: rs.User.GetProfitSecond(),
 	}
 	res1 := rs.reqRole(msg, ctx)
 	if response1, ok := res1.(*pb.AgentProfitApplied); ok {
 		rsp.Error = response1.Error
 		if response1.Error == pb.OK {
 			//扣除收益
-			rs.User.Profit -= response1.Profit
+			//rs.User.Profit -= response1.Profit
+			rs.User.SubProfit(response1.GetProfit(), response1.GetProfitFirst(), response1.GetProfitSecond())
 			//默认直接发放,不再需要审批
 			rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49), "")
 		}
 	}
+	rsp.Profit = profit
 	rs.Send(rsp)
 }
 

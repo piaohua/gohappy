@@ -68,6 +68,9 @@ type User struct {
 	SubPlayerProfit  int64     `bson:"sub_player_profit" json:"sub_player_profit"`   // 下属玩家业绩收益
 	SubAgentProfit   int64     `bson:"sub_agent_profit" json:"sub_agent_profit"`     // 下属代理业绩收益
 	AgentNote        string    `bson:"agent_note" json:"agent_note"`                 // 代理备注
+	BringProfit      int64     `bson:"bring_profit" json:"bring_profit"`                 // 贡献收益
+	ProfitFirst      int64     `bson:"profit_first" json:"profit_first"`                 // 一级收益
+	ProfitSecond     int64     `bson:"profit_second" json:"profit_second"`                 // 二级收益
 	//时间
 	Ctime     time.Time `bson:"ctime" json:"ctime"`           // 注册时间
 	LoginTime time.Time `bson:"login_time" json:"login_time"` // 最后登录时间
@@ -142,6 +145,8 @@ func (this *User) UpdateAgentProfit() bool {
 			"week_player_profit": this.WeekPlayerProfit,
 			"history_profit":     this.HistoryProfit,
 			"profit":             this.Profit,
+			"profit_first":       this.ProfitFirst,
+			"profit_second":      this.ProfitSecond,
 			"sub_player_profit":  this.SubPlayerProfit,
 			"sub_agent_profit":   this.SubAgentProfit}})
 }
@@ -186,6 +191,11 @@ func (this *User) UpdateMoney() bool {
 func (this *User) UpdateAgentNote() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"agent_note": this.AgentNote}})
+}
+
+func (this *User) UpdateBringProfit() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"bring_profit": this.BringProfit}})
 }
 
 func (this *User) Get() {
@@ -422,11 +432,18 @@ func (this *User) GetSign() string {
 	return this.Sign
 }
 
-func (this *User) AddProfit(isagent bool, num int64) {
+func (this *User) AddProfit(isagent bool, level uint32, num int64) {
 	if num <= 0 {
 		return
 	}
-	this.Profit += num
+	switch level {
+	case 1:
+		this.Profit += num
+	case 2:
+		this.ProfitFirst += num
+	case 3:
+		this.ProfitSecond += num
+	}
 	this.HistoryProfit += num
 	this.WeekProfit += num
 	this.WeekPlayerProfit += num
@@ -447,4 +464,39 @@ func (this *User) GetMonth() int {
 
 func (this *User) GetProfitMonth() int64 {
 	return this.ProfitMonth
+}
+
+func (this *User) GetProfit() int64 {
+	return this.Profit
+}
+
+func (this *User) GetProfitFirst() int64 {
+	return this.ProfitFirst
+}
+
+func (this *User) GetProfitSecond() int64 {
+	return this.ProfitSecond
+}
+
+func (this *User) SubProfit(profit, profitFirst, profitSecond int64) {
+	this.Profit -= profit
+	this.ProfitFirst -= profitSecond
+	this.ProfitSecond -= profitSecond
+	if this.Profit < 0 {
+		this.Profit = 0
+	}
+	if this.ProfitFirst < 0 {
+		this.ProfitFirst = 0
+	}
+	if this.ProfitSecond < 0 {
+		this.ProfitSecond = 0
+	}
+}
+
+func (this *User) AddBringProfit(num int64) {
+	this.BringProfit += num
+}
+
+func (this *User) GetAgentNote() string {
+	return this.AgentNote
 }

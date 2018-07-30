@@ -346,8 +346,8 @@ func TaskRecord(userid string, taskid, ttype int32) {
 //LogProfit 代理收益日志
 type LogProfit struct {
 	//Id       string    `bson:"_id"`
-	Agentid string    `bson:"agentid"` //代理ID
-	Userid  string    `bson:"userid"`  //玩家ID
+	Agentid string    `bson:"agentid"` //代理ID,to
+	Userid  string    `bson:"userid"`  //玩家ID,from
 	Gtype   int32     `bson:"gtype"`   //game type
 	Level   uint32    `bson:"level"`   //level type, 表示相对agentid的等级
 	Rate    uint32    `bson:"rate"`    //rate
@@ -364,27 +364,33 @@ func (t *LogProfit) Save() bool {
 }
 
 //ProfitRecord 代理收益记录
-func ProfitRecord(agentid, userid string, gtype, rtype int32, level, rate uint32, profit int64) {
+func ProfitRecord(arg *pb.LogProfit) {
 	record := &LogProfit{
-		Userid:  userid,
-		Agentid: agentid,
-		Gtype:   gtype,
-		Level:   level,
-		Rate:    rate,
-		Profit:  profit,
-		Type:   rtype,
+		Userid:  arg.GetUserid(),
+		Agentid: arg.GetAgentid(),
+		Gtype:   arg.GetGtype(),
+		Level:   arg.GetLevel(),
+		Rate:    arg.GetRate(),
+		Profit:  arg.GetProfit(),
+		Type:    arg.GetType(),
 	}
 	record.Save()
 	//添加天统计
-	DayProfitRecord(agentid, profit)
+	DayProfitRecord(arg)
 }
 
 //LogDayProfit 代理收益统计日志
 type LogDayProfit struct {
 	//Id       string    `bson:"_id"`
-	Userid  string    `bson:"userid"`  //玩家ID
+	Agentid string    `bson:"agentid"` //代理ID,to
+	Userid  string    `bson:"userid"`  //玩家ID,from
+	Nickname  string  `bson:"nickname"`  //昵称,from
+	AgentNote string  `bson:"agent_note"` // 代理备注,from
 	Day     int       `bson:"day"`     //day
 	Profit  int64     `bson:"profit"`  //Profit
+	ProfitFirst  int64     `bson:"profit_first"`  //ProfitFirst
+	ProfitSecond  int64     `bson:"profit_second"`  //ProfitSecond
+	ProfitMonth  int64     `bson:"profit_month"`  //ProfitMonth
 	Utime   time.Time `bson:"utime"`   //update Time
 	Ctime   time.Time `bson:"ctime"`   //create Time
 }
@@ -400,21 +406,43 @@ func (t *LogDayProfit) Has() bool {
 	return Has(LogDayProfits, bson.M{"userid": t.Userid, "day": t.Day})
 }
 
-func (t *LogDayProfit) Update() bool {
-	return Update(LogDayProfits, bson.M{"userid": t.Userid, "day": t.Day},
-		bson.M{"$set": bson.M{"utime": t.Utime}, "$inc": bson.M{"profit": t.Profit}})
+func (t *LogDayProfit) Update(field string) bool {
+	if field == "" {
+		return false
+	}
+	return Update(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day},
+		bson.M{"$set": bson.M{"utime": t.Utime, "agent_note": t.AgentNote},
+		"$inc": bson.M{field: t.Profit}})
 }
 
 //DayProfitRecord 代理收益统计记录
-func DayProfitRecord(userid string, profit int64) {
+func DayProfitRecord(arg *pb.LogProfit) {
 	record := &LogDayProfit{
-		Userid: userid,
-		Profit: profit,
+		Userid: arg.GetUserid(),
+		Agentid: arg.GetAgentid(),
+		Profit: arg.GetProfit(),
+		Nickname: arg.GetNickname(),
+		AgentNote: arg.GetAgentnote(),
 	}
 	record.Utime = bson.Now()
 	record.Day = utils.Time2DayDate(record.Utime)
 	if record.Has() {
-		record.Update()
+		var field string
+		switch arg.GetType() {
+		case int32(pb.LOG_TYPE53),
+			int32(pb.LOG_TYPE54):
+			field = "profit_month"
+		case int32(pb.LOG_TYPE52):
+			switch arg.GetLevel() {
+			case 1:
+				field = "profit"
+			case 2:
+				field = "profit_first"
+			case 3:
+				field = "profit_second"
+			}
+		}
+		record.Update(field)
 	} else {
 		record.Save()
 	}

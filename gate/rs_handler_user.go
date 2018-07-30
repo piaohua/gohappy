@@ -599,6 +599,9 @@ func (rs *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
 	if lucky.Luckyid != arg.GetLuckyid() {
 		return
 	}
+	if lucky.Luckyid == 0 {
+		return
+	}
 	if val, ok := rs.User.Lucky[luckyidStr]; ok {
 		//数值超出不再更新
 		if val.Num >= lucky.Count {

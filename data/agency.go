@@ -163,7 +163,7 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "coin", false)
 	var list []bson.M
-	selector := make(bson.M, 9)
+	selector := make(bson.M, 12)
 	selector["coin"] = true
 	selector["agent"] = true
 	selector["agent_level"] = true
@@ -172,12 +172,23 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	selector["agent_name"] = true
 	selector["agent_state"] = true
 	selector["agent_join_time"] = true
+	selector["login_time"] = true
+	selector["agent_note"] = true
+	selector["bring_profit"] = true
 	selector["_id"] = true
 	//q := bson.M{"agent": bson.M{"$eq": arg.Selfid},
 	//	"agent_state": bson.M{"$eq": uint32(arg.State)}}
 	q := bson.M{"agent": bson.M{"$eq": arg.Selfid}}
 	if arg.Userid != "" {
 		q["_id"] = bson.M{"$eq": arg.Userid}
+	}
+	if arg.GetAgentnote() != "" {
+		q["agent_note"] = arg.GetAgentnote()
+	}
+	if arg.GetLevel() == 2 {
+		q["agent_state"] = 1
+	} else if arg.GetLevel() == 1 {
+		q["agent_state"] = 0
 	}
 	err := PlayerUsers.
 		Find(q).Select(selector).
@@ -228,11 +239,20 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
 	var list []LogDayProfit
-	q := bson.M{"userid": arg.GetUserid()}
-	if arg.GetTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetTime())),
-		"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetTime()).AddDate(0, 0, 1))}
+	q := bson.M{"agentid": arg.GetSelfid()}
+	if arg.GetUserid() != "" {
+		q["userid"] = arg.GetUserid()
 	}
+	if arg.GetAgentnote() != "" {
+		q["agent_note"] = arg.GetAgentnote()
+	}
+	if arg.GetStartTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
+	}
+	if arg.GetEndTime() != "" {
+		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
+	}
+	//TODO group by agentid userid
 	err := LogDayProfits.
 		Find(q).
 		Sort(sortFieldR).
@@ -289,6 +309,12 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 	q := bson.M{"agentid": arg.Agentid}
 	if arg.Type == 1 {
 		q = bson.M{"userid": arg.Agentid}
+	}
+	if arg.GetStartTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
+	}
+	if arg.GetEndTime() != "" {
+		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
 	}
 	err := LogProfitsOrders.
 		Find(q).

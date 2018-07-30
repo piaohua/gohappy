@@ -108,6 +108,8 @@ type SMyAgent struct {
 	ProfitMonth      int64   `protobuf:"varint,17,opt,name=ProfitMonth,json=profitMonth,proto3" json:"ProfitMonth,omitempty"`
 	AgentTitle       int32   `protobuf:"varint,18,opt,name=AgentTitle,json=agentTitle,proto3" json:"AgentTitle,omitempty"`
 	Error            ErrCode `protobuf:"varint,19,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+	ProfitFirst      int64   `protobuf:"varint,20,opt,name=profitFirst,proto3" json:"profitFirst,omitempty"`
+	ProfitSecond     int64   `protobuf:"varint,21,opt,name=profitSecond,proto3" json:"profitSecond,omitempty"`
 }
 
 func (m *SMyAgent) Reset()                    { *m = SMyAgent{} }
@@ -245,6 +247,20 @@ func (m *SMyAgent) GetError() ErrCode {
 		return m.Error
 	}
 	return OK
+}
+
+func (m *SMyAgent) GetProfitFirst() int64 {
+	if m != nil {
+		return m.ProfitFirst
+	}
+	return 0
+}
+
+func (m *SMyAgent) GetProfitSecond() int64 {
+	if m != nil {
+		return m.ProfitSecond
+	}
+	return 0
 }
 
 // 代理管理
@@ -745,9 +761,12 @@ func (m *AgentProfitDetail) GetType() int32 {
 
 // 代理天收益明细
 type CAgentDayProfit struct {
-	Page   uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	Time   string `protobuf:"bytes,2,opt,name=time,proto3" json:"time,omitempty"`
-	Userid string `protobuf:"bytes,3,opt,name=userid,proto3" json:"userid,omitempty"`
+	Page      uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	StartTime string `protobuf:"bytes,2,opt,name=startTime,proto3" json:"startTime,omitempty"`
+	EndTime   string `protobuf:"bytes,3,opt,name=endTime,proto3" json:"endTime,omitempty"`
+	Agentnote string `protobuf:"bytes,4,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Userid    string `protobuf:"bytes,5,opt,name=userid,proto3" json:"userid,omitempty"`
+	Selfid    string `protobuf:"bytes,6,opt,name=selfid,proto3" json:"selfid,omitempty"`
 }
 
 func (m *CAgentDayProfit) Reset()                    { *m = CAgentDayProfit{} }
@@ -761,9 +780,23 @@ func (m *CAgentDayProfit) GetPage() uint32 {
 	return 0
 }
 
-func (m *CAgentDayProfit) GetTime() string {
+func (m *CAgentDayProfit) GetStartTime() string {
 	if m != nil {
-		return m.Time
+		return m.StartTime
+	}
+	return ""
+}
+
+func (m *CAgentDayProfit) GetEndTime() string {
+	if m != nil {
+		return m.EndTime
+	}
+	return ""
+}
+
+func (m *CAgentDayProfit) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
 	}
 	return ""
 }
@@ -775,11 +808,19 @@ func (m *CAgentDayProfit) GetUserid() string {
 	return ""
 }
 
+func (m *CAgentDayProfit) GetSelfid() string {
+	if m != nil {
+		return m.Selfid
+	}
+	return ""
+}
+
 type SAgentDayProfit struct {
 	Page  uint32                  `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
 	Count uint32                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
 	List  []*AgentDayProfitDetail `protobuf:"bytes,3,rep,name=list" json:"list,omitempty"`
 	Error ErrCode                 `protobuf:"varint,4,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+	Total int64                   `protobuf:"varint,5,opt,name=total,proto3" json:"total,omitempty"`
 }
 
 func (m *SAgentDayProfit) Reset()                    { *m = SAgentDayProfit{} }
@@ -814,10 +855,22 @@ func (m *SAgentDayProfit) GetError() ErrCode {
 	return OK
 }
 
+func (m *SAgentDayProfit) GetTotal() int64 {
+	if m != nil {
+		return m.Total
+	}
+	return 0
+}
+
 type AgentDayProfitDetail struct {
-	Userid string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
-	Profit int64  `protobuf:"varint,2,opt,name=profit,proto3" json:"profit,omitempty"`
-	Day    uint32 `protobuf:"varint,3,opt,name=day,proto3" json:"day,omitempty"`
+	Userid       string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Profit       int64  `protobuf:"varint,2,opt,name=profit,proto3" json:"profit,omitempty"`
+	Day          uint32 `protobuf:"varint,3,opt,name=day,proto3" json:"day,omitempty"`
+	Agentnote    string `protobuf:"bytes,4,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Nickname     string `protobuf:"bytes,5,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	ProfitFirst  int64  `protobuf:"varint,6,opt,name=profitFirst,proto3" json:"profitFirst,omitempty"`
+	ProfitSecond int64  `protobuf:"varint,7,opt,name=profitSecond,proto3" json:"profitSecond,omitempty"`
+	ProfitMonth  int64  `protobuf:"varint,8,opt,name=profitMonth,proto3" json:"profitMonth,omitempty"`
 }
 
 func (m *AgentDayProfitDetail) Reset()                    { *m = AgentDayProfitDetail{} }
@@ -845,11 +898,48 @@ func (m *AgentDayProfitDetail) GetDay() uint32 {
 	return 0
 }
 
+func (m *AgentDayProfitDetail) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *AgentDayProfitDetail) GetNickname() string {
+	if m != nil {
+		return m.Nickname
+	}
+	return ""
+}
+
+func (m *AgentDayProfitDetail) GetProfitFirst() int64 {
+	if m != nil {
+		return m.ProfitFirst
+	}
+	return 0
+}
+
+func (m *AgentDayProfitDetail) GetProfitSecond() int64 {
+	if m != nil {
+		return m.ProfitSecond
+	}
+	return 0
+}
+
+func (m *AgentDayProfitDetail) GetProfitMonth() int64 {
+	if m != nil {
+		return m.ProfitMonth
+	}
+	return 0
+}
+
 // 代理收益提现订单明细
 type CAgentProfitOrder struct {
-	Page    uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	Type    uint32 `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`
-	Agentid string `protobuf:"bytes,3,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Page      uint32 `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Type      uint32 `protobuf:"varint,2,opt,name=type,proto3" json:"type,omitempty"`
+	StartTime string `protobuf:"bytes,3,opt,name=startTime,proto3" json:"startTime,omitempty"`
+	EndTime   string `protobuf:"bytes,4,opt,name=endTime,proto3" json:"endTime,omitempty"`
+	Agentid   string `protobuf:"bytes,5,opt,name=agentid,proto3" json:"agentid,omitempty"`
 }
 
 func (m *CAgentProfitOrder) Reset()                    { *m = CAgentProfitOrder{} }
@@ -868,6 +958,20 @@ func (m *CAgentProfitOrder) GetType() uint32 {
 		return m.Type
 	}
 	return 0
+}
+
+func (m *CAgentProfitOrder) GetStartTime() string {
+	if m != nil {
+		return m.StartTime
+	}
+	return ""
+}
+
+func (m *CAgentProfitOrder) GetEndTime() string {
+	if m != nil {
+		return m.EndTime
+	}
+	return ""
 }
 
 func (m *CAgentProfitOrder) GetAgentid() string {
@@ -1185,10 +1289,12 @@ func (m *AgentProfit) GetProfit() int64 {
 
 // 代理玩家管理
 type CAgentPlayerManage struct {
-	Page   uint32            `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
-	Userid string            `protobuf:"bytes,2,opt,name=userid,proto3" json:"userid,omitempty"`
-	State  AgentApproveState `protobuf:"varint,3,opt,name=state,proto3,enum=pb.AgentApproveState" json:"state,omitempty"`
-	Selfid string            `protobuf:"bytes,4,opt,name=selfid,proto3" json:"selfid,omitempty"`
+	Page      uint32            `protobuf:"varint,1,opt,name=page,proto3" json:"page,omitempty"`
+	Userid    string            `protobuf:"bytes,2,opt,name=userid,proto3" json:"userid,omitempty"`
+	State     AgentApproveState `protobuf:"varint,3,opt,name=state,proto3,enum=pb.AgentApproveState" json:"state,omitempty"`
+	Agentnote string            `protobuf:"bytes,4,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	Level     uint32            `protobuf:"varint,5,opt,name=level,proto3" json:"level,omitempty"`
+	Selfid    string            `protobuf:"bytes,6,opt,name=selfid,proto3" json:"selfid,omitempty"`
 }
 
 func (m *CAgentPlayerManage) Reset()                    { *m = CAgentPlayerManage{} }
@@ -1214,6 +1320,20 @@ func (m *CAgentPlayerManage) GetState() AgentApproveState {
 		return m.State
 	}
 	return AgentApprove
+}
+
+func (m *CAgentPlayerManage) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *CAgentPlayerManage) GetLevel() uint32 {
+	if m != nil {
+		return m.Level
+	}
+	return 0
 }
 
 func (m *CAgentPlayerManage) GetSelfid() string {
@@ -1271,16 +1391,19 @@ func (m *SAgentPlayerManage) GetError() ErrCode {
 }
 
 type AgentPlayerManage struct {
-	Userid     string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
-	Nickname   string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
-	Coin       int64  `protobuf:"varint,3,opt,name=coin,proto3" json:"coin,omitempty"`
-	Agentid    string `protobuf:"bytes,4,opt,name=agentid,proto3" json:"agentid,omitempty"`
-	Address    string `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
-	Agentname  string `protobuf:"bytes,6,opt,name=agentname,proto3" json:"agentname,omitempty"`
-	Level      uint32 `protobuf:"varint,7,opt,name=level,proto3" json:"level,omitempty"`
-	ProfitRate uint32 `protobuf:"varint,8,opt,name=profitRate,proto3" json:"profitRate,omitempty"`
-	Jointime   string `protobuf:"bytes,9,opt,name=jointime,proto3" json:"jointime,omitempty"`
-	State      uint32 `protobuf:"varint,10,opt,name=state,proto3" json:"state,omitempty"`
+	Userid      string `protobuf:"bytes,1,opt,name=userid,proto3" json:"userid,omitempty"`
+	Nickname    string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Coin        int64  `protobuf:"varint,3,opt,name=coin,proto3" json:"coin,omitempty"`
+	Agentid     string `protobuf:"bytes,4,opt,name=agentid,proto3" json:"agentid,omitempty"`
+	Address     string `protobuf:"bytes,5,opt,name=address,proto3" json:"address,omitempty"`
+	Agentname   string `protobuf:"bytes,6,opt,name=agentname,proto3" json:"agentname,omitempty"`
+	Level       uint32 `protobuf:"varint,7,opt,name=level,proto3" json:"level,omitempty"`
+	ProfitRate  uint32 `protobuf:"varint,8,opt,name=profitRate,proto3" json:"profitRate,omitempty"`
+	Jointime    string `protobuf:"bytes,9,opt,name=jointime,proto3" json:"jointime,omitempty"`
+	State       uint32 `protobuf:"varint,10,opt,name=state,proto3" json:"state,omitempty"`
+	LoginTime   string `protobuf:"bytes,11,opt,name=loginTime,proto3" json:"loginTime,omitempty"`
+	Agentnote   string `protobuf:"bytes,12,opt,name=agentnote,proto3" json:"agentnote,omitempty"`
+	BringProfit int64  `protobuf:"varint,13,opt,name=bringProfit,proto3" json:"bringProfit,omitempty"`
 }
 
 func (m *AgentPlayerManage) Reset()                    { *m = AgentPlayerManage{} }
@@ -1353,6 +1476,27 @@ func (m *AgentPlayerManage) GetJointime() string {
 func (m *AgentPlayerManage) GetState() uint32 {
 	if m != nil {
 		return m.State
+	}
+	return 0
+}
+
+func (m *AgentPlayerManage) GetLoginTime() string {
+	if m != nil {
+		return m.LoginTime
+	}
+	return ""
+}
+
+func (m *AgentPlayerManage) GetAgentnote() string {
+	if m != nil {
+		return m.Agentnote
+	}
+	return ""
+}
+
+func (m *AgentPlayerManage) GetBringProfit() int64 {
+	if m != nil {
+		return m.BringProfit
 	}
 	return 0
 }
@@ -1765,6 +1909,12 @@ func (this *SMyAgent) Equal(that interface{}) bool {
 		return false
 	}
 	if this.Error != that1.Error {
+		return false
+	}
+	if this.ProfitFirst != that1.ProfitFirst {
+		return false
+	}
+	if this.ProfitSecond != that1.ProfitSecond {
 		return false
 	}
 	return true
@@ -2211,10 +2361,19 @@ func (this *CAgentDayProfit) Equal(that interface{}) bool {
 	if this.Page != that1.Page {
 		return false
 	}
-	if this.Time != that1.Time {
+	if this.StartTime != that1.StartTime {
+		return false
+	}
+	if this.EndTime != that1.EndTime {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
 		return false
 	}
 	if this.Userid != that1.Userid {
+		return false
+	}
+	if this.Selfid != that1.Selfid {
 		return false
 	}
 	return true
@@ -2255,6 +2414,9 @@ func (this *SAgentDayProfit) Equal(that interface{}) bool {
 	if this.Error != that1.Error {
 		return false
 	}
+	if this.Total != that1.Total {
+		return false
+	}
 	return true
 }
 func (this *AgentDayProfitDetail) Equal(that interface{}) bool {
@@ -2285,6 +2447,21 @@ func (this *AgentDayProfitDetail) Equal(that interface{}) bool {
 	if this.Day != that1.Day {
 		return false
 	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Nickname != that1.Nickname {
+		return false
+	}
+	if this.ProfitFirst != that1.ProfitFirst {
+		return false
+	}
+	if this.ProfitSecond != that1.ProfitSecond {
+		return false
+	}
+	if this.ProfitMonth != that1.ProfitMonth {
+		return false
+	}
 	return true
 }
 func (this *CAgentProfitOrder) Equal(that interface{}) bool {
@@ -2310,6 +2487,12 @@ func (this *CAgentProfitOrder) Equal(that interface{}) bool {
 		return false
 	}
 	if this.Type != that1.Type {
+		return false
+	}
+	if this.StartTime != that1.StartTime {
+		return false
+	}
+	if this.EndTime != that1.EndTime {
 		return false
 	}
 	if this.Agentid != that1.Agentid {
@@ -2634,6 +2817,12 @@ func (this *CAgentPlayerManage) Equal(that interface{}) bool {
 	if this.State != that1.State {
 		return false
 	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.Level != that1.Level {
+		return false
+	}
 	if this.Selfid != that1.Selfid {
 		return false
 	}
@@ -2727,6 +2916,15 @@ func (this *AgentPlayerManage) Equal(that interface{}) bool {
 		return false
 	}
 	if this.State != that1.State {
+		return false
+	}
+	if this.LoginTime != that1.LoginTime {
+		return false
+	}
+	if this.Agentnote != that1.Agentnote {
+		return false
+	}
+	if this.BringProfit != that1.BringProfit {
 		return false
 	}
 	return true
@@ -2957,7 +3155,7 @@ func (this *SMyAgent) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 23)
+	s := make([]string, 0, 25)
 	s = append(s, "&pb.SMyAgent{")
 	s = append(s, "Agentname: "+fmt.Sprintf("%#v", this.Agentname)+",\n")
 	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
@@ -2978,6 +3176,8 @@ func (this *SMyAgent) GoString() string {
 	s = append(s, "ProfitMonth: "+fmt.Sprintf("%#v", this.ProfitMonth)+",\n")
 	s = append(s, "AgentTitle: "+fmt.Sprintf("%#v", this.AgentTitle)+",\n")
 	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "ProfitFirst: "+fmt.Sprintf("%#v", this.ProfitFirst)+",\n")
+	s = append(s, "ProfitSecond: "+fmt.Sprintf("%#v", this.ProfitSecond)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3150,11 +3350,14 @@ func (this *CAgentDayProfit) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 7)
+	s := make([]string, 0, 10)
 	s = append(s, "&pb.CAgentDayProfit{")
 	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
-	s = append(s, "Time: "+fmt.Sprintf("%#v", this.Time)+",\n")
+	s = append(s, "StartTime: "+fmt.Sprintf("%#v", this.StartTime)+",\n")
+	s = append(s, "EndTime: "+fmt.Sprintf("%#v", this.EndTime)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
+	s = append(s, "Selfid: "+fmt.Sprintf("%#v", this.Selfid)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3162,7 +3365,7 @@ func (this *SAgentDayProfit) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 8)
+	s := make([]string, 0, 9)
 	s = append(s, "&pb.SAgentDayProfit{")
 	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
 	s = append(s, "Count: "+fmt.Sprintf("%#v", this.Count)+",\n")
@@ -3170,6 +3373,7 @@ func (this *SAgentDayProfit) GoString() string {
 		s = append(s, "List: "+fmt.Sprintf("%#v", this.List)+",\n")
 	}
 	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "Total: "+fmt.Sprintf("%#v", this.Total)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3177,11 +3381,16 @@ func (this *AgentDayProfitDetail) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 7)
+	s := make([]string, 0, 12)
 	s = append(s, "&pb.AgentDayProfitDetail{")
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
 	s = append(s, "Profit: "+fmt.Sprintf("%#v", this.Profit)+",\n")
 	s = append(s, "Day: "+fmt.Sprintf("%#v", this.Day)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Nickname: "+fmt.Sprintf("%#v", this.Nickname)+",\n")
+	s = append(s, "ProfitFirst: "+fmt.Sprintf("%#v", this.ProfitFirst)+",\n")
+	s = append(s, "ProfitSecond: "+fmt.Sprintf("%#v", this.ProfitSecond)+",\n")
+	s = append(s, "ProfitMonth: "+fmt.Sprintf("%#v", this.ProfitMonth)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3189,10 +3398,12 @@ func (this *CAgentProfitOrder) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 7)
+	s := make([]string, 0, 9)
 	s = append(s, "&pb.CAgentProfitOrder{")
 	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
 	s = append(s, "Type: "+fmt.Sprintf("%#v", this.Type)+",\n")
+	s = append(s, "StartTime: "+fmt.Sprintf("%#v", this.StartTime)+",\n")
+	s = append(s, "EndTime: "+fmt.Sprintf("%#v", this.EndTime)+",\n")
 	s = append(s, "Agentid: "+fmt.Sprintf("%#v", this.Agentid)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -3316,11 +3527,13 @@ func (this *CAgentPlayerManage) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 8)
+	s := make([]string, 0, 10)
 	s = append(s, "&pb.CAgentPlayerManage{")
 	s = append(s, "Page: "+fmt.Sprintf("%#v", this.Page)+",\n")
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
 	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "Level: "+fmt.Sprintf("%#v", this.Level)+",\n")
 	s = append(s, "Selfid: "+fmt.Sprintf("%#v", this.Selfid)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
@@ -3345,7 +3558,7 @@ func (this *AgentPlayerManage) GoString() string {
 	if this == nil {
 		return "nil"
 	}
-	s := make([]string, 0, 14)
+	s := make([]string, 0, 17)
 	s = append(s, "&pb.AgentPlayerManage{")
 	s = append(s, "Userid: "+fmt.Sprintf("%#v", this.Userid)+",\n")
 	s = append(s, "Nickname: "+fmt.Sprintf("%#v", this.Nickname)+",\n")
@@ -3357,6 +3570,9 @@ func (this *AgentPlayerManage) GoString() string {
 	s = append(s, "ProfitRate: "+fmt.Sprintf("%#v", this.ProfitRate)+",\n")
 	s = append(s, "Jointime: "+fmt.Sprintf("%#v", this.Jointime)+",\n")
 	s = append(s, "State: "+fmt.Sprintf("%#v", this.State)+",\n")
+	s = append(s, "LoginTime: "+fmt.Sprintf("%#v", this.LoginTime)+",\n")
+	s = append(s, "Agentnote: "+fmt.Sprintf("%#v", this.Agentnote)+",\n")
+	s = append(s, "BringProfit: "+fmt.Sprintf("%#v", this.BringProfit)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -3652,6 +3868,20 @@ func (m *SMyAgent) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x1
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.Error))
+	}
+	if m.ProfitFirst != 0 {
+		dAtA[i] = 0xa0
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.ProfitFirst))
+	}
+	if m.ProfitSecond != 0 {
+		dAtA[i] = 0xa8
+		i++
+		dAtA[i] = 0x1
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.ProfitSecond))
 	}
 	return i, nil
 }
@@ -4188,17 +4418,35 @@ func (m *CAgentDayProfit) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.Page))
 	}
-	if len(m.Time) > 0 {
+	if len(m.StartTime) > 0 {
 		dAtA[i] = 0x12
 		i++
-		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Time)))
-		i += copy(dAtA[i:], m.Time)
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.StartTime)))
+		i += copy(dAtA[i:], m.StartTime)
+	}
+	if len(m.EndTime) > 0 {
+		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.EndTime)))
+		i += copy(dAtA[i:], m.EndTime)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
 	}
 	if len(m.Userid) > 0 {
-		dAtA[i] = 0x1a
+		dAtA[i] = 0x2a
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Userid)))
 		i += copy(dAtA[i:], m.Userid)
+	}
+	if len(m.Selfid) > 0 {
+		dAtA[i] = 0x32
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Selfid)))
+		i += copy(dAtA[i:], m.Selfid)
 	}
 	return i, nil
 }
@@ -4245,6 +4493,11 @@ func (m *SAgentDayProfit) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.Error))
 	}
+	if m.Total != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Total))
+	}
 	return i, nil
 }
 
@@ -4279,6 +4532,33 @@ func (m *AgentDayProfitDetail) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.Day))
 	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if len(m.Nickname) > 0 {
+		dAtA[i] = 0x2a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Nickname)))
+		i += copy(dAtA[i:], m.Nickname)
+	}
+	if m.ProfitFirst != 0 {
+		dAtA[i] = 0x30
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.ProfitFirst))
+	}
+	if m.ProfitSecond != 0 {
+		dAtA[i] = 0x38
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.ProfitSecond))
+	}
+	if m.ProfitMonth != 0 {
+		dAtA[i] = 0x40
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.ProfitMonth))
+	}
 	return i, nil
 }
 
@@ -4307,8 +4587,20 @@ func (m *CAgentProfitOrder) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.Type))
 	}
-	if len(m.Agentid) > 0 {
+	if len(m.StartTime) > 0 {
 		dAtA[i] = 0x1a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.StartTime)))
+		i += copy(dAtA[i:], m.StartTime)
+	}
+	if len(m.EndTime) > 0 {
+		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.EndTime)))
+		i += copy(dAtA[i:], m.EndTime)
+	}
+	if len(m.Agentid) > 0 {
+		dAtA[i] = 0x2a
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentid)))
 		i += copy(dAtA[i:], m.Agentid)
@@ -4683,8 +4975,19 @@ func (m *CAgentPlayerManage) MarshalTo(dAtA []byte) (int, error) {
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.State))
 	}
-	if len(m.Selfid) > 0 {
+	if len(m.Agentnote) > 0 {
 		dAtA[i] = 0x22
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if m.Level != 0 {
+		dAtA[i] = 0x28
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.Level))
+	}
+	if len(m.Selfid) > 0 {
+		dAtA[i] = 0x32
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Selfid)))
 		i += copy(dAtA[i:], m.Selfid)
@@ -4812,6 +5115,23 @@ func (m *AgentPlayerManage) MarshalTo(dAtA []byte) (int, error) {
 		dAtA[i] = 0x50
 		i++
 		i = encodeVarintGameAgent(dAtA, i, uint64(m.State))
+	}
+	if len(m.LoginTime) > 0 {
+		dAtA[i] = 0x5a
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.LoginTime)))
+		i += copy(dAtA[i:], m.LoginTime)
+	}
+	if len(m.Agentnote) > 0 {
+		dAtA[i] = 0x62
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(len(m.Agentnote)))
+		i += copy(dAtA[i:], m.Agentnote)
+	}
+	if m.BringProfit != 0 {
+		dAtA[i] = 0x68
+		i++
+		i = encodeVarintGameAgent(dAtA, i, uint64(m.BringProfit))
 	}
 	return i, nil
 }
@@ -5159,6 +5479,12 @@ func (m *SMyAgent) Size() (n int) {
 	if m.Error != 0 {
 		n += 2 + sovGameAgent(uint64(m.Error))
 	}
+	if m.ProfitFirst != 0 {
+		n += 2 + sovGameAgent(uint64(m.ProfitFirst))
+	}
+	if m.ProfitSecond != 0 {
+		n += 2 + sovGameAgent(uint64(m.ProfitSecond))
+	}
 	return n
 }
 
@@ -5422,11 +5748,23 @@ func (m *CAgentDayProfit) Size() (n int) {
 	if m.Page != 0 {
 		n += 1 + sovGameAgent(uint64(m.Page))
 	}
-	l = len(m.Time)
+	l = len(m.StartTime)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.EndTime)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
 	if l > 0 {
 		n += 1 + l + sovGameAgent(uint64(l))
 	}
 	l = len(m.Userid)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Selfid)
 	if l > 0 {
 		n += 1 + l + sovGameAgent(uint64(l))
 	}
@@ -5451,6 +5789,9 @@ func (m *SAgentDayProfit) Size() (n int) {
 	if m.Error != 0 {
 		n += 1 + sovGameAgent(uint64(m.Error))
 	}
+	if m.Total != 0 {
+		n += 1 + sovGameAgent(uint64(m.Total))
+	}
 	return n
 }
 
@@ -5467,6 +5808,23 @@ func (m *AgentDayProfitDetail) Size() (n int) {
 	if m.Day != 0 {
 		n += 1 + sovGameAgent(uint64(m.Day))
 	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Nickname)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.ProfitFirst != 0 {
+		n += 1 + sovGameAgent(uint64(m.ProfitFirst))
+	}
+	if m.ProfitSecond != 0 {
+		n += 1 + sovGameAgent(uint64(m.ProfitSecond))
+	}
+	if m.ProfitMonth != 0 {
+		n += 1 + sovGameAgent(uint64(m.ProfitMonth))
+	}
 	return n
 }
 
@@ -5478,6 +5836,14 @@ func (m *CAgentProfitOrder) Size() (n int) {
 	}
 	if m.Type != 0 {
 		n += 1 + sovGameAgent(uint64(m.Type))
+	}
+	l = len(m.StartTime)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.EndTime)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
 	}
 	l = len(m.Agentid)
 	if l > 0 {
@@ -5659,6 +6025,13 @@ func (m *CAgentPlayerManage) Size() (n int) {
 	if m.State != 0 {
 		n += 1 + sovGameAgent(uint64(m.State))
 	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.Level != 0 {
+		n += 1 + sovGameAgent(uint64(m.Level))
+	}
 	l = len(m.Selfid)
 	if l > 0 {
 		n += 1 + l + sovGameAgent(uint64(l))
@@ -5728,6 +6101,17 @@ func (m *AgentPlayerManage) Size() (n int) {
 	}
 	if m.State != 0 {
 		n += 1 + sovGameAgent(uint64(m.State))
+	}
+	l = len(m.LoginTime)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	l = len(m.Agentnote)
+	if l > 0 {
+		n += 1 + l + sovGameAgent(uint64(l))
+	}
+	if m.BringProfit != 0 {
+		n += 1 + sovGameAgent(uint64(m.BringProfit))
 	}
 	return n
 }
@@ -5913,6 +6297,8 @@ func (this *SMyAgent) String() string {
 		`ProfitMonth:` + fmt.Sprintf("%v", this.ProfitMonth) + `,`,
 		`AgentTitle:` + fmt.Sprintf("%v", this.AgentTitle) + `,`,
 		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`ProfitFirst:` + fmt.Sprintf("%v", this.ProfitFirst) + `,`,
+		`ProfitSecond:` + fmt.Sprintf("%v", this.ProfitSecond) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6082,8 +6468,11 @@ func (this *CAgentDayProfit) String() string {
 	}
 	s := strings.Join([]string{`&CAgentDayProfit{`,
 		`Page:` + fmt.Sprintf("%v", this.Page) + `,`,
-		`Time:` + fmt.Sprintf("%v", this.Time) + `,`,
+		`StartTime:` + fmt.Sprintf("%v", this.StartTime) + `,`,
+		`EndTime:` + fmt.Sprintf("%v", this.EndTime) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
 		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
+		`Selfid:` + fmt.Sprintf("%v", this.Selfid) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6097,6 +6486,7 @@ func (this *SAgentDayProfit) String() string {
 		`Count:` + fmt.Sprintf("%v", this.Count) + `,`,
 		`List:` + strings.Replace(fmt.Sprintf("%v", this.List), "AgentDayProfitDetail", "AgentDayProfitDetail", 1) + `,`,
 		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`Total:` + fmt.Sprintf("%v", this.Total) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6109,6 +6499,11 @@ func (this *AgentDayProfitDetail) String() string {
 		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
 		`Profit:` + fmt.Sprintf("%v", this.Profit) + `,`,
 		`Day:` + fmt.Sprintf("%v", this.Day) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Nickname:` + fmt.Sprintf("%v", this.Nickname) + `,`,
+		`ProfitFirst:` + fmt.Sprintf("%v", this.ProfitFirst) + `,`,
+		`ProfitSecond:` + fmt.Sprintf("%v", this.ProfitSecond) + `,`,
+		`ProfitMonth:` + fmt.Sprintf("%v", this.ProfitMonth) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -6120,6 +6515,8 @@ func (this *CAgentProfitOrder) String() string {
 	s := strings.Join([]string{`&CAgentProfitOrder{`,
 		`Page:` + fmt.Sprintf("%v", this.Page) + `,`,
 		`Type:` + fmt.Sprintf("%v", this.Type) + `,`,
+		`StartTime:` + fmt.Sprintf("%v", this.StartTime) + `,`,
+		`EndTime:` + fmt.Sprintf("%v", this.EndTime) + `,`,
 		`Agentid:` + fmt.Sprintf("%v", this.Agentid) + `,`,
 		`}`,
 	}, "")
@@ -6244,6 +6641,8 @@ func (this *CAgentPlayerManage) String() string {
 		`Page:` + fmt.Sprintf("%v", this.Page) + `,`,
 		`Userid:` + fmt.Sprintf("%v", this.Userid) + `,`,
 		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`Level:` + fmt.Sprintf("%v", this.Level) + `,`,
 		`Selfid:` + fmt.Sprintf("%v", this.Selfid) + `,`,
 		`}`,
 	}, "")
@@ -6278,6 +6677,9 @@ func (this *AgentPlayerManage) String() string {
 		`ProfitRate:` + fmt.Sprintf("%v", this.ProfitRate) + `,`,
 		`Jointime:` + fmt.Sprintf("%v", this.Jointime) + `,`,
 		`State:` + fmt.Sprintf("%v", this.State) + `,`,
+		`LoginTime:` + fmt.Sprintf("%v", this.LoginTime) + `,`,
+		`Agentnote:` + fmt.Sprintf("%v", this.Agentnote) + `,`,
+		`BringProfit:` + fmt.Sprintf("%v", this.BringProfit) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -7095,6 +7497,44 @@ func (m *SMyAgent) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 20:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProfitFirst", wireType)
+			}
+			m.ProfitFirst = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProfitFirst |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 21:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProfitSecond", wireType)
+			}
+			m.ProfitSecond = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProfitSecond |= (int64(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -8975,7 +9415,7 @@ func (m *CAgentDayProfit) Unmarshal(dAtA []byte) error {
 			}
 		case 2:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Time", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field StartTime", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -9000,9 +9440,67 @@ func (m *CAgentDayProfit) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Time = string(dAtA[iNdEx:postIndex])
+			m.StartTime = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EndTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EndTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Userid", wireType)
 			}
@@ -9030,6 +9528,35 @@ func (m *CAgentDayProfit) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Userid = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Selfid", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Selfid = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -9169,6 +9696,25 @@ func (m *SAgentDayProfit) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Total", wireType)
+			}
+			m.Total = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Total |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGameAgent(dAtA[iNdEx:])
@@ -9286,6 +9832,121 @@ func (m *AgentDayProfitDetail) Unmarshal(dAtA []byte) error {
 					break
 				}
 			}
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nickname", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Nickname = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 6:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProfitFirst", wireType)
+			}
+			m.ProfitFirst = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProfitFirst |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 7:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProfitSecond", wireType)
+			}
+			m.ProfitSecond = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProfitSecond |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 8:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field ProfitMonth", wireType)
+			}
+			m.ProfitMonth = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.ProfitMonth |= (int64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
 		default:
 			iNdEx = preIndex
 			skippy, err := skipGameAgent(dAtA[iNdEx:])
@@ -9375,6 +10036,64 @@ func (m *CAgentProfitOrder) Unmarshal(dAtA []byte) error {
 				}
 			}
 		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field StartTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.StartTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 4:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field EndTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.EndTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Agentid", wireType)
 			}
@@ -10666,6 +11385,54 @@ func (m *CAgentPlayerManage) Unmarshal(dAtA []byte) error {
 			}
 		case 4:
 			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 5:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Level", wireType)
+			}
+			m.Level = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Level |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 6:
+			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Selfid", wireType)
 			}
 			var stringLen uint64
@@ -11146,6 +11913,83 @@ func (m *AgentPlayerManage) Unmarshal(dAtA []byte) error {
 				b := dAtA[iNdEx]
 				iNdEx++
 				m.State |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 11:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field LoginTime", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.LoginTime = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 12:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Agentnote", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= (uint64(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthGameAgent
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Agentnote = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 13:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field BringProfit", wireType)
+			}
+			m.BringProfit = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameAgent
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.BringProfit |= (int64(b) & 0x7F) << shift
 				if b < 0x80 {
 					break
 				}
@@ -12099,89 +12943,98 @@ var (
 func init() { proto.RegisterFile("game_agent.proto", fileDescriptorGameAgent) }
 
 var fileDescriptorGameAgent = []byte{
-	// 1330 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x4d, 0x6f, 0xe4, 0x44,
-	0x13, 0x4e, 0x8f, 0xed, 0xf9, 0xa8, 0xc9, 0x64, 0x26, 0x4e, 0xde, 0x95, 0x15, 0xbd, 0xb2, 0x82,
-	0x81, 0x55, 0x60, 0x57, 0x7b, 0x58, 0x7e, 0x41, 0x76, 0xb2, 0x02, 0x21, 0xb2, 0x2c, 0xf6, 0x2e,
-	0x1f, 0x07, 0x84, 0x3c, 0x99, 0x4e, 0x62, 0x32, 0xb1, 0x2d, 0xdb, 0x93, 0x64, 0x90, 0x40, 0x7b,
-	0x00, 0x4e, 0x7b, 0xe0, 0x82, 0xb8, 0x71, 0xe6, 0xca, 0x81, 0x03, 0xff, 0x00, 0x21, 0x0e, 0x7b,
-	0xe4, 0x48, 0x06, 0x21, 0x71, 0xdc, 0x9f, 0x80, 0xfa, 0xc3, 0xed, 0xee, 0xc9, 0x78, 0xe2, 0x64,
-	0xe1, 0xd6, 0x55, 0xd5, 0xee, 0xae, 0x7a, 0xea, 0xe9, 0xea, 0x6a, 0x43, 0xef, 0xc0, 0x3f, 0xc6,
-	0x9f, 0xf8, 0x07, 0x38, 0xcc, 0xee, 0xc4, 0x49, 0x94, 0x45, 0x66, 0x2d, 0x1e, 0x6c, 0x74, 0xa9,
-	0x76, 0x2f, 0x1a, 0x62, 0xa6, 0x74, 0xce, 0x00, 0xfa, 0xdb, 0x64, 0xd2, 0xdb, 0x51, 0x10, 0x9a,
-	0xff, 0x87, 0x16, 0xfd, 0x22, 0xf4, 0x8f, 0xb1, 0x85, 0x36, 0xd1, 0x56, 0xcb, 0x2d, 0x14, 0xa6,
-	0x05, 0x0d, 0x2a, 0x04, 0x43, 0xab, 0x46, 0x6d, 0xb9, 0x68, 0x6e, 0x40, 0x33, 0xc1, 0xfe, 0x88,
-	0x7e, 0xa6, 0x51, 0x93, 0x90, 0xcd, 0x1b, 0x50, 0x3f, 0xc5, 0xc1, 0x59, 0x10, 0x5a, 0x3a, 0xb5,
-	0x70, 0xc9, 0xb9, 0x0f, 0xe0, 0x15, 0x3b, 0xaf, 0x83, 0x31, 0xc2, 0x27, 0x78, 0x44, 0x77, 0xed,
-	0xb8, 0x4c, 0x30, 0x5f, 0x02, 0x03, 0x27, 0x49, 0x94, 0xd0, 0xfd, 0x56, 0xee, 0xb6, 0xef, 0xc4,
-	0x83, 0x3b, 0xf7, 0x93, 0xa4, 0x1f, 0x0d, 0xb1, 0xcb, 0x2c, 0x0e, 0x40, 0xb3, 0xbf, 0x3b, 0xa1,
-	0x0b, 0x39, 0x7f, 0xe9, 0xd0, 0xf4, 0xb8, 0x70, 0xed, 0x58, 0x88, 0x65, 0x38, 0x4c, 0x70, 0x9a,
-	0xf2, 0x50, 0x72, 0x91, 0x44, 0x12, 0x27, 0xd1, 0x7e, 0x90, 0xd1, 0x48, 0x34, 0x97, 0x4b, 0xa6,
-	0x0d, 0xf0, 0x01, 0xc6, 0x47, 0x0f, 0x99, 0xcd, 0xa0, 0x36, 0x38, 0x15, 0x1a, 0xf3, 0x75, 0xe8,
-	0x51, 0xfb, 0xc8, 0x9f, 0xe0, 0x84, 0xcf, 0xaa, 0xd3, 0x59, 0xbd, 0xd3, 0x19, 0xbd, 0xf9, 0x0a,
-	0x74, 0xde, 0x0a, 0xd2, 0x2c, 0x4a, 0x26, 0x7c, 0x62, 0x83, 0x4e, 0xec, 0x1c, 0xca, 0x4a, 0x73,
-	0x0b, 0xba, 0xde, 0x78, 0xa0, 0x2c, 0xd8, 0xa4, 0xf3, 0xba, 0xa9, 0xaa, 0x36, 0x6f, 0xc2, 0x8a,
-	0x37, 0x1e, 0x50, 0x44, 0xf8, 0xc4, 0x16, 0x9d, 0xb8, 0x92, 0x2a, 0x5a, 0xb2, 0xef, 0xc3, 0x28,
-	0x1e, 0x8f, 0xfc, 0x24, 0xf8, 0x0c, 0x3f, 0x76, 0xdf, 0xb1, 0x80, 0xc6, 0xde, 0x89, 0x65, 0x25,
-	0xc9, 0x52, 0x9a, 0xf9, 0x19, 0xb6, 0xda, 0x2c, 0x4b, 0x54, 0x28, 0x72, 0xb7, 0x2c, 0xe7, 0x6e,
-	0x1d, 0x8c, 0x7b, 0xe3, 0x60, 0x34, 0xb4, 0x3a, 0x4c, 0x3b, 0x20, 0x02, 0xc1, 0x8a, 0x6e, 0xdb,
-	0x3f, 0x24, 0xa6, 0x15, 0x6a, 0x02, 0x5f, 0x68, 0x88, 0x9d, 0x7e, 0xf5, 0xbe, 0x4f, 0xec, 0x5d,
-	0x66, 0x1f, 0x08, 0x0d, 0xb1, 0x33, 0x8f, 0x5d, 0xe2, 0x46, 0x8f, 0xd9, 0x63, 0xa1, 0x31, 0x37,
-	0xa1, 0xcd, 0xec, 0xbb, 0x51, 0x98, 0x1d, 0x5a, 0xab, 0x34, 0xd8, 0x76, 0x5c, 0xa8, 0x84, 0x07,
-	0x8f, 0x82, 0x6c, 0x84, 0x2d, 0x73, 0x13, 0x6d, 0x19, 0xdc, 0x03, 0xaa, 0x29, 0x38, 0xb7, 0x56,
-	0xca, 0xb9, 0x47, 0xb0, 0xcc, 0x0e, 0xcd, 0xae, 0x1f, 0xfa, 0x07, 0xd8, 0x34, 0x41, 0x8f, 0xfd,
-	0x03, 0xcc, 0xb9, 0x4b, 0xc7, 0x0b, 0x08, 0x76, 0x03, 0xea, 0xe3, 0x14, 0x27, 0xc1, 0x90, 0xf3,
-	0x8b, 0x4b, 0xce, 0x13, 0x04, 0xcb, 0xde, 0x65, 0xcb, 0xae, 0x83, 0xb1, 0x17, 0x8d, 0xc3, 0x8c,
-	0x2e, 0xda, 0x71, 0x99, 0x60, 0xbe, 0x0c, 0xfa, 0x28, 0x48, 0x33, 0x4b, 0xdb, 0xd4, 0xb6, 0xda,
-	0x77, 0xbb, 0xc4, 0x65, 0x69, 0x21, 0x97, 0x1a, 0x8b, 0xc0, 0xf4, 0xd2, 0xc0, 0x7e, 0x42, 0xd0,
-	0x96, 0x3d, 0x90, 0x82, 0x40, 0xa5, 0xa7, 0xa4, 0xa6, 0x9e, 0x92, 0x1e, 0x68, 0xe1, 0xf8, 0x98,
-	0xc6, 0xd6, 0x71, 0xc9, 0xb0, 0xf4, 0xdc, 0x08, 0xde, 0x18, 0x32, 0x6f, 0x4c, 0xd0, 0x13, 0x92,
-	0xdb, 0x3a, 0x8b, 0x9a, 0x8c, 0x67, 0x72, 0xd6, 0x98, 0xcd, 0x99, 0xf3, 0x14, 0x81, 0xd9, 0x97,
-	0xe8, 0x7c, 0xad, 0xbc, 0x88, 0x82, 0x11, 0x65, 0x79, 0x15, 0x2b, 0x14, 0xc2, 0x2d, 0x5d, 0x72,
-	0xab, 0xc8, 0xa4, 0xa1, 0x64, 0x92, 0xb8, 0xe3, 0x55, 0x73, 0x67, 0x7e, 0x3e, 0x5f, 0x53, 0xf2,
-	0xf9, 0x3f, 0x91, 0x4f, 0x79, 0xb9, 0xea, 0x59, 0xfd, 0x11, 0xc1, 0xea, 0x45, 0x6f, 0xca, 0x73,
-	0xbb, 0x01, 0xcd, 0x30, 0xd8, 0x3b, 0xa2, 0x85, 0x93, 0x61, 0x24, 0xe4, 0x6b, 0x80, 0x34, 0x3f,
-	0xcb, 0x6a, 0x46, 0xeb, 0x17, 0x32, 0xfa, 0x31, 0x74, 0xfa, 0x1e, 0xce, 0xe8, 0x9c, 0x07, 0x91,
-	0x82, 0x35, 0x92, 0xb1, 0x56, 0x1d, 0xaa, 0xcd, 0x3a, 0x74, 0x03, 0xea, 0x29, 0x1e, 0xed, 0x17,
-	0x67, 0x8d, 0x49, 0xce, 0x21, 0x74, 0xbc, 0x7f, 0x61, 0x79, 0x01, 0xbe, 0x56, 0x0a, 0xfe, 0x0e,
-	0x2c, 0xbf, 0xf8, 0x46, 0xce, 0x7e, 0x5e, 0x71, 0x78, 0xb9, 0x9e, 0x47, 0x25, 0x13, 0xf4, 0x2c,
-	0x10, 0x29, 0xa3, 0xe3, 0x02, 0x7c, 0x4d, 0x06, 0x5f, 0x4a, 0xbd, 0xae, 0xa4, 0xde, 0xf9, 0x5a,
-	0xd4, 0xa0, 0x05, 0x1b, 0x5d, 0x87, 0xb3, 0x3b, 0x38, 0xf3, 0x83, 0x51, 0x75, 0xce, 0x7e, 0xa7,
-	0x72, 0x96, 0x7d, 0x5e, 0x0a, 0x5e, 0x51, 0x61, 0x6a, 0xf3, 0x2b, 0x8c, 0x36, 0x73, 0x33, 0x1d,
-	0x64, 0x93, 0x98, 0xd1, 0xd4, 0x70, 0x99, 0x20, 0xb8, 0x6b, 0x48, 0xdc, 0x25, 0x90, 0x92, 0x89,
-	0x8c, 0x9f, 0x74, 0xec, 0xbc, 0x07, 0x5d, 0x96, 0x8a, 0x1d, 0x7f, 0x72, 0xc5, 0x6c, 0x94, 0x55,
-	0xfe, 0xa7, 0x08, 0xba, 0x5e, 0x85, 0x35, 0xe7, 0x03, 0x7f, 0x5b, 0x01, 0xde, 0x12, 0xc0, 0x8b,
-	0xb5, 0xae, 0x8a, 0xfd, 0x87, 0xb0, 0x3e, 0x6f, 0x81, 0x2b, 0xa3, 0xdf, 0x03, 0x6d, 0xe8, 0x4f,
-	0xf2, 0x9b, 0x60, 0xe8, 0x4f, 0x9c, 0xc7, 0xb0, 0x2a, 0xd3, 0xf8, 0xdd, 0x64, 0x88, 0x93, 0x52,
-	0xf4, 0x08, 0xf0, 0x2c, 0x50, 0x3a, 0x96, 0x59, 0xab, 0xa9, 0xac, 0xfd, 0x1e, 0xc1, 0xaa, 0x57,
-	0x69, 0xdd, 0xf9, 0x08, 0x6e, 0x29, 0x08, 0xae, 0xcf, 0x50, 0x97, 0xae, 0xc6, 0xd1, 0xcb, 0xfd,
-	0xd2, 0x25, 0xbf, 0x04, 0xa2, 0x46, 0x29, 0xa2, 0xbf, 0x22, 0xe8, 0x5d, 0xf0, 0xcf, 0x82, 0x46,
-	0x44, 0x06, 0x45, 0x01, 0xe6, 0xa2, 0x04, 0x74, 0x4d, 0x01, 0x5a, 0x2e, 0xcc, 0xda, 0x4c, 0x61,
-	0x2e, 0xbb, 0x64, 0x49, 0x5d, 0x89, 0xe3, 0xd1, 0x84, 0x92, 0xd1, 0xe0, 0x75, 0x25, 0x57, 0x10,
-	0x6b, 0x82, 0x73, 0x6b, 0x9d, 0x59, 0x85, 0xa2, 0x68, 0xf7, 0xd8, 0x8d, 0xcb, 0x04, 0xe7, 0x96,
-	0x9a, 0xc4, 0x6d, 0xb2, 0x98, 0xb4, 0x3d, 0x83, 0x9b, 0x4b, 0xce, 0x03, 0x35, 0x33, 0x0b, 0x27,
-	0x57, 0x69, 0xf7, 0xfb, 0xea, 0xe6, 0x2e, 0xf1, 0x75, 0x01, 0x92, 0x22, 0x82, 0x9a, 0x1c, 0xc1,
-	0x17, 0xaa, 0x53, 0xd7, 0x5a, 0x44, 0x0a, 0x42, 0x53, 0x00, 0xaf, 0x70, 0xc0, 0x6e, 0x42, 0x4f,
-	0x09, 0xc2, 0x0f, 0x8f, 0xe6, 0xb1, 0xd5, 0xf9, 0x12, 0x41, 0xcf, 0xab, 0x30, 0xf1, 0x8a, 0x5d,
-	0x21, 0x5f, 0xac, 0x72, 0x3d, 0x48, 0x79, 0x53, 0xc8, 0x2b, 0x93, 0xcc, 0x42, 0x34, 0xc3, 0xc2,
-	0xf2, 0xb6, 0xb0, 0xa4, 0xf6, 0x95, 0xf1, 0xd6, 0xf9, 0xaa, 0x68, 0xe9, 0xe8, 0x7b, 0x66, 0x41,
-	0x0f, 0x55, 0x76, 0x5c, 0x6e, 0xe5, 0x79, 0x63, 0xb7, 0x73, 0x71, 0x25, 0x6d, 0xc7, 0x71, 0x12,
-	0x9d, 0x60, 0x8f, 0x18, 0xa5, 0x74, 0xf2, 0x4e, 0x41, 0x57, 0x3a, 0x85, 0x9f, 0x8b, 0x5e, 0xee,
-	0x32, 0x3f, 0xae, 0x78, 0x2f, 0x4a, 0xcb, 0xf1, 0x5c, 0x08, 0x87, 0xf5, 0x0a, 0x0e, 0x57, 0x28,
-	0x3b, 0xdf, 0xd6, 0xf2, 0x4b, 0x54, 0x76, 0xbd, 0xac, 0x8c, 0x2f, 0x6a, 0xfb, 0x4c, 0xd0, 0xf7,
-	0xa2, 0x20, 0xe4, 0x54, 0xa7, 0xe3, 0xf2, 0x2e, 0x42, 0x66, 0x81, 0xa1, 0xb2, 0x40, 0x79, 0x94,
-	0xd7, 0x67, 0x1f, 0xe5, 0xe2, 0xba, 0x6e, 0xcc, 0xb4, 0x8a, 0xc5, 0x03, 0x8f, 0xbe, 0x73, 0xd5,
-	0x27, 0xdf, 0x06, 0x34, 0x3f, 0x8d, 0x82, 0x90, 0x96, 0xb0, 0x16, 0xf3, 0x3b, 0x97, 0x8b, 0xa3,
-	0x0b, 0xd2, 0x83, 0xd5, 0x49, 0x60, 0x4d, 0xa6, 0x16, 0x47, 0xb7, 0x80, 0x1f, 0x55, 0xe3, 0xcb,
-	0x5c, 0xd2, 0x95, 0x75, 0x9c, 0x9f, 0xc3, 0x9a, 0xf7, 0x5f, 0xed, 0x59, 0xa1, 0x0d, 0xfd, 0x08,
-	0xd6, 0x44, 0x3f, 0x5d, 0x3c, 0xa0, 0x4b, 0xb9, 0x90, 0x37, 0x43, 0x35, 0xf5, 0xb5, 0x33, 0x37,
-	0xb2, 0x33, 0x58, 0xf3, 0x5e, 0x70, 0x69, 0xa2, 0xc3, 0x69, 0xc6, 0x5b, 0x05, 0x3a, 0xae, 0x52,
-	0x98, 0x5e, 0x85, 0x56, 0xff, 0x4d, 0xbe, 0x73, 0xf9, 0x7b, 0xc6, 0xf9, 0x0d, 0x41, 0xcb, 0xbb,
-	0x7c, 0x5e, 0xb5, 0x77, 0x4f, 0x71, 0xf7, 0x4a, 0xc4, 0x95, 0xff, 0x7f, 0xe9, 0xa5, 0xff, 0xbf,
-	0x0c, 0xf9, 0xff, 0x17, 0xa1, 0xe6, 0x09, 0xfd, 0xc9, 0x41, 0x8e, 0x41, 0xd3, 0x65, 0x42, 0x11,
-	0x75, 0xa3, 0x2c, 0xea, 0x7b, 0xb7, 0x9f, 0x9d, 0xdb, 0x4b, 0xbf, 0x9f, 0xdb, 0x4b, 0xcf, 0xcf,
-	0x6d, 0xf4, 0x64, 0x6a, 0xa3, 0x1f, 0xa6, 0x36, 0xfa, 0x65, 0x6a, 0xa3, 0x67, 0x53, 0x1b, 0xfd,
-	0x31, 0xb5, 0xd1, 0xdf, 0x53, 0x7b, 0xe9, 0xf9, 0xd4, 0x46, 0xdf, 0xfc, 0x69, 0x2f, 0x0d, 0xea,
-	0xf4, 0x3f, 0xdf, 0x1b, 0xff, 0x04, 0x00, 0x00, 0xff, 0xff, 0x71, 0x79, 0x54, 0x94, 0x10, 0x14,
-	0x00, 0x00,
+	// 1476 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x58, 0x3f, 0x8f, 0xdc, 0x44,
+	0x14, 0xbf, 0xd9, 0xb5, 0xf7, 0xcf, 0xdb, 0xdb, 0xdb, 0x3d, 0xdf, 0x26, 0xb2, 0x4e, 0xd1, 0xea,
+	0x30, 0x10, 0x1d, 0x24, 0x4a, 0x11, 0x3e, 0x41, 0xb2, 0x09, 0x20, 0x44, 0x42, 0xb4, 0x0e, 0x20,
+	0x0a, 0x84, 0xbc, 0xe7, 0xc9, 0x9e, 0x89, 0x63, 0x5b, 0xb6, 0x37, 0xc9, 0x22, 0x81, 0x52, 0x20,
+	0x2a, 0x90, 0xe8, 0xe8, 0x28, 0xa8, 0x90, 0x52, 0x51, 0x50, 0xe4, 0x1b, 0x20, 0x44, 0x91, 0x92,
+	0x92, 0x2c, 0x0d, 0x65, 0x24, 0x3a, 0x2a, 0x34, 0x7f, 0xec, 0x99, 0xf1, 0xd9, 0x7b, 0xbe, 0x0b,
+	0x74, 0x7e, 0xef, 0x8d, 0x67, 0xde, 0x7b, 0xbf, 0xdf, 0xbc, 0x79, 0x33, 0x30, 0x9c, 0x3b, 0xf7,
+	0xf0, 0x27, 0xce, 0x1c, 0x07, 0xe9, 0xa5, 0x28, 0x0e, 0xd3, 0xd0, 0x68, 0x44, 0xb3, 0xdd, 0x01,
+	0xd5, 0x1e, 0x84, 0x2e, 0x66, 0x4a, 0xeb, 0x21, 0xc0, 0xe4, 0x0a, 0x19, 0xf4, 0x4e, 0xe8, 0x05,
+	0xc6, 0x39, 0xe8, 0xd2, 0x3f, 0x02, 0xe7, 0x1e, 0x36, 0xd1, 0x1e, 0xda, 0xef, 0x4e, 0x85, 0xc2,
+	0x30, 0xa1, 0x4d, 0x05, 0xcf, 0x35, 0x1b, 0xd4, 0x96, 0x89, 0xc6, 0x2e, 0x74, 0x62, 0xec, 0xf8,
+	0xf4, 0xb7, 0x26, 0x35, 0xe5, 0xb2, 0x71, 0x16, 0x5a, 0x0f, 0xb0, 0xf7, 0xd0, 0x0b, 0x4c, 0x8d,
+	0x5a, 0xb8, 0x64, 0x5d, 0x07, 0xb0, 0xc5, 0xca, 0x23, 0xd0, 0x7d, 0x7c, 0x1f, 0xfb, 0x74, 0xd5,
+	0xfe, 0x94, 0x09, 0xc6, 0x4b, 0xa0, 0xe3, 0x38, 0x0e, 0x63, 0xba, 0xde, 0xd6, 0xe5, 0xde, 0xa5,
+	0x68, 0x76, 0xe9, 0x7a, 0x1c, 0x4f, 0x42, 0x17, 0x4f, 0x99, 0xc5, 0x02, 0xe8, 0x4c, 0x6e, 0x2c,
+	0xe9, 0x44, 0xd6, 0x63, 0x1d, 0x3a, 0x36, 0x17, 0x4e, 0x1d, 0x0b, 0xb1, 0xb8, 0x6e, 0x8c, 0x93,
+	0x84, 0x87, 0x92, 0x89, 0x24, 0x92, 0x28, 0x0e, 0xef, 0x78, 0x29, 0x8d, 0xa4, 0x39, 0xe5, 0x92,
+	0x31, 0x06, 0xf8, 0x10, 0xe3, 0xbb, 0xb7, 0x98, 0x4d, 0xa7, 0x36, 0x78, 0x90, 0x6b, 0x8c, 0xd7,
+	0x61, 0x48, 0xed, 0xbe, 0xb3, 0xc4, 0x31, 0x1f, 0xd5, 0xa2, 0xa3, 0x86, 0x0f, 0x0a, 0x7a, 0xe3,
+	0x15, 0xe8, 0xbf, 0xed, 0x25, 0x69, 0x18, 0x2f, 0xf9, 0xc0, 0x36, 0x1d, 0xd8, 0x3f, 0x94, 0x95,
+	0xc6, 0x3e, 0x0c, 0xec, 0xc5, 0x4c, 0x99, 0xb0, 0x43, 0xc7, 0x0d, 0x12, 0x55, 0x6d, 0x9c, 0x87,
+	0x2d, 0x7b, 0x31, 0xa3, 0x19, 0xe1, 0x03, 0xbb, 0x74, 0xe0, 0x56, 0xa2, 0x68, 0xc9, 0xba, 0xb7,
+	0xc2, 0x68, 0xe1, 0x3b, 0xb1, 0xf7, 0x19, 0x7e, 0x7f, 0xfa, 0xae, 0x09, 0x34, 0xf6, 0x7e, 0x24,
+	0x2b, 0x09, 0x4a, 0x49, 0xea, 0xa4, 0xd8, 0xec, 0x31, 0x94, 0xa8, 0x20, 0xb0, 0xdb, 0x94, 0xb1,
+	0x1b, 0x81, 0x7e, 0x75, 0xe1, 0xf9, 0xae, 0xd9, 0x67, 0xda, 0x19, 0x11, 0x48, 0xae, 0xe8, 0xb2,
+	0x93, 0x43, 0x62, 0xda, 0xa2, 0x26, 0x70, 0x72, 0x0d, 0xb1, 0xd3, 0xbf, 0x3e, 0x70, 0x88, 0x7d,
+	0xc0, 0xec, 0xb3, 0x5c, 0x43, 0xec, 0xcc, 0xe3, 0x29, 0x71, 0x63, 0xc8, 0xec, 0x51, 0xae, 0x31,
+	0xf6, 0xa0, 0xc7, 0xec, 0x37, 0xc2, 0x20, 0x3d, 0x34, 0xb7, 0x69, 0xb0, 0xbd, 0x48, 0xa8, 0x72,
+	0x0f, 0x6e, 0x7b, 0xa9, 0x8f, 0x4d, 0x63, 0x0f, 0xed, 0xeb, 0xdc, 0x03, 0xaa, 0x11, 0x9c, 0xdb,
+	0xa9, 0xe2, 0x1c, 0x59, 0x84, 0xcd, 0xf8, 0xa6, 0x17, 0x27, 0xa9, 0x39, 0x92, 0x17, 0xa1, 0x2a,
+	0xc3, 0x82, 0x4d, 0x26, 0xda, 0xf8, 0x20, 0x0c, 0x5c, 0xf3, 0x0c, 0x1d, 0xa2, 0xe8, 0xac, 0xdb,
+	0xb0, 0xc9, 0xb6, 0xde, 0x0d, 0x27, 0x70, 0xe6, 0xd8, 0x30, 0x40, 0x8b, 0x9c, 0x39, 0xe6, 0x3b,
+	0x80, 0x7e, 0xaf, 0xa1, 0xe9, 0x59, 0x68, 0x2d, 0x12, 0x1c, 0x7b, 0x2e, 0x67, 0x29, 0x97, 0xac,
+	0x47, 0x08, 0x36, 0xed, 0xe3, 0xa6, 0x1d, 0x81, 0x7e, 0x10, 0x2e, 0x82, 0x94, 0x4e, 0xda, 0x9f,
+	0x32, 0xc1, 0x78, 0x19, 0x34, 0xdf, 0x4b, 0x52, 0xb3, 0xb9, 0xd7, 0xdc, 0xef, 0x5d, 0x1e, 0x90,
+	0xc0, 0xa5, 0x89, 0xa6, 0xd4, 0x28, 0xd2, 0xa3, 0x55, 0x6e, 0xc9, 0x9f, 0x11, 0xf4, 0x64, 0x0f,
+	0xa4, 0x20, 0x50, 0xe5, 0x5e, 0x6b, 0xa8, 0x7b, 0x6d, 0x08, 0xcd, 0x60, 0x71, 0x8f, 0xc6, 0xd6,
+	0x9f, 0x92, 0xcf, 0xca, 0xdd, 0x97, 0xb3, 0x4f, 0x97, 0xd9, 0x67, 0x80, 0x16, 0x13, 0x86, 0xb4,
+	0x58, 0xd4, 0xe4, 0xbb, 0x80, 0x7c, 0xbb, 0x88, 0xbc, 0xf5, 0x35, 0x02, 0x63, 0x22, 0x6d, 0x8a,
+	0x53, 0xe1, 0x92, 0x97, 0x9d, 0x30, 0xcd, 0x6a, 0xa1, 0x50, 0xe4, 0x6e, 0x69, 0x92, 0x5b, 0x02,
+	0x49, 0x5d, 0x41, 0x92, 0xb8, 0x63, 0xd7, 0x73, 0xa7, 0x1c, 0xcf, 0xd7, 0x14, 0x3c, 0xcf, 0xe4,
+	0x78, 0xca, 0xd3, 0xd5, 0x47, 0xf5, 0x27, 0x04, 0xdb, 0x47, 0xbd, 0xa9, 0xc6, 0x76, 0x17, 0x3a,
+	0x81, 0x77, 0x70, 0x97, 0x96, 0x5f, 0x96, 0xa3, 0x5c, 0x3e, 0x45, 0x92, 0xca, 0x51, 0x56, 0x11,
+	0x6d, 0x1d, 0x41, 0xf4, 0x63, 0xe8, 0x4f, 0x6c, 0x9c, 0xd2, 0x31, 0x37, 0x43, 0x25, 0xd7, 0x48,
+	0xce, 0xb5, 0xea, 0x50, 0xa3, 0xe8, 0xd0, 0x59, 0x68, 0x25, 0xd8, 0xbf, 0x23, 0xf6, 0x1a, 0x93,
+	0xac, 0x43, 0xe8, 0xdb, 0xff, 0xc1, 0xf4, 0x79, 0xf2, 0x9b, 0x95, 0xc9, 0xbf, 0x06, 0x9b, 0x2f,
+	0xbe, 0x90, 0x75, 0x27, 0xab, 0x38, 0xbc, 0xe8, 0x97, 0x51, 0xc9, 0x00, 0x2d, 0xf5, 0x72, 0xc8,
+	0xe8, 0xb7, 0x48, 0x7e, 0x53, 0x4e, 0xbe, 0x04, 0xbd, 0xa6, 0x40, 0x6f, 0x7d, 0x95, 0xd7, 0xa0,
+	0x35, 0x0b, 0x9d, 0x86, 0xb3, 0xd7, 0x70, 0xea, 0x78, 0x7e, 0x7d, 0xce, 0x7e, 0xa7, 0x72, 0x96,
+	0xfd, 0x5e, 0x99, 0x3c, 0x51, 0x61, 0x1a, 0xe5, 0x15, 0xa6, 0x59, 0x38, 0xdf, 0xe6, 0xe9, 0x32,
+	0x62, 0x34, 0xd5, 0xa7, 0x4c, 0xc8, 0xb9, 0xab, 0x4b, 0xdc, 0x25, 0x29, 0x25, 0x03, 0x19, 0x3f,
+	0xe9, 0xb7, 0xf5, 0x18, 0xc1, 0x80, 0x61, 0x71, 0xcd, 0x59, 0xae, 0xc9, 0xd2, 0x39, 0xe8, 0x26,
+	0xa9, 0x13, 0xa7, 0xb7, 0x05, 0x26, 0x42, 0x41, 0x20, 0xc0, 0x81, 0x4b, 0x6d, 0xbc, 0x57, 0xe1,
+	0xa2, 0x4a, 0x04, 0xad, 0x84, 0xd0, 0x65, 0x25, 0x47, 0x22, 0x7a, 0x4b, 0x21, 0xfa, 0x0f, 0x08,
+	0x06, 0x76, 0x0d, 0x6f, 0xcb, 0x31, 0xbd, 0xa8, 0x60, 0x6a, 0xe6, 0x98, 0xe6, 0x73, 0x9d, 0x10,
+	0x56, 0xb2, 0x4c, 0x1a, 0xa6, 0x8e, 0xcf, 0x7b, 0x2d, 0x26, 0x58, 0xff, 0x20, 0x18, 0x95, 0xcd,
+	0x7b, 0x62, 0xbc, 0x87, 0xd0, 0x74, 0x9d, 0x65, 0x76, 0xf6, 0xb8, 0xce, 0xf2, 0x98, 0x6c, 0xca,
+	0x95, 0x4e, 0x2f, 0x54, 0xba, 0x42, 0xab, 0xd0, 0x3a, 0xbe, 0x55, 0x68, 0x1f, 0x6d, 0x15, 0xc4,
+	0x2c, 0xac, 0xab, 0xe9, 0x1c, 0xe9, 0x6a, 0xac, 0x6f, 0x10, 0x6c, 0xcb, 0x7b, 0xfb, 0xbd, 0xd8,
+	0xc5, 0x71, 0xe5, 0x06, 0x27, 0x6c, 0x64, 0x10, 0xd1, 0x6f, 0x95, 0x65, 0xcd, 0x35, 0x2c, 0xd3,
+	0x54, 0x96, 0x49, 0x25, 0x40, 0x57, 0x4b, 0xc0, 0xf7, 0x08, 0xb6, 0xed, 0x5a, 0xfe, 0x94, 0x73,
+	0x66, 0x5f, 0xe1, 0xcc, 0xa8, 0x50, 0x07, 0xe8, 0x6c, 0x9c, 0x2f, 0x59, 0x3c, 0x9a, 0x14, 0x4f,
+	0xce, 0x21, 0xbd, 0xb2, 0x34, 0xfc, 0x8a, 0x60, 0x78, 0xc4, 0x3f, 0x13, 0xda, 0x21, 0xf9, 0x10,
+	0xa7, 0x19, 0x17, 0x25, 0x0e, 0x35, 0x14, 0x0e, 0xc9, 0xd8, 0x37, 0x0b, 0xd8, 0x57, 0x75, 0x2c,
+	0x84, 0x4d, 0x51, 0xe4, 0x2f, 0x69, 0x9d, 0xd5, 0x39, 0x9b, 0x32, 0x05, 0xb1, 0xc6, 0x38, 0xb3,
+	0xb2, 0x6d, 0x28, 0x14, 0xa2, 0x03, 0x67, 0xed, 0x0b, 0x13, 0xac, 0x0b, 0x2a, 0xf8, 0x57, 0xc8,
+	0x64, 0xd2, 0xf2, 0x2c, 0xdd, 0x5c, 0xb2, 0x6e, 0xaa, 0xc8, 0xac, 0x1d, 0x5c, 0xe7, 0x06, 0x36,
+	0x51, 0x17, 0x9f, 0x12, 0x5f, 0xd7, 0x64, 0x32, 0x8f, 0xa0, 0x21, 0x47, 0xf0, 0x85, 0xea, 0xd4,
+	0xa9, 0x26, 0x91, 0x82, 0x68, 0x2a, 0x09, 0xaf, 0x71, 0x52, 0x9c, 0x87, 0xa1, 0x12, 0x84, 0x13,
+	0xdc, 0x2d, 0x63, 0xab, 0xf5, 0x25, 0x82, 0xa1, 0x5d, 0x63, 0xe0, 0x09, 0x5b, 0x6c, 0x3e, 0x59,
+	0xed, 0x83, 0x2d, 0xe1, 0x1d, 0x36, 0xaf, 0xc5, 0x32, 0x0b, 0x51, 0x81, 0x85, 0xd5, 0x3d, 0x76,
+	0xc5, 0x15, 0xa2, 0x8a, 0xb7, 0xd6, 0x13, 0xd1, 0x1f, 0xd3, 0x2b, 0xe6, 0x9a, 0x86, 0xb4, 0x6a,
+	0xbb, 0x5c, 0xc8, 0x70, 0x63, 0xad, 0x8e, 0x38, 0xdf, 0xaf, 0x44, 0x51, 0x1c, 0xde, 0xc7, 0x36,
+	0x31, 0x66, 0x70, 0xae, 0xaf, 0xba, 0xe5, 0x1d, 0x61, 0xd5, 0x09, 0xf6, 0x44, 0x34, 0xd3, 0xc7,
+	0xf9, 0x7e, 0xc2, 0xc6, 0x44, 0x9a, 0x8e, 0xe3, 0x97, 0x07, 0xa9, 0xd5, 0x08, 0xb2, 0x46, 0xa9,
+	0xfa, 0xbb, 0x91, 0x75, 0x31, 0xb2, 0xeb, 0x55, 0xa7, 0xda, 0xba, 0xbe, 0xdb, 0x00, 0xed, 0x20,
+	0xf4, 0x02, 0xbe, 0x3d, 0xe8, 0x77, 0x75, 0x1b, 0x27, 0x33, 0x47, 0x57, 0x99, 0xa3, 0xbc, 0xad,
+	0xb4, 0x8a, 0x6f, 0x2b, 0x39, 0x32, 0xed, 0x42, 0xaf, 0x2e, 0xee, 0xe9, 0xf4, 0x08, 0x53, 0x6f,
+	0xee, 0xbb, 0xd0, 0xf9, 0x34, 0xf4, 0x02, 0x5a, 0xf6, 0xba, 0xcc, 0xef, 0x4c, 0x16, 0xdb, 0x1d,
+	0xe4, 0x77, 0x87, 0x73, 0xd0, 0xf5, 0xc3, 0xb9, 0x17, 0xd0, 0x93, 0xa9, 0xc7, 0xbc, 0xc8, 0x15,
+	0x2a, 0x7b, 0x36, 0x8b, 0xec, 0xd9, 0x83, 0xde, 0x2c, 0xf6, 0x82, 0x39, 0x7f, 0x14, 0xe9, 0xb3,
+	0x13, 0x55, 0x52, 0x59, 0x31, 0xec, 0xc8, 0x64, 0xe7, 0xd8, 0x09, 0x70, 0x51, 0x0d, 0x70, 0xab,
+	0xb6, 0x41, 0xd5, 0x85, 0xe2, 0x73, 0xd8, 0xb1, 0xff, 0xaf, 0x35, 0x6b, 0xdc, 0x32, 0x3e, 0x82,
+	0x9d, 0xfc, 0xba, 0x24, 0x5e, 0x59, 0x2a, 0x99, 0x96, 0xf5, 0xba, 0x0d, 0xf5, 0x32, 0x5b, 0x1a,
+	0xd9, 0x43, 0xd8, 0xb1, 0x5f, 0x70, 0x6a, 0xa2, 0xc3, 0x49, 0xca, 0xfb, 0x32, 0xfa, 0x5d, 0xa7,
+	0x54, 0xbe, 0x0a, 0xdd, 0xc9, 0x5b, 0x7c, 0xe5, 0xea, 0xeb, 0xaa, 0xf5, 0x1b, 0x82, 0xae, 0x7d,
+	0xfc, 0xb8, 0x7a, 0xd7, 0x5a, 0xd1, 0x0d, 0x48, 0xdb, 0x42, 0x7e, 0x24, 0xd5, 0x2a, 0x1f, 0x49,
+	0x75, 0xf9, 0x91, 0x94, 0x10, 0xff, 0x3e, 0x7d, 0x09, 0x23, 0x9b, 0xac, 0x33, 0x65, 0x82, 0x88,
+	0xba, 0x5d, 0x15, 0xf5, 0xd5, 0x8b, 0x4f, 0x9f, 0x8d, 0x37, 0x7e, 0x7f, 0x36, 0xde, 0x78, 0xfe,
+	0x6c, 0x8c, 0x1e, 0xad, 0xc6, 0xe8, 0xc7, 0xd5, 0x18, 0xfd, 0xb2, 0x1a, 0xa3, 0xa7, 0xab, 0x31,
+	0xfa, 0x63, 0x35, 0x46, 0x7f, 0xad, 0xc6, 0x1b, 0xcf, 0x57, 0x63, 0xf4, 0xed, 0x9f, 0xe3, 0x8d,
+	0x59, 0x8b, 0x3e, 0x06, 0xbf, 0xf1, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x21, 0x85, 0x25, 0x87,
+	0x35, 0x16, 0x00, 0x00,
 }

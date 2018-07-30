@@ -210,8 +210,8 @@ func RoleRecordMsg(msg *data.RoleRecord) *pb.RoleRecord {
 }
 
 //LogProfitMsg 打包收益日志消息
-func LogProfitMsg(agentid, userid string, gtype, rtype int32,
-	level, rate uint32, profit int64) (msg *pb.LogProfit) {
+func LogProfitMsg(agentid, userid, nickname, agentnote string,
+	gtype, rtype int32,	level, rate uint32, profit int64) (msg *pb.LogProfit) {
 	msg = &pb.LogProfit{
 		Agentid: agentid,
 		Userid:  userid,
@@ -220,6 +220,8 @@ func LogProfitMsg(agentid, userid string, gtype, rtype int32,
 		Rate:    rate,
 		Profit:  profit,
 		Type:    rtype,
+		Agentnote: agentnote,
+		Nickname: nickname,
 	}
 	return
 }

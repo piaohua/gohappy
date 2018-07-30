@@ -92,13 +92,15 @@ message LogTask {
 
 //收益记录
 message LogProfit {
-    string Userid = 1;//玩家ID
+    string Userid = 1;//玩家ID,from
     int32  Gtype  = 2;//game type
     uint32 Level  = 3;//level type
     uint32 Rate   = 4;//rate
     int64  Profit = 5;//Profit
-    string Agentid = 6;//代理ID
+    string Agentid = 6;//代理ID,to
     int32 Type    = 7;//类型
+    string agentnote = 8;//备注
+    string nickname = 9;//昵称
 }
 
 //银行操作日志
@@ -112,11 +114,11 @@ message LogBank {
 
 //系统收益记录
 message LogSysProfit {
-    string Userid = 1;//玩家ID
+    string Userid = 1;//玩家ID,from
     int32  Gtype  = 2;//game type
     uint32 Level  = 3;//level type
     uint32 Rate   = 4;//rate
     int64  Profit = 5;//Profit
-    string Agentid = 6;//代理ID
+    string Agentid = 6;//代理ID,to
     int64  Rest   = 7; //收益剩余数量
 }

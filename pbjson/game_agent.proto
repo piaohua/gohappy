@@ -27,7 +27,7 @@ message SMyAgent
     string agentname = 1;//名字
     string agentid = 2;//绑定的代理id
     string address = 3;//地址
-    int64 profit = 4;//收益
+    int64 profit = 4;//玩家收益
     int64 WeekProfit = 5;//本周收益
     int64 WeekPlayerProfit = 6;//本周玩家业绩
     int64 HistoryProfit = 7;//历史收益
@@ -43,6 +43,8 @@ message SMyAgent
     int64 ProfitMonth = 17;//区域收益数量
     int32 AgentTitle = 18;//代理头衔4玩家，3普通，2大代理，1合伙人
     ErrCode error= 19;//错误码 ,0:正常
+    int64 profitFirst = 20;//一级收益
+    int64 profitSecond = 21;//二级收益
 }
 
 // 代理管理
@@ -125,7 +127,7 @@ message SetAgentNote
 message CAgentProfit
 {
     uint32 page = 1;//页数
-    string time = 2;//收益日期时间,查询参数
+    string time = 2;//收益日期时间,查询参数,2018/7/30 11:27:49
     uint32 level = 3;//收益等级
     string agentid = 4;//代理id,server参数
 }
@@ -152,8 +154,11 @@ message AgentProfitDetail
 message CAgentDayProfit
 {
     uint32 page = 1;//页数
-    string time = 2;//收益日期时间,查询参数
-    string userid = 3;//玩家id,server参数
+    string startTime = 2;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string endTime = 3;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string agentnote = 4;//备注,查询参数
+    string userid = 5;//玩家id,查询参数
+    string selfid = 6;//玩家id,server参数
 }
 
 message SAgentDayProfit
@@ -162,13 +167,19 @@ message SAgentDayProfit
     uint32 count = 2;//总数
     repeated AgentDayProfitDetail list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
+    int64 total = 5;//总收益
 }
 
 message AgentDayProfitDetail
 {
     string userid = 1;//代理id
-    int64 profit = 2;//收益
+    int64 profit = 2;//玩家收益
     uint32 day = 3;//日期20180728
+    string agentnote = 4;//备注
+    string nickname = 5;//昵称
+    int64 profitFirst = 6;//一级收益
+    int64 profitSecond = 7;//二级收益
+    int64 profitMonth = 8;//区域收益
 }
 
 // 代理收益提现订单明细
@@ -176,7 +187,9 @@ message CAgentProfitOrder
 {
     uint32 page = 1;//页数
     uint32 type = 2;//0下级的订单,1自己的订单
-    string agentid = 3;//代理id,server参数
+    string startTime = 3;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string endTime = 4;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string agentid = 5;//代理id,server参数
 }
 
 message SAgentProfitOrder
@@ -254,7 +267,9 @@ message CAgentPlayerManage
     uint32 page = 1;//页数
     string userid = 2;//玩家id,查询参数
     AgentApproveState state = 3;//状态，0审批中或玩家，1通过，2拒绝
-    string selfid = 4;//玩家id,server参数
+    string agentnote = 4;//备注,查询参数
+    uint32 level = 5;//收益等级,查询参数,0全部,1玩家,2一级代理
+    string selfid = 6;//玩家id,server参数
 }
 
 message SAgentPlayerManage
@@ -276,8 +291,11 @@ message AgentPlayerManage
     string agentname = 6;//名字
     uint32 level = 7;//代理等级
     uint32 profitRate = 8;//收益占比
-    string jointime = 9;//名字
+    string jointime = 9;//加入时间
     uint32 state = 10;//状态，0不是代理,1开通代理,2审核中
+    string loginTime = 11;//最后登录时间
+    string agentnote = 12;//备注
+    int64 bringProfit = 13;//贡献收益
 }
 
 // 代理玩家申请审批
