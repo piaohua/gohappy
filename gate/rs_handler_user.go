@@ -62,7 +62,7 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.BankGive:
 		arg := msg.(*pb.BankGive)
 		glog.Debugf("BankGive %#v", arg)
-		rs.addBank(arg.Coin, arg.Type, arg.From)
+		//rs.addBank(arg.Coin, arg.Type, arg.From)
 		rs.addCurrency(0, arg.GetCoin(), 0, 0, arg.GetType())
 		if rs.gamePid != nil {
 			rs.gamePid.Tell(arg)
