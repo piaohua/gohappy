@@ -599,7 +599,10 @@ func (t *Desk) resOver(score map[uint32]int64) (msg *pb.SSGGameover) {
 		Dealer:     t.DeskGame.Dealer,
 		DealerSeat: t.DeskGame.DealerSeat,
 		Round:      t.DeskGame.Round,
-		LeftRound:  (t.DeskData.Round - t.DeskGame.Round),
+		//LeftRound:  (t.DeskData.Round - t.DeskGame.Round),
+	}
+	if t.DeskData.Round > t.DeskGame.Round {
+		msg.LeftRound = (t.DeskData.Round - t.DeskGame.Round)
 	}
 	for k, v := range score {
 		d := &pb.SGRoomOver{
