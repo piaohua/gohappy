@@ -1505,6 +1505,10 @@
             "profitSecond": {
               "type": "int64",
               "id": 21
+            },
+            "profitLastMonth": {
+              "type": "int64",
+              "id": 22
             }
           }
         },

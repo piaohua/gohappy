@@ -439,6 +439,7 @@ func AgentProfitNumMsg(userid string, gtype int32, profit int64) (msg *pb.AgentP
 //AgentProfitMonthSend 区域奖励发放
 func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 	user.AddProfitMonth(-1 * arg.GetProfit())
+	user.ProfitLastMonth = arg.GetProfit()
 	isAgent := IsAgent(user)
 	user.AddProfit(isAgent, 1, arg.GetProfit())
 	//user.Month = int(utils.Month())
@@ -447,6 +448,9 @@ func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 
 //AgentProfitMonthSendLog 区域奖励发放日志
 func AgentProfitMonthSendLog(arg *pb.AgentProfitMonthSend, user *data.User) (msg2 *pb.LogProfit) {
+	if arg.GetProfit() <= 0 {
+		return
+	}
 	msg2 = LogProfitMsg(arg.Userid, arg.Userid, user.GetNickname(), user.GetAgentNote(),
 		0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
 	return
@@ -472,7 +476,7 @@ func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.A
 	//发放消息
 	msg5 = &pb.AgentProfitMonthSend{
 		Userid: user.GetUserid(),
-		Profit: user.GetProfitMonth(),
+		Profit: user.GetProfitMonth(),//为0时依然发送
 		Month:  int32(user.GetMonth()),
 	}
 	AgentProfitMonthSend(msg5, user)

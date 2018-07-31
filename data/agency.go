@@ -253,6 +253,8 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
 	}
 	//TODO group by agentid userid
+	//result, err2 := agentDayProfitGroup(q)
+	//glog.Debugf("result %#v, err2 %v", result, err2)
 	err := LogDayProfits.
 		Find(q).
 		Sort(sortFieldR).
@@ -262,6 +264,40 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	if err != nil {
 	}
 	return list, err
+}
+
+//分组统计
+func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
+	m := bson.M{"$match": match}
+	n := bson.M{
+		"$group": bson.M{
+			"_id": bson.M{"userid": "$userid", "agentid": "$agentid", "day": "$day"},
+			"profit": bson.M{
+				"$sum": "$profit",
+			},
+			"profit_first": bson.M{
+				"$sum": "$profit_first",
+			},
+			"profit_second": bson.M{
+				"$sum": "$profit_second",
+			},
+			"profit_month": bson.M{
+				"$sum": "$profit_month",
+			},
+			"nickname": bson.M{
+				"$nickname": 1,
+			},
+			"agent_note": bson.M{
+				"$agent_note": 1,
+			},
+		},
+	}
+	//统计
+	operations := []bson.M{m, n}
+	result = []bson.M{}
+	pipe := LogDayProfits.Pipe(operations)
+	err = pipe.All(&result)
+	return
 }
 
 //LogProfitOrder 提取收益订单

@@ -242,6 +242,7 @@ func (rs *RoleActor) agentInfo() {
 	rsp.AgentTitle = handler.GetAgentTitle(rs.User)
 	rsp.ProfitFirst = rs.User.ProfitFirst
 	rsp.ProfitSecond = rs.User.ProfitSecond
+	rsp.ProfitLastMonth = rs.User.ProfitLastMonth
 	rs.Send(rsp)
 }
 

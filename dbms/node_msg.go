@@ -78,6 +78,8 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	for _, v := range rs {
 		rolePid.Tell(v)
 	}*/
+	//list, err := data.GetAgentDayProfit(&pb.CAgentDayProfit{Selfid:"105757",Page:1})
+	//glog.Debugf("list %#v, err %v", list, err)
 	//启动
 	go a.ticker(ctx)
 }

@@ -276,7 +276,7 @@ func (a *RoleActor) agentProfitMonthSend(arg *pb.AgentProfitMonthSend, ctx actor
 		return
 	}
 	handler.AgentProfitMonthSend(arg, user)
-	user.UpdateAgentProfitMonth() //暂时实时写入, TODO 异步数据更新
+	user.UpdateAgentProfitLastMonth() //暂时实时写入, TODO 异步数据更新
 }
 
 //提现受理消息

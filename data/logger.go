@@ -403,7 +403,7 @@ func (t *LogDayProfit) Save() bool {
 }
 
 func (t *LogDayProfit) Has() bool {
-	return Has(LogDayProfits, bson.M{"userid": t.Userid, "day": t.Day})
+	return Has(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day})
 }
 
 func (t *LogDayProfit) Update(field string) bool {
@@ -420,28 +420,32 @@ func DayProfitRecord(arg *pb.LogProfit) {
 	record := &LogDayProfit{
 		Userid: arg.GetUserid(),
 		Agentid: arg.GetAgentid(),
-		Profit: arg.GetProfit(),
+		//Profit: arg.GetProfit(),
 		Nickname: arg.GetNickname(),
 		AgentNote: arg.GetAgentnote(),
 	}
 	record.Utime = bson.Now()
 	record.Day = utils.Time2DayDate(record.Utime)
-	if record.Has() {
-		var field string
-		switch arg.GetType() {
-		case int32(pb.LOG_TYPE53),
-			int32(pb.LOG_TYPE54):
-			field = "profit_month"
-		case int32(pb.LOG_TYPE52):
-			switch arg.GetLevel() {
-			case 1:
-				field = "profit"
-			case 2:
-				field = "profit_first"
-			case 3:
-				field = "profit_second"
-			}
+	var field string
+	switch arg.GetType() {
+	case int32(pb.LOG_TYPE53),
+		int32(pb.LOG_TYPE54):
+		field = "profit_month"
+		record.ProfitMonth = arg.GetProfit()
+	case int32(pb.LOG_TYPE52):
+		switch arg.GetLevel() {
+		case 1:
+			field = "profit"
+			record.Profit = arg.GetProfit()
+		case 2:
+			field = "profit_first"
+			record.ProfitFirst = arg.GetProfit()
+		case 3:
+			field = "profit_second"
+			record.ProfitSecond = arg.GetProfit()
 		}
+	}
+	if record.Has() {
 		record.Update(field)
 	} else {
 		record.Save()

@@ -45,6 +45,7 @@ message SMyAgent
     ErrCode error= 19;//错误码 ,0:正常
     int64 profitFirst = 20;//一级收益
     int64 profitSecond = 21;//二级收益
+    int64 profitLastMonth = 22;//上月区域收益
 }
 
 // 代理管理

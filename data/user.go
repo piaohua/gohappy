@@ -59,6 +59,7 @@ type User struct {
 	ProfitRate       uint32    `bson:"profit_rate" json:"profit_rate"`               // 分佣比例
 	Profit           int64     `bson:"profit" json:"profit"`                         // 收益
 	ProfitMonth      int64     `bson:"profit_month" json:"profit_month"`             // 月收益
+	ProfitLastMonth  int64     `bson:"profit_last_month" json:"profit_last_month"`             // 上月收益
 	Month            int       `bson:"month" json:"month"`                           // 当前月
 	WeekProfit       int64     `bson:"week_profit" json:"week_profit"`               // 本周收益
 	WeekPlayerProfit int64     `bson:"week_player_profit" json:"week_player_profit"` // 本周玩家收益
@@ -155,6 +156,12 @@ func (this *User) UpdateAgentProfitMonth() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"profit_month": this.ProfitMonth,
 			"month": this.Month}})
+}
+
+func (this *User) UpdateAgentProfitLastMonth() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"profit_month": this.ProfitMonth,
+			"month": this.Month, "profit_last_month": this.ProfitLastMonth}})
 }
 
 func (this *User) UpdateAgentProfitRate() bool {
