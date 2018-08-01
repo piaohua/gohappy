@@ -375,7 +375,7 @@ func (rs *RoleActor) agentDayProfit(arg *pb.CAgentDayProfit, ctx actor.Context) 
 		rs.Send(rsp)
 		return
 	}
-	arg.Userid = rs.User.GetUserid()
+	arg.Selfid = rs.User.GetUserid()
 	rs.dbmsPid.Request(arg, ctx.Self())
 }
 
@@ -446,6 +446,11 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 	rsp.Rate = arg.GetRate()
 	if handler.IsNotAgent(rs.User) {
 		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	if arg.GetPassword() != rs.User.BankPassword {
+		rsp.Error = pb.PwdError
 		rs.Send(rsp)
 		return
 	}

@@ -171,6 +171,9 @@ func PackPlayerManageMsg(arg *pb.CAgentPlayerManage) (msg *pb.SAgentPlayerManage
 		if val, ok := v["login_time"]; ok {
 			msg2.LoginTime = utils.Time2LocalStr(val.(time.Time))
 		}
+		if val, ok := v["ctime"]; ok {
+			msg2.Ctime = utils.Time2LocalStr(val.(time.Time))
+		}
 		if val, ok := v["agent_note"]; ok {
 			msg2.Agentnote = val.(string)
 		}

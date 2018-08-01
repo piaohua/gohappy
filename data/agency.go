@@ -165,7 +165,8 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "coin", false)
 	var list []bson.M
-	selector := make(bson.M, 12)
+	selector := make(bson.M, 13)
+	selector["ctime"] = true
 	selector["coin"] = true
 	selector["agent"] = true
 	selector["agent_level"] = true
@@ -354,7 +355,7 @@ func agentDayProfitCount(match bson.M) (result bson.M, err error) {
 	operations := []bson.M{m, n}
 	result = bson.M{}
 	pipe := LogDayProfits.Pipe(operations)
-	err = pipe.All(&result)
+	err = pipe.One(&result)
 	return
 }
 

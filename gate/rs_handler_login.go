@@ -218,12 +218,15 @@ func (rs *RoleActor) loginFailed(ctx actor.Context) {
 //默认头像
 func (rs *RoleActor) setHeadImag(isRegist bool, ctx actor.Context) {
 	if !isRegist {
-		return
+		//return
 	}
 	if rs.User == nil {
 		return
 	}
 	if rs.User.GetPhoto() != "" {
+		return
+	}
+	if !rs.User.GetRobot() {
 		return
 	}
 	if len(HeadImagList) == 0 {

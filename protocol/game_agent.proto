@@ -296,11 +296,12 @@ message AgentPlayerManage
     string agentname = 6;//名字
     uint32 level = 7;//代理等级
     uint32 profitRate = 8;//收益占比
-    string jointime = 9;//加入时间
+    string jointime = 9;//申请加入时间
     uint32 state = 10;//状态，0不是代理,1开通代理,2审核中
     string loginTime = 11;//最后登录时间
     string agentnote = 12;//备注
     int64 bringProfit = 13;//贡献收益
+    string ctime = 14;//注册时间
 }
 
 // 代理玩家申请审批
@@ -323,7 +324,8 @@ message CSetAgentProfitRate
 {
     string userid = 1;//玩家id
     uint32 rate = 2;//百分比,增量
-    string selfid = 3;//玩家id,server参数
+    string password = 3;//密码(md5)
+    string selfid = 4;//玩家id,server参数
 }
 
 message SSetAgentProfitRate

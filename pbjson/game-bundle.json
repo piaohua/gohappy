@@ -2160,6 +2160,10 @@
             "bringProfit": {
               "type": "int64",
               "id": 13
+            },
+            "ctime": {
+              "type": "string",
+              "id": 14
             }
           }
         },
@@ -2205,9 +2209,13 @@
               "type": "uint32",
               "id": 2
             },
-            "selfid": {
+            "password": {
               "type": "string",
               "id": 3
+            },
+            "selfid": {
+              "type": "string",
+              "id": 4
             }
           }
         },

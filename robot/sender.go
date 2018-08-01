@@ -60,7 +60,7 @@ func (c *Robot) addCurrency() {
 
 //SendDefer 延迟发送
 func (c *Robot) SendDefer(msg interface{}) {
-	utils.Sleep(utils.RandIntN(4) + 1) //随机
+	utils.Sleep(utils.RandIntN(6) + 1) //随机
 	c.Sender(msg)
 }
 
