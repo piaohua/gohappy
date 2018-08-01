@@ -336,7 +336,7 @@ func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
 	if arg.Build != 0 && (user.Build % 10 == 0) {
 		a.sendCurrency(user.GetUserid(), 0, 100, int32(pb.LOG_TYPE55))
 		//消息提醒
-		record, msg2 := handler.BuildNotice(100, user.Build, arg.Userid)
+		record, msg2 := handler.BuildNotice(100, user.Build, user.GetUserid())
 		if record != nil {
 			loggerPid.Tell(record)
 		}

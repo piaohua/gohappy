@@ -239,13 +239,13 @@ func RegistRobots3(head, phone, passwd string, genid *IDGen) {
 }
 
 //RegistRobots4 robot regist
-func RegistRobots4(photo, passwd string) (ls []*pb.RobotRegist) {
+func RegistRobots4(photo, passwd, phone string) (ls []*pb.RobotRegist) {
 	rs := make([]RobotInfo, 0)
 	err := LoadRobotInfo("./robot.json", &rs)
 	if err != nil {
 		panic(err)
 	}
-	for _, v := range rs {
+	for k, v := range rs {
 		r := &pb.RobotRegist{
 			ID: v.ID,
 			Nickname: v.Nickname,
@@ -255,8 +255,10 @@ func RegistRobots4(photo, passwd string) (ls []*pb.RobotRegist) {
 			Vip: v.Vip,
 			Phone: v.Phone,
 			Photo: photo,
-			Password: passwd,
+			Password: utils.Md5(passwd),
+			Auth: string(utils.GetAuth()),
 		}
+		r.Phone = utils.StringAdd2(phone, utils.String(k))
 		//HeadImagList := RegistPhotos()
 		//i := utils.RandIntN(len(HeadImagList))
 		//r.Photo = photo + "/" + HeadImagList[i].Photo

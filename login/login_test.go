@@ -25,8 +25,9 @@ func TestWebJson(t *testing.T) {
 	sendCoin("101418", 1000)
 	sendNotice()
 	//sendBuild("101418", "101133")
-	//sendState("101418", 1, 1)
-	//sendRate("101418", 23)
+	//sendState("101133", 1, 1)
+	//sendRate("101133", 23)
+	//sendVaild("101133", "101418", 1, 0, 0)
 }
 
 func sendCoin(userid string, coin int64) {
@@ -128,6 +129,26 @@ func sendState(userid string, state, level uint32) {
 		log.Printf("userid %s, state %d, level %d send successfully.", userid, state, level)
 	} else {
 		log.Printf("userid %s, state %d, level %d send failed.", userid, state, level)
+	}
+}
+
+func sendVaild(agentid, userid string, build, vaild, child uint32) {
+	msg := &pb.AgentBuildUpdate{
+		Agentid:    agentid,
+		Userid:     userid,
+		BuildVaild: vaild,
+		AgentChild: child,
+		Build:      build,
+	}
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebVaild, b) {
+		log.Printf("agentid %s, msg %#v send successfully.", agentid, msg)
+	} else {
+		log.Printf("agentid %s, msg %#v send failed.", agentid, msg)
 	}
 }
 

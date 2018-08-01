@@ -61,12 +61,14 @@ func (rs *RoleActor) enterdDesk(arg *pb.EnteredDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
 		//失败消息
 		rs.enterdDeskErr(arg, ctx)
+		glog.Errorf("entered desk filed arg %#v", arg)
 		return
 	}
 	if arg.Desk == nil {
 		//失败消息
 		arg.Error = pb.EnterFail
 		rs.enterdDeskErr(arg, ctx)
+		glog.Errorf("entered desk filed arg %#v", arg)
 		return
 	}
 	rs.gamePid = arg.Desk
@@ -179,12 +181,14 @@ func (rs *RoleActor) matchedDesk(arg *pb.MatchedDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
 		//失败消息
 		rs.matchedDeskErr(arg, ctx)
+		glog.Errorf("matched desk filed arg %#v", arg)
 		return
 	}
 	if arg.Desk == nil {
 		//失败消息
 		arg.Error = pb.MatchFail
 		rs.matchedDeskErr(arg, ctx)
+		glog.Errorf("matched desk filed arg %#v", arg)
 		return
 	}
 	msg := new(pb.EnterDesk)
@@ -195,6 +199,7 @@ func (rs *RoleActor) matchedDesk(arg *pb.MatchedDesk, ctx actor.Context) {
 	if !rs.enterDeskMsg(msg, ctx) {
 		//失败消息
 		rs.matchedDeskErr(arg, ctx)
+		glog.Errorf("matched desk filed arg %#v", arg)
 		return
 	}
 	//请求消息
@@ -383,6 +388,7 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 //创建房间结果
 func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
+		glog.Errorf("created desk filed arg %#v", arg)
         rs.createdDeskMsg(arg.Gtype, arg.Error)
 		return
 	}

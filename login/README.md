@@ -232,4 +232,14 @@ WebResponse 响应response消息(json格式)
     response.Result = []byte{} //空数据
     example: {}
 
+15、WebVaild 请求Data数据 (json格式)
+    b := new(pb.AgentBuildUpdate)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"userid": "xxx", "userid": "xxx", "AgentChild": 1, "BuildVaild": 1, "Build", 1}
+
+    WebVaild 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
 ```

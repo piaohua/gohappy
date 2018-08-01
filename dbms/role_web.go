@@ -89,6 +89,15 @@ func (a *RoleActor) handlerWeb(arg *pb.WebRequest,
 		if err2 != nil {
 			rsp.ErrMsg = fmt.Sprintf("msg err: %v", err2)
 		}
+	case pb.WebVaild:
+		//后台设置代理
+		msg2 := new(pb.AgentBuildUpdate)
+		err1 := msg2.Unmarshal(arg.Data)
+		if err1 != nil {
+			rsp.ErrMsg = fmt.Sprintf("msg err: %v", err1)
+			return
+		}
+		a.agentBuildUpdate(msg2)
 	default:
 		glog.Errorf("unknown message %v", arg)
 	}

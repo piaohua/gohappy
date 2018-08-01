@@ -582,6 +582,7 @@ func (rs *RoleActor) lucky() {
 			Count:   v.Count,
 			Coin:    v.Coin,
 			Diamond: v.Diamond,
+			Gtype:   v.Gtype,
 		}
 		if val, ok := rs.User.Task[utils.String(v.Luckyid)]; ok {
 			msg2.Num = val.Num

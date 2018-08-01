@@ -48,6 +48,7 @@ enum WebCode {
     WebRate     =12; //设置区域比例
     WebState    =13; //设置代理状态
     WebLucky    =14; //lucky列表
+    WebVaild    =15; //设置代理有效数量
 }
 
 //web请求

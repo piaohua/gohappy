@@ -54,7 +54,8 @@ func (a *LoginActor) Handler(msg interface{}, ctx actor.Context) {
 		switch arg.Code {
 		case pb.WebOnline, pb.WebBuild,
 			pb.WebGive, pb.WebNumber,
-			pb.WebRate, pb.WebState:
+			pb.WebRate, pb.WebState,
+			pb.WebVaild:
 			res1, err1 = a.callRole(arg)
 		default:
 			res1, err1 = a.callDbms(arg)

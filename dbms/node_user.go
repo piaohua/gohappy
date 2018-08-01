@@ -137,6 +137,7 @@ func (a *DBMSActor) matchDesk(msg *pb.MatchDesk, ctx actor.Context) {
 			return
 		}
 	}
+	glog.Errorf("match desk filed serve %#v, msg %#v", a.serve, msg)
 	rsp.Error = pb.Failed
 	ctx.Respond(rsp)
 }
@@ -149,6 +150,7 @@ func (a *DBMSActor) createDesk(msg *pb.CreateDesk, ctx actor.Context) {
 			return
 		}
 	}
+	glog.Errorf("create desk filed serve %#v, msg %#v", a.serve, msg)
 	rsp := new(pb.CreatedDesk)
 	rsp.Rtype = msg.Rtype
 	rsp.Gtype = msg.Gtype
@@ -164,6 +166,7 @@ func (a *DBMSActor) getRoomList(msg *pb.GetRoomList, ctx actor.Context) {
 			return
 		}
 	}
+	glog.Errorf("get room filed serve %#v, msg %#v", a.serve, msg)
 	rsp := new(pb.GotRoomList)
 	rsp.Rtype = msg.Rtype
 	rsp.Gtype = msg.Gtype

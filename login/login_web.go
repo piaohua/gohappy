@@ -116,6 +116,8 @@ func json2pb(msg1 *pb.WebRequest) error {
 		msg3 = new(pb.SetAgentState)
 	case pb.WebRate:
 		msg3 = new(pb.SetAgentProfitRate)
+	case pb.WebVaild:
+		msg3 = new(pb.AgentBuildUpdate)
 	default:
 		return nil
 	}

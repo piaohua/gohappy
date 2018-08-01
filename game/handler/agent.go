@@ -110,12 +110,21 @@ func PackAgentProfitManageMsg(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfitM
 		if val, ok := v["profit_rate"]; ok {
 			msg2.Rate = uint32(val.(int))
 		}
+		if val, ok := v["bring_profit"]; ok {
+			msg2.BringProfit = val.(int64)
+		}
 		if msg2.Agentid == "" {
 			continue
 		}
 		msg2.AgentTitle = agentTitle(msg2.Level, 1, arg.Userid, int64(msg2.Rate))
 		msg.List = append(msg.List, msg2)
 	}
+	//TODO 优化,在明细查询时展示更合理
+	profitMonth, err2 := data.GetAgentDayProfitMonth(arg)
+	if err2 != nil {
+		glog.Errorf("PackAgentProfitManageMsg err2 %v", err2)
+	}
+	msg.Total = profitMonth
 	return
 }
 
@@ -222,6 +231,12 @@ func PackAgentDayProfitMsg(arg *pb.CAgentDayProfit) (msg *pb.SAgentDayProfit) {
 		msg2.ProfitMonth = v.ProfitMonth
 		msg.List = append(msg.List, msg2)
 	}
+	//TODO 优化
+	profitMonth, err2 := data.GetAgentDayProfitCount(arg)
+	if err2 != nil {
+		glog.Errorf("PackAgentProfitManageMsg err2 %v", err2)
+	}
+	msg.Total = profitMonth
 	return
 }
 
@@ -331,10 +346,10 @@ func IsAgent(user *data.User) bool {
 	return user.AgentState == 1
 }
 
-//IsVaild 权限限制(有效玩家3个以上,绑定10个以上)
+//IsVaild 权限限制(有效玩家3个以上,绑定10个以上),,合伙人无限制
 func IsVaild(user *data.User) bool {
 	//return user.BuildVaild >= 3 && user.Build >= 10
-	return user.BuildVaild >= 3
+	return user.BuildVaild >= 3 || GetAgentTitle(user) == 1
 }
 
 //IsProfitApply 是否可以提现,达到10000方可提取

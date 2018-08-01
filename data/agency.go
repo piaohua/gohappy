@@ -8,6 +8,7 @@ import (
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
+	"gohappy/glog"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -122,7 +123,8 @@ func GetAgentProfitManage(arg *pb.CAgentProfitManage) ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
 	var list []bson.M
-	selector := make(bson.M, 5)
+	selector := make(bson.M, 6)
+	selector["bring_profit"] = true
 	selector["profit_rate"] = true
 	selector["nickname"] = true
 	selector["agent_level"] = true
@@ -189,6 +191,8 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 		q["agent_state"] = 1
 	} else if arg.GetLevel() == 1 {
 		q["agent_state"] = 0
+	} else if arg.GetLevel() == 3 {
+		q["build_vaild"] = bson.M{"$lt": 3} //不合格
 	}
 	err := PlayerUsers.
 		Find(q).Select(selector).
@@ -239,19 +243,7 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
 	var list []LogDayProfit
-	q := bson.M{"agentid": arg.GetSelfid()}
-	if arg.GetUserid() != "" {
-		q["userid"] = arg.GetUserid()
-	}
-	if arg.GetAgentnote() != "" {
-		q["agent_note"] = arg.GetAgentnote()
-	}
-	if arg.GetStartTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
-	}
-	if arg.GetEndTime() != "" {
-		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
-	}
+	q := getAgentDayProfitMatch(arg)
 	//TODO group by agentid userid
 	//result, err2 := agentDayProfitGroup(q)
 	//glog.Debugf("result %#v, err2 %v", result, err2)
@@ -266,12 +258,32 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	return list, err
 }
 
+//查询条件
+func getAgentDayProfitMatch(arg *pb.CAgentDayProfit) bson.M {
+	q := bson.M{"agentid": arg.GetSelfid()}
+	if arg.GetUserid() != "" {
+		q["userid"] = arg.GetUserid()
+	}
+	if arg.GetAgentnote() != "" {
+		q["agent_note"] = arg.GetAgentnote()
+	}
+	if arg.GetStartTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
+	}
+	if arg.GetEndTime() != "" {
+		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
+	}
+	return q
+}
+
 //分组统计
 func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 	m := bson.M{"$match": match}
 	n := bson.M{
 		"$group": bson.M{
-			"_id": bson.M{"userid": "$userid", "agentid": "$agentid", "day": "$day"},
+			"_id": bson.M{"userid": "$userid", "agentid": "$agentid"},
+			//"nickname": "$nickname",
+			//"agent_note": "$agent_note",
 			"profit": bson.M{
 				"$sum": "$profit",
 			},
@@ -284,12 +296,6 @@ func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 			"profit_month": bson.M{
 				"$sum": "$profit_month",
 			},
-			"nickname": bson.M{
-				"$nickname": 1,
-			},
-			"agent_note": bson.M{
-				"$agent_note": 1,
-			},
 		},
 	}
 	//统计
@@ -297,6 +303,109 @@ func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 	result = []bson.M{}
 	pipe := LogDayProfits.Pipe(operations)
 	err = pipe.All(&result)
+	return
+}
+
+//GetAgentDayProfitCount 代理天收益明细
+func GetAgentDayProfitCount(arg *pb.CAgentDayProfit) (int64, error) {
+	q := getAgentDayProfitMatch(arg)
+	result, err2 := agentDayProfitCount(q)
+	glog.Debugf("result %#v, err2 %v", result, err2)
+	if err2 != nil {
+		return 0, err2
+	}
+	var num int64
+	if val, ok := result["profit"]; ok {
+		num += val.(int64)
+	}
+	if val, ok := result["profit_first"]; ok {
+		num += val.(int64)
+	}
+	if val, ok := result["profit_second"]; ok {
+		num += val.(int64)
+	}
+	if val, ok := result["profit_month"]; ok {
+		num += val.(int64)
+	}
+	return num, nil
+}
+
+//分组统计
+func agentDayProfitCount(match bson.M) (result bson.M, err error) {
+	m := bson.M{"$match": match}
+	n := bson.M{
+		"$group": bson.M{
+			"_id": 1,
+			"profit": bson.M{
+				"$sum": "$profit",
+			},
+			"profit_first": bson.M{
+				"$sum": "$profit_first",
+			},
+			"profit_second": bson.M{
+				"$sum": "$profit_second",
+			},
+			"profit_month": bson.M{
+				"$sum": "$profit_month",
+			},
+		},
+	}
+	//统计
+	operations := []bson.M{m, n}
+	result = bson.M{}
+	pipe := LogDayProfits.Pipe(operations)
+	err = pipe.All(&result)
+	return
+}
+
+//GetAgentDayProfitMonth 代理天区域收益明细
+func GetAgentDayProfitMonth(arg *pb.CAgentProfitManage) (int64, error) {
+	//if arg.Page == 0 {
+	//	arg.Page = 1
+	//}
+	//pageSize := 20 //取前20条
+	//skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
+	//var list []LogDayProfit
+	q := bson.M{"agentid": arg.GetUserid()}
+	if arg.GetAgentid() != "" {
+		q["userid"] = arg.GetAgentid()
+	}
+	if arg.GetAgentnote() != "" {
+		q["agent_note"] = arg.GetAgentnote()
+	}
+	if arg.GetStartTime() != "" {
+		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
+	}
+	if arg.GetEndTime() != "" {
+		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
+	}
+	result, err2 := agentDayProfitMonthGroup(q)
+	glog.Debugf("result %#v, err2 %v", result, err2)
+	if err2 != nil {
+		return 0, err2
+	}
+	if val, ok := result["profit_month"]; ok {
+		return val.(int64), nil
+	}
+	return 0, nil
+}
+
+//分组统计
+func agentDayProfitMonthGroup(match bson.M) (result bson.M, err error) {
+	m := bson.M{"$match": match}
+	n := bson.M{
+		"$group": bson.M{
+			"_id": 1,
+			"profit_month": bson.M{
+				"$sum": "$profit_month",
+			},
+		},
+	}
+	//统计
+	operations := []bson.M{m, n}
+	result = bson.M{}
+	pipe := LogDayProfits.Pipe(operations)
+	err = pipe.One(&result)
 	return
 }
 

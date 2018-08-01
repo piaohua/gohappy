@@ -1599,9 +1599,17 @@
               "type": "uint32",
               "id": 4
             },
-            "userid": {
+            "startTime": {
               "type": "string",
               "id": 5
+            },
+            "endTime": {
+              "type": "string",
+              "id": 6
+            },
+            "userid": {
+              "type": "string",
+              "id": 7
             }
           }
         },
@@ -1623,6 +1631,10 @@
             "error": {
               "type": "ErrCode",
               "id": 4
+            },
+            "total": {
+              "type": "int64",
+              "id": 5
             }
           }
         },
@@ -1651,6 +1663,10 @@
             "AgentTitle": {
               "type": "int32",
               "id": 6
+            },
+            "bringProfit": {
+              "type": "int64",
+              "id": 7
             }
           }
         },

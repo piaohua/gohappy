@@ -75,14 +75,16 @@ message AgentManage
     int32 AgentTitle = 7;//代理头衔4玩家，3普通，2大代理，1合伙人
 }
 
-// 代理管理
+// 代理区域管理
 message CAgentProfitManage
 {
     uint32 page = 1;//页数
     string agentid = 2;//id,查询参数
     string agentnote = 3;//查询参数
     uint32 rate = 4;//查询参数
-    string userid = 5;//玩家id,server参数
+    string startTime = 5;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string endTime = 6;//收益日期时间,查询参数,2018/7/30 11:27:49
+    string userid = 7;//玩家id,server参数
 }
 
 message SAgentProfitManage
@@ -91,6 +93,7 @@ message SAgentProfitManage
     uint32 count = 2;//总数
     repeated AgentProfitManage list = 3;//列表
     ErrCode error= 4;//错误码 ,0:正常
+    int64 total = 5;//时段区域总收益
 }
 
 message AgentProfitManage
@@ -101,6 +104,7 @@ message AgentProfitManage
     uint32 rate = 4;//区域收益百分比
     uint32 level = 5;//代理等级
     int32 AgentTitle = 6;//代理头衔4玩家，3普通，2大代理，1合伙人
+    int64 bringProfit = 7;//贡献收益
 }
 
 // 代理备注
@@ -269,7 +273,7 @@ message CAgentPlayerManage
     string userid = 2;//玩家id,查询参数
     AgentApproveState state = 3;//状态，0审批中或玩家，1通过，2拒绝
     string agentnote = 4;//备注,查询参数
-    uint32 level = 5;//收益等级,查询参数,0全部,1玩家,2一级代理
+    uint32 level = 5;//收益等级,查询参数,0全部,1玩家,2一级代理,3未合格
     string selfid = 6;//玩家id,server参数
 }
 
