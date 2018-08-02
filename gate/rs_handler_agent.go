@@ -480,10 +480,11 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 				Rate:   arg.GetRate(),
 			}
 			rs.rolePid.Tell(msg1)
-			rs.User.ProfitRate -= arg.GetRate() //TODO 优化为消息同步
+			//rs.User.ProfitRate -= arg.GetRate() //TODO 优化为消息同步
 			if rs.User.ProfitRate > arg.GetRate() {
 				rs.User.ProfitRate -= arg.GetRate()
 			} else {
+				glog.Errorf("CSetAgentProfitRate filed %#v, rate %d", arg, rs.User.ProfitRate)
 				rs.User.ProfitRate = 1
 			}
 		}

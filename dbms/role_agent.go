@@ -377,6 +377,7 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 		if agent.ProfitRate > arg.GetRate() {
 			agent.ProfitRate -= arg.GetRate()
 		} else {
+			glog.Errorf("CSetAgentProfitRate filed %#v, rate %d", arg, agent.ProfitRate)
 			agent.ProfitRate = 1
 		}
 		agent.UpdateAgentProfitRate()
