@@ -297,7 +297,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.PwdError
 		} else if amount > rs.User.GetBank() {
 			msg.Error = pb.NotEnoughCoin
-		} else if amount < data.DRAW_MONEY {
+		} else if amount < data.DRAW_MONEY_LOW {
 			msg.Error = pb.DrawMoneyNumberError
 		} else {
 			rs.addCurrency(0, amount, 0, 0, int32(pb.LOG_TYPE13))

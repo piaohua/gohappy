@@ -5,7 +5,8 @@ import "github.com/globalsign/mgo/bson"
 const (
 	BANKRUPT      int64   = 0         //破产补助限制和金额
 	BANKRUPT_TIME uint32  = 3         //每天破产补助次数
-	DRAW_MONEY    int64   = 0         //提现和赠送最低金额限制
+	DRAW_MONEY    int64   = 5000      //赠送最低金额限制
+	DRAW_MONEY_LOW int64   = 1      //提现最低金额限制
 	GIVE_PERCENT  float64 = 0.1       //赠送抽成
 	GIVE_LIMIT    int64   = 100000000 //赠送上限
 	TAX_NUMBER    int64   = 100       //小于这个数抽成为1
