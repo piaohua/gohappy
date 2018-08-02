@@ -606,21 +606,21 @@ func (rs *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
 	if val, ok := rs.User.Lucky[luckyidStr]; ok {
 		//数值超出不再更新
 		if val.Num >= lucky.Count {
-			return
+			//return
 		}
 		val.Num += arg.Num
 		rs.User.Lucky[luckyidStr] = val
 		if val.Num == lucky.Count {
 			//奖励发放
-			rs.addCurrency(lucky.Diamond, lucky.Coin, 0, 0, int32(pb.LOG_TYPE51))
+			//rs.addCurrency(lucky.Diamond, lucky.Coin, 0, 0, int32(pb.LOG_TYPE51))
 			//消息提醒
-			record, msg2 := handler.LuckyNotice(lucky.Diamond, lucky.Name, arg.Userid)
-			if record != nil {
-				rs.loggerPid.Tell(record)
-			}
-			if msg2 != nil {
-				rs.Send(msg2)
-			}
+			//record, msg2 := handler.LuckyNotice(lucky.Diamond, lucky.Name, arg.Userid)
+			//if record != nil {
+			//	rs.loggerPid.Tell(record)
+			//}
+			//if msg2 != nil {
+			//	rs.Send(msg2)
+			//}
 		}
 	} else {
 		luckyInfo := data.LuckyInfo{

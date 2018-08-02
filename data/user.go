@@ -109,6 +109,12 @@ func (this *User) UpdateBank() bool {
 		bson.M{"$set": bson.M{"bank": this.Bank}})
 }
 
+func (this *User) UpdateBankInfo() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"bank": this.Bank,
+		"bank_phone": this.BankPhone, "bank_password": this.BankPassword}})
+}
+
 func (this *User) UpdateTask() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"task": this.Task}})

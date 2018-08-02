@@ -410,8 +410,8 @@ func (t *LogDayProfit) Update(field string) bool {
 	if field == "" {
 		return false
 	}
-	return Update(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day},
-		bson.M{"$set": bson.M{"utime": t.Utime, "agent_note": t.AgentNote},
+	return Upsert(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day},
+		bson.M{"$set": bson.M{"utime": t.Utime, "agent_note": t.AgentNote, "nickname": t.Nickname, "ctime": t.Utime},
 		"$inc": bson.M{field: t.Profit}})
 }
 
@@ -445,11 +445,12 @@ func DayProfitRecord(arg *pb.LogProfit) {
 			record.ProfitSecond = arg.GetProfit()
 		}
 	}
-	if record.Has() {
-		record.Update(field)
-	} else {
-		record.Save()
-	}
+	record.Update(field)
+	//if record.Has() {
+	//	record.Update(field)
+	//} else {
+	//	record.Save()
+	//}
 }
 
 //LogSysProfit 系统收益日志

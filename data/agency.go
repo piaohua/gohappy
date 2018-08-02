@@ -248,6 +248,8 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	//query by ctime
 	if _, ok := q["day"]; ok {
 		return getAgentDayProfitByTime(q)
+	} else {
+		return getAgentDayProfitByTime(q) //TODO 优化,暂时全部统计
 	}
 	err := LogDayProfits.
 		Find(q).

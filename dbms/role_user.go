@@ -576,6 +576,7 @@ func (a *RoleActor) bankCheck(arg *pb.BankCheck, ctx actor.Context) {
 	user.BankPassword = password
 	ctx.Respond(rsp)
 	a.delCode(phone, smscode)
+	user.UpdateBankInfo()
 }
 
 //同步任务数据

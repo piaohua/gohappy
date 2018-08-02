@@ -827,7 +827,7 @@ func (t *Desk) powerAward() {
 		case algo.Straight, algo.FullHouse,
 			algo.Flush, algo.FiveFlower, algo.Bomb,
 			algo.StraightFlush, algo.FiveTiny:
-			num += algo.Multiple1(v.Power)
+			num *= algo.Multiple1(v.Power)
 		default:
 			continue
 		}
