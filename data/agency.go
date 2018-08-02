@@ -245,9 +245,10 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "ctime", false)
 	var list []LogDayProfit
 	q := getAgentDayProfitMatch(arg)
-	//TODO group by agentid userid
-	//result, err2 := agentDayProfitGroup(q)
-	//glog.Debugf("result %#v, err2 %v", result, err2)
+	//query by ctime
+	if _, ok := q["day"]; ok {
+		return getAgentDayProfitByTime(q)
+	}
 	err := LogDayProfits.
 		Find(q).
 		Sort(sortFieldR).
@@ -259,6 +260,50 @@ func GetAgentDayProfit(arg *pb.CAgentDayProfit) ([]LogDayProfit, error) {
 	return list, err
 }
 
+//query by time
+func getAgentDayProfitByTime(match bson.M) ([]LogDayProfit, error) {
+	glog.Debugf("match %#v", match)
+	result, err2 := agentDayProfitGroup(match)
+	glog.Debugf("result %#v, err2 %v", result, err2)
+	if err2 != nil {
+		return nil, err2
+	}
+	var list []LogDayProfit
+	for _, v := range result {
+		l := LogDayProfit{}
+		if val, ok := v["_id"]; ok {
+			if m, ok := val.(bson.M); ok {
+				if val2, ok := m["userid"]; ok {
+					l.Userid = val2.(string)
+				}
+				if val2, ok := m["agentid"]; ok {
+					l.Agentid = val2.(string)
+				}
+				if val2, ok := m["nickname"]; ok {
+					l.Nickname = val2.(string)
+				}
+				if val2, ok := m["agent_node"]; ok {
+					l.AgentNote = val2.(string)
+				}
+			}
+		}
+		if val, ok := v["profit"]; ok {
+			l.Profit = val.(int64)
+		}
+		if val, ok := v["profit_first"]; ok {
+			l.ProfitFirst = val.(int64)
+		}
+		if val, ok := v["profit_second"]; ok {
+			l.ProfitSecond = val.(int64)
+		}
+		if val, ok := v["profit_month"]; ok {
+			l.ProfitMonth = val.(int64)
+		}
+		list = append(list, l)
+	}
+	return list, nil
+}
+
 //查询条件
 func getAgentDayProfitMatch(arg *pb.CAgentDayProfit) bson.M {
 	q := bson.M{"agentid": arg.GetSelfid()}
@@ -268,23 +313,16 @@ func getAgentDayProfitMatch(arg *pb.CAgentDayProfit) bson.M {
 	if arg.GetAgentnote() != "" {
 		q["agent_note"] = arg.GetAgentnote()
 	}
-	if arg.GetStartTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
-	}
-	if arg.GetEndTime() != "" {
-		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
-	}
+	q = queryDay(arg.GetStartTime(), arg.GetEndTime(), q)
 	return q
 }
 
-//分组统计
+//分组统计, group by agentid userid
 func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 	m := bson.M{"$match": match}
 	n := bson.M{
 		"$group": bson.M{
-			"_id": bson.M{"userid": "$userid", "agentid": "$agentid"},
-			//"nickname": "$nickname",
-			//"agent_note": "$agent_note",
+			"_id": bson.M{"userid": "$userid", "agentid": "$agentid", "nickname": "$nickname", "agent_note": "$agent_note"},
 			"profit": bson.M{
 				"$sum": "$profit",
 			},
@@ -374,12 +412,7 @@ func GetAgentDayProfitMonth(arg *pb.CAgentProfitManage) (int64, error) {
 	if arg.GetAgentnote() != "" {
 		q["agent_note"] = arg.GetAgentnote()
 	}
-	if arg.GetStartTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
-	}
-	if arg.GetEndTime() != "" {
-		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
-	}
+	q = queryDay(arg.GetStartTime(), arg.GetEndTime(), q)
 	result, err2 := agentDayProfitMonthGroup(q)
 	glog.Debugf("result %#v, err2 %v", result, err2)
 	if err2 != nil {
@@ -456,12 +489,7 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 	if arg.Type == 1 {
 		q = bson.M{"userid": arg.Agentid}
 	}
-	if arg.GetStartTime() != "" {
-		q["ctime"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(arg.GetStartTime()))}
-	}
-	if arg.GetEndTime() != "" {
-		q["ctime"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(arg.GetEndTime()))}
-	}
+	q = queryTime(arg.GetStartTime(), arg.GetEndTime(), q)
 	err := LogProfitsOrders.
 		Find(q).
 		Sort(sortFieldR).
@@ -471,6 +499,41 @@ func GetProfitOrder(arg *pb.CAgentProfitOrder) ([]LogProfitOrder, error) {
 	if err != nil {
 	}
 	return list, err
+}
+
+//查询时间
+func queryDay(startTime, endTime string, q bson.M) bson.M {
+	if startTime != "" && endTime != "" {
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(startTime)),
+			"$lt": utils.Time2DayDate(utils.Str2Time(endTime))}
+			return q
+	}
+	if startTime != "" {
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(startTime))}
+		return q
+	}
+	if endTime != "" {
+		q["day"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(endTime))}
+		return q
+	}
+	return q
+}
+
+func queryTime(startTime, endTime string, q bson.M) bson.M {
+	if startTime != "" && endTime != "" {
+		q["ctime"] = bson.M{"$gte": utils.Str2Time(startTime),
+			"$lt": utils.Str2Time(endTime)}
+		return q
+	}
+	if startTime != "" {
+		q["ctime"] = bson.M{"$gte": utils.Str2Time(startTime)}
+		return q
+	}
+	if endTime != "" {
+		q["ctime"] = bson.M{"$lt": utils.Str2Time(endTime)}
+		return q
+	}
+	return q
 }
 
 // UserInfo store user information.
