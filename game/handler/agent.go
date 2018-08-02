@@ -543,25 +543,27 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitIn
 	msg2 *pb.LogProfit, msg3 *pb.AgentWeekUpdate, msg4 *pb.AgentProfitUpdate, msg5 *pb.AgentBringProfitNum) {
 	rate := GetRateByLevel(arg.GetLevel())
 	profit := int64(math.Trunc(float64(rate) / float64(100) * float64(arg.Profit))) //三级收益
-	user.AddProfit(arg.Agent, arg.GetLevel(), profit)
-	msg5 = &pb.AgentBringProfitNum{
-		Userid: arg.GetUserid(),
-		Profit: profit,
-	}
-	if UpdateWeekProfit(profit, user) {
-		//更新时间消息
-		msg3 = UpdateWeekMsg(user)
-	}
-	glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, rate, arg)
-	//三级收益日志消息
-	msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
-		arg.Gtype, int32(pb.LOG_TYPE52), arg.Level, rate, profit)
-	//更新消息
-	msg4 = &pb.AgentProfitUpdate{
-		Userid:  user.GetUserid(),
-		Profit:  profit,
-		Isagent: arg.Agent,
-		Level: arg.GetLevel(),
+	if profit > 0 {
+		user.AddProfit(arg.Agent, arg.GetLevel(), profit)
+		msg5 = &pb.AgentBringProfitNum{
+			Userid: arg.GetUserid(),
+			Profit: profit,
+		}
+		if UpdateWeekProfit(profit, user) {
+			//更新时间消息
+			msg3 = UpdateWeekMsg(user)
+		}
+		glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, rate, arg)
+		//三级收益日志消息
+		msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
+			arg.Gtype, int32(pb.LOG_TYPE52), arg.Level, rate, profit)
+		//更新消息
+		msg4 = &pb.AgentProfitUpdate{
+			Userid:  user.GetUserid(),
+			Profit:  profit,
+			Isagent: arg.Agent,
+			Level: arg.GetLevel(),
+		}
 	}
 	if user.GetAgent() == "" {
 		return
