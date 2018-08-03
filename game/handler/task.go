@@ -61,6 +61,14 @@ func SetTaskList() {
 	NewTask(36, 24, 0, "百人二八杠押中对十", 1, 100, 100)
 }
 
+//SetTaskList2 配置任务数据,测试数据
+func SetTaskList2() {
+	NewTask(37, 25, 38, "斗十匹配房玩牌200局", 200, 0, 8888)
+	NewTask(38, 25, 39, "斗十匹配房玩牌500局", 500, 0, 18888)
+	NewTask(39, 25, 40, "斗十匹配房玩牌1000局", 1000, 0, 28888)
+	NewTask(40, 25, 0, "斗十匹配房玩牌5000局", 5000, 0, 58888)
+}
+
 //NewTask 添加新任务
 func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 	diamond, coin int64) {
@@ -74,7 +82,7 @@ func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 		Name:    name,
 		Count:   count,
 		Diamond: diamond,
-		//Coin: coin,
+		Coin: coin,
 	}
 	config.SetTask(t)
 	t.Save()

@@ -606,7 +606,7 @@ func UpdateWeekMsg(user *data.User) (msg *pb.AgentWeekUpdate) {
 }
 
 //AgentOauth2Confirm 代理授权关系确认
-func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirmed) {
+func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirmed, msg2 *pb.AgentOauth2Build) {
 	msg = new(pb.AgentOauth2Confirmed)
 	userInfo := new(data.UserInfo)
 	err := jsoniter.Unmarshal(arg.Userinfo, userInfo)
@@ -624,6 +624,10 @@ func AgentOauth2Confirm(arg *pb.AgentOauth2Confirm) (msg *pb.AgentOauth2Confirme
 	if !userInfo.Save() {
 		glog.Errorf("userInfo save failed %#v", userInfo)
 		msg.Error = pb.Failed
+	}
+	msg2 = &pb.AgentOauth2Build{
+		Agentid: userInfo.Agentid,
+		UnionId: userInfo.UnionId,
 	}
 	return
 }
@@ -707,6 +711,9 @@ func SetAgentBuild(arg *pb.SetAgentBuild, user *data.User) {
 func SetAgentState(arg *pb.SetAgentState, user *data.User) {
 	user.AgentState = arg.GetState()
 	user.AgentLevel = arg.GetLevel()
+	if IsAgent(user) {
+		user.AgentJoinTime = utils.BsonNow()
+	}
 }
 
 //GetAgentMsg 获取代理信息

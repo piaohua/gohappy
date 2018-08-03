@@ -454,3 +454,26 @@ func (a *RoleActor) bringProfit(arg *pb.AgentBringProfitNum) {
 	user.AddBringProfit(arg.GetProfit())
 	user.UpdateBringProfit()
 }
+
+//代理绑定信息
+func (a *RoleActor) agentOauth2Build(arg *pb.AgentOauth2Build, ctx actor.Context) {
+	user := a.getUserByWx(arg.GetUnionId())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetAgentid())
+		return
+	}
+	if handler.IsAgent(user) || user.GetAgent() != "" {
+		return
+	}
+	msg2 := &pb.SetAgentBuild{
+		Userid: user.GetUserid(),
+		Agent: arg.GetAgentid(),
+	}
+	handler.SetAgentBuild(msg2, user)
+	user.UpdateAgent()
+	if v, ok := a.roles[user.GetUserid()]; ok && v != nil {
+		v.Pid.Tell(msg2)
+	}
+	msg := handler.AgentBuildUpdateMsg(user.GetAgent(), user.GetUserid(), 1, 0, 0)
+	ctx.Self().Tell(msg)
+}

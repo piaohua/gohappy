@@ -137,6 +137,11 @@ func (this *User) UpdateSign() bool {
 		bson.M{"$set": bson.M{"sign": this.Sign}})
 }
 
+func (this *User) UpdateAgent() bool {
+	return Update(PlayerUsers, bson.M{"_id": this.Userid},
+		bson.M{"$set": bson.M{"agent": this.Agent, "atime": this.Atime}})
+}
+
 func (this *User) UpdateAgentJoin() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"agent_join_time": this.AgentJoinTime,

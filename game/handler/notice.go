@@ -137,3 +137,13 @@ func LuckyNotice(coin int64, name, userid string) (record *pb.LogNotice,
 	content := fmt.Sprintf("恭喜你完成幸运星%s获得%d金币", name, coin)
 	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }
+
+//BankOpenNotice 银行开通消息
+func BankOpenNotice(coin int64, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("首次开通银行赠送%d豆子", coin)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
+}

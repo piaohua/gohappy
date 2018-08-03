@@ -176,7 +176,7 @@ func (a *RoleActor) setBuild(arg *pb.SetAgentBuild) error {
 		//return
 	}
 	handler.SetAgentBuild(arg, user)
-	user.UpdateAgentJoin()
+	user.UpdateAgent()
 	return nil
 }
 

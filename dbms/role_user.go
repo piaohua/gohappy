@@ -232,6 +232,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentBringProfitNum)
 		glog.Debugf("AgentBringProfitNum %#v", arg)
 		a.bringProfit(arg)
+	case *pb.AgentOauth2Build:
+		arg := msg.(*pb.AgentOauth2Build)
+		glog.Debugf("AgentOauth2Build %#v", arg)
+		a.agentOauth2Build(arg, ctx)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

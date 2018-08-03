@@ -252,9 +252,9 @@ func (t *Desk) freeBet(userid string, seatBet uint32,
 	//TODO 限制优化
 	//下注不能大于庄家携带1/4
 	if t.DeskGame.Dealer != "" &&
-		((t.DeskGame.BetNum + num) > (t.DeskFree.Carry / 4)) {
+		((t.DeskGame.BetNum + num) > (t.DeskFree.Carry / 2)) {
 		//TODO 暂时1赔1不限制
-		//return pb.BetTopLimit //下注限制
+		return pb.BetTopLimit //下注限制
 	}
 	coin := user.GetCoin()          //剩余金额
 	bets := t.DeskFree.Bets[userid] //已经下注额

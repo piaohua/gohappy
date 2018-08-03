@@ -58,5 +58,5 @@ const (
 	//SysCarry 系统上庄限额
 	SysCarry int64 = 50000000
 	//DealerTimes 做庄次数限制
-	DealerTimes uint32 = 8
+	DealerTimes uint32 = 10
 )

@@ -170,6 +170,7 @@ enum LogType {
     LOG_TYPE53 = 53;//区域奖金
     LOG_TYPE54 = 54;//区域奖金发放
     LOG_TYPE55 = 55;//绑定奖金
+    LOG_TYPE56 = 56;//开通银行奖金
 }
 
 // 放看比加跟掩码
@@ -211,4 +212,5 @@ enum TaskType {
     TASK_TYPE22 =22;//百人二八杠押中二八杠
     TASK_TYPE23 =23;//百人二八杠押中对子
     TASK_TYPE24 =24;//百人二八杠押中对十
+    TASK_TYPE25 =25;//斗十匹配房牌局数
 }

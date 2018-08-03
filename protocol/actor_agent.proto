@@ -183,6 +183,13 @@ message AgentOauth2Confirmed
     ErrCode error = 1 ;// 错误码
 }
 
+//代理授权绑定关系
+message AgentOauth2Build
+{
+    string Agentid = 1;//agentid
+    string UnionId = 2;//UnionId
+}
+
 //代理绑定数量更新
 message AgentBuildUpdate
 {

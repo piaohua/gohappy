@@ -459,7 +459,7 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.ProfitRate <= (arg.GetRate() + 5) { //保留5%
+	if rs.User.ProfitRate < (arg.GetRate() + 5) { //保留5%
 		rsp.Error = pb.ProfitRateNotEnough
 		rs.Send(rsp)
 		return

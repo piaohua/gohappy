@@ -406,13 +406,13 @@ func (t *LogDayProfit) Has() bool {
 	return Has(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day})
 }
 
-func (t *LogDayProfit) Update(field string) bool {
+func (t *LogDayProfit) Update(field string, profit int64) bool {
 	if field == "" {
 		return false
 	}
 	return Upsert(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day},
 		bson.M{"$set": bson.M{"utime": t.Utime, "agent_note": t.AgentNote, "nickname": t.Nickname, "ctime": t.Utime},
-		"$inc": bson.M{field: t.Profit}})
+		"$inc": bson.M{field: profit}})
 }
 
 //DayProfitRecord 代理收益统计记录
@@ -445,7 +445,7 @@ func DayProfitRecord(arg *pb.LogProfit) {
 			record.ProfitSecond = arg.GetProfit()
 		}
 	}
-	record.Update(field)
+	record.Update(field, arg.GetProfit())
 	//if record.Has() {
 	//	record.Update(field)
 	//} else {

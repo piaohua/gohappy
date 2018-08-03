@@ -99,8 +99,11 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 	case *pb.AgentOauth2Confirm:
 		arg := msg.(*pb.AgentOauth2Confirm)
 		glog.Debugf("AgentOauth2Confirm: %v", arg)
-		rsp := handler.AgentOauth2Confirm(arg)
+		rsp, msg2 := handler.AgentOauth2Confirm(arg)
 		ctx.Respond(rsp)
+		if msg2 != nil {
+			rolePid.Tell(msg2)
+		}
 	case *pb.GetRoomRecord:
 		arg := msg.(*pb.GetRoomRecord)
 		glog.Debugf("GetRoomRecord %#v", arg)

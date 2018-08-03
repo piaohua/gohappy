@@ -343,6 +343,18 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.SmsCodeWrong
 		} else {
 			msg.Error = rs.bankCheck(arg)
+			if msg.Error == pb.OK {
+				//奖励发放
+				rs.addCurrency(0, 666, 0, 0, int32(pb.LOG_TYPE56))
+				//消息提醒
+				record, msg2 := handler.BankOpenNotice(666, rs.User.GetUserid())
+				if record != nil {
+					rs.loggerPid.Tell(record)
+				}
+				if msg2 != nil {
+					rs.Send(msg2)
+				}
+			}
 		}
 	case pb.BankResetPwd: //重置密码
 		if rs.User.BankPhone == "" {

@@ -81,7 +81,7 @@ func NewFreeGameData(node string, gtype int32) *data.Game {
 		Ante:   50,
 		Deal:   true,
 		Carry:  200000,
-		Down:   100000,
+		Down:   50000,
 		Top:    200000000,
 		Sit:    100000,
 		Node:   node,

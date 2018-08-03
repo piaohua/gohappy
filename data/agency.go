@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"gohappy/pb"
+	"gohappy/glog"
 	"utils"
 
 	"github.com/globalsign/mgo/bson"
-	"gohappy/glog"
 )
 
 //代理管理(代理ID为游戏内ID)
@@ -271,6 +271,7 @@ func getAgentDayProfitByTime(match bson.M) ([]LogDayProfit, error) {
 		return nil, err2
 	}
 	var list []LogDayProfit
+	var ids []string
 	for _, v := range result {
 		l := LogDayProfit{}
 		if val, ok := v["_id"]; ok {
@@ -284,25 +285,28 @@ func getAgentDayProfitByTime(match bson.M) ([]LogDayProfit, error) {
 				if val2, ok := m["nickname"]; ok {
 					l.Nickname = val2.(string)
 				}
-				if val2, ok := m["agent_node"]; ok {
+				if val2, ok := m["agent_note"]; ok {
 					l.AgentNote = val2.(string)
 				}
 			}
 		}
 		if val, ok := v["profit"]; ok {
-			l.Profit = val.(int64)
+			l.Profit = utils.Int64(val)
 		}
 		if val, ok := v["profit_first"]; ok {
-			l.ProfitFirst = val.(int64)
+			l.ProfitFirst = utils.Int64(val)
 		}
 		if val, ok := v["profit_second"]; ok {
-			l.ProfitSecond = val.(int64)
+			l.ProfitSecond = utils.Int64(val)
 		}
 		if val, ok := v["profit_month"]; ok {
-			l.ProfitMonth = val.(int64)
+			l.ProfitMonth = utils.Int64(val)
 		}
 		list = append(list, l)
+		ids = append(ids, l.Userid)
 	}
+	//添加昵称和备注
+	list = queryAgentNote(ids, list)
 	return list, nil
 }
 
@@ -324,7 +328,8 @@ func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 	m := bson.M{"$match": match}
 	n := bson.M{
 		"$group": bson.M{
-			"_id": bson.M{"userid": "$userid", "agentid": "$agentid", "nickname": "$nickname", "agent_note": "$agent_note"},
+			//"_id": bson.M{"userid": "$userid", "agentid": "$agentid", "nickname": "$nickname", "agent_note": "$agent_note"},
+			"_id": bson.M{"userid": "$userid", "agentid": "$agentid"},
 			"profit": bson.M{
 				"$sum": "$profit",
 			},
@@ -357,17 +362,17 @@ func GetAgentDayProfitCount(arg *pb.CAgentDayProfit) (int64, error) {
 	}
 	var num int64
 	if val, ok := result["profit"]; ok {
-		num += val.(int64)
+		num += utils.Int64(val) //int64(val.(int))
 	}
 	if val, ok := result["profit_first"]; ok {
-		num += val.(int64)
+		num += utils.Int64(val) //int64(val.(int))
 	}
 	if val, ok := result["profit_second"]; ok {
-		num += val.(int64)
+		num += utils.Int64(val) //int64(val.(int))
 	}
-	if val, ok := result["profit_month"]; ok {
-		num += val.(int64)
-	}
+	//if val, ok := result["profit_month"]; ok {
+	//	num += utils.Int64(val) //int64(val.(int))
+	//}
 	return num, nil
 }
 
@@ -386,9 +391,9 @@ func agentDayProfitCount(match bson.M) (result bson.M, err error) {
 			"profit_second": bson.M{
 				"$sum": "$profit_second",
 			},
-			"profit_month": bson.M{
-				"$sum": "$profit_month",
-			},
+			//"profit_month": bson.M{
+			//	"$sum": "$profit_month",
+			//},
 		},
 	}
 	//统计
@@ -421,7 +426,7 @@ func GetAgentDayProfitMonth(arg *pb.CAgentProfitManage) (int64, error) {
 		return 0, err2
 	}
 	if val, ok := result["profit_month"]; ok {
-		return val.(int64), nil
+		return utils.Int64(val), nil //int64(val.(int)), nil
 	}
 	return 0, nil
 }
@@ -442,6 +447,66 @@ func agentDayProfitMonthGroup(match bson.M) (result bson.M, err error) {
 	result = bson.M{}
 	pipe := LogDayProfits.Pipe(operations)
 	err = pipe.One(&result)
+	return
+}
+
+//查找昵称和备注
+func queryAgentNote(ids []string, list []LogDayProfit) []LogDayProfit {
+	glog.Debugf("ids %#v", ids)
+	if len(ids) == 0 {
+		return list
+	}
+	list2, err := queryAgentNote2(ids)
+	glog.Debugf("list2 %#v, err %v", list2, err)
+	if err != nil || len(list2) == 0 {
+		return list
+	}
+	m := make(map[string]LogDayProfit)
+	for _, v := range list2 {
+		l := LogDayProfit{}
+		if val, ok := v["_id"]; ok {
+			l.Userid = val.(string)
+		}
+		if val, ok := v["nickname"]; ok {
+			l.Nickname = val.(string)
+		}
+		if val, ok := v["agent_note"]; ok {
+			l.AgentNote = val.(string)
+		}
+		if l.Userid == "" {
+			continue
+		}
+		m[l.Userid] = l
+	}
+	for k, v := range list {
+		if val, ok := m[v.Userid]; ok {
+			v.Nickname = val.Nickname
+			v.AgentNote = val.AgentNote
+			list[k] = v
+		}
+	}
+	return list
+}
+
+func queryAgentNote2(ids []string) (list []bson.M, err error) {
+	if len(ids) == 0 {
+		return
+	}
+	selector := make(bson.M, 3)
+	selector["nickname"] = true
+	selector["agent_note"] = true
+	selector["_id"] = true
+	q := bson.M{"_id": bson.M{"$in": ids}}
+	err = PlayerUsers.
+		Find(q).Select(selector).
+		All(&list)
+	if err != nil {
+		return
+	}
+	if len(list) == 0 {
+		err = errors.New("none record")
+		return
+	}
 	return
 }
 
