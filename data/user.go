@@ -82,6 +82,7 @@ type User struct {
 	//登录
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
+	LoginLoop  uint32 `bson:"login_Loop" json:"login_Loop"` //连续登录循环
 	Sign       string `bson:"sign" json:"sign"`               //个性签名
 	//位置
 	Lat     string `bson:"lat" json:"lat"`         //Latitude
@@ -129,7 +130,7 @@ func (this *User) UpdateLogin() bool {
 	return Update(PlayerUsers, bson.M{"_id": this.Userid},
 		bson.M{"$set": bson.M{"login_times": this.LoginTimes,
 			"login_prize": this.LoginPrize, "login_time": this.LoginTime,
-			"login_ip": this.LoginIP}})
+			"login_loop": this.LoginLoop, "login_ip": this.LoginIP}})
 }
 
 func (this *User) UpdateSign() bool {

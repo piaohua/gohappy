@@ -282,6 +282,7 @@ message LoginPrizeUpdate {
     uint32 LoginPrize = 3;//
     int64 LoginTime = 4; //
     string LoginIP = 5; //
+    uint32 LoginLoop = 6;//
 }
 
 // 个人私人场牌局记录,默认最近30场

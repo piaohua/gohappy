@@ -243,6 +243,9 @@ func (rs *RoleActor) agentInfo() {
 	rsp.ProfitFirst = rs.User.ProfitFirst
 	rsp.ProfitSecond = rs.User.ProfitSecond
 	rsp.ProfitLastMonth = rs.User.ProfitLastMonth
+	if rsp.AgentTitle == 1 { //合伙人
+		rsp.ProfitRate = 23 //固定值展示
+	}
 	rs.Send(rsp)
 }
 
