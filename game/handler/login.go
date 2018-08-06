@@ -68,13 +68,14 @@ func LoginPrizeInfo(user *data.User) (msg []*pb.LoginPrize) {
 		if day != user.LoginLoop {
 			continue
 		}
+		dayN := v.Day % 7
 		msg2 := new(pb.LoginPrize)
-		msg2.Day = day
+		msg2.Day = dayN
 		msg2.Coin = v.Coin
 		msg2.Diamond = v.Diamond
-		if (user.LoginPrize & (1 << day)) != 0 {
+		if (user.LoginPrize & (1 << dayN)) != 0 {
 			msg2.Status = pb.LoginPrizeGot
-		} else if (user.LoginTimes & (1 << day)) != 0 {
+		} else if (user.LoginTimes & (1 << dayN)) != 0 {
 			msg2.Status = pb.LoginPrizeDone
 		}
 		msg = append(msg, msg2)
