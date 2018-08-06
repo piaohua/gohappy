@@ -190,9 +190,11 @@ func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	}
 	if arg.GetLevel() == 2 {
 		q["agent_state"] = 1
+		q["build_vaild"] = bson.M{"$gte": 3} //合格
 	} else if arg.GetLevel() == 1 {
 		q["agent_state"] = 0
 	} else if arg.GetLevel() == 3 {
+		q["agent_state"] = 1
 		q["build_vaild"] = bson.M{"$lt": 3} //不合格
 	}
 	err := PlayerUsers.

@@ -194,19 +194,35 @@ func (t *Desk) coinSeatBetsMsg(userid string) (msg []*pb.NNRoomUser) {
 		}
 		//自己手牌
 		if v.Userid == userid {
-			switch t.DeskData.Dtype {
-			case int32(pb.DESK_TYPE0): //看牌抢庄
-				msg2.Cards = t.getHandCards(k)
-			default:
-				cs := t.getHandCards(k)
-				if len(cs) == 5 {
-					msg2.Cards = cs
-				}
-			}
+			t.getCardsMsg(k, msg2)
 		}
 		msg = append(msg, msg2)
 	}
 	return
+}
+
+func (t *Desk) getCardsMsg(k uint32, msg2 *pb.NNRoomUser) {
+	switch t.DeskData.Dtype {
+	case int32(pb.DESK_TYPE0): //看牌抢庄
+		msg2.Cards = t.getHandCards(k)
+	case int32(pb.DESK_TYPE1): //通比牛牛
+		switch t.DeskData.Mode {
+		case 0://普通
+			switch t.state {
+			case int32(pb.STATE_DEALER):
+			case int32(pb.STATE_BET):
+				msg2.Cards = t.getHandCards(k)
+			}
+		default:
+			msg2.Cards = t.getHandCards(k)
+		}
+	case int32(pb.DESK_TYPE2): //抢庄看牌
+		switch t.state {
+		case int32(pb.STATE_DEALER):
+		case int32(pb.STATE_BET):
+			msg2.Cards = t.getHandCards(k)
+		}
+	}
 }
 
 //玩家下注数据
