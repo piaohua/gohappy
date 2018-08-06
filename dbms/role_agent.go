@@ -182,13 +182,15 @@ func (a *RoleActor) agentProfitApply(arg *pb.AgentProfitApply, ctx actor.Context
 		Agentid:  arg.GetAgentid(),
 		Userid:   arg.GetUserid(),
 		Nickname: arg.GetNickname(),
-		Profit:   arg.GetProfit(),
+		Profit:   arg.GetProfit() + arg.GetProfitFirst() + arg.GetProfitSecond(),
 		State:    1, //默认直接发放,不再需要审批
 	}
 	if !record.Save() {
 		rsp.Error = pb.Failed
 	} else {
 		rsp.Profit = arg.GetProfit()
+		rsp.ProfitFirst = arg.GetProfitFirst()
+		rsp.ProfitSecond = arg.GetProfitSecond()
 		//user.Profit -= arg.GetProfit()
 		user.SubProfit(arg.GetProfit(), arg.GetProfitFirst(), arg.GetProfitSecond())
 		//暂时实时写入, TODO 异步数据更新

@@ -499,7 +499,7 @@ func (this *User) GetProfitSecond() int64 {
 
 func (this *User) SubProfit(profit, profitFirst, profitSecond int64) {
 	this.Profit -= profit
-	this.ProfitFirst -= profitSecond
+	this.ProfitFirst -= profitFirst
 	this.ProfitSecond -= profitSecond
 	if this.Profit < 0 {
 		this.Profit = 0

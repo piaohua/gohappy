@@ -99,18 +99,17 @@ func LoginPrizeUpdateMsg(user *data.User) (msg *pb.LoginPrizeUpdate) {
 func SetLoginPrizeList() {
 	var i uint32
 	for i = 0; i < 28; i++ {
-		num := (i % 7) * 50 + 300 //基本300,每天增加50
+		diamond := i * 50 + 300 //基本300,每天增加50
+		var coin uint32
 		if (i + 1) % 7 == 0 {
-			num += 88 //第七天增加88
+			coin += (i / 7) * 100 + 88 //第七天增加88,每周增加100
 		}
-		num += (i / 7) * 100 //每周增加100
 		t := data.LoginPrize{
 			//ID:      bson.NewObjectId().String(),
 			ID:      data.ObjectIdString(bson.NewObjectId()),
 			Ctime:   bson.Now(),
-			//Diamond: 100 * int64((i + 1)),
-			//Coin: 2000 * int64((i + 1)),
-			Coin: int64(num),
+			Diamond: int64(diamond),
+			Coin: int64(coin),
 			Day: i,
 		}
 		config.SetLogin(t)
