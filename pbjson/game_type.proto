@@ -99,6 +99,8 @@ enum NoticeType {
     NOTICE_TYPE1 = 1; //公告消息
     NOTICE_TYPE2 = 2; //广播消息
     NOTICE_TYPE3 = 3; //系统消息
+    NOTICE_TYPE4 = 4; //活动消息
+    NOTICE_TYPE5 = 5; //赠送消息
 }
 
 //消息操作类型
@@ -106,6 +108,13 @@ enum NoticeActType {
     NOTICE_ACT_TYPE0 = 0; //无操作消息
     NOTICE_ACT_TYPE1 = 1; //支付消息
     NOTICE_ACT_TYPE2 = 2; //活动消息
+}
+
+//活动类型
+enum ActivityType {
+    ACT_TYPE0 = 0; //
+    ACT_TYPE1 = 1; //
+    ACT_TYPE2 = 2; //
 }
 
 //游戏变量
@@ -171,6 +180,9 @@ enum LogType {
     LOG_TYPE54 = 54;//区域奖金发放
     LOG_TYPE55 = 55;//绑定奖金
     LOG_TYPE56 = 56;//开通银行奖金
+    LOG_TYPE57 = 57;//活动翻倍奖
+    LOG_TYPE58 = 58;//活动增加奖
+    LOG_TYPE59 = 59;//活动激活奖
 }
 
 // 放看比加跟掩码

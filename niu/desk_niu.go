@@ -833,17 +833,18 @@ func (t *Desk) powerAward() {
 		default:
 			continue
 		}
-		t.sendDiamond(v.Userid, int64(num), int32(pb.LOG_TYPE51))
+		t.sendCoin(v.Userid, int64(num), int32(pb.LOG_TYPE51))
 		msg := &pb.SNNPushAward{
 			Power:   v.Power,
 			Seat:    k,
 			Userid:  v.Userid,
-			Diamond: int64(num),
+			Coin:    int64(num),
 		}
 		t.broadcast(msg)
 		luckyid := int32(v.Power) * t.DeskData.Gtype * 10
 		msg2 := handler.LuckyUpdateMsg(1, t.DeskData.Gtype, luckyid, v.Userid)
 		t.send3userid(v.Userid, msg2)
+		glog.Debugf("powerAward %s, power %d, num %d", v.Userid, v.Power, num)
 	}
 }
 

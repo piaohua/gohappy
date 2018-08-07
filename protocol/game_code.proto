@@ -120,6 +120,8 @@ enum ErrCode {
     ProfitRateNotEnough    =111; //区域奖励比例不足
     AgentJoinLimit         =112; //申请代理限制(有效玩家3个以上)
     AgentSetLimit          =113; //设置代理区域限制(有效玩家3个以上)
+    ActidError             =114; //活动id错误
+    ActRepeatJoin          =115; //重复参加活动
 }
 
 enum SitType {

@@ -357,6 +357,10 @@ func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 //GetAgentDayProfitCount 代理天收益明细
 func GetAgentDayProfitCount(arg *pb.CAgentDayProfit) (int64, error) {
 	q := getAgentDayProfitMatch(arg)
+	return getAgentDayProfitCount2(q)
+}
+
+func getAgentDayProfitCount2(q bson.M) (int64, error) {
 	result, err2 := agentDayProfitCount(q)
 	glog.Debugf("result %#v, err2 %v", result, err2)
 	if err2 != nil {

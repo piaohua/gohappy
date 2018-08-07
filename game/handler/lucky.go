@@ -22,13 +22,13 @@ func LuckyUpdateMsg(num uint32, gtype, luckyid int32,
 //SetLuckyList 配置任务数据,测试数据
 func SetLuckyList() {
 	//五小牛，同花顺，炸弹牛，五花牛，同花牛，葫芦牛，顺子牛
-	NewLucky(110, int32(pb.NIU), "顺子牛", 20, 100, 100)
-	NewLucky(120, int32(pb.NIU), "葫芦牛", 20, 200, 200)
-	NewLucky(130, int32(pb.NIU), "同花牛", 20, 300, 300)
-	NewLucky(140, int32(pb.NIU), "五花牛", 20, 400, 400)
-	NewLucky(150, int32(pb.NIU), "炸弹牛", 20, 500, 500)
-	NewLucky(160, int32(pb.NIU), "同花顺", 20, 600, 600)
-	NewLucky(170, int32(pb.NIU), "五小牛", 20, 700, 700)
+	NewLucky(110, int32(pb.NIU), "顺子牛", 50, 100, 100)
+	NewLucky(120, int32(pb.NIU), "葫芦牛", 50, 200, 200)
+	NewLucky(130, int32(pb.NIU), "同花牛", 50, 300, 300)
+	NewLucky(140, int32(pb.NIU), "五花牛", 50, 400, 400)
+	NewLucky(150, int32(pb.NIU), "炸弹牛", 50, 500, 500)
+	NewLucky(160, int32(pb.NIU), "同花顺", 50, 600, 600)
+	NewLucky(170, int32(pb.NIU), "五小牛", 50, 700, 700)
 }
 
 //NewLucky 添加新任务
@@ -42,8 +42,8 @@ func NewLucky(luckyid, gtype int32, name string, count uint32,
 		Name:    name,
 		Gtype:   gtype,
 		Count:   count,
-		Diamond: diamond,
-		//Coin: coin,
+		//Diamond: diamond,
+		Coin: coin,
 	}
 	config.SetLucky(t)
 	t.Save()

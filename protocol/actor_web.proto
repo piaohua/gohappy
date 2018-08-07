@@ -11,6 +11,7 @@ enum ConfigType {
     CONFIG_TASK    = 6; //task
     CONFIG_LOGIN   = 7; //登录奖励
     CONFIG_LUCKY   = 8; //lucky
+    CONFIG_ACT     = 9; //activity
 }
 
 enum ConfigAtype {
@@ -49,6 +50,7 @@ enum WebCode {
     WebState    =13; //设置代理状态
     WebLucky    =14; //lucky列表
     WebVaild    =15; //设置代理有效数量
+    WebAct      =16; //activity列表
 }
 
 //web请求

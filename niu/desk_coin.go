@@ -210,7 +210,7 @@ func (t *Desk) getCardsMsg(k uint32, msg2 *pb.NNRoomUser) {
 		case 0://普通
 			switch t.state {
 			case int32(pb.STATE_DEALER):
-			case int32(pb.STATE_BET):
+			case int32(pb.STATE_BET), int32(pb.STATE_NIU):
 				msg2.Cards = t.getHandCards(k)
 			}
 		default:
@@ -219,7 +219,7 @@ func (t *Desk) getCardsMsg(k uint32, msg2 *pb.NNRoomUser) {
 	case int32(pb.DESK_TYPE2): //抢庄看牌
 		switch t.state {
 		case int32(pb.STATE_DEALER):
-		case int32(pb.STATE_BET):
+		case int32(pb.STATE_BET), int32(pb.STATE_NIU):
 			msg2.Cards = t.getHandCards(k)
 		}
 	}

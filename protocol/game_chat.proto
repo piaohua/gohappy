@@ -44,7 +44,7 @@ message SBroadcast
 message CNotice
 {
     uint32 page = 1; //页数,每页30,默认发1最近30场
-    string userid  = 2;
+    string userid  = 2;//玩家id,server参数
 }
 
 message SNotice
@@ -65,5 +65,6 @@ message Notice
     int32 rtype   = 1;//消息类型 0.购买消息
     int32 acttype = 2;//操作类型 1.支付消息
     string content = 3;//消息内容
-    string time = 4;//消息时间
+    string time = 4;//消息创建时间
+    string expireTime = 5;//消息过期时间
 }

@@ -134,6 +134,14 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SLucky)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1531:
+		msg := new(SActivity)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1532:
+		msg := new(SJoinActivity)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 1550:
 		msg := new(SAgentJoin)
 		err := msg.Unmarshal(b)

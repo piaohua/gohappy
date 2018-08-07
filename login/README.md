@@ -61,6 +61,8 @@ enum WebCode {
     WebRate     =12; //设置区域比例
     WebState    =13; //设置代理状态
     WebLucky    =14; //lucky列表
+    WebVaild    =15; //设置代理有效数量
+    WebAct      =16; //activity列表
 }
 
 enum ConfigAtype {
@@ -239,6 +241,16 @@ WebResponse 响应response消息(json格式)
     example: {"userid": "xxx", "userid": "xxx", "AgentChild": 1, "BuildVaild": 1, "Build", 1}
 
     WebVaild 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
+16、WebAct 请求Data数据 (json格式)
+    b := make(map[string]data.Activity) //key: Activity.Id
+    d, err := json.Marshal(&b)
+    request.Data = d
+    example: {"id1": {xxx}, "id2": {xxx}}
+
+   WebAct 响应Data数据 (json格式)
     response.Result = []byte{} //空数据
     example: {}
 

@@ -199,3 +199,30 @@ message SLatLng
 {
     ErrCode error = 1;//错误码
 }
+
+// Activity
+message CActivity
+{
+    uint32 page = 1; //页数,每页30,默认发1最近30场
+    string userid  = 2;//玩家id,server参数
+}
+
+message SActivity
+{
+    repeated Activity list = 1;//
+    ErrCode error = 2;//错误码
+}
+
+// 报名参加活动
+message CJoinActivity
+{
+    string actid = 1;//actid
+    string selfid = 2;//玩家id,server参数
+}
+
+message SJoinActivity
+{
+    string actid = 1;//actid
+    string joinTime = 2;//开始时间
+    ErrCode error = 3;//错误码
+}

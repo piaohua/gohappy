@@ -60,7 +60,7 @@ func (c *Robot) addCurrency() {
 
 //SendDefer 延迟发送
 func (c *Robot) SendDefer(msg interface{}) {
-	utils.Sleep(utils.RandIntN(6) + 1) //随机
+	utils.Sleep(utils.RandIntN(6) + 5) //随机
 	c.Sender(msg)
 }
 
@@ -86,7 +86,7 @@ func (c *Robot) sendNNDealer() {
 	c2s := new(pb.CNNDealer)
 	if utils.RandIntN(100) > 50 {
 		c2s.Dealer = true
-		c2s.Num = uint32(utils.RandIntN(3) + 1)
+		c2s.Num = uint32(utils.RandIntN(2) + 1)
 	}
 	c.SendDefer(c2s)
 }

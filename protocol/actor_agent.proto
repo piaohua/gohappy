@@ -205,3 +205,17 @@ message AgentBringProfitNum {
     string userid = 1;//玩家id
     int64 profit = 2;//收益
 }
+
+//代理活动
+message AgentActivity {
+    string actid = 1;//actid
+    int32 page = 2;//page
+}
+
+//代理活动收益
+message AgentActivityProfit {
+    string Userid = 1;//玩家id
+    int64 Profit = 2;//收益
+    int32 Type = 3;//log type
+    string Actid = 4;//actid
+}

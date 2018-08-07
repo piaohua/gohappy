@@ -103,6 +103,12 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SLucky:
 		b, err := msg.(*SLucky).Marshal()
 		return 1530, 0, b, err
+	case *SActivity:
+		b, err := msg.(*SActivity).Marshal()
+		return 1531, 0, b, err
+	case *SJoinActivity:
+		b, err := msg.(*SJoinActivity).Marshal()
+		return 1532, 0, b, err
 	case *SAgentJoin:
 		b, err := msg.(*SAgentJoin).Marshal()
 		return 1550, 0, b, err

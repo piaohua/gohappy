@@ -31,6 +31,20 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		glog.Debugf("SNotice %#v", arg)
 		handler.PackNotice(arg)
 		rs.Send(arg)
+	case *pb.CActivity:
+		arg := msg.(*pb.CActivity)
+		glog.Debugf("CActivity %#v", arg)
+		arg.Userid = rs.User.GetUserid()
+		rs.dbmsPid.Request(arg, ctx.Self())
+	case *pb.SActivity:
+		arg := msg.(*pb.SActivity)
+		glog.Debugf("SActivity %#v", arg)
+		handler.PackActivity(arg)
+		rs.Send(arg)
+	case *pb.CJoinActivity:
+		arg := msg.(*pb.CJoinActivity)
+		glog.Debugf("CJoinActivity %#v", arg)
+		rs.joinActivity(arg, ctx)
 	case *pb.CGetCurrency:
 		arg := msg.(*pb.CGetCurrency)
 		glog.Debugf("CGetCurrency %#v", arg)
@@ -626,7 +640,7 @@ func (rs *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
 			//奖励发放
 			//rs.addCurrency(lucky.Diamond, lucky.Coin, 0, 0, int32(pb.LOG_TYPE51))
 			//消息提醒
-			//record, msg2 := handler.LuckyNotice(lucky.Diamond, lucky.Name, arg.Userid)
+			//record, msg2 := handler.LuckyNotice(lucky.Coin, lucky.Name, arg.Userid)
 			//if record != nil {
 			//	rs.loggerPid.Tell(record)
 			//}
@@ -714,6 +728,25 @@ func (rs *RoleActor) setLatLng(arg *pb.CLatLng) {
 	rs.Send(msg)
 	arg.Userid = rs.User.GetUserid()
 	rs.rolePid.Tell(arg)
+}
+
+//join activity
+func (rs *RoleActor) joinActivity(arg *pb.CJoinActivity, ctx actor.Context) {
+	if handler.IsNotAgent(rs.User) {
+		rsp := new(pb.SJoinActivity)
+		rsp.Error = pb.NotAgent
+		rs.Send(rsp)
+		return
+	}
+	arg.Selfid = rs.User.GetUserid()
+	act := config.GetActivity(arg.GetActid())
+	if act.Id != arg.GetActid() {
+		msg := new(pb.SJoinActivity)
+		msg.Error = pb.ActidError
+		rs.Send(msg)
+		return
+	}
+	rs.dbmsPid.Request(arg, ctx.Self())
 }
 
 // vim: set foldmethod=marker foldmarker=//',//.:

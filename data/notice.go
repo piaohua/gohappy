@@ -22,7 +22,7 @@ const (
 	NOTICE_ACT_TYPE2 = 2 //活动消息
 )
 
-//公告
+//Notice 公告
 type Notice struct {
 	Id      string    `bson:"_id" json:"id"`          //公告ID
 	Userid  string    `bson:"userid" json:"userid"`   //玩家

@@ -29,13 +29,20 @@ import (
 func PackNotice(msg *pb.SNotice) {
 	list := config.GetNotices(data.NOTICE_TYPE1)
 	for _, v := range list {
-		body := &pb.Notice{
-			Rtype:   int32(v.Rtype),
-			Acttype: int32(v.Acttype),
-			Content: v.Content,
-		}
+		body := packNoticeMsg(&v)
 		msg.List = append(msg.List, body)
 	}
+}
+
+func packNoticeMsg(v *data.Notice) (msg *pb.Notice) {
+	msg = &pb.Notice{
+		Rtype:   int32(v.Rtype),
+		Acttype: int32(v.Acttype),
+		Content: v.Content,
+		Time:    utils.Time2LocalStr(v.Ctime),
+		ExpireTime: utils.Time2LocalStr(v.Etime),
+	}
+	return
 }
 
 //PackUserNotice 打包玩家消息
@@ -47,12 +54,7 @@ func PackUserNotice(arg *pb.CNotice) (msg *pb.SNotice) {
 		return
 	}
 	for _, v := range list {
-		body := &pb.Notice{
-			Rtype:   int32(v.Rtype),
-			Acttype: int32(v.Acttype),
-			Content: v.Content,
-			Time:    utils.Time2LocalStr(v.Ctime),
-		}
+		body := packNoticeMsg(v)
 		msg.List = append(msg.List, body)
 	}
 	return
@@ -134,7 +136,7 @@ func LuckyNotice(coin int64, name, userid string) (record *pb.LogNotice,
 	if coin <= 0 {
 		return
 	}
-	content := fmt.Sprintf("恭喜你完成幸运星%s获得%d金币", name, coin)
+	content := fmt.Sprintf("恭喜你完成幸运星%s获得%d金豆", name, coin)
 	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }
 

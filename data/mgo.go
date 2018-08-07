@@ -47,6 +47,7 @@ var Envs *mgo.Collection
 var Games *mgo.Collection
 var Vips *mgo.Collection
 var Tasks *mgo.Collection
+var Activitys *mgo.Collection
 var LoginPrizes *mgo.Collection
 var LogTasks *mgo.Collection
 var LogProfits *mgo.Collection
@@ -55,6 +56,7 @@ var LogBanks *mgo.Collection
 var LogSysProfits *mgo.Collection
 var Luckys *mgo.Collection
 var LogDayProfits *mgo.Collection
+var LogActivitys *mgo.Collection
 
 // 初始化时连接数据库
 func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
@@ -117,6 +119,7 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	Vips = Session.DB(dbName).C("col_vip")
 	Games = Session.DB(dbName).C("col_game")
 	Tasks = Session.DB(dbName).C("col_task")
+	Activitys = Session.DB(dbName).C("col_activity")
 	LoginPrizes = Session.DB(dbName).C("col_login_prize")
 	LogTasks = Session.DB(dbName).C("col_log_task")
 	LogProfits = Session.DB(dbName).C("col_log_profit")
@@ -125,6 +128,7 @@ func InitMgo(dbHost, dbPort, dbUser, dbPassword, dbName string) {
 	LogSysProfits = Session.DB(dbName).C("col_log_sys_profit")
 	Luckys = Session.DB(dbName).C("col_lucky")
 	LogDayProfits = Session.DB(dbName).C("col_log_day_profit")
+	LogActivitys = Session.DB(dbName).C("col_log_activity")
 }
 
 func Close() {

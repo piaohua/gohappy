@@ -60,6 +60,17 @@ func (a *DBMSActor) handlerUser(msg interface{}, ctx actor.Context) {
 		//TODO 缓存
 		rsp := handler.PackUserNotice(arg)
 		ctx.Respond(rsp)
+	case *pb.CActivity:
+		arg := msg.(*pb.CActivity)
+		glog.Debugf("CActivity %#v", arg)
+		//TODO 缓存
+		rsp := handler.PackUserActivity(arg)
+		ctx.Respond(rsp)
+	case *pb.CJoinActivity:
+		arg := msg.(*pb.CJoinActivity)
+		glog.Debugf("CJoinActivity %#v", arg)
+		rsp := handler.JoinActivity(arg)
+		ctx.Respond(rsp)
 	case *pb.CAgentProfitRank:
 		arg := msg.(*pb.CAgentProfitRank)
 		glog.Debugf("CAgentProfitRank %#v", arg)

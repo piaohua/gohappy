@@ -301,7 +301,9 @@
             "AlreadySetRate": 110,
             "ProfitRateNotEnough": 111,
             "AgentJoinLimit": 112,
-            "AgentSetLimit": 113
+            "AgentSetLimit": 113,
+            "ActidError": 114,
+            "ActRepeatJoin": 115
           }
         },
         "SitType": {
@@ -443,6 +445,10 @@
             "time": {
               "type": "string",
               "id": 4
+            },
+            "expireTime": {
+              "type": "string",
+              "id": 5
             }
           }
         },
@@ -976,6 +982,59 @@
             }
           }
         },
+        "CActivity": {
+          "fields": {
+            "page": {
+              "type": "uint32",
+              "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SActivity": {
+          "fields": {
+            "list": {
+              "rule": "repeated",
+              "type": "Activity",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CJoinActivity": {
+          "fields": {
+            "actid": {
+              "type": "string",
+              "id": 1
+            },
+            "selfid": {
+              "type": "string",
+              "id": 2
+            }
+          }
+        },
+        "SJoinActivity": {
+          "fields": {
+            "actid": {
+              "type": "string",
+              "id": 1
+            },
+            "joinTime": {
+              "type": "string",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
         "UserData": {
           "fields": {
             "userid": {
@@ -1382,6 +1441,34 @@
             "From": {
               "type": "string",
               "id": 5
+            }
+          }
+        },
+        "Activity": {
+          "fields": {
+            "id": {
+              "type": "string",
+              "id": 1
+            },
+            "title": {
+              "type": "string",
+              "id": 2
+            },
+            "content": {
+              "type": "string",
+              "id": 3
+            },
+            "startTime": {
+              "type": "string",
+              "id": 4
+            },
+            "endTime": {
+              "type": "string",
+              "id": 5
+            },
+            "joinTime": {
+              "type": "string",
+              "id": 6
             }
           }
         },

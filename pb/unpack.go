@@ -118,6 +118,14 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CLucky)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1027:
+		msg := new(CActivity)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1028:
+		msg := new(CJoinActivity)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 1050:
 		msg := new(CAgentJoin)
 		err := msg.Unmarshal(b)

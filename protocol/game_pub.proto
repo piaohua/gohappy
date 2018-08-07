@@ -153,3 +153,14 @@ message BankLog
     int64  Rest   = 4; //银行剩余数量
     string From   = 5; //赠送者
 }
+
+// Activity
+message Activity
+{
+    string id = 1;//unique
+    string title = 2;//名称描述
+    string content = 3;//内容
+    string startTime = 4;//开始时间
+    string endTime = 5;//结束时间
+    string joinTime = 6;//参加时间
+}

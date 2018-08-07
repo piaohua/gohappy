@@ -71,6 +71,8 @@ var protosUnpack = map[string][]proto{
 		{code: 1024, name: "CLatLng"},
 		{code: 1025, name: "CBankLog"},
 		{code: 1026, name: "CLucky"},
+		{code: 1027, name: "CActivity"},
+		{code: 1028, name: "CJoinActivity"},
 		//agent
 		{code: 1050, name: "CAgentJoin"},
 		{code: 1051, name: "CMyAgent"},
@@ -233,6 +235,8 @@ var protosPacket = map[string][]proto{
 		{code: 1528, name: "SLatLng"},
 		{code: 1529, name: "SBankLog"},
 		{code: 1530, name: "SLucky"},
+		{code: 1531, name: "SActivity"},
+		{code: 1532, name: "SJoinActivity"},
 		//agent
 		{code: 1550, name: "SAgentJoin"},
 		{code: 1551, name: "SMyAgent"},

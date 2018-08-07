@@ -91,6 +91,12 @@ func Rpacket(msg interface{}) (uint32, []byte, error) {
 	case *CLucky:
 		b, err := msg.(*CLucky).Marshal()
 		return 1026, b, err
+	case *CActivity:
+		b, err := msg.(*CActivity).Marshal()
+		return 1027, b, err
+	case *CJoinActivity:
+		b, err := msg.(*CJoinActivity).Marshal()
+		return 1028, b, err
 	case *CAgentJoin:
 		b, err := msg.(*CAgentJoin).Marshal()
 		return 1050, b, err

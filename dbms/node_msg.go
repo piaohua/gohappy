@@ -153,4 +153,5 @@ func (a *DBMSActor) syncConfig2(pid *actor.PID) {
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_TASK))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_LOGIN))
 	pid.Tell(handler.GetSyncConfig(pb.CONFIG_LUCKY))
+	pid.Tell(handler.GetSyncConfig(pb.CONFIG_ACT))
 }

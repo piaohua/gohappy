@@ -402,10 +402,12 @@ func (t *LogDayProfit) Save() bool {
 	return Insert(LogDayProfits, t)
 }
 
+//Has 记录是否存在
 func (t *LogDayProfit) Has() bool {
 	return Has(LogDayProfits, bson.M{"userid": t.Userid, "agentid": t.Agentid, "day": t.Day})
 }
 
+//Update 更新记录
 func (t *LogDayProfit) Update(field string, profit int64) bool {
 	if field == "" {
 		return false
