@@ -1323,6 +1323,10 @@
             "down": {
               "type": "bool",
               "id": 8
+            },
+            "carry": {
+              "type": "uint32",
+              "id": 9
             }
           }
         },

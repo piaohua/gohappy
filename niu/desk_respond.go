@@ -338,7 +338,7 @@ func (t *Desk) addBeDealer(userid string, st int32,
 	} else {
 		t.DeskFree.Dealers[userid] += num
 	}
-	msg := handler.BeDealerMsg(st, num, t.DeskGame.Dealer,
+	msg := handler.BeDealerMsg(st, num, t.DeskFree.CarryInit, t.DeskGame.Dealer,
 		userid, user.GetNickname(), user.GetPhoto())
 	t.broadcast(msg)
 }
@@ -354,13 +354,14 @@ func (t *Desk) delBeDealer(userid string, user *data.User) {
 	var num int64
 	num = t.DeskFree.Carry
 	t.sendCoin(userid, num, int32(pb.LOG_TYPE8))
+	msg := handler.BeDealerMsg(0, num, t.DeskFree.CarryInit, t.DeskGame.Dealer,
+		userid, user.GetNickname(), user.GetPhoto())
+	t.broadcast(msg)
 	t.DeskGame.Dealer = ""
 	t.DeskGame.DealerSeat = 0
 	t.DeskFree.Carry = 0
 	t.DeskFree.DealerNum = 0
-	msg := handler.BeDealerMsg(0, num, t.DeskGame.Dealer,
-		userid, user.GetNickname(), user.GetPhoto())
-	t.broadcast(msg)
+	t.DeskFree.CarryInit = 0
 }
 
 //离开房间清空上庄列表
@@ -407,7 +408,7 @@ func (t *Desk) beComeDealer() {
 	if user == nil {
 		return
 	}
-	msg := handler.BeDealerMsg(1, num, t.DeskGame.Dealer,
+	msg := handler.BeDealerMsg(1, num, t.DeskFree.CarryInit, t.DeskGame.Dealer,
 		userid, user.GetNickname(), user.GetPhoto())
 	t.broadcast(msg)
 }
