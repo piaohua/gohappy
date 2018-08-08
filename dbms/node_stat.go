@@ -3,17 +3,17 @@ package main
 import (
 	"time"
 
-	"gohappy/glog"
-	"gohappy/pb"
 	"gohappy/game/config"
 	"gohappy/game/handler"
+	"gohappy/glog"
+	"gohappy/pb"
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
 )
 
 //StatActor 统计服务
-type StatActor struct{
+type StatActor struct {
 	Name string
 	//关闭通道
 	stopCh chan struct{}
@@ -101,41 +101,26 @@ func (state *StatActor) ding(context actor.Context) {
 	}
 	switch utils.Minute() {
 	case 5:
-		list := config.GetActivitys()
-		for _, v := range list {
-			switch v.Type {
-			case int32(pb.ACT_TYPE0):
-				msg := &pb.AgentActivity{
-					Actid: v.Id,
-					Page: 1,
-				}
-				context.Self().Tell(msg)
-			}
-		}
+		state.stat(int32(pb.ACT_TYPE0), context)
 	case 10:
-		list := config.GetActivitys()
-		for _, v := range list {
-			switch v.Type {
-			case int32(pb.ACT_TYPE1):
-				msg := &pb.AgentActivity{
-					Actid: v.Id,
-					Page: 1,
-				}
-				context.Self().Tell(msg)
-			}
-		}
+		state.stat(int32(pb.ACT_TYPE1), context)
 	case 15:
-		list := config.GetActivitys()
-		for _, v := range list {
-			switch v.Type {
-			case int32(pb.ACT_TYPE2):
-				msg := &pb.AgentActivity{
-					Actid: v.Id,
-					Page: 1,
-				}
-				context.Self().Tell(msg)
-			}
+		state.stat(int32(pb.ACT_TYPE2), context)
+	}
+}
+
+func (state *StatActor) stat(Type int32, context actor.Context) {
+	list := config.GetActivitys()
+	for _, v := range list {
+		if v.Type != Type {
+			continue
 		}
+		msg := &pb.AgentActivity{
+			Actid: v.Id,
+			Page:  1,
+		}
+		context.Self().Tell(msg)
+
 	}
 }
 
@@ -167,7 +152,6 @@ func statStart(pid *actor.PID) {
 	msg := new(pb.ServeStart)
 	pid.Tell(msg)
 }
-
 
 func statStop(pid *actor.PID) {
 	msg := new(pb.ServeStop)

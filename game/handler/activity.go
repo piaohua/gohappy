@@ -108,6 +108,7 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 	if len(list) == 0 {
 		return nil, errors.New("none data")
 	}
+	glog.Debugf("list %#v, arg %#v, act %#v", list, arg, act)
 	for _, v := range list {
 		switch act.Type {
 		case int32(pb.ACT_TYPE0):
@@ -118,13 +119,7 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 10000000 {
-				msg2 := &pb.AgentActivityProfit{
-					Userid: v.Userid,
-					Profit: 5000000,
-					Type: int32(pb.LOG_TYPE57),
-					Actid: act.Id,
-					Title: act.Title,
-				}
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE57), 5000000, 0)
 				msg = append(msg, msg2)
 			}
 		case int32(pb.ACT_TYPE1):
@@ -135,23 +130,11 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 10000000 {
-				msg2 := &pb.AgentActivityProfit{
-					Userid: v.Userid,
-					Profit: 5000000,
-					Type: int32(pb.LOG_TYPE58),
-					Actid: act.Id,
-					Title: act.Title,
-				}
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 5000000, 0)
 				msg = append(msg, msg2)
 			}
 			if num >= 20000000 {
-				msg2 := &pb.AgentActivityProfit{
-					Userid: v.Userid,
-					Profit: 10000000,
-					Type: int32(pb.LOG_TYPE58),
-					Actid: act.Id,
-					Title: act.Title,
-				}
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 10000000, 0)
 				msg = append(msg, msg2)
 			}
 		case int32(pb.ACT_TYPE2):
@@ -162,30 +145,29 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 5 && v.Num != 5 {
-				msg2 := &pb.AgentActivityProfit{
-					Userid: v.Userid,
-					Profit: 10000000,
-					Type: int32(pb.LOG_TYPE59),
-					Actid: act.Id,
-					Title: act.Title,
-					Num: 5,
-				}
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 10000000, 5)
 				msg = append(msg, msg2)
 			}
 			if num >= 10 && v.Num != 10 {
-				msg2 := &pb.AgentActivityProfit{
-					Userid: v.Userid,
-					Profit: 20000000,
-					Type: int32(pb.LOG_TYPE59),
-					Actid: act.Id,
-					Title: act.Title,
-					Num: 10,
-				}
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 20000000, 10)
 				msg = append(msg, msg2)
 			}
 		default:
 			return nil, errors.New("type error")
 		}
+	}
+	return
+}
+
+func statActivityMsg(userid, actid, title string, Type int32,
+	profit int64, num uint32) (msg *pb.AgentActivityProfit) {
+	msg = &pb.AgentActivityProfit{
+		Userid: userid,
+		Profit: profit,
+		Type: Type,
+		Actid: actid,
+		Title: title,
+		Num: num,
 	}
 	return
 }
