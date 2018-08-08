@@ -66,8 +66,8 @@ func (a *DBMSActor) Handler(msg interface{}, ctx actor.Context) {
 func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Infof("dbms start: %v", ctx.Self().String())
 	//TODO 设置测试数据,正式后台配置
-	handler.SetActivityList()
-	/*handler.SetTaskList2()
+	/*handler.SetActivityList()
+	handler.SetTaskList2()
 	handler.SetNiuCoinGame()
 	handler.SetLuckyList()
 	//handler.SetGameList()

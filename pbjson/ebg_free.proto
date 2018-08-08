@@ -41,6 +41,7 @@ message SEBFreeDealer
     ErrCode error= 6;//错误码 ,0:正常
     string photo   = 7;//庄家头像
     bool down   = 8;//结束后下庄
+    uint32 carry     = 9;  //初始携带金额
 }
 
 //上庄列表

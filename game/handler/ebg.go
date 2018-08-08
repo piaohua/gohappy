@@ -52,7 +52,7 @@ func EBLeaveMsg(userid string, seat uint32) *pb.SEBLeave {
 }
 
 //EbgBeDealerMsg 上下庄消息
-func EbgBeDealerMsg(state int32, num int64, dealer,
+func EbgBeDealerMsg(state int32, num, carry int64, dealer,
 	userid, name, photo string) *pb.SEBFreeDealer {
 	return &pb.SEBFreeDealer{
 		State:    state,
@@ -61,6 +61,7 @@ func EbgBeDealerMsg(state int32, num int64, dealer,
 		Dealer:   dealer,
 		Nickname: name,
 		Photo:    photo,
+		Carry:    uint32(carry),
 	}
 }
 
