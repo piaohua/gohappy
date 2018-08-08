@@ -354,6 +354,36 @@ func agentDayProfitGroup(match bson.M) (result []bson.M, err error) {
 	return
 }
 
+//AgentDayProfitGroup2 统计测试
+func AgentDayProfitGroup2() (result []bson.M, err error) {
+	return agentDayProfitGroup2(bson.M{})
+}
+
+//分组统计, group by agentid userid
+func agentDayProfitGroup2(match bson.M) (result []bson.M, err error) {
+	m := bson.M{"$match": match}
+	n := bson.M{
+		"$group": bson.M{
+			"_id": bson.M{"agentid": "$agentid"},
+			"profit": bson.M{
+				"$sum": "$profit",
+			},
+			"profit_first": bson.M{
+				"$sum": "$profit_first",
+			},
+			"profit_second": bson.M{
+				"$sum": "$profit_second",
+			},
+		},
+	}
+	//统计
+	operations := []bson.M{m, n}
+	result = []bson.M{}
+	pipe := LogDayProfits.Pipe(operations)
+	err = pipe.All(&result)
+	return
+}
+
 //GetAgentDayProfitCount 代理天收益明细
 func GetAgentDayProfitCount(arg *pb.CAgentDayProfit) (int64, error) {
 	q := getAgentDayProfitMatch(arg)

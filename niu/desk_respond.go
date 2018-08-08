@@ -400,6 +400,7 @@ func (t *Desk) beComeDealer() {
 	t.DeskGame.Dealer = userid
 	t.DeskFree.Carry = num
 	t.DeskFree.DealerNum = 0
+	t.DeskFree.CarryInit = num //
 	delete(t.DeskFree.Dealers, userid)
 	//消息
 	user := t.getPlayer(userid)

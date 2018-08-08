@@ -119,6 +119,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentBringProfitNum)
 		glog.Debugf("AgentBringProfitNum %#v", arg)
 		rs.User.AddBringProfit(arg.GetProfit())
+	case *pb.AgentActivityProfit:
+		arg := msg.(*pb.AgentActivityProfit)
+		glog.Debugf("AgentActivityProfit %#v", arg)
+		rs.gentActivityProfit(arg, ctx)
 	//case proto.Message:
 	//	//响应消息
 	//	rs.Send(msg)
@@ -498,6 +502,20 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 //设置区域收益
 func (rs *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
 	rs.User.ProfitRate += arg.GetRate()
+}
+
+//奖励发放更新收益
+func (rs *RoleActor) gentActivityProfit(arg *pb.AgentActivityProfit, ctx actor.Context) {
+	//奖励发放
+	rs.addCurrency(0, arg.GetProfit(), 0, 0, arg.GetType())
+	//消息提醒
+	//record, msg2 := handler.ActNotice(arg)
+	//if record != nil {
+	//	rs.loggerPid.Tell(record)
+	//}
+	//if msg2 != nil {
+	//	rs.Send(msg2)
+	//}
 }
 
 //设置区域备注

@@ -218,4 +218,6 @@ message AgentActivityProfit {
     int64 Profit = 2;//收益
     int32 Type = 3;//log type
     string Actid = 4;//actid
+    string Title = 5;//title
+    uint32 Num = 6;//num
 }

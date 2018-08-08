@@ -362,7 +362,7 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 		rsp.Error = pb.AgentSetLimit
 	}
 	if user.ProfitRate != 0 {
-		rsp.Error = pb.AlreadySetRate
+		//rsp.Error = pb.AlreadySetRate
 	}
 	if !handler.IsVaild(user) {
 		rsp.Error = pb.AgentSetLimit
@@ -478,4 +478,26 @@ func (a *RoleActor) agentOauth2Build(arg *pb.AgentOauth2Build, ctx actor.Context
 	}
 	msg := handler.AgentBuildUpdateMsg(user.GetAgent(), user.GetUserid(), 1, 0, 0)
 	ctx.Self().Tell(msg)
+}
+
+//活动奖励发放更新收益
+func (a *RoleActor) agentActivityProfit(arg *pb.AgentActivityProfit, ctx actor.Context) {
+	user := a.getUserById(arg.GetUserid())
+	if user == nil {
+		glog.Errorf("get userid %s fail", arg.GetUserid())
+		return
+	}
+	//更新记录
+	handler.StatActivityUpdate(arg)
+	//消息提醒
+	record, msg2 := handler.ActNotice(arg)
+	if record != nil {
+		loggerPid.Tell(record)
+	}
+	if v, ok := a.roles[arg.GetUserid()]; ok && v != nil {
+		v.Pid.Tell(arg)
+		v.Pid.Tell(msg2)
+		return
+	}
+	a.syncCurrency(0, arg.GetProfit(), 0, 0, arg.GetType(), arg.GetUserid())
 }

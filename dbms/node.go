@@ -20,6 +20,8 @@ type DBMSActor struct {
 	Name string
 	//服务注册
 	serve map[string]*actor.PID
+	//统计服务
+	statPid *actor.PID
 	//关闭通道
 	stopCh chan struct{}
 	//更新状态

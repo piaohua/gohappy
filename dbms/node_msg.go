@@ -66,6 +66,7 @@ func (a *DBMSActor) Handler(msg interface{}, ctx actor.Context) {
 func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Infof("dbms start: %v", ctx.Self().String())
 	//TODO 设置测试数据,正式后台配置
+	handler.SetActivityList()
 	/*handler.SetTaskList2()
 	handler.SetNiuCoinGame()
 	handler.SetLuckyList()
@@ -84,6 +85,9 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	glog.Debugf("list %#v, err %v", list, err)*/
 	//启动
 	go a.ticker(ctx)
+	//统计服务
+	a.statPid = NewStat()
+	statStart(a.statPid)
 }
 
 //时钟
@@ -132,6 +136,8 @@ func (a *DBMSActor) handlerStop(ctx actor.Context) {
 	for k := range a.serve {
 		glog.Debugf("Stop gate: %s", k)
 	}
+	//关闭统计服务
+	statStop(a.statPid)
 }
 
 //同步配置

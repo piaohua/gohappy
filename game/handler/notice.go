@@ -149,3 +149,13 @@ func BankOpenNotice(coin int64, userid string) (record *pb.LogNotice,
 	content := fmt.Sprintf("首次开通银行赠送%d豆子", coin)
 	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }
+
+//ActNotice 活动奖励消息
+func ActNotice(arg *pb.AgentActivityProfit) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if arg.GetProfit() <= 0 {
+		return
+	}
+	content := fmt.Sprintf("完成%s活动获取%d金豆豆", arg.GetTitle(), arg.GetProfit())
+	return NewNotice(data.NOTICE_TYPE3, 0, arg.GetUserid(), content)
+}

@@ -122,6 +122,7 @@ type DeskPriv struct {
 
 //DeskFree 百人场牌桌当局数据
 type DeskFree struct {
+	CarryInit int64               //庄家初始的携带
 	Carry     int64               //庄家的携带
 	DealerNum uint32              //做庄次数
 	Dealers   map[string]int64    //上庄列表,userid: carry

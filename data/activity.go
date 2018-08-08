@@ -25,8 +25,8 @@ type Activity struct {
 
 //Save 保存消息记录
 func (t *Activity) Save() bool {
-	t.Id = ObjectIdString(bson.NewObjectId())
-	t.Ctime = bson.Now()
+	//t.Id = ObjectIdString(bson.NewObjectId())
+	//t.Ctime = bson.Now()
 	return Insert(Activitys, t)
 }
 
@@ -44,7 +44,7 @@ type LogActivity struct {
 	Userid string    `bson:"userid" json:"userid"` //玩家
 	Actid  string    `bson:"actid" json:"actid"`   //activity id
 	Prize  int64     `bson:"prize" json:"prize"`   //奖励数量
-	Num    int32     `bson:"num" json:"num"`       //完成次数
+	Num    uint32    `bson:"num" json:"num"`       //完成次数
 	Etime  time.Time `bson:"etime" json:"etime"`   //过期时间
 	Jtime  time.Time `bson:"jtime" json:"jtime"`   //参与时间
 	Utime  time.Time `bson:"utime" json:"utime"`   //update Time
@@ -121,16 +121,16 @@ func getLogActivityList(page int, q bson.M) ([]*LogActivity, error) {
 	return list, nil
 }
 
-//GetJoinActivityList 代理活动参加列表
-func GetJoinActivityList(arg *pb.AgentActivity, Type int32) ([]*LogActivity, error) {
+//GetJoinActivityList 参加代理活动玩家列表
+func GetJoinActivityList(arg *pb.AgentActivity, act Activity) ([]*LogActivity, error) {
 	q := bson.M{"actid": arg.GetActid()}
-	switch Type {
+	switch act.Type {
 	case int32(pb.ACT_TYPE0):
 		q["prize"] = bson.M{"$lt": 50000000}
 	case int32(pb.ACT_TYPE1):
 		q["num"] = bson.M{"$eq": 0}
 	case int32(pb.ACT_TYPE2):
-		q["num"] = bson.M{"$eq": 0}
+		q["num"] = bson.M{"$lt": 15}
 	default:
 		return nil, errors.New("type error")
 	}
@@ -138,42 +138,49 @@ func GetJoinActivityList(arg *pb.AgentActivity, Type int32) ([]*LogActivity, err
 }
 
 //StatActivity 统计数据
-func StatActivity(userid string, Type int32) (int64, error) {
-	switch Type {
+func StatActivity(actLog *LogActivity, act Activity) (int64, error) {
+	switch act.Type {
 	case int32(pb.ACT_TYPE0):
 		endTime := utils.TimestampTodayTime()
-		startTime := endTime.AddDate(0, 0, -7)
-		q := bson.M{"agentid": userid}
+		startTime := actLog.Jtime //参加开始时间
+		if endTime.Sub(actLog.Jtime).Hours() > 7 * 24 { //参加超过7天,统计7日内
+			startTime = endTime.AddDate(0, 0, -7)
+		}
+		q := bson.M{"agentid": actLog.Userid}
 		q["day"] = bson.M{"$gte": utils.Time2DayDate(startTime),
 			"$lt": utils.Time2DayDate(endTime)}
-		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
+		glog.Debugf("userid %s, Type %d, q %#v", actLog.Userid, act.Type, q)
 		return getAgentDayProfitCount2(q)
 	case int32(pb.ACT_TYPE1):
 		endTime := utils.TimestampTodayTime()
 		startTime := endTime.AddDate(0, 0, -1)
-		q := bson.M{"agentid": userid}
+		q := bson.M{"agentid": actLog.Userid}
 		q["day"] = bson.M{"$eq": utils.Time2DayDate(startTime)}
-		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
+		glog.Debugf("userid %s, Type %d, q %#v", actLog.Userid, act.Type, q)
 		return getAgentDayProfitCount2(q)
 	case int32(pb.ACT_TYPE2):
-		ids, err := getAgentChilds(userid)
-		glog.Debugf("userid %s, ids %v, err %v", userid, ids, err)
+		ids, err := getAgentChilds(actLog.Userid)
+		glog.Debugf("userid %s, ids %v, err %v", actLog.Userid, ids, err)
 		if err != nil || len(ids) == 0 {
 			return 0, err
 		}
-		//TODO: 活动时间限制
 		endTime := utils.TimestampTodayTime()
-		startTime := endTime.AddDate(0, 0, -1)
+		startTime := actLog.Jtime //参加开始时间
+		if endTime.Sub(actLog.Jtime).Hours() > 30 * 24 { //参加超过30天,统计30日内
+			startTime = endTime.AddDate(0, 0, -30)
+		}
 		q := bson.M{"agentid": bson.M{"$in": ids}}
-		q["day"] = bson.M{"$eq": utils.Time2DayDate(startTime)}
-		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
-		return getAgentDayProfitCount2(q)
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(startTime),
+			"$lt": utils.Time2DayDate(endTime)}
+		glog.Debugf("userid %s, Type %d, q %#v", actLog.Userid, act.Type, q)
+		return getAgentChildsCount(q)
 	default:
 		return 0, errors.New("type error")
 	}
 	return 0, nil
 }
 
+//下级代理列表
 func getAgentChilds(userid string) ([]string, error) {
 	var ids []string
 	if userid == "" {
@@ -198,4 +205,32 @@ func getAgentChilds(userid string) ([]string, error) {
 		}
 	}
 	return ids, nil
+}
+
+//代理收益统计
+func getAgentChildsCount(q bson.M) (int64, error) {
+	list, err := agentDayProfitGroup2(q)
+	if err != nil {
+		return 0, err
+	}
+	if len(list) == 0 {
+		return 0, errors.New("none record")
+	}
+	var n int64
+	for _, v := range list {
+		var num int64
+		if val, ok := v["profit"]; ok {
+			num += utils.Int64(val)
+		}
+		if val, ok := v["profit_first"]; ok {
+			num += utils.Int64(val)
+		}
+		if val, ok := v["profit_second"]; ok {
+			num += utils.Int64(val)
+		}
+		if num >= 30000000 {
+			n++
+		}
+	}
+	return n, nil
 }
