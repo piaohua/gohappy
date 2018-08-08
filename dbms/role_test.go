@@ -19,10 +19,10 @@ func TestRole(t *testing.T) {
 		//fmt.Println(err)
 		//return
 	}
-	res, _ := pid.RequestFuture(new(pb.Request), timeout).Result()
+	res, _ := pid.GetPid().RequestFuture(new(pb.Request), timeout).Result()
 	fmt.Println("res ", res)
 	response := res.(*pb.Response)
 	fmt.Println(response)
-	pid.Stop()
+	pid.GetPid().Stop()
 	console.ReadLine()
 }

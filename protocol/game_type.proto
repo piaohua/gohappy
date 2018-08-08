@@ -112,9 +112,9 @@ enum NoticeActType {
 
 //活动类型
 enum ActivityType {
-    ACT_TYPE0 = 0; //
-    ACT_TYPE1 = 1; //
-    ACT_TYPE2 = 2; //
+    ACT_TYPE0 = 0; //翻倍奖
+    ACT_TYPE1 = 1; //增加奖
+    ACT_TYPE2 = 2; //激活奖
 }
 
 //游戏变量

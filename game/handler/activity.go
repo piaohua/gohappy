@@ -105,11 +105,16 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit) {
 		return
 	}
 	for _, v := range list {
-		glog.Debugf("v %#v", v)
 		switch act.Type {
 		case int32(pb.ACT_TYPE0):
+			num, err := data.StatActivity(v.Userid, act.Type)
+			glog.Debugf("type %d, userid %s, num %d, err %v", act.Type, v.Userid, num, err)
 		case int32(pb.ACT_TYPE1):
+			num, err := data.StatActivity(v.Userid, act.Type)
+			glog.Debugf("type %d, userid %s, num %d, err %v", act.Type, v.Userid, num, err)
 		case int32(pb.ACT_TYPE2):
+			num, err := data.StatActivity(v.Userid, act.Type)
+			glog.Debugf("type %d, userid %s, num %d, err %v", act.Type, v.Userid, num, err)
 		default:
 			return
 		}

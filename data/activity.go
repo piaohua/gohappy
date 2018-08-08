@@ -4,21 +4,23 @@ import (
 	"errors"
 	"time"
 
+	"gohappy/glog"
 	"gohappy/pb"
+	"utils"
 
 	"github.com/globalsign/mgo/bson"
 )
 
 //Activity 活动配置
 type Activity struct {
-	Id      string    `bson:"_id" json:"id"`          //ID
-	Type   int32     `bson:"type" json:"type"`     //类型0,1,2
-	Del     int       `bson:"del" json:"del"`         //是否移除
-	Title string    `bson:"title" json:"title"` //标题内容
-	Content string    `bson:"content" json:"content"` //活动内容
-	StartTime   time.Time `bson:"start_time" json:"start_time"`     //开始时间
+	Id        string    `bson:"_id" json:"id"`                //ID
+	Type      int32     `bson:"type" json:"type"`             //类型0,1,2
+	Del       int       `bson:"del" json:"del"`               //是否移除
+	Title     string    `bson:"title" json:"title"`           //标题内容
+	Content   string    `bson:"content" json:"content"`       //活动内容
+	StartTime time.Time `bson:"start_time" json:"start_time"` //开始时间
 	EndTime   time.Time `bson:"end_time" json:"end_time"`     //结束时间
-	Ctime   time.Time `bson:"ctime" json:"ctime"`     //创建时间
+	Ctime     time.Time `bson:"ctime" json:"ctime"`           //创建时间
 }
 
 //Save 保存消息记录
@@ -31,7 +33,7 @@ func (t *Activity) Save() bool {
 //GetActivityList 获取列表
 func GetActivityList() []Activity {
 	var list []Activity
-	q := bson.M{"del": 0, "end_time":  bson.M{"$gt": bson.Now()}}
+	q := bson.M{"del": 0, "end_time": bson.M{"$gt": bson.Now()}}
 	ListByQ(Activitys, q, &list)
 	return list
 }
@@ -39,14 +41,14 @@ func GetActivityList() []Activity {
 //LogActivity 玩家参与活动记录
 type LogActivity struct {
 	//Id      string    `bson:"_id" json:"id"`          //ID
-	Userid  string    `bson:"userid" json:"userid"`   //玩家
-	Actid   string    `bson:"actid" json:"actid"` //activity id
-	Prize   int64     `bson:"prize" json:"prize"` //奖励数量
-	Num     int32     `bson:"num" json:"num"`     //完成次数
-	Etime   time.Time `bson:"etime" json:"etime"`     //过期时间
-	Jtime   time.Time `bson:"jtime" json:"jtime"`    //参与时间
-	Utime   time.Time `bson:"utime" json:"utime"`   //update Time
-	Ctime   time.Time `bson:"ctime" json:"ctime"`     //创建时间
+	Userid string    `bson:"userid" json:"userid"` //玩家
+	Actid  string    `bson:"actid" json:"actid"`   //activity id
+	Prize  int64     `bson:"prize" json:"prize"`   //奖励数量
+	Num    int32     `bson:"num" json:"num"`       //完成次数
+	Etime  time.Time `bson:"etime" json:"etime"`   //过期时间
+	Jtime  time.Time `bson:"jtime" json:"jtime"`   //参与时间
+	Utime  time.Time `bson:"utime" json:"utime"`   //update Time
+	Ctime  time.Time `bson:"ctime" json:"ctime"`   //创建时间
 }
 
 //Save 保存消息记录
@@ -139,13 +141,61 @@ func GetJoinActivityList(arg *pb.AgentActivity, Type int32) ([]*LogActivity, err
 func StatActivity(userid string, Type int32) (int64, error) {
 	switch Type {
 	case int32(pb.ACT_TYPE0):
-		//q["prize"] = bson.M{"$lt": 50000000}
+		endTime := utils.TimestampTodayTime()
+		startTime := endTime.AddDate(0, 0, -7)
+		q := bson.M{"agentid": userid}
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(startTime),
+			"$lt": utils.Time2DayDate(endTime)}
+		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
+		return getAgentDayProfitCount2(q)
 	case int32(pb.ACT_TYPE1):
-		//q["num"] = bson.M{"$eq": 0}
+		endTime := utils.TimestampTodayTime()
+		startTime := endTime.AddDate(0, 0, -1)
+		q := bson.M{"agentid": userid}
+		q["day"] = bson.M{"$eq": utils.Time2DayDate(startTime)}
+		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
+		return getAgentDayProfitCount2(q)
 	case int32(pb.ACT_TYPE2):
-		//q["num"] = bson.M{"$eq": 0}
+		ids, err := getAgentChilds(userid)
+		glog.Debugf("userid %s, ids %v, err %v", userid, ids, err)
+		if err != nil || len(ids) == 0 {
+			return 0, err
+		}
+		//TODO: 活动时间限制
+		endTime := utils.TimestampTodayTime()
+		startTime := endTime.AddDate(0, 0, -1)
+		q := bson.M{"agentid": bson.M{"$in": ids}}
+		q["day"] = bson.M{"$eq": utils.Time2DayDate(startTime)}
+		glog.Debugf("userid %s, Type %d, q %#v", userid, Type, q)
+		return getAgentDayProfitCount2(q)
 	default:
 		return 0, errors.New("type error")
 	}
 	return 0, nil
+}
+
+func getAgentChilds(userid string) ([]string, error) {
+	var ids []string
+	if userid == "" {
+		return ids, errors.New("userid error")
+	}
+	var list []bson.M
+	selector := make(bson.M, 1)
+	selector["_id"] = true
+	q := bson.M{"agent": userid, "agent_state": bson.M{"$eq": 1}}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		All(&list)
+	if err != nil {
+		return ids, err
+	}
+	if len(list) == 0 {
+		return ids, errors.New("none record")
+	}
+	for _, v := range list {
+		if val, ok := v["_id"]; ok {
+			ids = append(ids, val.(string))
+		}
+	}
+	return ids, nil
 }

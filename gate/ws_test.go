@@ -124,7 +124,8 @@ func TestRunClient(t *testing.T) {
 	message, _ := proto.Marshal((proto.Message)(packet))
 	t.Logf("message -> %+v", message)
 	// 打包完整协议消息
-	buff := pack(packet.GetCode(), message, 0)
+	//buff := pack(packet.GetCode(), message, 0)
+	buff := pack(0, 0, message)
 	// 消息长度
 	blen := len(buff)
 	t.Logf("buff -> %+v, len(buff) -> %d", buff, blen)
@@ -240,7 +241,7 @@ func TestMarshal(t *testing.T) {
 	msg := &pb.SRegist{
 		Userid: "xxxx",
 	}
-	code, msg_b, err := pb.Packet(msg)
+	code, _, msg_b, err := pb.Packet(msg)
 	t.Log(code, msg_b, err)
 	//---
 	msg1 := &pb.CRegist{
@@ -248,7 +249,7 @@ func TestMarshal(t *testing.T) {
 		Phone:    "xxxx",
 		Password: "xxxx",
 	}
-	code1, b1, err := pb.Packet(msg1)
+	code1, _, b1, err := pb.Packet(msg1)
 	t.Log(code1, b1, err)
 	//---
 	msg2, err := pb.Unpack(code1, b1)
