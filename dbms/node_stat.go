@@ -52,6 +52,9 @@ func (state *StatActor) Receive(context actor.Context) {
 		}
 		msg.Page++
 		context.Self().Tell(msg)
+	case *pb.AgentActivityStat:
+		glog.Debugf("AgentActivityStat %#v", msg)
+		state.stat(msg.GetType(), context)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}

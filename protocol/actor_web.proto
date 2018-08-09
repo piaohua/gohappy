@@ -51,6 +51,7 @@ enum WebCode {
     WebLucky    =14; //lucky列表
     WebVaild    =15; //设置代理有效数量
     WebAct      =16; //activity列表
+    WebStat     =17; //activity stat
 }
 
 //web请求

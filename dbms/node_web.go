@@ -85,6 +85,17 @@ func (a *DBMSActor) handlerWeb(arg *pb.WebRequest,
 		}
 		//广播所有节点,主动通知同步配置,只同步修改数据
 		a.broadcast(msg2, ctx)
+	case pb.WebStat:
+		//测试接口
+		msg2 := new(pb.AgentActivityStat)
+		err1 := msg2.Unmarshal(arg.Data)
+		if err1 != nil {
+			rsp.ErrMsg = fmt.Sprintf("msg err: %v", err1)
+			return
+		}
+		if a.statPid != nil {
+			a.statPid.Tell(msg2)
+		}
 	default:
 		glog.Errorf("unknown message %v", arg)
 	}

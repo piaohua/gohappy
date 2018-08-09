@@ -30,6 +30,12 @@ func TestWebJson(t *testing.T) {
 	//sendVaild("101133", "101418", 1, 0, 0)
 }
 
+func TestWebStat(t *testing.T) {
+	sendStat("", 0)
+	sendStat("", 1)
+	sendStat("", 2)
+}
+
 func sendCoin(userid string, coin int64) {
 	//var userid string
 	//var coin int64
@@ -149,6 +155,24 @@ func sendVaild(agentid, userid string, build, vaild, child uint32) {
 		log.Printf("agentid %s, msg %#v send successfully.", agentid, msg)
 	} else {
 		log.Printf("agentid %s, msg %#v send failed.", agentid, msg)
+	}
+}
+
+func sendStat(Actid string, Type int32) {
+	log.Printf("Actid %s, Type %d\n", Actid, Type)
+	msg := &pb.AgentActivityStat{
+		Actid: Actid,
+		Type:  Type,
+	}
+	b, err := jsoniter.Marshal(msg)
+	if err != nil {
+		log.Panic(err)
+	}
+	log.Printf("b %s\n", string(b))
+	if webRequest(pb.WebStat, b) {
+		log.Printf("Actid %s, Type %d send successfully.", Actid, Type)
+	} else {
+		log.Printf("Actid %s, Type %d send failed.", Actid, Type)
 	}
 }
 

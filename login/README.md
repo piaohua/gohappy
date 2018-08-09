@@ -254,4 +254,14 @@ WebResponse 响应response消息(json格式)
     response.Result = []byte{} //空数据
     example: {}
 
+17、WebStat 请求Data数据 (json格式)
+    b := new(pb.AgentActivityStat)
+    d, err := json.Marshal(b)
+    request.Data = d
+    example: {"actid": "xxx", "type": 1}
+
+    WebStat 响应Data数据 (json格式)
+    response.Result = []byte{} //空数据
+    example: {}
+
 ```

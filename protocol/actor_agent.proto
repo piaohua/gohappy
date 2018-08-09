@@ -221,3 +221,9 @@ message AgentActivityProfit {
     string Title = 5;//title
     uint32 Num = 6;//num
 }
+
+//代理活动统计
+message AgentActivityStat {
+    string actid = 1;//actid
+    int32 type = 2;//type
+}
