@@ -163,4 +163,5 @@ message Activity
     string startTime = 4;//开始时间
     string endTime = 5;//结束时间
     string joinTime = 6;//参加时间
+    int32 type = 7;//类型
 }

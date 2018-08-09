@@ -47,6 +47,7 @@ func packActivityMsg(v data.Activity) (msg *pb.Activity) {
 		Content:   v.Content,
 		StartTime: utils.Time2LocalStr(v.StartTime),
 		EndTime:   utils.Time2LocalStr(v.EndTime),
+		Type:      v.Type,
 	}
 	return
 }

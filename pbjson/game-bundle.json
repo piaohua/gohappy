@@ -1469,6 +1469,10 @@
             "joinTime": {
               "type": "string",
               "id": 6
+            },
+            "type": {
+              "type": "int32",
+              "id": 7
             }
           }
         },
