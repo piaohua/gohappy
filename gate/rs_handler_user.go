@@ -610,7 +610,7 @@ func (rs *RoleActor) lucky() {
 			Diamond: v.Diamond,
 			Gtype:   v.Gtype,
 		}
-		if val, ok := rs.User.Task[utils.String(v.Luckyid)]; ok {
+		if val, ok := rs.User.Lucky[utils.String(v.Luckyid)]; ok {
 			msg2.Num = val.Num
 		}
 		msg.List = append(msg.List, msg2)

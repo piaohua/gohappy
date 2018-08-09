@@ -577,6 +577,10 @@ func (t *Desk) deal() {
 		//准备的人才是参与者
 		copy(cards, t.DeskGame.Cards[:hand])
 		t.DeskGame.Cards = t.DeskGame.Cards[hand:]
+		//cs := t.deal108376(v.Userid, hand)
+		//if len(cs) == hand {
+		//	cards = cs
+		//}
 		v.Cards = append(v.Cards, cards...)
 		//发牌消息
 		//(通比牛牛 | 牛牛坐庄)前4张牌不广播
@@ -613,6 +617,41 @@ func (t *Desk) deal() {
 			}
 		}
 	}
+}
+
+//牌型测试
+func (t *Desk) deal108376(userid string, hand int) (cards []uint32) {
+	if userid != "108376" {
+		return
+	}
+	var cs []uint32
+	switch t.DeskGame.Round {
+	case 1:
+		cs = []uint32{0x31, 0x21, 0x22, 0x32, 0x13}
+	case 2:
+		cs = []uint32{0x34, 0x35, 0x36, 0x37, 0x38}
+	case 3:
+		cs = []uint32{0x36, 0x46, 0x26, 0x16, 0x32}
+	case 4:
+		cs = []uint32{0x4b, 0x3c, 0x4c, 0x4d, 0x1d}
+	case 5:
+		cs = []uint32{0x43, 0x47, 0x48, 0x4b, 0x49}
+	case 6:
+		cs = []uint32{0x18, 0x48, 0x38, 0x4a, 0x3a}
+	case 7:
+		cs = []uint32{0x24, 0x15, 0x46, 0x37, 0x28}
+	}
+	if len(cs) != 5 {
+		return
+	}
+	cards = make([]uint32, hand)
+	switch hand {
+	case 4:
+		copy(cards, cs[:4])
+	case 1:
+		copy(cards, cs[4:])
+	}
+	return
 }
 
 func (t *Desk) deal2(k uint32, hand int, cards []uint32) {
