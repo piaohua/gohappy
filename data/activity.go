@@ -126,7 +126,7 @@ func GetJoinActivityList(arg *pb.AgentActivity, act Activity) ([]*LogActivity, e
 	q := bson.M{"actid": arg.GetActid()}
 	switch act.Type {
 	case int32(pb.ACT_TYPE0):
-		q["prize"] = bson.M{"$lt": 50000000}
+		q["prize"] = bson.M{"$lt": 500000}
 	case int32(pb.ACT_TYPE1):
 		q["num"] = bson.M{"$eq": 0}
 	case int32(pb.ACT_TYPE2):

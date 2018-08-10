@@ -120,7 +120,7 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 10000000 {
-				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE57), 5000000, 0)
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE57), 50000, 0)
 				msg = append(msg, msg2)
 			}
 		case int32(pb.ACT_TYPE1):
@@ -131,11 +131,11 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 10000000 {
-				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 5000000, 0)
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 50000, 0)
 				msg = append(msg, msg2)
 			}
 			if num >= 20000000 {
-				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 10000000, 0)
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE58), 100000, 0)
 				msg = append(msg, msg2)
 			}
 		case int32(pb.ACT_TYPE2):
@@ -146,11 +146,11 @@ func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err err
 				continue
 			}
 			if num >= 5 && v.Num != 5 {
-				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 10000000, 5)
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 100000, 5)
 				msg = append(msg, msg2)
 			}
 			if num >= 10 && v.Num != 10 {
-				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 20000000, 10)
+				msg2 := statActivityMsg(v.Userid, act.Id, act.Title, int32(pb.LOG_TYPE59), 200000, 10)
 				msg = append(msg, msg2)
 			}
 		default:
