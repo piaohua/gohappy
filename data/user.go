@@ -82,7 +82,7 @@ type User struct {
 	//登录
 	LoginTimes uint32 `bson:"login_times" json:"login_times"` //连续登录次数
 	LoginPrize uint32 `bson:"login_prize" json:"login_prize"` //连续登录奖励
-	LoginLoop  uint32 `bson:"login_Loop" json:"login_Loop"` //连续登录循环
+	LoginLoop  uint32 `bson:"login_loop" json:"login_loop"` //连续登录循环
 	Sign       string `bson:"sign" json:"sign"`               //个性签名
 	//位置
 	Lat     string `bson:"lat" json:"lat"`         //Latitude
