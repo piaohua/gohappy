@@ -532,16 +532,11 @@ func (t *Desk) choiceBetOver() {
 	switch t.DeskData.Dtype {
 	case int32(pb.DESK_TYPE0), //看牌抢庄
 		int32(pb.DESK_TYPE1), //
+		int32(pb.DESK_TYPE3), //抢庄
 		int32(pb.DESK_TYPE2): //抢庄看牌
 		for _, v := range t.seats {
 			if v.Ready && v.Bet == 0 &&
 				v.Userid != t.DeskGame.Dealer {
-				return
-			}
-		}
-	case int32(pb.DESK_TYPE3): //抢庄
-		for _, v := range t.seats {
-			if v.Ready && v.Bet == 0 {
 				return
 			}
 		}
