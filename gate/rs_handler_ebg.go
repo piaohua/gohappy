@@ -213,7 +213,7 @@ func (rs *RoleActor) enterEbgCoin(arg *pb.CEBCoinEnterRoom, ctx actor.Context) {
 	if msg != nil {
 		msg.Rtype = int32(pb.ROOM_TYPE0) //自由
 		msg.Roomid = arg.Id              //房间id
-		msg.Dtype = int32(pb.DESK_TYPE0) //玩法类型
+		msg.Dtype = int32(pb.DESK_TYPE3) //玩法类型
 		//计算出匹配房间等级,算法一致
 		//msg.Ltype = int32(pb.ROOM_LEVEL1) //等级
 		msg.Ltype = handler.MatchLevel(rs.User.GetCoin())

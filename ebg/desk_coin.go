@@ -181,13 +181,13 @@ func (t *Desk) getCardsMsg(k uint32, msg2 *pb.EBRoomUser) {
 	case int32(pb.DESK_TYPE0),
 		int32(pb.DESK_TYPE1),
 		int32(pb.DESK_TYPE2): //普通
-		msg2.Cards = t.getHandCards(k)
-	case int32(pb.DESK_TYPE3): //疯狂
 		switch t.state {
 		case int32(pb.STATE_DEALER):
 		case int32(pb.STATE_BET), int32(pb.STATE_NIU):
 			msg2.Cards = t.getHandCards(k)
 		}
+	case int32(pb.DESK_TYPE3): //疯狂
+		msg2.Cards = t.getHandCards(k)
 	}
 }
 
@@ -273,7 +273,7 @@ func (t *Desk) betTimeout() {
 	t.state = int32(pb.STATE_NIU)
 	t.pushState()
 	//直接结束
-	t.niuTimeout()
+	//t.niuTimeout()
 }
 
 //提交组合超时,结束
@@ -552,7 +552,7 @@ func (t *Desk) choiceBetOver() {
 	t.state = int32(pb.STATE_NIU) //切换状态
 	t.pushState()
 	//直接结束
-	t.niuTimeout()
+	//t.niuTimeout()
 }
 
 //.
@@ -567,9 +567,7 @@ func (t *Desk) deal() {
 		}
 		//(通比牛牛 | 牛牛坐庄)前4张牌不广播
 		switch t.DeskData.Dtype {
-		case int32(pb.DESK_TYPE2), //
-			int32(pb.DESK_TYPE1), //
-			int32(pb.DESK_TYPE0): //普通
+		case int32(pb.DESK_TYPE3): //疯狂,抢庄
             hand = 1
             //发牌消息
             cards := make([]uint32, hand, hand)
@@ -591,14 +589,16 @@ func (t *Desk) deal() {
                 msg := resDraw(k, t.state, v.Cards)
                 t.send2seat(k, msg)
             }
-		case int32(pb.DESK_TYPE3): //疯狂
+		case int32(pb.DESK_TYPE2), //
+			int32(pb.DESK_TYPE1), //
+			int32(pb.DESK_TYPE0): //普通,随机庄、固定庄、轮流庄
             hand = 2
             switch t.state {
             case int32(pb.STATE_DEALER):
                 //二暗,看不到牌值,发牌消息
                 cards2 := make([]uint32, hand, hand)
                 msg2 := resDraw(k, t.state, cards2)
-                t.broadcast3(k, msg2)
+                t.broadcast(msg2)
             case int32(pb.STATE_BET):
                 //发牌
                 cards := make([]uint32, hand, hand)

@@ -202,6 +202,17 @@ func SetNiuCoinGame() {
 	}
 }
 
+//SetEBGCoinGame 初始化房间配置
+func SetEBGCoinGame() {
+	for _, v := range pb.DeskType_value {
+		for _, l := range pb.RoomLevel_value {
+			gameData := NewCoinGameData("game.ebg1", int32(pb.EBG), v, l)
+			config.SetGame(*gameData)
+			gameData.Save()
+		}
+	}
+}
+
 /*
 //SetGameList 游戏房间配置，测试数据
 func SetGameList() {
