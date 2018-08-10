@@ -161,7 +161,6 @@ func (t *Desk) coinRoleMsg(userid string) (msg *pb.EBRoomUser) {
 
 //所有坐下玩家数据
 func (t *Desk) coinSeatBetsMsg(userid string) (msg []*pb.EBRoomUser) {
-	//FIXME 会出现两个相同的数据
 	for k, v := range t.seats {
 		glog.Debugf("coinSeatBetsMsg %#v, %d", v, k)
 		msg2 := t.coinRoleMsg(v.Userid)
@@ -170,19 +169,26 @@ func (t *Desk) coinSeatBetsMsg(userid string) (msg []*pb.EBRoomUser) {
 		}
 		//自己手牌
 		if v.Userid == userid {
-			switch t.DeskData.Dtype {
-			case int32(pb.DESK_TYPE0): //看牌抢庄
-				msg2.Cards = t.getHandCards(k)
-			default:
-				cs := t.getHandCards(k)
-				if len(cs) == 5 {
-					msg2.Cards = cs
-				}
-			}
+			t.getCardsMsg(k, msg2)
 		}
 		msg = append(msg, msg2)
 	}
 	return
+}
+
+func (t *Desk) getCardsMsg(k uint32, msg2 *pb.EBRoomUser) {
+	switch t.DeskData.Dtype {
+	case int32(pb.DESK_TYPE0),
+		int32(pb.DESK_TYPE1),
+		int32(pb.DESK_TYPE2): //普通
+		msg2.Cards = t.getHandCards(k)
+	case int32(pb.DESK_TYPE3): //疯狂
+		switch t.state {
+		case int32(pb.STATE_DEALER):
+		case int32(pb.STATE_BET), int32(pb.STATE_NIU):
+			msg2.Cards = t.getHandCards(k)
+		}
+	}
 }
 
 //玩家下注数据

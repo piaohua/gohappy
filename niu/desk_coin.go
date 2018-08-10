@@ -185,7 +185,6 @@ func (t *Desk) coinRoleMsg(userid string) (msg *pb.NNRoomUser) {
 
 //所有坐下玩家数据
 func (t *Desk) coinSeatBetsMsg(userid string) (msg []*pb.NNRoomUser) {
-	//FIXME 会出现两个相同的数据
 	for k, v := range t.seats {
 		glog.Debugf("coinSeatBetsMsg %#v, %d", v, k)
 		msg2 := t.coinRoleMsg(v.Userid)
