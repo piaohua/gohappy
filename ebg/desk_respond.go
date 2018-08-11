@@ -686,7 +686,7 @@ func (t *Desk) choiceNiu(userid string, num uint32,
 	}
 	seat := t.getSeat(userid)
 	if v, ok := t.seats[seat]; ok {
-		num = algo.Algo(t.DeskData.Mode, v.Cards)
+		num = algo.Ebg(t.DeskData.Mode, v.Cards)
 		v.Power = num
 		v.Niu = true
 		msg.Seat = seat
