@@ -460,8 +460,8 @@ func AgentProfitMonthSend(arg *pb.AgentProfitMonthSend, user *data.User) {
 	user.ProfitLastMonth = arg.GetProfit()
 	isAgent := IsAgent(user)
 	user.AddProfit(isAgent, 1, arg.GetProfit())
-	//user.Month = int(utils.Month())
-	user.Month = int(utils.Day()) //TODO test
+	user.Month = int(utils.Month())
+	//user.Month = int(utils.Day()) //TODO test
 }
 
 //AgentProfitMonthSendLog 区域奖励发放日志
@@ -487,8 +487,8 @@ func AgentProfitMonthSendCheck(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.Ag
 }
 
 func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.AgentProfitMonthSend) {
-	//if user.GetMonth() == int(utils.Month()) {
-	if user.GetMonth() == int(utils.Day()) { //TODO test
+	if user.GetMonth() == int(utils.Month()) {
+	//if user.GetMonth() == int(utils.Day()) { //TODO test
 		return
 	}
 	//发放消息
@@ -518,8 +518,8 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 		msg4 = &pb.AgentProfitMonthUpdate{
 			Userid: user.GetUserid(),
 			Profit: profit,
-			//Month:  int32(utils.Month()),
-			Month: int32(utils.Day()), //TODO test
+			Month:  int32(utils.Month()),
+			//Month: int32(utils.Day()), //TODO test
 		}
 		msg6 = &pb.AgentBringProfitNum{
 			Userid: arg.GetUserid(),
