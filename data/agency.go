@@ -157,6 +157,92 @@ func GetAgentProfitManage(arg *pb.CAgentProfitManage) ([]bson.M, error) {
 	return list, nil
 }
 
+//GetAgentProfitManage2 代理区域管理
+func GetAgentProfitManage2(ids []string) ([]bson.M, error) {
+	if len(ids) == 0 {
+		return nil, errors.New("none record")
+	}
+	var list []bson.M
+	selector := make(bson.M, 5)
+	selector["agent_level"] = true
+	selector["profit_rate"] = true
+	selector["nickname"] = true
+	selector["agent_note"] = true
+	selector["_id"] = true
+	q := bson.M{"_id": bson.M{"$in": ids}}
+	err := PlayerUsers.
+		Find(q).Select(selector).
+		All(&list)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
+}
+
+//GetAgentProfitManage3 代理区域管理
+func GetAgentProfitManage3(arg *pb.CAgentProfitManage) ([]bson.M, error) {
+	var list []bson.M
+	q := bson.M{"agentid": arg.GetUserid()}
+	if arg.Agentid != "" {
+		q["userid"] = bson.M{"$eq": arg.Agentid}
+	}
+	if arg.Agentnote != "" {
+		q["agent_note"] = bson.M{"$eq": arg.GetAgentnote()}
+	}
+	q = queryMonthProfit(arg.GetStartTime(), arg.GetEndTime(), q)
+	list , err := agentDayProfitGroup3(q)
+	if err != nil {
+		return nil, err
+	}
+	if len(list) == 0 {
+		return nil, errors.New("none record")
+	}
+	return list, nil
+}
+
+//查询时间
+func queryMonthProfit(startTime, endTime string, q bson.M) bson.M {
+	if startTime == "" { //默认当月开始
+		startTime = utils.Time2LocalStr(utils.Date(utils.Year(), int(utils.Month()), 1, 0, 0, 0, 0))
+	}
+	if startTime != "" && endTime != "" {
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(startTime)),
+			"$lt": utils.Time2DayDate(utils.Str2Time(endTime))}
+		return q
+	}
+	if startTime != "" {
+		q["day"] = bson.M{"$gte": utils.Time2DayDate(utils.Str2Time(startTime))}
+		return q
+	}
+	if endTime != "" {
+		q["day"] = bson.M{"$lt": utils.Time2DayDate(utils.Str2Time(endTime))}
+		return q
+	}
+	return q
+}
+
+//分组统计, group by agentid userid
+func agentDayProfitGroup3(match bson.M) (result []bson.M, err error) {
+	m := bson.M{"$match": match}
+	n := bson.M{
+		"$group": bson.M{
+			"_id": bson.M{"userid": "$userid", "agentid": "$agentid"},
+			"profit_month": bson.M{
+				"$sum": "$profit_month",
+			},
+		},
+	}
+	//统计
+	operations := []bson.M{m, n}
+	result = []bson.M{}
+	pipe := LogDayProfits.Pipe(operations)
+	err = pipe.All(&result)
+	return
+}
+
 //GetPlayerManage 玩家管理列表信息查询
 func GetPlayerManage(arg *pb.CAgentPlayerManage) ([]bson.M, error) {
 	if arg.Page == 0 {

@@ -10,6 +10,7 @@ import (
 	"utils"
 
 	jsoniter "github.com/json-iterator/go"
+	"github.com/globalsign/mgo/bson"
 )
 
 //PackAgentProfitRankMsg 获取排行榜信息
@@ -125,6 +126,70 @@ func PackAgentProfitManageMsg(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfitM
 		glog.Errorf("PackAgentProfitManageMsg err2 %v", err2)
 	}
 	msg.Total = profitMonth
+	return
+}
+
+//PackAgentProfitManageMsg2 获取代理管理列表信息
+func PackAgentProfitManageMsg2(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfitManage) {
+	msg = new(pb.SAgentProfitManage)
+	list, err := data.GetAgentProfitManage3(arg)
+	msg.Page = arg.Page
+	msg.Count = uint32(len(list))
+	if err != nil {
+		glog.Errorf("PackAgentProfitManageMsg2 err %v", err)
+	}
+	glog.Debugf("PackAgentProfitManageMsg2 list %#v", list)
+	var ids []string
+	for _, v := range list {
+		msg2 := new(pb.AgentProfitManage)
+		if val, ok := v["_id"]; ok {
+			if m, ok := val.(bson.M); ok {
+				if val2, ok := m["userid"]; ok {
+					msg2.Agentid = val2.(string)
+				}
+			}
+		}
+		if msg2.Agentid == "" {
+			continue
+		}
+		ids = append(ids, msg2.Agentid)
+		if val, ok := v["profit_month"]; ok {
+			msg2.BringProfit = utils.Int64(val)
+		}
+		msg.Total += msg2.BringProfit
+		msg.List = append(msg.List, msg2)
+	}
+	//查询昵称
+	list2, err := data.GetAgentProfitManage2(ids)
+	m := make(map[string]*pb.AgentProfitManage)
+	for _, v := range list2 {
+		msg2 := new(pb.AgentProfitManage)
+		if val, ok := v["_id"]; ok {
+			msg2.Agentid = val.(string)
+		}
+		if val, ok := v["agent_level"]; ok {
+			msg2.Level = uint32(val.(int))
+		}
+		if val, ok := v["profit_rate"]; ok {
+			msg2.Rate = uint32(val.(int))
+		}
+		if val, ok := v["nickname"]; ok {
+			msg2.Nickname = val.(string)
+		}
+		if val, ok := v["agent_note"]; ok {
+			msg2.Agentnote = val.(string)
+		}
+		m[msg2.Agentid] = msg2
+	}
+	for _, v := range msg.List {
+		if val, ok := m[v.Agentid]; ok {
+			v.Level = val.Level
+			v.Rate = val.Rate
+			v.Nickname = val.Nickname
+			v.Agentnote = val.Agentnote
+		}
+		v.AgentTitle = agentTitle(v.Level, 1, arg.Userid, int64(v.Rate))
+	}
 	return
 }
 
