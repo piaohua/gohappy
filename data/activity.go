@@ -43,6 +43,7 @@ type LogActivity struct {
 	//Id      string    `bson:"_id" json:"id"`          //ID
 	Userid string    `bson:"userid" json:"userid"` //玩家
 	Actid  string    `bson:"actid" json:"actid"`   //activity id
+	Type   int32     `bson:"type" json:"type"`     //类型0,1,2
 	Prize  int64     `bson:"prize" json:"prize"`   //奖励数量
 	Num    uint32    `bson:"num" json:"num"`       //完成次数
 	Etime  time.Time `bson:"etime" json:"etime"`   //过期时间
