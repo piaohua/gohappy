@@ -489,6 +489,14 @@ func (rs *RoleActor) taskPrize(taskType int32) {
 		//奖励发放
 		rs.addCurrency(task.Diamond, task.Coin,
 			0, 0, int32(pb.LOG_TYPE46))
+		//消息提醒
+		record2, msg2 := handler.TaskNotice(task.Coin, task.Name, rs.User.GetUserid())
+		if record2 != nil {
+			rs.loggerPid.Tell(record2)
+		}
+		if msg2 != nil {
+			rs.Send(msg2)
+		}
 		val.Prize = true
 		rs.User.Task[utils.String(taskType)] = val
 		//响应消息
