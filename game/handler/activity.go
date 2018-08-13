@@ -17,6 +17,18 @@ func packLogActivityMsg(v *data.LogActivity) (msg *pb.Activity) {
 		Id:        v.Actid,
 		JoinTime:   utils.Time2LocalStr(v.Jtime),
 	}
+	switch v.Type {
+	case int32(pb.ACT_TYPE0):
+		if v.Num >= 500000 {
+			msg.Over = true
+		}
+	case int32(pb.ACT_TYPE1):
+		//TODO 当天是否完成
+	case int32(pb.ACT_TYPE2):
+		if v.Num >= 15 {
+			msg.Over = true
+		}
+	}
 	return
 }
 
@@ -62,6 +74,7 @@ func PackActivity(msg *pb.SActivity) {
 				continue
 			}
 			body.JoinTime = val.JoinTime
+			body.Over = val.Over
 		}
 		msg.List = append(msg.List, body)
 	}
@@ -77,6 +90,7 @@ func JoinActivity(arg *pb.CJoinActivity) (msg *pb.SJoinActivity) {
 	}
 	joinAct := &data.LogActivity{
 		Actid: act.Id,
+		Type:  act.Type,
 		Etime: act.EndTime,
 		Userid: arg.GetSelfid(),
 	}

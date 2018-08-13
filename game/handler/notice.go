@@ -159,3 +159,13 @@ func ActNotice(arg *pb.AgentActivityProfit) (record *pb.LogNotice,
 	content := fmt.Sprintf("完成%s活动获取%d金豆豆", arg.GetTitle(), arg.GetProfit())
 	return NewNotice(data.NOTICE_TYPE3, 0, arg.GetUserid(), content)
 }
+
+//TaskNotice task消息
+func TaskNotice(coin int64, name, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("恭喜你完成任务%s获得%d金豆", name, coin)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
+}

@@ -52,7 +52,7 @@ const (
 	//BetTime 下注超时时间
 	BetTime = 10
 	//FreeBetTime 下注超时时间
-	FreeBetTime = 10
+	FreeBetTime = 17
 	//RestTime 休息超时时间
 	RestTime = 10
 	//SysCarry 系统上庄限额
