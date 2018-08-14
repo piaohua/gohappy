@@ -192,6 +192,10 @@ func (t *Desk) dismiss(force bool) {
 func (t *Desk) coinTimeout() {
 	switch t.state {
 	case int32(pb.STATE_READY):
+		var num int = t.readyNum()
+		if num < 2 { //大于2人时才计时
+			return
+		}
 		if t.timer == ReadyTime {
 			//准备超时,不等待全部准备
 			t.readyTimeout()
@@ -229,6 +233,10 @@ func (t *Desk) privTimeout() {
 		if t.checkExpire() {
 			//关闭房间
 			t.gameStop()
+			return
+		}
+		var num int = t.readyNum()
+		if num < 2 { //大于2人时才计时
 			return
 		}
 		if t.timer == ReadyTime {

@@ -40,6 +40,7 @@ func (rs *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.SActivity)
 		glog.Debugf("SActivity %#v", arg)
 		handler.PackActivity(arg)
+		//glog.Debugf("SActivity %#v, userid %s", arg, rs.User.GetUserid())
 		rs.Send(arg)
 	case *pb.CJoinActivity:
 		arg := msg.(*pb.CJoinActivity)

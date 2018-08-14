@@ -263,18 +263,23 @@ func (t *Desk) allReady() bool {
 
 //准备超时,不等待全部准备
 func (t *Desk) readyTimeout() {
-	var num int
-	for _, v := range t.seats {
-		if v.Ready {
-			num++
-		}
-	}
+	var num int = t.readyNum()
 	if num >= 2 {
 		t.gameStart() //开始牌局
 		return
 	}
 	//房间人数为0时解散
 	t.checkPubOver()
+}
+
+//准备人数
+func (t *Desk) readyNum() (num int) {
+	for _, v := range t.seats {
+		if v.Ready {
+			num++
+		}
+	}
+	return
 }
 
 //下注超时

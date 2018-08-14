@@ -67,6 +67,7 @@ func packActivityMsg(v data.Activity) (msg *pb.Activity) {
 //PackActivity 打包消息
 func PackActivity(msg *pb.SActivity) {
 	list := config.GetActivitys()
+	msgList := make([]*pb.Activity, 0)
 	for _, v := range list {
 		body := packActivityMsg(v)
 		for _, val := range msg.List {
@@ -76,8 +77,9 @@ func PackActivity(msg *pb.SActivity) {
 			body.JoinTime = val.JoinTime
 			body.Over = val.Over
 		}
-		msg.List = append(msg.List, body)
+		msgList = append(msgList, body)
 	}
+	msg.List = msgList
 }
 
 //JoinActivity 参加消息
