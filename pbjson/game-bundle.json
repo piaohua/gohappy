@@ -425,6 +425,10 @@
             "info": {
               "type": "Notice",
               "id": 1
+            },
+            "userid": {
+              "type": "string",
+              "id": 2
             }
           }
         },

@@ -87,6 +87,7 @@ func NewNotice(rtype, atype int32, userid,
 		Acttype: atype,
 		Content: content,
 	}
+	msg.Userid = userid
 	return
 }
 
@@ -158,6 +159,13 @@ func ActNotice(arg *pb.AgentActivityProfit) (record *pb.LogNotice,
 	}
 	content := fmt.Sprintf("完成%s活动获取%d金豆豆", arg.GetTitle(), arg.GetProfit())
 	return NewNotice(data.NOTICE_TYPE3, 0, arg.GetUserid(), content)
+}
+
+//ActivityNotice activity消息
+func ActivityNotice(title, timeStr, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	content := fmt.Sprintf("你报名的活动%s,已于%s结束", title, timeStr)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }
 
 //TaskNotice task消息

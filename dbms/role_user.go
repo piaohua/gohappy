@@ -240,6 +240,10 @@ func (a *RoleActor) handlerUser(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.AgentActivityProfit)
 		glog.Debugf("AgentActivityProfit %#v", arg)
 		a.agentActivityProfit(arg, ctx)
+	case *pb.SPushNotice:
+		arg := msg.(*pb.SPushNotice)
+		glog.Debugf("SPushNotice %#v", arg)
+		a.send2userid(arg.GetUserid(), arg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -684,6 +688,7 @@ func (a *RoleActor) setLatLng(arg *pb.CLatLng) {
 	//暂时实时写入, TODO 异步数据更新
 }
 
+//send2userid 推送消息
 func (a *RoleActor) send2userid(userid string, msg interface{}) {
 	if msg == nil {
 		return

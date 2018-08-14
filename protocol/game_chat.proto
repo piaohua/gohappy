@@ -58,6 +58,7 @@ message SNotice
 message SPushNotice
 {
     Notice info = 1;
+    string userid  = 2;//玩家id,server参数
 }
 
 message Notice

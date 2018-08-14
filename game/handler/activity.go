@@ -113,7 +113,7 @@ func JoinActivity(arg *pb.CJoinActivity) (msg *pb.SJoinActivity) {
 
 //StatActivity 统计活动奖励发放给符合条件的玩家
 func StatActivity(arg *pb.AgentActivity) (msg []*pb.AgentActivityProfit, err error) {
-	act := config.GetActivity(arg.GetActid())
+	act := config.GetActivity1(arg.GetActid())
 	if act.Id != arg.GetActid() {
 		return nil, errors.New("actid error")
 	}
@@ -229,4 +229,20 @@ func NewActivity(Type int32, title, content string, startTime, endTime time.Time
 	}
 	config.SetActivity(t)
 	t.Save()
+}
+
+//NoticeActivity 活动结束消息
+func NoticeActivity(arg *pb.AgentActivityNotice) (recordList []*pb.LogNotice,
+	msgList []*pb.SPushNotice, err error) {
+	list, err := data.GetLogActivityList(arg)
+	if err != nil {
+		glog.Errorf("NoticeActivity error %v, arg %#v", err, arg)
+		return
+	}
+	for _, v := range list {
+		record, msg := ActivityNotice(arg.GetTitle(), arg.GetEtime(), v.Userid)
+		recordList = append(recordList, record)
+		msgList = append(msgList, msg)
+	}
+	return
 }

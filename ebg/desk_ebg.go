@@ -190,6 +190,7 @@ func (t *Desk) dismiss(force bool) {
 
 //' 超时处理
 func (t *Desk) coinTimeout() {
+	t.checkPubOver2()
 	switch t.state {
 	case int32(pb.STATE_READY):
 		var num int = t.readyNum()
@@ -198,7 +199,8 @@ func (t *Desk) coinTimeout() {
 		}
 		if t.timer == ReadyTime {
 			//准备超时,不等待全部准备
-			t.readyTimeout()
+			//t.readyTimeout()
+			t.gameStart() //开始牌局
 			t.timer = 0
 		} else {
 			t.timer++
@@ -226,6 +228,7 @@ func (t *Desk) coinTimeout() {
 
 //' 超时处理
 func (t *Desk) privTimeout() {
+	t.checkPubOver2()
 	t.voteTimeout()
 	switch t.state {
 	case int32(pb.STATE_READY):
@@ -241,7 +244,8 @@ func (t *Desk) privTimeout() {
 		}
 		if t.timer == ReadyTime {
 			//准备超时,不等待全部准备
-			t.readyTimeout()
+			//t.readyTimeout()
+			t.gameStart() //开始牌局
 			t.timer = 0
 		} else {
 			t.timer++
@@ -413,6 +417,19 @@ func (t *Desk) checkPubOver() {
 	//停止服务
 	msg1 := new(pb.ServeStop)
 	t.selfPid.Tell(msg1)
+}
+
+func (t *Desk) checkPubOver2() {
+	switch t.state {
+	case int32(pb.STATE_READY):
+		t.closeTime++
+		if t.closeTime == 60 {
+			t.closeTime = 0
+			t.checkPubOver()
+		}
+	default:
+		t.closeTime = 0
+	}
 }
 
 //.
@@ -774,6 +791,7 @@ func (t *Desk) jiesuan2(ltype int32, score map[uint32]int64) {
 		switch t.DeskData.Rtype {
 		case int32(pb.ROOM_TYPE0): //自由
 			t.sendCoin(userid, v, ltype)
+			//TODO Joins and PrivScore
 		case int32(pb.ROOM_TYPE1): //私人
 			t.sendCoin(userid, v, ltype)
 			t.DeskPriv.PrivScore[userid] += v
@@ -890,8 +908,10 @@ func (t *Desk) saveRecord(score map[uint32]int64) {
 		msg1.Nickname = user.GetNickname()
 		msg1.Photo = user.GetPhoto()
 		msg1.Rest = user.GetCoin()
-		msg1.Score = t.DeskPriv.PrivScore[user.GetUserid()]
-		msg1.Joins = t.DeskPriv.Joins[user.GetUserid()]
+		if t.DeskPriv != nil {
+			msg1.Score = t.DeskPriv.PrivScore[user.GetUserid()]
+			msg1.Joins = t.DeskPriv.Joins[user.GetUserid()]
+		}
 		t.loggerPid.Tell(msg1)
 	}
 }

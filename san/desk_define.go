@@ -44,6 +44,8 @@ type Desk struct {
 	timer int
 	//关闭通道
 	stopCh chan struct{}
+	//关闭时间
+	closeTime int
 }
 
 const (

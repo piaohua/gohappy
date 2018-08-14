@@ -75,10 +75,10 @@ func (a *DBMSActor) start(ctx actor.Context) {
 	handler.SetShopList()
 	handler.SetTaskList()
 	handler.SetLoginPrizeList()
-	//head := cfg.Section("domain").Key("headimag").Value()
+	head := cfg.Section("domain").Key("headimag").Value()
 	passwd := cfg.Section("robot").Key("passwd").Value()
 	phone := cfg.Section("robot").Key("phone").Value()
-	rs := data.RegistRobots4("", passwd, phone)
+	rs := data.RegistRobots4(head, passwd, phone)
 	for _, v := range rs {
 		rolePid.Tell(v)
 	}

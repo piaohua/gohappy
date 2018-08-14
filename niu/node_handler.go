@@ -289,11 +289,11 @@ func (a *DeskActor) addDesk(deskData *data.DeskData,
 	var response2 *pb.AddedDesk
 	var ok bool
 	if response2, ok = res2.(*pb.AddedDesk); !ok {
-		glog.Error("add desk failed: %#v", res2)
+		glog.Errorf("add desk failed: %#v", res2)
 		return false
 	}
 	if response2.Error != pb.OK {
-		glog.Error("add desk failed: %v", response2.Error)
+		glog.Errorf("add desk failed: %v", response2.Error)
 		return false
 	}
 	glog.Debugf("add Desk successfully %s, %s",

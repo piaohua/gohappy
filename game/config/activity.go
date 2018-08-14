@@ -52,6 +52,24 @@ func GetActivitys() []data.Activity {
 	return list
 }
 
+//GetActivitys1 客户端获取消息列表
+func GetActivitys1() []data.Activity {
+	list := make([]data.Activity, 0)
+	ActivityMap.Range(func(k, v interface{}) bool {
+		if val, ok := v.(data.Activity); ok {
+			if val.Del > 0 {
+				return false
+			}
+			if val.EndTime.Before(utils.BsonNow().AddDate(0, 0, 1)) {
+				return false //延长1天用于发货
+			}
+			list = append(list, val)
+		}
+		return true
+	})
+	return list
+}
+
 //DelActivity 删除元素
 func DelActivity(k interface{}) {
 	ActivityMap.Delete(k)
@@ -75,6 +93,23 @@ func GetActivity(id string) data.Activity {
 				return data.Activity{}
 			}
 			if val.EndTime.Before(utils.BsonNow()) {
+				return data.Activity{}
+			}
+			return val
+		}
+	}
+	return data.Activity{}
+}
+
+//GetActivity1 获取指定活动
+func GetActivity1(id string) data.Activity {
+	if v, ok := ActivityMap.Load(id); ok {
+		//return v.(data.Activity)
+		if val, ok := v.(data.Activity); ok {
+			if val.Del > 0 {
+				return data.Activity{}
+			}
+			if val.EndTime.Before(utils.BsonNow().AddDate(0, 0, 1)) {
 				return data.Activity{}
 			}
 			return val

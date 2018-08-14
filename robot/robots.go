@@ -271,7 +271,8 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 	glog.Infof("new phone -> %s", phone)
 	//重置
 	phone1 := cfg.Section("robot").Key("phone").Value()
-	if r.phone > utils.StringAdd2(phone1, "750") {
+	//if r.phone > utils.StringAdd2(phone1, "750") {
+	if r.phone > utils.StringAdd2(phone1, "74") {
 		r.phone = phone1
 	}
 }

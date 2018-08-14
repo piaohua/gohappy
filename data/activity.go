@@ -235,3 +235,9 @@ func getAgentChildsCount(q bson.M) (int64, error) {
 	}
 	return n, nil
 }
+
+//GetLogActivityList 参加代理活动玩家列表
+func GetLogActivityList(arg *pb.AgentActivityNotice) ([]*LogActivity, error) {
+	q := bson.M{"actid": arg.GetActid(), "type": arg.GetType()}
+	return getLogActivityList(int(arg.GetPage()), q)
+}

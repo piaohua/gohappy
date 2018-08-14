@@ -227,3 +227,12 @@ message AgentActivityStat {
     string actid = 1;//actid
     int32 type = 2;//type
 }
+
+//代理活动消息
+message AgentActivityNotice {
+    string actid = 1;//actid
+    int32 type = 2;//type
+    string title = 3;//title
+    string etime = 4;//end time
+    int32 page = 5;//page
+}

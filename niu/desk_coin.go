@@ -140,8 +140,11 @@ func (t *Desk) coinCameinMsg(userid string) {
 func (t *Desk) callRobot() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0):
-		if len(t.roles) > 1 {
+		r, n := t.roleCountNum()
+		if r > 1 {
 			return
+		}
+		if n >= 4 {
 		}
 	case int32(pb.ROOM_TYPE1):
 		return
@@ -158,6 +161,17 @@ func (t *Desk) callRobot() {
 	msg.EnvBet = int32(t.DeskData.Multiple)
 	msg.Num = 2
 	t.dbmsPid.Tell(msg)
+}
+
+func (t *Desk) roleCountNum() (r, n int) {
+	for _, v := range t.roles {
+		if v.User.GetRobot() {
+			n++
+		} else {
+			r++
+		}
+	}
+	return
 }
 
 //位置上玩家数据
@@ -240,12 +254,7 @@ func (t *Desk) coinBetsMsg() (msg []*pb.NNRoomBets) {
 
 //'是否全部准备状态
 func (t *Desk) allReady() bool {
-	var num int
-	for _, v := range t.seats {
-		if v.Ready {
-			num++
-		}
-	}
+	var num int = t.readyNum()
 	if num != len(t.roles) {
 		return false
 	}

@@ -245,7 +245,12 @@ func RegistRobots4(photo, passwd, phone string) (ls []*pb.RobotRegist) {
 	if err != nil {
 		panic(err)
 	}
+	HeadImagList := RegistPhotos()
+	var n int = len(HeadImagList) //头像唯一
 	for k, v := range rs {
+		if k == n {
+			return
+		}
 		r := &pb.RobotRegist{
 			ID: v.ID,
 			Nickname: v.Nickname,
@@ -262,6 +267,7 @@ func RegistRobots4(photo, passwd, phone string) (ls []*pb.RobotRegist) {
 		//HeadImagList := RegistPhotos()
 		//i := utils.RandIntN(len(HeadImagList))
 		//r.Photo = photo + "/" + HeadImagList[i].Photo
+		r.Photo = photo + "/" + HeadImagList[k].Photo
 		ls = append(ls, r)
 	}
 	return

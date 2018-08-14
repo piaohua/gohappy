@@ -207,12 +207,7 @@ func (t *Desk) coinBetsMsg() (msg []*pb.EBRoomBets) {
 
 //'是否全部准备状态
 func (t *Desk) allReady() bool {
-	var num int
-	for _, v := range t.seats {
-		if v.Ready {
-			num++
-		}
-	}
+	var num int = t.readyNum()
 	if num != len(t.roles) {
 		return false
 	}

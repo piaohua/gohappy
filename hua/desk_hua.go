@@ -13,6 +13,7 @@ import (
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
+	"gohappy/game/config"
 )
 
 //'进入房间响应消息
@@ -186,11 +187,17 @@ func (t *Desk) dismiss(force bool) {
 
 //' 超时处理
 func (t *Desk) coinTimeout() {
+	t.checkPubOver2()
 	switch t.state {
 	case int32(pb.STATE_READY):
+		var num int = t.readyNum()
+		if num < 2 { //大于2人时才计时
+			return
+		}
 		if t.timer == ReadyTime {
 			//准备超时,不等待全部准备
-			t.readyTimeout()
+			//t.readyTimeout()
+			t.gameStart() //开始牌局
 			t.timer = 0
 		} else {
 			t.timer++
@@ -217,6 +224,7 @@ func (t *Desk) coinTimeout() {
 
 //' 超时处理
 func (t *Desk) privTimeout() {
+	t.checkPubOver2()
 	t.voteTimeout()
 	switch t.state {
 	case int32(pb.STATE_READY):
@@ -225,9 +233,14 @@ func (t *Desk) privTimeout() {
 			//关闭房间
 			t.gameStop()
 		}
+		var num int = t.readyNum()
+		if num < 2 { //大于2人时才计时
+			return
+		}
 		if t.timer == ReadyTime {
 			//准备超时,不等待全部准备
-			t.readyTimeout()
+			//t.readyTimeout()
+			t.gameStart() //开始牌局
 			t.timer = 0
 		} else {
 			t.timer++
@@ -391,14 +404,31 @@ func (t *Desk) checkPubOver() {
 			//return
 		}
 	default:
-		return
+		//return
 	}
 	if len(t.roles) != 0 {
 		return
 	}
+	g := config.GetGame(t.DeskData.Unique)
+	if g.Id == t.DeskData.Unique {
+		return //配置房间不关闭
+	}
 	//停止服务
 	msg1 := new(pb.ServeStop)
 	t.selfPid.Tell(msg1)
+}
+
+func (t *Desk) checkPubOver2() {
+	switch t.state {
+	case int32(pb.STATE_READY):
+		t.closeTime++
+		if t.closeTime == 60 {
+			t.closeTime = 0
+			t.checkPubOver()
+		}
+	default:
+		t.closeTime = 0
+	}
 }
 
 //.

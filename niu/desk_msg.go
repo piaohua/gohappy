@@ -141,7 +141,9 @@ func (a *Desk) handlerStop(ctx actor.Context) {
 	msg.Unique = a.DeskData.Unique
 	nodePid.Tell(msg)
 	//TODO 优化
-	a.roomPid.Request(msg, ctx.Self())
+	if a.roomPid != nil {
+		a.roomPid.Request(msg, ctx.Self())
+	}
 	//停掉服务
 	ctx.Self().Stop()
 }

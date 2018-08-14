@@ -55,6 +55,21 @@ func (state *StatActor) Receive(context actor.Context) {
 	case *pb.AgentActivityStat:
 		glog.Debugf("AgentActivityStat %#v", msg)
 		state.stat(msg.GetType(), context)
+	case *pb.AgentActivityNotice:
+		glog.Debugf("AgentActivityNotice %#v", msg)
+		recordList, msgList, err := handler.NoticeActivity(msg)
+		if err != nil {
+			glog.Errorf("err %v", err)
+			return
+		}
+		for _, v := range recordList {
+			loggerPid.Tell(v) //send to logger
+		}
+		for _, v := range msgList {
+			rolePid.Tell(v) //send to role
+		}
+		msg.Page++
+		context.Self().Tell(msg)
 	default:
 		glog.Errorf("unknown message %v", msg)
 	}
@@ -109,11 +124,13 @@ func (state *StatActor) ding(context actor.Context) {
 		state.stat(int32(pb.ACT_TYPE1), context)
 	case 15:
 		state.stat(int32(pb.ACT_TYPE2), context)
+	case 20:
+		state.notice(context)
 	}
 }
 
 func (state *StatActor) stat(Type int32, context actor.Context) {
-	list := config.GetActivitys()
+	list := config.GetActivitys1()
 	for _, v := range list {
 		if v.Type != Type {
 			continue
@@ -123,7 +140,23 @@ func (state *StatActor) stat(Type int32, context actor.Context) {
 			Page:  1,
 		}
 		context.Self().Tell(msg)
+	}
+}
 
+func (state *StatActor) notice(context actor.Context) {
+	list := config.GetActivitys1()
+	for _, v := range list {
+		act := config.GetActivity(v.Id)
+		if act.Id == v.Id { //没有过期
+			continue
+		}
+		msg := &pb.AgentActivityNotice{
+			Actid: v.Id,
+			Type:  v.Type,
+			Title: v.Title,
+			Etime: utils.Time2LocalStr(v.EndTime),
+		}
+		context.Self().Tell(msg)
 	}
 }
 
