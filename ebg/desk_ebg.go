@@ -298,7 +298,8 @@ func (t *Desk) gameOver() {
 		//结算消息
 		msg := t.resCoinOver(score)
 		t.broadcast(msg)
-		//TODO 记录
+		//记录
+		t.saveRecord(score)
 		//结束连庄处理
 		//t.dealerOver()
 		//重置状态
