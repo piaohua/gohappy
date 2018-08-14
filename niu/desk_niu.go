@@ -13,6 +13,7 @@ import (
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
+	"gohappy/game/config"
 )
 
 //'进入房间响应消息
@@ -389,10 +390,14 @@ func (t *Desk) checkPubOver() {
 			//return
 		}
 	default:
-		return
+		//return
 	}
 	if len(t.roles) != 0 {
 		return
+	}
+	g := config.GetGame(t.DeskData.Unique)
+	if g.Id == t.DeskData.Unique {
+		return //配置房间不关闭
 	}
 	//停止服务
 	msg1 := new(pb.ServeStop)
