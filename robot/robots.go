@@ -143,7 +143,7 @@ func (r *RobotServer) run() {
 				//重新尝试登录
 				msg := m.(*pb.RobotReLogin)
 				glog.Infof("ReLogin -> %#v", msg)
-				go r.runRobot(msg.Roomid, msg.Phone, msg.Code, msg.Rtype, msg.Ltype, msg.EnvBet, false)
+				go r.runRobot(msg.Roomid, msg.Phone, msg.Code, msg.Rtype, msg.Ltype, msg.Gtype, msg.EnvBet, false)
 			case *pb.RobotLogin:
 				//登录成功
 				msg := m.(*pb.RobotLogin)
@@ -220,6 +220,7 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 	var rtype int32 = msg.Rtype
 	var ltype int32 = msg.Ltype
 	var envBet int32 = msg.EnvBet
+	var gtype int32 = msg.Gtype
 	var phone string
 	//选择一个房间
 	glog.Debugf("ltypes %#v", r.ltypes)
@@ -247,7 +248,7 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 			phone = k
 			r.offline[k] = false //登录中
 			glog.Infof("run offline robot -> %s, %s", roomid, phone)
-			go r.runRobot(roomid, phone, code, rtype, ltype, envBet, false)
+			go r.runRobot(roomid, phone, code, rtype, ltype, gtype, envBet,false)
 			break
 		}
 	}
@@ -265,7 +266,7 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 		} else {
 			//新机器人不用注册
 			glog.Infof("run new robot -> %s, %s", roomid, phone)
-			go r.runRobot(roomid, phone, code, rtype, ltype, envBet, false)
+			go r.runRobot(roomid, phone, code, rtype, ltype, gtype, envBet,false)
 		}
 	}
 	glog.Infof("new phone -> %s", phone)

@@ -12,6 +12,7 @@ message RobotMsg {
     int32 Ltype = 4;
     string Roomid = 5;
 	int32 EnvBet = 6; //下注规则
+	int32 Gtype = 7;
 }
 
 message RobotLogin {
@@ -27,6 +28,7 @@ message RobotReLogin {
     int32 Ltype = 4;
     string Roomid = 5;
 	int32 EnvBet = 6; //下注规则
+	int32 Gtype = 7;
 }
 
 message RobotLogout {

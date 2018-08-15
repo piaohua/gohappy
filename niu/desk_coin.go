@@ -137,29 +137,43 @@ func (t *Desk) coinCameinMsg(userid string) {
 }
 
 //召唤机器人
+func (t *Desk) loadRobot() {
+	t.robotTime++
+	if t.robotTime < 10 {
+		return
+	}
+	t.robotTime = 0
+	t.callRobot()
+}
+
 func (t *Desk) callRobot() {
+	if len(t.roles) >= 5 {
+		return
+	}
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0):
 		r, n := t.roleCountNum()
-		if r > 1 {
+		if r >= 3 || n >= 2 {
 			return
-		}
-		if n >= 4 {
 		}
 	case int32(pb.ROOM_TYPE1):
-		return
-	case int32(pb.ROOM_TYPE2):
-		if len(t.roles) > 5 {
+		if !t.DeskData.Pub {
 			return
 		}
+		r, n := t.roleCountNum()
+		if r >= 2 || n >= 2 {
+			return
+		}
+	case int32(pb.ROOM_TYPE2):
 	}
 	msg := new(pb.RobotMsg)
 	msg.Roomid = t.DeskData.Rid
 	msg.Code = t.DeskData.Code
 	msg.Rtype = t.DeskData.Rtype
 	msg.Ltype = t.DeskData.Ltype
+	msg.Gtype = t.DeskData.Gtype
 	msg.EnvBet = int32(t.DeskData.Multiple)
-	msg.Num = 2
+	msg.Num = 1
 	t.dbmsPid.Tell(msg)
 }
 

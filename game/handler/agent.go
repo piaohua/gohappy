@@ -575,7 +575,7 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 	if profit > 0 {
 		msg3, msg5 = agentProfitMonthSendCheck2(user)
 		user.AddProfitMonth(profit)
-		glog.Debugf("AddProfit profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)
+		glog.Debugf("AddProfitMonth profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)
 		//区域奖金日志消息
 		msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
 			arg.Gtype, int32(pb.LOG_TYPE53), arg.Level, user.ProfitRate, profit)
@@ -591,7 +591,7 @@ func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.Age
 			Profit: profit,
 		}
 	}
-	if user.GetAgent() != "" {
+	if GetAgentTitle(user) == 1 {
 		return
 	}
 	//反给上级消息

@@ -46,6 +46,7 @@ type Desk struct {
 	stopCh chan struct{}
 	//关闭时间
 	closeTime int
+	robotTime int
 }
 
 const (

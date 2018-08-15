@@ -90,7 +90,7 @@ func (server *RobotServer) Close() {
 }
 
 //RunRobot //' 启动一个机器人
-func (server *RobotServer) runRobot(roomid, phone, code string, rtype, ltype, envBet int32, regist bool) {
+func (server *RobotServer) runRobot(roomid, phone, code string, rtype, ltype, gtype, envBet int32, regist bool) {
 	//host := getHost()
 	//TODO test
 	host := cfg.Section("gate.node1").Key("host").Value()
@@ -118,6 +118,7 @@ func (server *RobotServer) runRobot(roomid, phone, code string, rtype, ltype, en
 	robot.code = code //设置邀请码
 	robot.rtype = rtype
 	robot.ltype = ltype
+	robot.gtype = gtype
 	robot.roomid = roomid
 	robot.envBet = envBet
 	robot.data.Phone = phone

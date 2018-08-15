@@ -190,6 +190,7 @@ func (t *Desk) dismiss(force bool) {
 
 //' 超时处理
 func (t *Desk) coinTimeout() {
+	t.loadRobot()
 	t.checkPubOver2()
 	switch t.state {
 	case int32(pb.STATE_READY):
@@ -228,6 +229,7 @@ func (t *Desk) coinTimeout() {
 
 //' 超时处理
 func (t *Desk) privTimeout() {
+	t.loadRobot()
 	t.checkPubOver2()
 	t.voteTimeout()
 	switch t.state {
