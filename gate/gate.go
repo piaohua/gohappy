@@ -24,6 +24,8 @@ var (
 
 	aesEnc *utils.AesEncrypt
 
+	aesStatus bool
+
 	node = flag.String("node", "", "If non-empty, start with this node")
 
 	nodeName string
@@ -103,6 +105,7 @@ func aesInit() {
 	aesEnc = new(utils.AesEncrypt)
 	key := cfg.Section("gate").Key("key").Value()
 	aesEnc.SetKey([]byte(key))
+	aesStatus = cfg.Section("login").Key("status").MustBool(false)
 }
 
 //加密

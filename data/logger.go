@@ -430,8 +430,8 @@ func DayProfitRecord(arg *pb.LogProfit) {
 	record.Day = utils.Time2DayDate(record.Utime)
 	var field string
 	switch arg.GetType() {
-	case int32(pb.LOG_TYPE53),
-		int32(pb.LOG_TYPE54):
+	case int32(pb.LOG_TYPE54): //区域奖励发放不记录
+	case int32(pb.LOG_TYPE53):
 		field = "profit_month"
 		record.ProfitMonth = arg.GetProfit()
 	case int32(pb.LOG_TYPE52):

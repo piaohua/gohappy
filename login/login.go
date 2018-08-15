@@ -19,6 +19,8 @@ var (
 	err error
 
 	aesEnc *utils.AesEncrypt
+
+	aesStatus bool
 )
 
 func main() {
@@ -69,6 +71,7 @@ func aesInit() {
 	aesEnc = new(utils.AesEncrypt)
 	key := cfg.Section("login").Key("key").Value()
 	aesEnc.SetKey([]byte(key))
+	aesStatus = cfg.Section("login").Key("status").MustBool(false)
 }
 
 //加密

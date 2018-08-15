@@ -94,7 +94,9 @@ func gateHandler(ctx *fasthttp.RequestCtx) {
 	host := key2.Value()
 	logHandler(ctx)
 	glog.Debugf("gate host %s", host)
-	//fmt.Fprintf(ctx, "%s", string(aesEn(host)))
+	if aesStatus {
+		host = string(aesEn(host))
+	}
 	fmt.Fprintf(ctx, "%s", string(host))
 }
 
