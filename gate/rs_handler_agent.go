@@ -115,6 +115,10 @@ func (rs *RoleActor) handlerAgent(msg interface{}, ctx actor.Context) {
 		arg := msg.(*pb.CAgentProfitManage)
 		glog.Debugf("CAgentProfitManage %#v", arg)
 		rs.agentProfitManage(arg, ctx)
+	case *pb.SAgentProfitManage:
+		arg := msg.(*pb.SAgentProfitManage)
+		glog.Debugf("SAgentProfitManage %#v", arg)
+		rs.agentProfitManage2(arg, ctx)
 	case *pb.AgentBringProfitNum:
 		arg := msg.(*pb.AgentBringProfitNum)
 		glog.Debugf("AgentBringProfitNum %#v", arg)
@@ -625,4 +629,27 @@ func (rs *RoleActor) agentProfitManage(arg *pb.CAgentProfitManage, ctx actor.Con
 	}
 	arg.Userid = rs.User.GetUserid()
 	rs.dbmsPid.Request(arg, ctx.Self())
+}
+
+//代理管理列表, 玩家数据整合为一条
+func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Context) {
+	list := make([]*pb.AgentProfitManage, 0)
+	msg2 := &pb.AgentProfitManage{
+		AgentTitle: 4,
+		Agentid: rs.User.GetUserid(),
+		Nickname: rs.User.GetNickname(),
+		Agentnote: rs.User.AgentNote,
+	}
+	for _, v := range arg.List {
+		if v.GetAgentTitle() == 4 {
+			msg2.BringProfit += v.GetBringProfit()
+			continue
+		}
+		list = append(list, v)
+	}
+	if msg2.BringProfit != 0 {
+		list = append(list, msg2)
+	}
+	arg.List = list
+	rs.Send(arg)
 }

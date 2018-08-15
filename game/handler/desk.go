@@ -66,6 +66,7 @@ func NewDeskData(d *data.Game) *data.DeskData {
 		Pub:      d.Pub,
 		Mode:     d.Mode,
 		Multiple: d.Multiple,
+		Ctime:    uint32(utils.Time2Stamp(d.Ctime)),
 	}
 }
 

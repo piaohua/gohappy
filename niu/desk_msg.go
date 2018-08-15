@@ -42,7 +42,8 @@ func (a *Desk) start(ctx actor.Context) {
 	go a.ticker(ctx)
 	//日志记录
 	switch a.DeskData.Rtype {
-	case int32(pb.ROOM_TYPE1): //私人
+	case int32(pb.ROOM_TYPE1), //私人
+		int32(pb.ROOM_TYPE0): //自由
 		msg := handler.LogRoomRecordMsg(a.DeskData)
 		a.loggerPid.Tell(msg)
 	}
