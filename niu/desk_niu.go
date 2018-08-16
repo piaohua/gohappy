@@ -567,6 +567,8 @@ func (t *Desk) setRecord(score map[uint32]int64) {
 			if t.DeskData.Pub {
 				msg2 := handler.TaskUpdateMsg(1, pb.TASK_TYPE21, user.GetUserid())
 				pid.Tell(msg2)
+				msg3 := handler.TaskUpdateMsg(1, pb.TASK_TYPE26, user.GetUserid())
+				pid.Tell(msg3)
 			}
 		}
 	}

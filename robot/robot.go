@@ -35,6 +35,9 @@ var (
 	aesEnc   *utils.AesEncrypt
 	pbAesEnc *utils.AesEncrypt
 
+	aesStatus   bool
+	pbAesStatus bool
+
 	node = flag.String("node", "", "If non-empty, start with this node")
 )
 
@@ -91,6 +94,7 @@ func aesInit() {
 	aesEnc = new(utils.AesEncrypt)
 	key := cfg.Section("login").Key("key").Value()
 	aesEnc.SetKey([]byte(key))
+	aesStatus = cfg.Section("login").Key("status").MustBool(false)
 }
 
 //加密
@@ -117,6 +121,7 @@ func pbAesInit() {
 	pbAesEnc = new(utils.AesEncrypt)
 	key := cfg.Section("gate").Key("key").Value()
 	pbAesEnc.SetKey([]byte(key))
+	pbAesStatus = cfg.Section("gate").Key("status").MustBool(false)
 }
 
 //加密

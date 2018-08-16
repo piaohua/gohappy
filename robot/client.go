@@ -55,6 +55,7 @@ type Robot struct {
 	bitNum uint32 //尝试下注数量
 	regist bool   //注册标识
 	timer  uint32 //在线时间
+	ready  bool   //准备状态
 }
 
 // 基本数据
@@ -106,7 +107,9 @@ func (ws *Robot) Close() {
 
 //Router 接收消息路由
 func (ws *Robot) router(id uint32, body []byte) {
-	//body = pbAesDe(body) //解密
+	if pbAesStatus {
+		body = pbAesDe(body) //解密
+	}
 	msg, err := pb.Runpack(id, body)
 	if err != nil {
 		glog.Error("protocol unpack err:", id, err)
@@ -252,6 +255,8 @@ func encodeUint32(i uint32) (b []byte) {
 
 //封包
 func pack(code uint32, msg []byte) []byte {
-	//msg = pbAesEn(msg) //加密
+	if pbAesStatus {
+		msg = pbAesEn(msg) //加密
+	}
 	return append(encodeUint32(code), msg...)
 }

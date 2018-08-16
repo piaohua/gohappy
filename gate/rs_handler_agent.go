@@ -641,7 +641,7 @@ func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Co
 		Agentnote: rs.User.AgentNote,
 	}
 	for _, v := range arg.List {
-		if v.GetAgentTitle() == 4 {
+		if v.GetAgentTitle() == 4 || v.GetAgentid() == rs.User.GetUserid() {
 			msg2.BringProfit += v.GetBringProfit()
 			continue
 		}

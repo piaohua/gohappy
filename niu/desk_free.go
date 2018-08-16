@@ -702,6 +702,8 @@ func (t *Desk) setFreeRecord() {
 			msg3 := handler.TaskUpdateMsg(1, pb.TASK_TYPE5, k)
 			pid.Tell(msg3)
 		}
+		msg3 := handler.TaskUpdateMsg(1, pb.TASK_TYPE27, k)
+		pid.Tell(msg3)
 	}
 }
 

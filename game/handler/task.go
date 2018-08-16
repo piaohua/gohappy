@@ -69,6 +69,18 @@ func SetTaskList2() {
 	NewTask(40, 25, 0, "斗十匹配房玩牌5000局", 5000, 0, 58888)
 }
 
+//SetTaskList3 配置任务数据,测试数据
+func SetTaskList3() {
+	NewTask(41, 26, 42, "斗十大厅房玩牌200局", 200, 0, 8888)
+	NewTask(42, 26, 43, "斗十大厅房玩牌500局", 500, 0, 18888)
+	NewTask(43, 26, 44, "斗十大厅房玩牌1000局", 1000, 0, 28888)
+	NewTask(44, 26, 0, "斗十大厅房玩牌5000局", 5000, 0, 58888)
+	NewTask(45, 27, 46, "斗十百人场玩牌200局", 200, 0, 8888)
+	NewTask(46, 27, 47, "斗十百人场玩牌500局", 500, 0, 18888)
+	NewTask(47, 27, 48, "斗十百人场玩牌1000局", 1000, 0, 28888)
+	NewTask(48, 27, 0, "斗十百人场玩牌5000局", 5000, 0, 58888)
+}
+
 //NewTask 添加新任务
 func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 	diamond, coin int64) {

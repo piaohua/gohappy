@@ -152,7 +152,10 @@ func getHost() (host string) {
 		return
 	}
 	glog.Infof("getHost body: %s", string(b))
-	host = aesDe(b)
+	host = string(b)
+	if aesStatus {
+		host = aesDe(b)
+	}
 	glog.Infof("getHost host: %s", host)
 	return
 }

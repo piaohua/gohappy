@@ -14,54 +14,56 @@ import (
 
 //' receive 接收消息
 func (r *Robot) receive(msg interface{}) {
-	switch msg.(type) {
+	switch message := msg.(type) {
 	//game
 	case *pb.SRegist:
-		r.recvRegist(msg.(*pb.SRegist))
+		r.recvRegist(message)
 	case *pb.SLogin:
-		r.recvLogin(msg.(*pb.SLogin))
+		r.recvLogin(message)
 	case *pb.SUserData:
-		r.recvdata(msg.(*pb.SUserData))
+		r.recvdata(message)
 	case *pb.SPushCurrency:
-		r.recvPushCurrency(msg.(*pb.SPushCurrency))
+		r.recvPushCurrency(message)
 	case *pb.SPing:
-		r.recvPing(msg.(*pb.SPing))
+		r.recvPing(message)
 	//niu
 	case *pb.SNNFreeEnterRoom:
-		r.recvNNFreeEnter(msg.(*pb.SNNFreeEnterRoom))
+		r.recvNNFreeEnter(message)
 	case *pb.SNNFreeCamein:
-		r.recvNNFreeCamein(msg.(*pb.SNNFreeCamein))
+		r.recvNNFreeCamein(message)
 	case *pb.SNNFreeGamestart:
-		r.recvNNFreeStart(msg.(*pb.SNNFreeGamestart))
+		r.recvNNFreeStart(message)
 	case *pb.SNNFreeGameover:
-		r.recvNNFreeGameover(msg.(*pb.SNNFreeGameover))
+		r.recvNNFreeGameover(message)
 	case *pb.SNNFreeBet:
-		r.recvNNFreeBet(msg.(*pb.SNNFreeBet))
+		r.recvNNFreeBet(message)
 	case *pb.SNNCoinEnterRoom:
-		r.recvNNCoinEnter(msg.(*pb.SNNCoinEnterRoom))
+		r.recvNNCoinEnter(message)
 	case *pb.SNNCoinGameover:
-		r.recvNNCoinGameover(msg.(*pb.SNNCoinGameover))
+		r.recvNNCoinGameover(message)
 	case *pb.SNNGameover:
-		r.recvNNGameover(msg.(*pb.SNNGameover))
+		r.recvNNGameover(message)
 	case *pb.SNNEnterRoom:
-		r.recvNNEnter(msg.(*pb.SNNEnterRoom))
+		r.recvNNEnter(message)
 	case *pb.SNNLeave:
-		r.recvNNLeave(msg.(*pb.SNNLeave))
+		r.recvNNLeave(message)
 	case *pb.SNNCamein:
-		r.recvNNCamein(msg.(*pb.SNNCamein))
+		r.recvNNCamein(message)
 	case *pb.SNNPushState:
-		r.recvNNPushstate(msg.(*pb.SNNPushState))
+		r.recvNNPushstate(message)
 	case *pb.SNNDraw:
-		r.recvNNDraw(msg.(*pb.SNNDraw))
+		r.recvNNDraw(message)
 	case *pb.SNNDealer:
-		r.recvNNDealer(msg.(*pb.SNNDealer))
+		r.recvNNDealer(message)
 	case *pb.SNNPushDealer:
-		r.recvNNPushDealer(msg.(*pb.SNNPushDealer))
+		r.recvNNPushDealer(message)
+	case *pb.SNNReady:
+		r.recvNNReady(message)
 	case *pb.SNNPushDrawCoin:
 	case *pb.SNNBet:
 	case *pb.SNNiu:
 	default:
-		glog.Errorf("unknow message: %#v", msg)
+		glog.Errorf("unknow message: %#v", message)
 	}
 }
 
@@ -316,6 +318,7 @@ func (r *Robot) recvNNGameover(s2c *pb.SNNGameover) {
 	if s2c.LeftRound == 0 {
 		r.sendNNStandup() //离开
 	}
+	r.ready = false
 }
 
 func (r *Robot) gameStart(state int32) {
@@ -337,6 +340,15 @@ func (r *Robot) gameStart(state int32) {
 //开始
 func (r *Robot) recvNNFreeStart(s2c *pb.SNNFreeGamestart) {
 	r.gameStart(s2c.GetState())
+}
+
+//准备
+func (r *Robot) recvNNReady(s2c *pb.SNNReady) {
+	if s2c.GetSeat() == r.seat {
+		r.ready = s2c.GetReady()
+	} else 	if !r.ready {
+		r.sendNNReady()
+	}
 }
 
 //发牌
