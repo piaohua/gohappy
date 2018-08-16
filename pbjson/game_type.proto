@@ -227,4 +227,7 @@ enum TaskType {
     TASK_TYPE25 =25;//斗十匹配房牌局数
     TASK_TYPE26 =26;//斗十大厅房牌局数
     TASK_TYPE27 =27;//斗十百人场牌局数
+    TASK_TYPE28 =28;//斗二八匹配房牌局数
+    TASK_TYPE29 =29;//斗二八大厅房牌局数
+    TASK_TYPE30 =30;//斗二八百人场牌局数
 }
