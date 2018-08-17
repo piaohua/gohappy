@@ -150,9 +150,12 @@ func (t *Desk) callRobot() {
 	if len(t.roles) >= 5 {
 		return
 	}
+	r, n := t.roleCountNum()
+	if r == 0 {
+		return
+	}
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0):
-		r, n := t.roleCountNum()
 		if r >= 3 || n >= 2 {
 			return
 		}
@@ -160,7 +163,6 @@ func (t *Desk) callRobot() {
 		if !t.DeskData.Pub {
 			return
 		}
-		r, n := t.roleCountNum()
 		if r >= 2 || n >= 2 {
 			return
 		}

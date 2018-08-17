@@ -82,6 +82,7 @@ func (a *Desk) ding(ctx actor.Context) {
 	case int32(pb.ROOM_TYPE2): //百人
 		a.freeTimeout()
 	}
+	a.loadRobot()
 }
 
 //关闭时钟
