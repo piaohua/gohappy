@@ -99,9 +99,9 @@ func (r *RobotServer) runTest() {
 	for {
 		select {
 		case <-tick:
-			glog.Infof("r.online -> %d\n", len(r.online))
-			glog.Infof("r.offline -> %d\n", len(r.offline))
-			glog.Infof("r.phone -> %s\n", r.phone)
+			glog.Infof("r.online -> %d", len(r.online))
+			glog.Infof("r.offline -> %d", len(r.offline))
+			glog.Infof("r.phone -> %s", r.phone)
 			//TODO:优化,按时间段运行
 			//运行指定数量机器人(每个创建一个牌局)
 			//code = "create" 表示机器人创建房间
@@ -120,9 +120,9 @@ func (r *RobotServer) runTest() {
 //' 消息处理服务
 func (r *RobotServer) run() {
 	defer func() {
-		glog.Infof("Robots closed online -> %d\n", len(r.online))
-		glog.Infof("Robots closed offline -> %d\n", len(r.offline))
-		glog.Infof("Robots closed phone -> %s\n", r.phone)
+		glog.Infof("Robots closed online -> %d", len(r.online))
+		glog.Infof("Robots closed offline -> %d", len(r.offline))
+		glog.Infof("Robots closed phone -> %s", r.phone)
 	}()
 	glog.Infof("Robots started -> %s", r.phone)
 	tick := time.Tick(time.Minute)
@@ -130,14 +130,14 @@ func (r *RobotServer) run() {
 		select {
 		case m, ok := <-r.msgCh:
 			if !ok {
-				glog.Errorf("Robots msgCh closed phone -> %s\n", r.phone)
+				glog.Errorf("Robots msgCh closed phone -> %s", r.phone)
 				return
 			}
 			switch m.(type) {
 			case *pb.RobotMsg:
 				//启动机器人
 				msg := m.(*pb.RobotMsg)
-				glog.Infof("run msg -> %v", msg)
+				glog.Infof("run msg -> %#v", msg)
 				r.run2(msg)
 			case *pb.RobotReLogin:
 				//重新尝试登录
@@ -169,7 +169,7 @@ func (r *RobotServer) run() {
 				}
 			case *pb.RobotStop:
 				msg := m.(*pb.RobotStop)
-				glog.Infof("robot stop %v", msg)
+				glog.Infof("robot stop %#v", msg)
 				//r.mutexConns.Lock()
 				//for conn := range r.conns {
 				//	conn.Close()
@@ -261,8 +261,8 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 			//Msg2Robots(msg, 1)
 			//TODO 会出现死循环
 		} else if _, ok := r.online[phone]; ok {
-			//重复
-			Msg2Robots(msg, 1)
+			//重复, TODO 会出现死循环
+			//Msg2Robots(msg, 1)
 		} else {
 			//新机器人不用注册
 			glog.Infof("run new robot -> %s, %s", roomid, phone)

@@ -99,7 +99,7 @@ func (r *Robot) receive(msg interface{}) {
 	case *pb.SEBBet:
 	case *pb.SEBiu:
 	default:
-		glog.Errorf("unknow message: %#v", message)
+		//glog.Errorf("unknow message: %#v", message)
 	}
 }
 

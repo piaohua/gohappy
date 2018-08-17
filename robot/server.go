@@ -70,7 +70,7 @@ func (server *RobotServer) Start() {
 	//启动管理服务
 	go server.run()
 	//启动测试
-	go server.runTest()
+	//go server.runTest()
 }
 
 //Close 关闭连接

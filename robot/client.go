@@ -169,7 +169,7 @@ func (ws *Robot) readPump() {
 	for {
 		n, message, err := ws.conn.ReadMessage()
 		if err != nil {
-			glog.Errorf("Read error: %s, %d\n", err, n)
+			glog.Errorf("Read error: %s, %d", err, n)
 			break
 		}
 		//if len(message) > 1024 {
@@ -177,7 +177,7 @@ func (ws *Robot) readPump() {
 		//	return
 		//}
 		if len(message) < 5 {
-			glog.Errorf("message error: %#v\n", message)
+			glog.Errorf("message error: %#v", message)
 			return
 		}
 		//路由
