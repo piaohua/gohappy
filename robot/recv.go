@@ -342,32 +342,20 @@ func (r *Robot) recvNNPushstate(s2c *pb.SNNPushState) {
 
 //结束
 func (r *Robot) recvNNFreeGameover(s2c *pb.SNNFreeGameover) {
-	r.bits = 0
-	r.bitNum = 0
-	r.round++
-	if r.round >= 30 { //打10局下线
-		r.sendNNStandup() //离开
-		return
-	}
+	r.recvGameover()
 }
 
 //结束
 func (r *Robot) recvNNCoinGameover(s2c *pb.SNNCoinGameover) {
-	r.bits = 0
-	r.bitNum = 0
-	r.round++
-	if r.round >= 30 { //打10局下线
-		r.sendNNStandup() //离开
-		return
-	}
+	r.recvGameover()
 }
 
 //结束
 func (r *Robot) recvNNGameover(s2c *pb.SNNGameover) {
-	if s2c.LeftRound == 0 {
-		r.sendNNStandup() //离开
-	}
-	r.ready = false
+	//if s2c.LeftRound == 0 {
+	//	r.sendNNStandup() //离开
+	//}
+	r.recvGameover()
 }
 
 func (r *Robot) gameStart(state int32) {
@@ -463,32 +451,36 @@ func (r *Robot) recvEBPushstate(s2c *pb.SEBPushState) {
 
 //结束
 func (r *Robot) recvEBFreeGameover(s2c *pb.SEBFreeGameover) {
-	r.bits = 0
-	r.bitNum = 0
-	r.round++
-	if r.round >= 30 { //打10局下线
-		r.sendEBStandup() //离开
-		return
-	}
+	r.recvGameover()
 }
 
 //结束
 func (r *Robot) recvEBCoinGameover(s2c *pb.SEBCoinGameover) {
-	r.bits = 0
-	r.bitNum = 0
-	r.round++
-	if r.round >= 30 { //打10局下线
-		r.sendEBStandup() //离开
-		return
-	}
+	r.recvGameover()
 }
 
 //结束
 func (r *Robot) recvEBGameover(s2c *pb.SEBGameover) {
-	if s2c.LeftRound == 0 {
-		r.sendEBStandup() //离开
-	}
+	//if s2c.LeftRound == 0 {
+	//	r.sendEBStandup() //离开
+	//}
+	r.recvGameover()
+}
+
+func (r *Robot) recvGameover() {
+	r.bits = 0
+	r.bitNum = 0
+	r.round++
 	r.ready = false
+	if r.round >= 30 { //打10局下线
+		switch r.gtype {
+		case int32(pb.NIU):
+			r.sendNNStandup() //离开
+		case int32(pb.EBG):
+			r.sendEBStandup() //离开
+		}
+		return
+	}
 }
 
 func (r *Robot) ebgGameStart(state int32) {
