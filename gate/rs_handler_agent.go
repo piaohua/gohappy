@@ -470,6 +470,11 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		rs.Send(rsp)
 		return
 	}
+	if arg.GetRate() == 0 {
+		rsp.Error = pb.ParamError
+		rs.Send(rsp)
+		return
+	}
 	if rs.User.ProfitRate < (arg.GetRate() + 5) { //保留5%
 		rsp.Error = pb.ProfitRateNotEnough
 		rs.Send(rsp)
@@ -635,10 +640,11 @@ func (rs *RoleActor) agentProfitManage(arg *pb.CAgentProfitManage, ctx actor.Con
 func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Context) {
 	list := make([]*pb.AgentProfitManage, 0)
 	msg2 := &pb.AgentProfitManage{
-		AgentTitle: 4,
+		AgentTitle: handler.GetAgentTitle(rs.User),
 		Agentid: rs.User.GetUserid(),
 		Nickname: rs.User.GetNickname(),
 		Agentnote: rs.User.AgentNote,
+		Rate: rs.User.ProfitRate,
 	}
 	for _, v := range arg.List {
 		if v.GetAgentTitle() == 4 || v.GetAgentid() == rs.User.GetUserid() {

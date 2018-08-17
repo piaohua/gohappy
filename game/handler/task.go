@@ -98,6 +98,14 @@ func SetTaskList4() {
 
 }
 
+//SetTaskList5 配置任务数据,测试数据
+func SetTaskList5() {
+	NewTask(61, 31, 62, "玩牌200局", 200, 0, 8888)
+	NewTask(62, 31, 63, "玩牌500局", 500, 0, 18888)
+	NewTask(63, 31, 64, "玩牌1000局", 1000, 0, 28888)
+	NewTask(64, 31, 0, "玩牌5000局", 5000, 0, 58888)
+}
+
 //NewTask 添加新任务
 func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 	diamond, coin int64) {
