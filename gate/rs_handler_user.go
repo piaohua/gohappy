@@ -323,7 +323,7 @@ func (rs *RoleActor) bank(arg *pb.CBank) {
 			msg.Error = pb.BankNotOpen
 		} else if arg.GetPassword() != rs.User.BankPassword {
 			msg.Error = pb.PwdError
-		//} else if amount > rs.User.GetBank() {
+			//} else if amount > rs.User.GetBank() {
 		} else if amount > rs.User.GetCoin() { //修改成赠送bank外面的
 			msg.Error = pb.NotEnoughCoin
 		} else if amount < data.DRAW_MONEY {
@@ -612,7 +612,7 @@ func (rs *RoleActor) lucky() {
 	list := config.GetLuckys()
 	for _, v := range list {
 		msg2 := &pb.Lucky{
-			Luckyid:  v.Luckyid,
+			Luckyid: v.Luckyid,
 			Name:    v.Name,
 			Count:   v.Count,
 			Coin:    v.Coin,
@@ -660,7 +660,7 @@ func (rs *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
 	} else {
 		luckyInfo := data.LuckyInfo{
 			Luckyid: arg.GetLuckyid(),
-			Num:    arg.Num,
+			Num:     arg.Num,
 		}
 		rs.User.Lucky[luckyidStr] = luckyInfo
 	}

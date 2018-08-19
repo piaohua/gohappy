@@ -5,9 +5,9 @@ import (
 
 	"gohappy/data"
 	"gohappy/game/config"
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
-	"gohappy/game/handler"
 	"utils"
 
 	"github.com/AsynkronIT/protoactor-go/actor"

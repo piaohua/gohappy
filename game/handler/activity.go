@@ -2,20 +2,21 @@ package handler
 
 import (
 	"errors"
+	"time"
 
 	"gohappy/data"
 	"gohappy/game/config"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"time"
+
 	"github.com/globalsign/mgo/bson"
 )
 
 func packLogActivityMsg(v *data.LogActivity) (msg *pb.Activity) {
 	msg = &pb.Activity{
-		Id:        v.Actid,
-		JoinTime:   utils.Time2LocalStr(v.Jtime),
+		Id:       v.Actid,
+		JoinTime: utils.Time2LocalStr(v.Jtime),
 	}
 	switch v.Type {
 	case int32(pb.ACT_TYPE0):
@@ -91,9 +92,9 @@ func JoinActivity(arg *pb.CJoinActivity) (msg *pb.SJoinActivity) {
 		return
 	}
 	joinAct := &data.LogActivity{
-		Actid: act.Id,
-		Type:  act.Type,
-		Etime: act.EndTime,
+		Actid:  act.Id,
+		Type:   act.Type,
+		Etime:  act.EndTime,
 		Userid: arg.GetSelfid(),
 	}
 	if joinAct.Has() {
@@ -181,10 +182,10 @@ func statActivityMsg(userid, actid, title string, Type int32,
 	msg = &pb.AgentActivityProfit{
 		Userid: userid,
 		Profit: profit,
-		Type: Type,
-		Actid: actid,
-		Title: title,
-		Num: num,
+		Type:   Type,
+		Actid:  actid,
+		Title:  title,
+		Num:    num,
 	}
 	return
 }
@@ -193,15 +194,14 @@ func statActivityMsg(userid, actid, title string, Type int32,
 func StatActivityUpdate(arg *pb.AgentActivityProfit) {
 	d := &data.LogActivity{
 		Userid: arg.GetUserid(),
-		Actid: arg.GetActid(),
-		Prize: arg.GetProfit(),
-		Num: arg.GetNum(),
+		Actid:  arg.GetActid(),
+		Prize:  arg.GetProfit(),
+		Num:    arg.GetNum(),
 	}
 	if !d.Update() {
 		glog.Errorf("StatActivityUpdate filed %#v", d)
 	}
 }
-
 
 //SetActivityList 配置活动数据,测试数据
 func SetActivityList() {
@@ -219,13 +219,13 @@ func SetActivityList() {
 func NewActivity(Type int32, title, content string, startTime, endTime time.Time) {
 	t := data.Activity{
 		//Id:      bson.NewObjectId().String(),
-		Id:      data.ObjectIdString(bson.NewObjectId()),
-		Ctime:   bson.Now(),
-		Type:  Type,
-		Title: title,
-		Content: content,
+		Id:        data.ObjectIdString(bson.NewObjectId()),
+		Ctime:     bson.Now(),
+		Type:      Type,
+		Title:     title,
+		Content:   content,
 		StartTime: startTime,
-		EndTime: endTime,
+		EndTime:   endTime,
 	}
 	config.SetActivity(t)
 	t.Save()

@@ -9,8 +9,8 @@ import (
 	"gohappy/pb"
 	"utils"
 
-	jsoniter "github.com/json-iterator/go"
 	"github.com/globalsign/mgo/bson"
+	jsoniter "github.com/json-iterator/go"
 )
 
 //PackAgentProfitRankMsg 获取排行榜信息
@@ -289,8 +289,8 @@ func PackAgentDayProfitMsg(arg *pb.CAgentDayProfit) (msg *pb.SAgentDayProfit) {
 	glog.Debugf("PackAgentProfitMsg list %#v", list)
 	for _, v := range list {
 		msg2 := new(pb.AgentDayProfitDetail)
-		msg2.Userid = v.Userid //代理id
-		msg2.Profit = v.Profit //收益
+		msg2.Userid = v.Userid   //代理id
+		msg2.Profit = v.Profit   //收益
 		msg2.Day = uint32(v.Day) //日期20180728
 		msg2.Agentnote = v.AgentNote
 		msg2.Nickname = v.Nickname
@@ -479,15 +479,15 @@ func agentTitle(AgentLevel, AgentState uint32, Agent string, ProfitRate int64) i
 func AgentProfitInfoMsg(userid, nickname, agentnote, agentid string, agent bool,
 	gtype int32, level, rate uint32, profit int64) (msg *pb.AgentProfitInfo) {
 	msg = &pb.AgentProfitInfo{
-		Userid:  userid,
-		Agentid: agentid,
-		Gtype:   gtype,
-		Level:   level,
-		Rate:    rate,
-		Profit:  profit,
-		Agent:   agent,
-		Nickname: nickname,
-		Agentnote:agentnote,
+		Userid:    userid,
+		Agentid:   agentid,
+		Gtype:     gtype,
+		Level:     level,
+		Rate:      rate,
+		Profit:    profit,
+		Agent:     agent,
+		Nickname:  nickname,
+		Agentnote: agentnote,
 	}
 	return
 }
@@ -496,15 +496,15 @@ func AgentProfitInfoMsg(userid, nickname, agentnote, agentid string, agent bool,
 func AgentProfitMonthInfoMsg(userid, nickname, agentnote, agentid string, agent bool,
 	gtype int32, level, rate uint32, profit int64) (msg *pb.AgentProfitMonthInfo) {
 	msg = &pb.AgentProfitMonthInfo{
-		Userid:  userid,
-		Agentid: agentid,
-		Gtype:   gtype,
-		Level:   level,
-		Rate:    rate,
-		Profit:  profit,
-		Agent:   agent,
-		Nickname: nickname,
-		Agentnote:agentnote,
+		Userid:    userid,
+		Agentid:   agentid,
+		Gtype:     gtype,
+		Level:     level,
+		Rate:      rate,
+		Profit:    profit,
+		Agent:     agent,
+		Nickname:  nickname,
+		Agentnote: agentnote,
 	}
 	return
 }
@@ -553,13 +553,13 @@ func AgentProfitMonthSendCheck(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.Ag
 
 func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.AgentProfitMonthSend) {
 	if user.GetMonth() == int(utils.Month()) {
-	//if user.GetMonth() == int(utils.Day()) { //TODO test
+		//if user.GetMonth() == int(utils.Day()) { //TODO test
 		return
 	}
 	//发放消息
 	msg5 = &pb.AgentProfitMonthSend{
 		Userid: user.GetUserid(),
-		Profit: user.GetProfitMonth(),//为0时依然发送
+		Profit: user.GetProfitMonth(), //为0时依然发送
 		Month:  int32(user.GetMonth()),
 	}
 	AgentProfitMonthSend(msg5, user)
@@ -627,7 +627,7 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitIn
 			Userid:  user.GetUserid(),
 			Profit:  profit,
 			Isagent: arg.Agent,
-			Level: arg.GetLevel(),
+			Level:   arg.GetLevel(),
 		}
 	}
 	if user.GetAgent() == "" {
@@ -638,7 +638,7 @@ func AddProfit(arg *pb.AgentProfitInfo, user *data.User) (msg1 *pb.AgentProfitIn
 	}
 	//反给上级消息
 	msg1 = AgentProfitInfoMsg(user.GetUserid(), user.GetNickname(), user.GetAgentNote(),
-		user.GetAgent(),false, arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
+		user.GetAgent(), false, arg.Gtype, arg.Level+1, 0, arg.Profit) //level表示相对当前代理的等级,不是user.AgentLevel
 	if IsAgent(user) {
 		msg1.Agent = true
 	}
@@ -784,12 +784,12 @@ func SetAgentState(arg *pb.SetAgentState, user *data.User) {
 //GetAgentMsg 获取代理信息
 func GetAgentMsg(user *data.User) (msg *pb.SGetAgent) {
 	msg = &pb.SGetAgent{
-		Agentid: user.GetUserid(),
-		Nickname: user.GetNickname(),
+		Agentid:   user.GetUserid(),
+		Nickname:  user.GetNickname(),
 		Agentname: user.AgentName,
-		Realname: user.RealName,
-		Weixin: user.Weixin,
-		Vaild: IsVaild(user),
+		Realname:  user.RealName,
+		Weixin:    user.Weixin,
+		Vaild:     IsVaild(user),
 	}
 	return
 }

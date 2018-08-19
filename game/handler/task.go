@@ -119,7 +119,7 @@ func NewTask(taskid, taskType, nextid int32, name string, count uint32,
 		Name:    name,
 		Count:   count,
 		Diamond: diamond,
-		Coin: coin,
+		Coin:    coin,
 	}
 	config.SetTask(t)
 	t.Save()

@@ -393,7 +393,7 @@ func (r *Robot) recvNNFreeStart(s2c *pb.SNNFreeGamestart) {
 func (r *Robot) recvNNReady(s2c *pb.SNNReady) {
 	if s2c.GetSeat() == r.seat {
 		r.ready = s2c.GetReady()
-	} else 	if !r.ready {
+	} else if !r.ready {
 		r.sendNNReady()
 	}
 }
@@ -508,7 +508,7 @@ func (r *Robot) recvEBFreeStart(s2c *pb.SEBFreeGamestart) {
 func (r *Robot) recvEBReady(s2c *pb.SEBReady) {
 	if s2c.GetSeat() == r.seat {
 		r.ready = s2c.GetReady()
-	} else 	if !r.ready {
+	} else if !r.ready {
 		r.sendEBReady()
 	}
 }
@@ -528,8 +528,8 @@ func (r *Robot) recvEBDealer(s2c *pb.SEBDealer) {
 //庄家
 func (r *Robot) recvEBPushDealer(s2c *pb.SEBPushDealer) {
 }
-//.
 
+//.
 
 //' 进入房间
 func (r *Robot) recvEBFreeEnter(s2c *pb.SEBFreeEnterRoom) {

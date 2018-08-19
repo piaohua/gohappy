@@ -335,7 +335,7 @@ func (a *RoleActor) agentBuildUpdate(arg *pb.AgentBuildUpdate) {
 	}
 	handler.AgentBuildUpdate2(arg, user) //暂时实时写入, TODO 异步数据更新
 	//邀请每10人，奖励100豆子
-	if arg.Build != 0 && (user.Build % 10 == 0) {
+	if arg.Build != 0 && (user.Build%10 == 0) {
 		a.sendCurrency(user.GetUserid(), 0, 100, int32(pb.LOG_TYPE55))
 		//消息提醒
 		record, msg2 := handler.BuildNotice(100, user.Build, user.GetUserid())
@@ -469,7 +469,7 @@ func (a *RoleActor) agentOauth2Build(arg *pb.AgentOauth2Build, ctx actor.Context
 	}
 	msg2 := &pb.SetAgentBuild{
 		Userid: user.GetUserid(),
-		Agent: arg.GetAgentid(),
+		Agent:  arg.GetAgentid(),
 	}
 	handler.SetAgentBuild(msg2, user)
 	user.UpdateAgent()

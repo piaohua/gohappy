@@ -9,11 +9,11 @@ package main
 
 import (
 	"gohappy/game/algo"
+	"gohappy/game/config"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"gohappy/game/config"
 )
 
 //'进入房间响应消息

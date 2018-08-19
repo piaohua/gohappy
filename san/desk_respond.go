@@ -95,7 +95,7 @@ func (t *Desk) chatEmoji(userid, context string) pb.ErrCode {
 		}
 	}
 	//TODO 货币变更消息广播
-	t.sendDiamond(userid, -1 * num, int32(pb.LOG_TYPE50))
+	t.sendDiamond(userid, -1*num, int32(pb.LOG_TYPE50))
 	return pb.OK
 }
 

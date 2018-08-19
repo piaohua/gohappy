@@ -236,7 +236,7 @@ func (t *Desk) getCardsMsg(k uint32, msg2 *pb.NNRoomUser) {
 		msg2.Cards = t.getHandCards(k)
 	case int32(pb.DESK_TYPE1): //通比牛牛
 		switch t.DeskData.Mode {
-		case 0://普通
+		case 0: //普通
 			switch t.state {
 			case int32(pb.STATE_DEALER):
 			case int32(pb.STATE_BET), int32(pb.STATE_NIU):
@@ -639,7 +639,7 @@ func (t *Desk) deal() {
 			t.send2seat(k, msg)
 		case int32(pb.DESK_TYPE1): //通比牛牛
 			switch t.DeskData.Mode {
-			case 0://普通
+			case 0: //普通
 				t.deal2(k, hand, v.Cards)
 			default:
 				t.deal3(k, hand, cards)

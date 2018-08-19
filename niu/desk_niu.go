@@ -9,11 +9,11 @@ package main
 
 import (
 	"gohappy/game/algo"
+	"gohappy/game/config"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"gohappy/game/config"
 )
 
 //'进入房间响应消息
@@ -873,10 +873,10 @@ func (t *Desk) powerAward() {
 		}
 		t.sendCoin(v.Userid, int64(num), int32(pb.LOG_TYPE51))
 		msg := &pb.SNNPushAward{
-			Power:   v.Power,
-			Seat:    k,
-			Userid:  v.Userid,
-			Coin:    int64(num),
+			Power:  v.Power,
+			Seat:   k,
+			Userid: v.Userid,
+			Coin:   int64(num),
 		}
 		t.broadcast(msg)
 		luckyid := int32(v.Power) * t.DeskData.Gtype * 10

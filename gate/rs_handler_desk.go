@@ -1,11 +1,11 @@
 package main
 
 import (
+	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 
 	"github.com/AsynkronIT/protoactor-go/actor"
-	"gohappy/game/handler"
 )
 
 //玩家桌子常用共有操作请求处理
@@ -36,7 +36,7 @@ func (rs *RoleActor) handlerDesk(msg interface{}, ctx actor.Context) {
 			rs.status = true
 			rs.User.SetRecord(arg.Rtype)
 		}
-		if rs.User.GetAgent() != "" && (rs.User.Win + rs.User.Lost + rs.User.Ping) == 10 {
+		if rs.User.GetAgent() != "" && (rs.User.Win+rs.User.Lost+rs.User.Ping) == 10 {
 			//更新有效代理绑定
 			msg := handler.AgentBuildUpdateMsg(rs.User.GetAgent(), rs.User.GetUserid(), 0, 1, 0)
 			rs.rolePid.Tell(msg)
@@ -389,14 +389,14 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 	if arg.Error != pb.OK {
 		glog.Errorf("created desk filed arg %#v", arg)
-        rs.createdDeskMsg(arg.Gtype, arg.Error)
+		rs.createdDeskMsg(arg.Gtype, arg.Error)
 		return
 	}
 	msg := new(pb.EnterDesk)
 	msg.Gtype = arg.Gtype
 	msg.Rtype = arg.Rtype
 	if !rs.enterDeskMsg(msg, ctx) || arg.Desk == nil {
-        rs.createdDeskMsg(arg.Gtype, arg.Error)
+		rs.createdDeskMsg(arg.Gtype, arg.Error)
 		return
 	}
 	arg.Desk.Request(msg, ctx.Self())
@@ -404,26 +404,26 @@ func (rs *RoleActor) createdDesk(arg *pb.CreatedDesk, ctx actor.Context) {
 
 //失败消息
 func (rs *RoleActor) createdDeskMsg(Gtype int32, errcode pb.ErrCode) {
-    switch Gtype {
-    case int32(pb.NIU):
-        rsp := new(pb.SNNCreateRoom)
-        rsp.Error = pb.CreateRoomFail
-        rs.Send(rsp)
-    case int32(pb.SAN):
-        rsp := new(pb.SSGCreateRoom)
-        rsp.Error = pb.CreateRoomFail
-        rs.Send(rsp)
-    case int32(pb.HUA):
-        rsp := new(pb.SJHCreateRoom)
-        rsp.Error = pb.CreateRoomFail
-        rs.Send(rsp)
-    case int32(pb.EBG):
-        rsp := new(pb.SEBCreateRoom)
-        rsp.Error = pb.CreateRoomFail
-        rs.Send(rsp)
-    default:
-        glog.Errorf("matched DeskErr fail %d, %d", Gtype, errcode)
-    }
+	switch Gtype {
+	case int32(pb.NIU):
+		rsp := new(pb.SNNCreateRoom)
+		rsp.Error = pb.CreateRoomFail
+		rs.Send(rsp)
+	case int32(pb.SAN):
+		rsp := new(pb.SSGCreateRoom)
+		rsp.Error = pb.CreateRoomFail
+		rs.Send(rsp)
+	case int32(pb.HUA):
+		rsp := new(pb.SJHCreateRoom)
+		rsp.Error = pb.CreateRoomFail
+		rs.Send(rsp)
+	case int32(pb.EBG):
+		rsp := new(pb.SEBCreateRoom)
+		rsp.Error = pb.CreateRoomFail
+		rs.Send(rsp)
+	default:
+		glog.Errorf("matched DeskErr fail %d, %d", Gtype, errcode)
+	}
 }
 
 //换房间结果

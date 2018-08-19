@@ -617,47 +617,47 @@ func (t *Desk) deal() {
 		//(通比牛牛 | 牛牛坐庄)前4张牌不广播
 		switch t.DeskData.Dtype {
 		case int32(pb.DESK_TYPE3): //疯狂,抢庄
-            hand = 1
-            //发牌消息
-            cards := make([]uint32, hand, hand)
-            copy(cards, t.DeskGame.Cards[:hand])
-            t.DeskGame.Cards = t.DeskGame.Cards[hand:]
-            v.Cards = append(v.Cards, cards...)
-            switch t.state {
-            case int32(pb.STATE_DEALER):
-                //一明一暗
+			hand = 1
+			//发牌消息
+			cards := make([]uint32, hand, hand)
+			copy(cards, t.DeskGame.Cards[:hand])
+			t.DeskGame.Cards = t.DeskGame.Cards[hand:]
+			v.Cards = append(v.Cards, cards...)
+			switch t.state {
+			case int32(pb.STATE_DEALER):
+				//一明一暗
 				cards2 := make([]uint32, hand+1, hand+1)
 				msg2 := resDraw(k, t.state, cards2)
 				t.broadcast3(k, msg2)
-                //可看到自己牌值
+				//可看到自己牌值
 				cards3 := append(v.Cards, 0)
-                msg := resDraw(k, t.state, cards3)
-                t.send2seat(k, msg)
-            case int32(pb.STATE_BET):
-                //可看到自己牌值
-                msg := resDraw(k, t.state, v.Cards)
-                t.send2seat(k, msg)
-            }
+				msg := resDraw(k, t.state, cards3)
+				t.send2seat(k, msg)
+			case int32(pb.STATE_BET):
+				//可看到自己牌值
+				msg := resDraw(k, t.state, v.Cards)
+				t.send2seat(k, msg)
+			}
 		case int32(pb.DESK_TYPE2), //
 			int32(pb.DESK_TYPE1), //
 			int32(pb.DESK_TYPE0): //普通,随机庄、固定庄、轮流庄
-            hand = 2
-            switch t.state {
-            case int32(pb.STATE_DEALER):
-                //二暗,看不到牌值,发牌消息
-                cards2 := make([]uint32, hand, hand)
-                msg2 := resDraw(k, t.state, cards2)
-                t.broadcast(msg2)
-            case int32(pb.STATE_BET):
-                //发牌
-                cards := make([]uint32, hand, hand)
-                copy(cards, t.DeskGame.Cards[:hand])
-                t.DeskGame.Cards = t.DeskGame.Cards[hand:]
-                v.Cards = append(v.Cards, cards...)
-                //自己可看到牌值
-                msg := resDraw(k, t.state, cards)
-                t.send2seat(k, msg)
-            }
+			hand = 2
+			switch t.state {
+			case int32(pb.STATE_DEALER):
+				//二暗,看不到牌值,发牌消息
+				cards2 := make([]uint32, hand, hand)
+				msg2 := resDraw(k, t.state, cards2)
+				t.broadcast(msg2)
+			case int32(pb.STATE_BET):
+				//发牌
+				cards := make([]uint32, hand, hand)
+				copy(cards, t.DeskGame.Cards[:hand])
+				t.DeskGame.Cards = t.DeskGame.Cards[hand:]
+				v.Cards = append(v.Cards, cards...)
+				//自己可看到牌值
+				msg := resDraw(k, t.state, cards)
+				t.send2seat(k, msg)
+			}
 		}
 	}
 }

@@ -213,9 +213,9 @@ func (rs *RoleActor) agentProfitNum(arg *pb.AgentProfitNum) {
 	}
 	//发送消息给代理
 	msg2 := handler.AgentProfitInfoMsg(rs.User.GetUserid(), rs.User.GetNickname(), rs.User.GetAgentNote(),
-		rs.User.GetAgent(),false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+		rs.User.GetAgent(), false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
 	msg3 := handler.AgentProfitMonthInfoMsg(rs.User.GetUserid(), rs.User.GetNickname(), rs.User.GetAgentNote(),
-		rs.User.GetAgent(),false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
+		rs.User.GetAgent(), false, arg.Gtype, 1, 0, rest) //level表示相对当前代理的等级,不是rs.User.AgentLevel
 	if handler.IsAgent(rs.User) {
 		msg2.Agent = true
 		msg3.Agent = true
@@ -431,8 +431,8 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 		Userid:   rs.User.GetUserid(),   //申请人玩家id
 		Nickname: rs.User.GetNickname(), //玩家昵称
 		//Profit:   int64(profit),         //提取金额
-		Profit: rs.User.GetProfit(),
-		ProfitFirst: rs.User.GetProfitFirst(),
+		Profit:       rs.User.GetProfit(),
+		ProfitFirst:  rs.User.GetProfitFirst(),
 		ProfitSecond: rs.User.GetProfitSecond(),
 	}
 	res1 := rs.reqRole(msg, ctx)
@@ -641,10 +641,10 @@ func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Co
 	list := make([]*pb.AgentProfitManage, 0)
 	msg2 := &pb.AgentProfitManage{
 		AgentTitle: handler.GetAgentTitle(rs.User),
-		Agentid: rs.User.GetUserid(),
-		Nickname: rs.User.GetNickname(),
-		Agentnote: rs.User.AgentNote,
-		Rate: rs.User.ProfitRate,
+		Agentid:    rs.User.GetUserid(),
+		Nickname:   rs.User.GetNickname(),
+		Agentnote:  rs.User.AgentNote,
+		Rate:       rs.User.ProfitRate,
 	}
 	for _, v := range arg.List {
 		if v.GetAgentTitle() == 4 || v.GetAgentid() == rs.User.GetUserid() {

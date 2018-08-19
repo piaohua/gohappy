@@ -9,11 +9,11 @@ package main
 
 import (
 	"gohappy/game/algo"
+	"gohappy/game/config"
 	"gohappy/game/handler"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
-	"gohappy/game/config"
 )
 
 //'进入房间响应消息
@@ -603,7 +603,7 @@ func (t *Desk) pailiOver1(score map[uint32]int64) map[uint32]int64 {
 		case v.Power == a:
 			//麻将牌：庄家跟闲家为0点时闲家赢，否则庄家赢
 			if a != algo.EBG0 {
-			//if t.pailiCompare(dealerSeat, k) {
+				//if t.pailiCompare(dealerSeat, k) {
 				val := int64(v.Bet * int64(algo.EbgMultiple(t.DeskData.Mode, a)) * ante)
 				score = t.over3(dealerSeat, k, val, score)
 			} else {
@@ -646,7 +646,7 @@ func (t *Desk) pailiOver3(score map[uint32]int64) (uint32, map[uint32]int64) {
 		case v == val:
 			//麻将牌：庄家跟闲家为0点时闲家赢，否则庄家赢
 			if val == algo.EBG0 {
-			//if !t.pailiCompare(seat, a[0]) {
+				//if !t.pailiCompare(seat, a[0]) {
 				seat = a[0]
 				val = v
 			}
@@ -871,7 +871,7 @@ func (t *Desk) powerAward() {
 		}
 		var num = t.DeskData.Ante
 		switch v.Power {
-		case algo.EBG10, algo.EBGDui,	algo.BAIBAN:
+		case algo.EBG10, algo.EBGDui, algo.BAIBAN:
 			num += algo.EbgMultiple(t.DeskData.Mode, v.Power)
 		default:
 			continue

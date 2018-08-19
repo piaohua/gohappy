@@ -36,10 +36,10 @@ func PackNotice(msg *pb.SNotice) {
 
 func packNoticeMsg(v *data.Notice) (msg *pb.Notice) {
 	msg = &pb.Notice{
-		Rtype:   int32(v.Rtype),
-		Acttype: int32(v.Acttype),
-		Content: v.Content,
-		Time:    utils.Time2LocalStr(v.Ctime),
+		Rtype:      int32(v.Rtype),
+		Acttype:    int32(v.Acttype),
+		Content:    v.Content,
+		Time:       utils.Time2LocalStr(v.Ctime),
 		ExpireTime: utils.Time2LocalStr(v.Etime),
 	}
 	return

@@ -143,8 +143,8 @@ func StatActivity(actLog *LogActivity, act Activity) (int64, error) {
 	switch act.Type {
 	case int32(pb.ACT_TYPE0):
 		endTime := utils.TimestampTodayTime()
-		startTime := actLog.Jtime //参加开始时间
-		if endTime.Sub(actLog.Jtime).Hours() > 7 * 24 { //参加超过7天,统计7日内
+		startTime := actLog.Jtime                     //参加开始时间
+		if endTime.Sub(actLog.Jtime).Hours() > 7*24 { //参加超过7天,统计7日内
 			startTime = endTime.AddDate(0, 0, -7)
 		}
 		q := bson.M{"agentid": actLog.Userid}
@@ -166,8 +166,8 @@ func StatActivity(actLog *LogActivity, act Activity) (int64, error) {
 			return 0, err
 		}
 		endTime := utils.TimestampTodayTime()
-		startTime := actLog.Jtime //参加开始时间
-		if endTime.Sub(actLog.Jtime).Hours() > 30 * 24 { //参加超过30天,统计30日内
+		startTime := actLog.Jtime                      //参加开始时间
+		if endTime.Sub(actLog.Jtime).Hours() > 30*24 { //参加超过30天,统计30日内
 			startTime = endTime.AddDate(0, 0, -30)
 		}
 		q := bson.M{"agentid": bson.M{"$in": ids}}

@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"gohappy/data"
-	"gohappy/game/login"
 	"gohappy/game/handler"
+	"gohappy/game/login"
 	"gohappy/glog"
 	"gohappy/pb"
 	"utils"
@@ -642,7 +642,7 @@ func (a *RoleActor) luckyUpdate(arg *pb.LuckyUpdate) {
 	} else {
 		luckyInfo := data.LuckyInfo{
 			Luckyid: int32(arg.GetLuckyid()),
-			Num:    arg.Num,
+			Num:     arg.Num,
 		}
 		user.Lucky[luckyidStr] = luckyInfo
 	}

@@ -9,7 +9,7 @@ import (
 //Lucky 幸运星
 type Lucky struct {
 	ID      string    `bson:"_id" json:"id"`          //unique ID
-	Luckyid int32     `bson:"luckyid" json:"luckyid"`       //unique
+	Luckyid int32     `bson:"luckyid" json:"luckyid"` //unique
 	Gtype   int32     `bson:"gtype" json:"gtype"`     //游戏类型1 niu,2 san,3 jiu
 	Name    string    `bson:"name" json:"name"`       //名称
 	Count   uint32    `bson:"count" json:"count"`     //任务数值
@@ -28,8 +28,8 @@ func GetLuckyList() []Lucky {
 
 //LuckyInfo 幸运星信息
 type LuckyInfo struct {
-	Luckyid int32     `bson:"luckyid" json:"luckyid"`   //unique
-	Num     uint32    `bson:"num" json:"num"`     //完成数值
+	Luckyid int32  `bson:"luckyid" json:"luckyid"` //unique
+	Num     uint32 `bson:"num" json:"num"`         //完成数值
 }
 
 //Save 写入数据库

@@ -304,7 +304,7 @@ func (t *Desk) gameStart() {
 	case int32(pb.DESK_TYPE1): //通比牛牛
 		t.dealerHandler()
 		switch t.DeskData.Mode {
-		case 0://普通
+		case 0: //普通
 			t.betTimeout() //去掉下注流程
 		default:
 		}
