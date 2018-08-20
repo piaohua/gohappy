@@ -395,6 +395,7 @@ func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate) {
 	agent := a.getUserById(arg.GetUserid())
 	if agent != nil {
 		agent.ProfitRate += arg.GetRate()
+		agent.ProfitRateSum += arg.GetRate()
 		agent.UpdateAgentProfitRate()
 	}
 }

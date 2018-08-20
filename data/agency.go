@@ -55,14 +55,14 @@ func ExistAgent(safetycode string) bool {
 //GetProfitRank 收益排行榜信息
 func GetProfitRank() ([]bson.M, error) {
 	pageSize := 20 //取前20条
-	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "coin", false)
+	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "history_profit", false)
 	var list []bson.M
 	selector := make(bson.M, 4)
-	selector["profit"] = true
+	selector["history_profit"] = true
 	selector["nickname"] = true
 	selector["address"] = true
 	selector["_id"] = true
-	q := bson.M{"profit": bson.M{"$gt": 0},
+	q := bson.M{"history_profit": bson.M{"$gt": 0},
 		"agent": bson.M{"$ne": ""}, "agent_state": bson.M{"$eq": 1}}
 	err := PlayerUsers.
 		Find(q).Select(selector).

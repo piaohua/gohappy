@@ -333,6 +333,8 @@ func (t *Desk) gameOver() {
 		t.gameOverInit()
 		//踢出不足坐下玩家或超额玩家
 		t.limitOver()
+		//踢除离线玩家
+		t.kickOffline()
 		//关闭房间
 		//t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
@@ -380,6 +382,7 @@ func (t *Desk) limitOver() {
 func (t *Desk) kickOffline() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1), //私人
 		int32(pb.ROOM_TYPE2): //百人
 		for k, v := range t.roles {
 			if !v.Offline {
@@ -497,7 +500,7 @@ func (t *Desk) gameStop() {
 		return
 	}
 	if t.DeskData.Pub { //大厅房间不解散
-		return
+		//return
 	}
 	//返回未开局钻石
 	t.backCost()

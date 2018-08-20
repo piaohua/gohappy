@@ -403,6 +403,24 @@ func (t *Desk) sitCheck(userid string, arg *pb.CJHSit) pb.ErrCode {
 	return pb.OK
 }
 
+//玩家站起
+func (t *Desk) roleSitUp(userid string) {
+	seat := t.getSeat(userid)
+	if seat == 0 {
+		return
+	}
+	arg := &pb.CJHSit{
+		Type: pb.SitUp,
+		Seat: seat,
+	}
+	rsp := t.freeSit(userid, arg)
+	if rsp.Error == pb.OK {
+		t.broadcast(rsp)
+	} else {
+		glog.Errorf("roleSitUp sit up err %s, %d", userid, seat)
+	}
+}
+
 //.
 
 //' 超时处理

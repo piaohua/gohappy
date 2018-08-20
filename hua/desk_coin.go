@@ -204,6 +204,8 @@ func (t *Desk) betTimeout() {
 
 //' 开始游戏
 func (t *Desk) gameStart() {
+	//未参与玩家离开位置
+	t.startSitup()
 	//抽水
 	t.drawfee()
 	//初始化
@@ -260,6 +262,21 @@ func (t *Desk) gameInit() {
 			v.Niu = false
 		}
 	case int32(pb.ROOM_TYPE2): //百人
+	}
+}
+
+// 未参与玩家离开位置
+func (t *Desk) startSitup() {
+	switch t.DeskData.Rtype {
+	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1): //私人
+		for _, v := range t.seats {
+			if v.Ready {
+				continue
+			}
+			//玩家站起
+			t.roleSitUp(v.Userid)
+		}
 	}
 }
 

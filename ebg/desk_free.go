@@ -475,6 +475,24 @@ func (t *Desk) freeTimeout() {
 	}
 }
 
+//玩家站起
+func (t *Desk) roleSitUp(userid string) {
+	seat := t.getSeat(userid)
+	if seat == 0 {
+		return
+	}
+	arg := &pb.CEBSit{
+		Type: pb.SitUp,
+		Seat: seat,
+	}
+	rsp := t.freeSit(userid, arg)
+	if rsp.Error == pb.OK {
+		t.broadcast(rsp)
+	} else {
+		glog.Errorf("roleSitUp sit up err %s, %d", userid, seat)
+	}
+}
+
 //.
 
 //'游戏状态

@@ -382,19 +382,8 @@ func (t *Desk) beComeDealer() {
 		//glog.Errorf("beComeDealer failed %s, %d", userid, num)
 		return
 	}
-	seat := t.getSeat(userid)
-	if seat != 0 {
-		arg := &pb.CEBSit{
-			Type: pb.SitUp,
-			Seat: seat,
-		}
-		rsp := t.freeSit(userid, arg)
-		if rsp.Error == pb.OK {
-			t.broadcast(rsp)
-		} else {
-			glog.Errorf("free sit up err %s, %d", userid, seat)
-		}
-	}
+	//玩家站起
+	t.roleSitUp(userid)
 	//上庄成功扣除
 	t.sendCoin(userid, (-1 * num), int32(pb.LOG_TYPE7))
 	//成为庄家

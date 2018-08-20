@@ -245,14 +245,15 @@ func (rs *RoleActor) agentInfo() {
 	rsp.Build = rs.User.Build
 	rsp.BuildVaild = rs.User.BuildVaild
 	rsp.AgentChild = rs.User.AgentChild
-	rsp.ProfitRate = rs.User.ProfitRate
+	//rsp.ProfitRate = rs.User.ProfitRate
+	rsp.ProfitRate = rs.User.ProfitRateSum
 	rsp.ProfitMonth = rs.User.ProfitMonth
 	rsp.AgentTitle = handler.GetAgentTitle(rs.User)
 	rsp.ProfitFirst = rs.User.ProfitFirst
 	rsp.ProfitSecond = rs.User.ProfitSecond
 	rsp.ProfitLastMonth = rs.User.ProfitLastMonth
 	if rsp.AgentTitle == 1 { //合伙人
-		rsp.ProfitRate = 23 //固定值展示
+		//rsp.ProfitRate = 23 //固定值展示
 	}
 	rs.Send(rsp)
 }
@@ -442,8 +443,9 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 			//扣除收益
 			//rs.User.Profit -= response1.Profit
 			rs.User.SubProfit(response1.GetProfit(), response1.GetProfitFirst(), response1.GetProfitSecond())
-			//默认直接发放,不再需要审批
-			rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49), "")
+			//默认直接发放,不再需要审批,TODO 保留小数位
+			//rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49), "")
+			rs.addCurrency(0, response1.Profit/100, 0, 0, int32(pb.LOG_TYPE49))
 		}
 	}
 	rsp.Profit = profit
@@ -511,6 +513,7 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 //设置区域收益
 func (rs *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
 	rs.User.ProfitRate += arg.GetRate()
+	rs.User.ProfitRateSum += arg.GetRate()
 }
 
 //奖励发放更新收益

@@ -307,7 +307,8 @@ func (t *Desk) gameOver() {
 		//结算消息
 		msg := t.resCoinOver(score)
 		t.broadcast(msg)
-		//TODO 记录
+		//记录
+		t.saveRecord(score)
 		//结束连庄处理
 		t.dealerOver()
 		//重置状态
@@ -334,6 +335,8 @@ func (t *Desk) gameOver() {
 		t.gameOverInit()
 		//踢出不足坐下玩家或超额玩家
 		t.limitOver()
+		//踢除离线玩家
+		t.kickOffline()
 		//关闭房间
 		//t.gameStop()
 	case int32(pb.ROOM_TYPE2): //百人
@@ -381,6 +384,7 @@ func (t *Desk) limitOver() {
 func (t *Desk) kickOffline() {
 	switch t.DeskData.Rtype {
 	case int32(pb.ROOM_TYPE0), //自由
+		int32(pb.ROOM_TYPE1), //私人
 		int32(pb.ROOM_TYPE2): //百人
 		for k, v := range t.roles {
 			if !v.Offline {
@@ -471,7 +475,7 @@ func (t *Desk) gameStop() {
 		return
 	}
 	if t.DeskData.Pub { //大厅房间不解散
-		return
+		//return
 	}
 	//返回未开局钻石
 	t.backCost()
@@ -643,8 +647,10 @@ func (t *Desk) saveRecord(score map[uint32]int64) {
 		msg1.Nickname = user.GetNickname()
 		msg1.Photo = user.GetPhoto()
 		msg1.Rest = user.GetCoin()
-		msg1.Score = t.DeskPriv.PrivScore[user.GetUserid()]
-		msg1.Joins = t.DeskPriv.Joins[user.GetUserid()]
+		if t.DeskPriv != nil {
+			msg1.Score = t.DeskPriv.PrivScore[user.GetUserid()]
+			msg1.Joins = t.DeskPriv.Joins[user.GetUserid()]
+		}
 		t.loggerPid.Tell(msg1)
 	}
 }

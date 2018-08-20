@@ -25,7 +25,7 @@ func PackAgentProfitRankMsg(arg *pb.CAgentProfitRank) (msg *pb.SAgentProfitRank)
 	glog.Debugf("rank list %#v", list)
 	for _, v := range list {
 		msg2 := new(pb.AgentProfit)
-		if val, ok := v["profit"]; ok {
+		if val, ok := v["history_profit"]; ok {
 			msg2.Profit = val.(int64)
 		}
 		if val, ok := v["_id"]; ok {
