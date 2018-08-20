@@ -177,3 +177,13 @@ func TaskNotice(coin int64, name, userid string) (record *pb.LogNotice,
 	content := fmt.Sprintf("恭喜你完成任务%s获得%d金豆", name, coin)
 	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
 }
+
+//ProfitNotice 提取收益消息
+func ProfitNotice(coin int64, userid string) (record *pb.LogNotice,
+	msg *pb.SPushNotice) {
+	if coin <= 0 {
+		return
+	}
+	content := fmt.Sprintf("你成功提取%d收益", coin)
+	return NewNotice(data.NOTICE_TYPE3, 0, userid, content)
+}
