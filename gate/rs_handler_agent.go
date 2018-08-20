@@ -445,9 +445,9 @@ func (rs *RoleActor) agentProfitApply(arg *pb.CAgentProfitApply, ctx actor.Conte
 			rs.User.SubProfit(response1.GetProfit(), response1.GetProfitFirst(), response1.GetProfitSecond())
 			//默认直接发放,不再需要审批,TODO 保留小数位
 			//rs.addBank(response1.Profit/100, int32(pb.LOG_TYPE49), "")
-			rs.addCurrency(0, response1.Profit/100, 0, 0, int32(pb.LOG_TYPE49))
+			rs.addCurrency(0, int64(profit/100), 0, 0, int32(pb.LOG_TYPE49))
 			//消息提醒
-			record2, msg2 := handler.ProfitNotice(response1.Profit/100, rs.User.GetUserid())
+			record2, msg2 := handler.ProfitNotice(int64(profit/100), rs.User.GetUserid())
 			if record2 != nil {
 				rs.loggerPid.Tell(record2)
 			}
