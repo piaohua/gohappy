@@ -133,8 +133,7 @@ game (package)
 * crontab服务
 * dockerfile
 * data数据库mgo操作优化
-* dbms服务优化拆分,水平拓展能力
-* logging,mail,bets等服务拆分
+* dbms(logging,room,role)服务优化拆分,水平拓展能力
 * 版本控制
 * game逻辑处理包区分dbms,gate操作,方便管理
 * 消息按大小拆分,处理粘包

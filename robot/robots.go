@@ -273,7 +273,7 @@ func (r *RobotServer) run2(msg *pb.RobotMsg) {
 	//重置
 	phone1 := cfg.Section("robot").Key("phone").Value()
 	//if r.phone > utils.StringAdd2(phone1, "750") {
-	if r.phone > utils.StringAdd2(phone1, "73") {
+	if r.phone > utils.StringAdd2(phone1, "286") {
 		r.phone = phone1
 	}
 }
