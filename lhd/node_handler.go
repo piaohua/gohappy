@@ -167,6 +167,8 @@ func (a *DeskActor) enterDesk(arg *pb.EnterDesk, ctx actor.Context) {
 	case int32(pb.ROOM_TYPE2): //百人
 		//TODO 优化为后台添加配置
 		gameData := handler.NewFreeGameData(a.Name, int32(pb.LHD))
+		gameData.Carry = 50000
+		gameData.Down = 10000
 		if deskPid, ok := a.spawnDesk(gameData, ctx); ok {
 			deskPid.Tell(arg)
 			return

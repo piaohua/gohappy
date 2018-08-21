@@ -73,7 +73,7 @@ message SLHSit
 //玩家下注
 message CLHFreeBet
 {
-    uint32 seat = 1;  //位置
+    uint32 seat = 1;  //位置,2龙,3虎,4和
     uint32 value= 2;  //提交相应的值
 }
 
