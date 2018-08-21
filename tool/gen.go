@@ -196,6 +196,19 @@ var protosUnpack = map[string][]proto{
 		{code: 5020, name: "CEBSit"},
 		{code: 5021, name: "CEBCoinChangeRoom"},
 	},
+	//lhd
+	"lhd": {
+		{code: 6001, name: "CLHFreeEnterRoom"},
+		{code: 6002, name: "CLHFreeDealer"},
+		{code: 6003, name: "CLHFreeDealerList"},
+		{code: 6005, name: "CLHFreeBet"},
+		{code: 6006, name: "CLHFreeTrend"},
+		{code: 6007, name: "CLHRoomList"},
+		{code: 6010, name: "CLHLeave"},
+		{code: 6018, name: "CLHFreeWiners"},
+		{code: 6019, name: "CLHFreeRoles"},
+		{code: 6020, name: "CLHSit"},
+	},
 }
 
 var protosPacket = map[string][]proto{
@@ -410,6 +423,25 @@ var protosPacket = map[string][]proto{
 		{code: 5532, name: "SEBCoinChangeRoom"},
 		{code: 5533, name: "SEBPushDrawCoin"},
 	},
+	//lhd
+	"lhd": {
+		{code: 6502, name: "SLHFreeEnterRoom"},
+		{code: 6503, name: "SLHFreeCamein"},
+		{code: 6504, name: "SLHFreeDealer"},
+		{code: 6505, name: "SLHFreeDealerList"},
+		{code: 6507, name: "SLHFreeBet"},
+		{code: 6508, name: "SLHFreeGamestart"},
+		{code: 6509, name: "SLHFreeGameover"},
+		{code: 6510, name: "SLHFreeTrend"},
+		{code: 6511, name: "SLHRoomList"},
+		{code: 6515, name: "SLHLeave"},
+		{code: 6517, name: "SLHDraw"},
+		{code: 6527, name: "SLHPushState"},
+		{code: 6528, name: "SLHFreeWiners"},
+		{code: 6529, name: "SLHFreeRoles"},
+		{code: 6530, name: "SLHSit"},
+		{code: 6531, name: "SLHPushOffline"},
+	},
 }
 
 var sids = map[string]uint32{
@@ -420,6 +452,7 @@ var sids = map[string]uint32{
 	"hua":  4,
 	"pai":  5,
 	"ebg":  6,
+	"lhd":  7,
 }
 
 //Init 初始化
@@ -429,7 +462,7 @@ func Init() {
 	var rpacketStr string
 	var runpackStr string
 	//request
-	for _, k := range []string{"game", "niu", "san", "hua", "ebg"} {
+	for _, k := range []string{"game", "niu", "san", "hua", "ebg", "lhd"} {
 		m := protosUnpack[k] //有序
 		//for k, m := range protosUnpack {
 		//初始化

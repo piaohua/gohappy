@@ -400,6 +400,36 @@ func Rpacket(msg interface{}) (uint32, []byte, error) {
 	case *CEBCoinChangeRoom:
 		b, err := msg.(*CEBCoinChangeRoom).Marshal()
 		return 5021, b, err
+	case *CLHFreeEnterRoom:
+		b, err := msg.(*CLHFreeEnterRoom).Marshal()
+		return 6001, b, err
+	case *CLHFreeDealer:
+		b, err := msg.(*CLHFreeDealer).Marshal()
+		return 6002, b, err
+	case *CLHFreeDealerList:
+		b, err := msg.(*CLHFreeDealerList).Marshal()
+		return 6003, b, err
+	case *CLHFreeBet:
+		b, err := msg.(*CLHFreeBet).Marshal()
+		return 6005, b, err
+	case *CLHFreeTrend:
+		b, err := msg.(*CLHFreeTrend).Marshal()
+		return 6006, b, err
+	case *CLHRoomList:
+		b, err := msg.(*CLHRoomList).Marshal()
+		return 6007, b, err
+	case *CLHLeave:
+		b, err := msg.(*CLHLeave).Marshal()
+		return 6010, b, err
+	case *CLHFreeWiners:
+		b, err := msg.(*CLHFreeWiners).Marshal()
+		return 6018, b, err
+	case *CLHFreeRoles:
+		b, err := msg.(*CLHFreeRoles).Marshal()
+		return 6019, b, err
+	case *CLHSit:
+		b, err := msg.(*CLHSit).Marshal()
+		return 6020, b, err
 	default:
 		return 0, []byte{}, errors.New("unknown message")
 	}

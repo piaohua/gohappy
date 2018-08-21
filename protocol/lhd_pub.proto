@@ -1,0 +1,160 @@
+syntax = "proto3";
+package pb;
+
+// 房间内玩家数据
+message LHRoomUser
+{
+    string userid   =1;//用户账号
+    string nickname =2;//昵称
+    string phone    =3;//电话号码
+    uint32 sex      =4;//用户性别,男1 女0
+    string photo    =5;//头像
+    int64  coin     =6;//金币
+    int64  diamond  =7;//钻石
+    uint32 seat     =8;//座位号
+    bool   ready    =9;//玩家de准备状态
+    int64  score    =10;//私人局积分
+    uint32 dealer   =11;//玩家抢庄0抢庄中,1抢庄,2不抢
+    int64  bet      =12;//玩家下注0下注中,n下注额度
+    repeated uint32 cards    =13;//玩家手牌
+    uint32 num      =14;//玩家抢庄倍数
+    bool   niu      =15;//是否选牛
+    bool   offline  =16;//是否离线
+    string lat = 17;//Latitude
+    string lng = 18;//Longitude
+    string address = 19;//Address
+    string sign = 20;//个性签名
+}
+
+// 房间数据
+message LHRoomData
+{
+    string roomid  = 1;//牌局id
+    int32  gtype   = 2;//game type
+    int32  rtype   = 3;//room type
+    int32  dtype   = 4;//desk type
+    int32  ltype   = 5;//level type
+    string rname   = 6;//room name
+    uint32 count   = 7;//房间人数限制
+    uint32 ante    = 8;//房间底分
+    int64  expire  = 9;//过期时间
+    string code    =10;//房间邀请码
+    uint32 round   =11;//牌局数
+    string userid  =12;//房主ID
+    //
+    int32  state   =13;//房间状态
+    uint32 timer   =14;//操作剩余时间
+    uint32 number  =15;//房间内人数
+    uint32 rest    =16;//剩余牌局数
+    uint32 dealer  =17;//庄家seat
+    //
+    int64  minimum =18;//房间最低限制
+    int64  maximum =19;//房间最高限制
+    bool   pub     =20;//是否公开展示
+    uint32 mode    =21;//模式，0普通，1疯狂
+    uint32 multiple=22;//倍数，0低，1中，2高
+}
+
+// 下注信息
+message LHRoomBets
+{
+    uint32 seat =1;//位置
+    int64  bets =2;//位置上下注倍数
+}
+
+// 玩家的基础数据
+message LHFreeUser
+{
+    string userid   =1;//用户账号
+    string nickname =2;//昵称
+    string phone    =3;//电话号码
+    uint32 sex      =4;//用户性别,男1 女0
+    string photo    =5;//头像
+    int64  coin     =6;//金币
+    int64  diamond  =7;//钻石
+    uint32 seat     =8;//座位号
+    int64  bet      =9;//玩家下注0下注中,n下注总额度
+    repeated LHRoomBets bets   =10;//个人各位置对应下注额
+}
+
+// 房间数据
+message LHFreeRoom
+{
+    string roomid        = 1;//牌局id
+    int32  gtype         = 2;//game type
+    int32  rtype         = 3;//room type
+    int32  dtype         = 4;//desk type
+    string rname         = 5;//room name
+    uint32 count         = 6;//房间人数限制
+    uint32 ante          = 7;//房间底分
+    //
+    uint32 dealer        = 8;//庄家seat
+    string userid        = 9;//庄家ID
+    string photo         =10;//庄家头像
+    uint32 carry         =11;//庄家携带上庄金额
+    int32  state         =12;//房间状态
+    uint32 timer         =13;//操作剩余时间
+    uint32 dealerNum     =14;//可坐庄总次数
+    uint32 leftDealerNum =15;//剩余坐庄次数
+}
+
+// 结算数据,百人场时为5个位置1庄家，2天，3地，4玄，5黄
+message LHFreeRoomOver
+{
+    uint32    seat  =1; //位置
+    repeated uint32    cards =2; //玩家手牌
+    uint32    value =3; //牌力
+    int64     multi =4; //庄家输赢倍数,正数庄家赢,负庄家输
+}
+
+// 结算数据,百人场时为8个下注位置
+message LHFreeSeatOver
+{
+    uint32 seat  =1; //位置
+    int64  total =2; //下注总数量
+    int64  score =3; //输赢数量
+    repeated LHRoomScore list  =4; //位置下注个人输赢
+}
+
+// 输赢信息
+message LHRoomScore
+{
+    uint32 seat    =1;//玩家位置
+    string userid  =2;//玩家ID
+    int64  score   =3;//当局输赢
+    int64  coin    =4;//个人总剩余
+}
+
+// 上庄列表
+message LHDealerList
+{
+    string userid   = 1;  //
+    string nickname = 2;  //
+    string photo    = 3;  //
+    int64  coin     = 4;  //上庄金额
+}
+
+//趋势
+message LHFreeTrend
+{
+    bool seat2 = 1;  //true赢 false输
+    bool seat3 = 2;  //true赢 false输
+    bool seat4 = 3;  //true赢 false输
+    bool seat5 = 4;  //true赢 false输
+}
+
+//上局赢家
+message LHFreeWiner {
+    string userid   = 1;//用户账号
+    string nickname = 2;//昵称
+    string photo    = 3;//头像
+    int64  coin     = 4;//赢利筹码数量
+}
+
+//旁观玩家
+message LHFreeRole {
+    string userid   = 1;//用户账号
+    string nickname = 2;//昵称
+    string photo    = 3;//头像
+    int64  coin     = 4;//筹码数量
+}

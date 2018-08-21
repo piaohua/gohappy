@@ -184,7 +184,7 @@ func (rs *RoleActor) handlerSan(msg interface{}, ctx actor.Context) {
 	//	rs.Send(msg)
 	default:
 		//glog.Errorf("unknown message %v", msg)
-		rs.handlerHua(msg, ctx)
+		rs.handlerLhd(msg, ctx)
 	}
 }
 

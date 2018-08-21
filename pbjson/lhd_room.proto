@@ -1,0 +1,51 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "lhd_pub.proto";
+
+//房间列表
+message CLHRoomList
+{
+    int32 rtype  = 1;  //房间类型
+}
+
+message SLHRoomList
+{
+    repeated LHRoomData list = 1;  //列表
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+// 离开房间
+message CLHLeave
+{
+}
+
+message SLHLeave
+{
+    uint32 seat   = 1; //玩家选择的座位号
+    string userid = 2; //玩家id
+    ErrCode error= 3;//错误码 ,0:正常
+}
+
+// 离线状态更新
+message SLHPushOffline
+{
+    uint32 seat   = 1; //玩家选择的座位号
+    string userid = 2; //玩家id
+    bool   offline = 3;//是否离线
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+//发牌(全部准备后或达到开始条件,发完状态切为抢庄)
+message SLHDraw
+{
+    uint32 seat  = 1;  //位置
+    int32 state = 2;  //房间状态,1抢庄中(发4张),2下注中(发第5张)
+    repeated uint32 cards = 3;  //手牌4张,手牌1张
+}
+
+//推送状态
+message SLHPushState
+{
+    int32 state = 1;  //状态
+}

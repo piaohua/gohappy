@@ -33,6 +33,9 @@
 		hua_pub.proto
 		hua_room.proto
 		hua_vote.proto
+		lhd_free.proto
+		lhd_pub.proto
+		lhd_room.proto
 		niu_coin.proto
 		niu_free.proto
 		niu_pub.proto
@@ -465,6 +468,44 @@
 		CJHVote
 		SJHVote
 		SJHVoteResult
+		CLHFreeEnterRoom
+		SLHFreeEnterRoom
+		SLHFreeCamein
+		CLHFreeDealer
+		SLHFreeDealer
+		CLHFreeDealerList
+		SLHFreeDealerList
+		CLHSit
+		SLHSit
+		CLHFreeBet
+		SLHFreeBet
+		SLHFreeGamestart
+		SLHFreeGameover
+		CLHFreeTrend
+		SLHFreeTrend
+		CLHFreeWiners
+		SLHFreeWiners
+		CLHFreeRoles
+		SLHFreeRoles
+		LHRoomUser
+		LHRoomData
+		LHRoomBets
+		LHFreeUser
+		LHFreeRoom
+		LHFreeRoomOver
+		LHFreeSeatOver
+		LHRoomScore
+		LHDealerList
+		LHFreeTrend
+		LHFreeWiner
+		LHFreeRole
+		CLHRoomList
+		SLHRoomList
+		CLHLeave
+		SLHLeave
+		SLHPushOffline
+		SLHDraw
+		SLHPushState
 		CNNCoinEnterRoom
 		SNNCoinEnterRoom
 		SNNCoinGameover

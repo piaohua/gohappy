@@ -153,6 +153,7 @@ func (rs *RoleActor) selectDesk(msg *pb.MatchDesk, ctx actor.Context) {
 	switch msg.Gtype {
 	case int32(pb.NIU),
 		int32(pb.EBG),
+		int32(pb.LHD),
 		int32(pb.SAN),
 		int32(pb.HUA):
 		switch msg.Rtype {
@@ -304,6 +305,15 @@ func (rs *RoleActor) enterdDeskErr(msg *pb.EnteredDesk, ctx actor.Context) {
 		default:
 			glog.Errorf("enter Desk match fail %#v", msg)
 		}
+	case int32(pb.LHD):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SLHFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("enter Desk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enter Desk match fail %#v", msg)
 	}
@@ -375,6 +385,15 @@ func (rs *RoleActor) matchedDeskErr(msg *pb.MatchedDesk, ctx actor.Context) {
 			rs.Send(msg2)
 		case int32(pb.ROOM_TYPE2): //百人
 			msg2 := new(pb.SEBFreeEnterRoom) //加入消息
+			msg2.Error = msg.Error
+			rs.Send(msg2)
+		default:
+			glog.Errorf("matched DeskErr fail %#v", msg)
+		}
+	case int32(pb.LHD):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.SLHFreeEnterRoom) //加入消息
 			msg2.Error = msg.Error
 			rs.Send(msg2)
 		default:

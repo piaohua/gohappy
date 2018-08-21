@@ -746,6 +746,70 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SEBPushDrawCoin)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 6502:
+		msg := new(SLHFreeEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6503:
+		msg := new(SLHFreeCamein)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6504:
+		msg := new(SLHFreeDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6505:
+		msg := new(SLHFreeDealerList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6507:
+		msg := new(SLHFreeBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6508:
+		msg := new(SLHFreeGamestart)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6509:
+		msg := new(SLHFreeGameover)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6510:
+		msg := new(SLHFreeTrend)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6511:
+		msg := new(SLHRoomList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6515:
+		msg := new(SLHLeave)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6517:
+		msg := new(SLHDraw)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6527:
+		msg := new(SLHPushState)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6528:
+		msg := new(SLHFreeWiners)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6529:
+		msg := new(SLHFreeRoles)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6530:
+		msg := new(SLHSit)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6531:
+		msg := new(SLHPushOffline)
+		err := msg.Unmarshal(b)
+		return msg, err
 	default:
 		return nil, errors.New("unknown message")
 	}

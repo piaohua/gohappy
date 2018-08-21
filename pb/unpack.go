@@ -530,6 +530,46 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CEBCoinChangeRoom)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 6001:
+		msg := new(CLHFreeEnterRoom)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6002:
+		msg := new(CLHFreeDealer)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6003:
+		msg := new(CLHFreeDealerList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6005:
+		msg := new(CLHFreeBet)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6006:
+		msg := new(CLHFreeTrend)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6007:
+		msg := new(CLHRoomList)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6010:
+		msg := new(CLHLeave)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6018:
+		msg := new(CLHFreeWiners)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6019:
+		msg := new(CLHFreeRoles)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 6020:
+		msg := new(CLHSit)
+		err := msg.Unmarshal(b)
+		return msg, err
 	default:
 		return nil, errors.New("unknown message")
 	}

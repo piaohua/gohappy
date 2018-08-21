@@ -562,6 +562,54 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SEBPushDrawCoin:
 		b, err := msg.(*SEBPushDrawCoin).Marshal()
 		return 5533, 6, b, err
+	case *SLHFreeEnterRoom:
+		b, err := msg.(*SLHFreeEnterRoom).Marshal()
+		return 6502, 7, b, err
+	case *SLHFreeCamein:
+		b, err := msg.(*SLHFreeCamein).Marshal()
+		return 6503, 7, b, err
+	case *SLHFreeDealer:
+		b, err := msg.(*SLHFreeDealer).Marshal()
+		return 6504, 7, b, err
+	case *SLHFreeDealerList:
+		b, err := msg.(*SLHFreeDealerList).Marshal()
+		return 6505, 7, b, err
+	case *SLHFreeBet:
+		b, err := msg.(*SLHFreeBet).Marshal()
+		return 6507, 7, b, err
+	case *SLHFreeGamestart:
+		b, err := msg.(*SLHFreeGamestart).Marshal()
+		return 6508, 7, b, err
+	case *SLHFreeGameover:
+		b, err := msg.(*SLHFreeGameover).Marshal()
+		return 6509, 7, b, err
+	case *SLHFreeTrend:
+		b, err := msg.(*SLHFreeTrend).Marshal()
+		return 6510, 7, b, err
+	case *SLHRoomList:
+		b, err := msg.(*SLHRoomList).Marshal()
+		return 6511, 7, b, err
+	case *SLHLeave:
+		b, err := msg.(*SLHLeave).Marshal()
+		return 6515, 7, b, err
+	case *SLHDraw:
+		b, err := msg.(*SLHDraw).Marshal()
+		return 6517, 7, b, err
+	case *SLHPushState:
+		b, err := msg.(*SLHPushState).Marshal()
+		return 6527, 7, b, err
+	case *SLHFreeWiners:
+		b, err := msg.(*SLHFreeWiners).Marshal()
+		return 6528, 7, b, err
+	case *SLHFreeRoles:
+		b, err := msg.(*SLHFreeRoles).Marshal()
+		return 6529, 7, b, err
+	case *SLHSit:
+		b, err := msg.(*SLHSit).Marshal()
+		return 6530, 7, b, err
+	case *SLHPushOffline:
+		b, err := msg.(*SLHPushOffline).Marshal()
+		return 6531, 7, b, err
 	default:
 		return 0, 0, []byte{}, errors.New("unknown message")
 	}

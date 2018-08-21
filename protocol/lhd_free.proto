@@ -1,0 +1,147 @@
+syntax = "proto3";
+package pb;
+import "game_code.proto";
+import "lhd_pub.proto";
+
+//Free 百人场
+
+// 进入房间
+message CLHFreeEnterRoom
+{
+}
+
+message SLHFreeEnterRoom
+{
+    LHFreeRoom roominfo = 1;//房间的详细资料
+    repeated LHFreeUser  userinfo = 2;//已在房间的玩家基础信息
+    repeated LHRoomBets  betsinfo = 3;//下注倍数
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+// 其他玩家进入房间
+message SLHFreeCamein
+{
+    LHFreeUser userinfo= 1;// 玩家的信息
+}
+
+//选择上庄，下庄
+message CLHFreeDealer
+{
+    int32  state    = 1;  //0下庄 1上庄 2补庄
+    uint32 coin     = 2;  //上庄金额
+}
+
+message SLHFreeDealer
+{
+    int32  state    = 1;  //0下庄 1上庄 2补庄
+    string dealer   = 2;  //庄家
+    string userid   = 3;  //申请上庄玩家
+    string nickname = 4;  //昵称
+    uint32 coin     = 5;  //上/下庄金额
+    ErrCode error= 6;//错误码 ,0:正常
+    string photo   = 7;//庄家头像
+    bool down   = 8;//结束后下庄
+    uint32 carry     = 9;  //初始携带金额
+}
+
+//上庄列表
+message CLHFreeDealerList
+{
+}
+
+message SLHFreeDealerList
+{
+    repeated LHDealerList list = 1;  //上庄
+    ErrCode error= 2;//错误码 ,0:正常
+}
+
+//玩家入坐,站起
+message CLHSit
+{
+    SitType type = 1;  //
+    uint32 seat = 2;  //位置,8个位置(1~8)
+}
+
+message SLHSit
+{
+    SitType type = 1;  //
+    uint32 seat = 2;  //位置,8个位置(1~8)
+    LHRoomUser userinfo= 3;// 玩家的信息
+    ErrCode error= 4;//错误码 ,0:正常
+}
+
+//玩家下注
+message CLHFreeBet
+{
+    uint32 seat = 1;  //位置
+    uint32 value= 2;  //提交相应的值
+}
+
+message SLHFreeBet
+{
+    uint32 seat  = 1;  //位置,下注者位置(1-8)
+    uint32 beseat= 2;  //下注的位置
+    uint32 value = 3;  //下注数量
+    string userid= 4;  //下注玩家id
+    int64 coin   = 5;  //下注位置总数
+    int64 bets   = 6;  //下注位置个人总数
+    ErrCode error= 7;  //错误码 ,0:正常
+}
+
+// 游戏开始,作为状态更新使用
+message SLHFreeGamestart
+{
+    int32  state   = 1;//房间状态
+    string dealer  = 2;//庄家
+    int64  coin    = 3;//庄家金额
+    string photo   = 4;//庄家头像
+    uint32 dealerNum     = 5;//可坐庄总次数
+    uint32 leftDealerNum = 6;//剩余坐庄次数
+    string nickname = 7;  //昵称
+}
+
+// 结算广播接口，游戏结束
+message SLHFreeGameover
+{
+    int32        state         = 1;//房间状态
+    string       dealer        = 2;//庄家
+    uint32       dealerNum     = 3;//可坐庄总次数
+    uint32       leftDealerNum = 4;//剩余坐庄次数
+    int64        coin          = 5;//庄家金额
+    repeated LHFreeRoomOver data = 6;//结算
+    repeated LHRoomScore    list = 7;//闲家总结果
+    repeated LHFreeSeatOver info = 8;//位置信息
+}
+
+// 百人牛牛趋势
+message CLHFreeTrend
+{
+}
+
+message SLHFreeTrend
+{
+    repeated LHFreeTrend list = 1;//趋势列表
+    ErrCode error= 2;  //错误码 ,0:正常
+}
+
+// 百人牛牛上局赢家
+message CLHFreeWiners
+{
+}
+
+message SLHFreeWiners
+{
+    repeated LHFreeWiner list = 1;//赢家列表
+    ErrCode error= 2;  //错误码 ,0:正常
+}
+
+//房间内玩家列表(旁观玩家)
+message CLHFreeRoles
+{
+}
+
+message SLHFreeRoles
+{
+    repeated LHFreeRole list = 1;//旁观玩家列表
+    ErrCode error  = 2;//错误码
+}

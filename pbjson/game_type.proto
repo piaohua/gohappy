@@ -11,6 +11,7 @@ enum GameType {
     HUA  = 4; //金花 CJH, SJH
     PAI  = 5; //比牌,接牌 CBP, SBP
     EBG  = 6; //二八杠 CEB, SEB
+    LHD  = 7; //龙虎斗 CLH, SLH
 }
 
 //桌子状态
