@@ -54,6 +54,10 @@
             "error": {
               "type": "ErrCode",
               "id": 5
+            },
+            "voiceinfo": {
+              "type": "EBRoomVoice",
+              "id": 6
             }
           }
         },
@@ -473,7 +477,8 @@
             "AgentJoinLimit": 112,
             "AgentSetLimit": 113,
             "ActidError": 114,
-            "ActRepeatJoin": 115
+            "ActRepeatJoin": 115,
+            "NoPosition": 116
           }
         },
         "SitType": {
@@ -994,6 +999,24 @@
             }
           }
         },
+        "EBRoomVoice": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "agree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 2
+            },
+            "disagree": {
+              "rule": "repeated",
+              "type": "uint32",
+              "id": 3
+            }
+          }
+        },
         "EBDealerList": {
           "fields": {
             "userid": {
@@ -1170,6 +1193,10 @@
             "error": {
               "type": "ErrCode",
               "id": 4
+            },
+            "voiceinfo": {
+              "type": "EBRoomVoice",
+              "id": 5
             }
           }
         },

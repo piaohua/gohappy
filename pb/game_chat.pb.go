@@ -287,6 +287,164 @@ func (m *Notice) GetExpireTime() string {
 	return ""
 }
 
+// 私人局,发起投票申请语音房间
+type CChatLaunchVote struct {
+}
+
+func (m *CChatLaunchVote) Reset()                    { *m = CChatLaunchVote{} }
+func (*CChatLaunchVote) ProtoMessage()               {}
+func (*CChatLaunchVote) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{9} }
+
+type SChatLaunchVote struct {
+	Seat  uint32  `protobuf:"varint,1,opt,name=seat,proto3" json:"seat,omitempty"`
+	Error ErrCode `protobuf:"varint,2,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SChatLaunchVote) Reset()                    { *m = SChatLaunchVote{} }
+func (*SChatLaunchVote) ProtoMessage()               {}
+func (*SChatLaunchVote) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{10} }
+
+func (m *SChatLaunchVote) GetSeat() uint32 {
+	if m != nil {
+		return m.Seat
+	}
+	return 0
+}
+
+func (m *SChatLaunchVote) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+// 私人局,发起投票加入语音房间
+type CChatVote struct {
+	Vote uint32 `protobuf:"varint,1,opt,name=vote,proto3" json:"vote,omitempty"`
+}
+
+func (m *CChatVote) Reset()                    { *m = CChatVote{} }
+func (*CChatVote) ProtoMessage()               {}
+func (*CChatVote) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{11} }
+
+func (m *CChatVote) GetVote() uint32 {
+	if m != nil {
+		return m.Vote
+	}
+	return 0
+}
+
+type SChatVote struct {
+	Vote  uint32  `protobuf:"varint,1,opt,name=vote,proto3" json:"vote,omitempty"`
+	Seat  uint32  `protobuf:"varint,2,opt,name=seat,proto3" json:"seat,omitempty"`
+	Error ErrCode `protobuf:"varint,3,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SChatVote) Reset()                    { *m = SChatVote{} }
+func (*SChatVote) ProtoMessage()               {}
+func (*SChatVote) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{12} }
+
+func (m *SChatVote) GetVote() uint32 {
+	if m != nil {
+		return m.Vote
+	}
+	return 0
+}
+
+func (m *SChatVote) GetSeat() uint32 {
+	if m != nil {
+		return m.Seat
+	}
+	return 0
+}
+
+func (m *SChatVote) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+// 投票加入语音房间事件结果,服务器主动推送
+type SChatVoteResult struct {
+	// 0半数通过马上加入语音房间,
+	// 1半数以上不通过终止语音房间
+	Vote uint32 `protobuf:"varint,1,opt,name=vote,proto3" json:"vote,omitempty"`
+}
+
+func (m *SChatVoteResult) Reset()                    { *m = SChatVoteResult{} }
+func (*SChatVoteResult) ProtoMessage()               {}
+func (*SChatVoteResult) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{13} }
+
+func (m *SChatVoteResult) GetVote() uint32 {
+	if m != nil {
+		return m.Vote
+	}
+	return 0
+}
+
+// 加入语音房间
+type CChatVoiceJoin struct {
+}
+
+func (m *CChatVoiceJoin) Reset()                    { *m = CChatVoiceJoin{} }
+func (*CChatVoiceJoin) ProtoMessage()               {}
+func (*CChatVoiceJoin) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{14} }
+
+type SChatVoiceJoin struct {
+	Seat  uint32  `protobuf:"varint,1,opt,name=seat,proto3" json:"seat,omitempty"`
+	Error ErrCode `protobuf:"varint,2,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SChatVoiceJoin) Reset()                    { *m = SChatVoiceJoin{} }
+func (*SChatVoiceJoin) ProtoMessage()               {}
+func (*SChatVoiceJoin) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{15} }
+
+func (m *SChatVoiceJoin) GetSeat() uint32 {
+	if m != nil {
+		return m.Seat
+	}
+	return 0
+}
+
+func (m *SChatVoiceJoin) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
+// 离开语音房间
+type CChatVoiceLeft struct {
+}
+
+func (m *CChatVoiceLeft) Reset()                    { *m = CChatVoiceLeft{} }
+func (*CChatVoiceLeft) ProtoMessage()               {}
+func (*CChatVoiceLeft) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{16} }
+
+type SChatVoiceLeft struct {
+	Seat  uint32  `protobuf:"varint,1,opt,name=seat,proto3" json:"seat,omitempty"`
+	Error ErrCode `protobuf:"varint,2,opt,name=error,proto3,enum=pb.ErrCode" json:"error,omitempty"`
+}
+
+func (m *SChatVoiceLeft) Reset()                    { *m = SChatVoiceLeft{} }
+func (*SChatVoiceLeft) ProtoMessage()               {}
+func (*SChatVoiceLeft) Descriptor() ([]byte, []int) { return fileDescriptorGameChat, []int{17} }
+
+func (m *SChatVoiceLeft) GetSeat() uint32 {
+	if m != nil {
+		return m.Seat
+	}
+	return 0
+}
+
+func (m *SChatVoiceLeft) GetError() ErrCode {
+	if m != nil {
+		return m.Error
+	}
+	return OK
+}
+
 func init() {
 	proto.RegisterType((*CChatText)(nil), "pb.CChatText")
 	proto.RegisterType((*SChatText)(nil), "pb.SChatText")
@@ -297,6 +455,15 @@ func init() {
 	proto.RegisterType((*SNotice)(nil), "pb.SNotice")
 	proto.RegisterType((*SPushNotice)(nil), "pb.SPushNotice")
 	proto.RegisterType((*Notice)(nil), "pb.Notice")
+	proto.RegisterType((*CChatLaunchVote)(nil), "pb.CChatLaunchVote")
+	proto.RegisterType((*SChatLaunchVote)(nil), "pb.SChatLaunchVote")
+	proto.RegisterType((*CChatVote)(nil), "pb.CChatVote")
+	proto.RegisterType((*SChatVote)(nil), "pb.SChatVote")
+	proto.RegisterType((*SChatVoteResult)(nil), "pb.SChatVoteResult")
+	proto.RegisterType((*CChatVoiceJoin)(nil), "pb.CChatVoiceJoin")
+	proto.RegisterType((*SChatVoiceJoin)(nil), "pb.SChatVoiceJoin")
+	proto.RegisterType((*CChatVoiceLeft)(nil), "pb.CChatVoiceLeft")
+	proto.RegisterType((*SChatVoiceLeft)(nil), "pb.SChatVoiceLeft")
 }
 func (this *CChatText) Equal(that interface{}) bool {
 	if that == nil {
@@ -567,6 +734,228 @@ func (this *Notice) Equal(that interface{}) bool {
 	}
 	return true
 }
+func (this *CChatLaunchVote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CChatLaunchVote)
+	if !ok {
+		that2, ok := that.(CChatLaunchVote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *SChatLaunchVote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SChatLaunchVote)
+	if !ok {
+		that2, ok := that.(SChatLaunchVote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Seat != that1.Seat {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *CChatVote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CChatVote)
+	if !ok {
+		that2, ok := that.(CChatVote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Vote != that1.Vote {
+		return false
+	}
+	return true
+}
+func (this *SChatVote) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SChatVote)
+	if !ok {
+		that2, ok := that.(SChatVote)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Vote != that1.Vote {
+		return false
+	}
+	if this.Seat != that1.Seat {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *SChatVoteResult) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SChatVoteResult)
+	if !ok {
+		that2, ok := that.(SChatVoteResult)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Vote != that1.Vote {
+		return false
+	}
+	return true
+}
+func (this *CChatVoiceJoin) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CChatVoiceJoin)
+	if !ok {
+		that2, ok := that.(CChatVoiceJoin)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *SChatVoiceJoin) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SChatVoiceJoin)
+	if !ok {
+		that2, ok := that.(SChatVoiceJoin)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Seat != that1.Seat {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
+func (this *CChatVoiceLeft) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*CChatVoiceLeft)
+	if !ok {
+		that2, ok := that.(CChatVoiceLeft)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	return true
+}
+func (this *SChatVoiceLeft) Equal(that interface{}) bool {
+	if that == nil {
+		return this == nil
+	}
+
+	that1, ok := that.(*SChatVoiceLeft)
+	if !ok {
+		that2, ok := that.(SChatVoiceLeft)
+		if ok {
+			that1 = &that2
+		} else {
+			return false
+		}
+	}
+	if that1 == nil {
+		return this == nil
+	} else if this == nil {
+		return false
+	}
+	if this.Seat != that1.Seat {
+		return false
+	}
+	if this.Error != that1.Error {
+		return false
+	}
+	return true
+}
 func (this *CChatText) GoString() string {
 	if this == nil {
 		return "nil"
@@ -674,6 +1063,98 @@ func (this *Notice) GoString() string {
 	s = append(s, "Content: "+fmt.Sprintf("%#v", this.Content)+",\n")
 	s = append(s, "Time: "+fmt.Sprintf("%#v", this.Time)+",\n")
 	s = append(s, "ExpireTime: "+fmt.Sprintf("%#v", this.ExpireTime)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CChatLaunchVote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&pb.CChatLaunchVote{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SChatLaunchVote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&pb.SChatLaunchVote{")
+	s = append(s, "Seat: "+fmt.Sprintf("%#v", this.Seat)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CChatVote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.CChatVote{")
+	s = append(s, "Vote: "+fmt.Sprintf("%#v", this.Vote)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SChatVote) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 7)
+	s = append(s, "&pb.SChatVote{")
+	s = append(s, "Vote: "+fmt.Sprintf("%#v", this.Vote)+",\n")
+	s = append(s, "Seat: "+fmt.Sprintf("%#v", this.Seat)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SChatVoteResult) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 5)
+	s = append(s, "&pb.SChatVoteResult{")
+	s = append(s, "Vote: "+fmt.Sprintf("%#v", this.Vote)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CChatVoiceJoin) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&pb.CChatVoiceJoin{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SChatVoiceJoin) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&pb.SChatVoiceJoin{")
+	s = append(s, "Seat: "+fmt.Sprintf("%#v", this.Seat)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *CChatVoiceLeft) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 4)
+	s = append(s, "&pb.CChatVoiceLeft{")
+	s = append(s, "}")
+	return strings.Join(s, "")
+}
+func (this *SChatVoiceLeft) GoString() string {
+	if this == nil {
+		return "nil"
+	}
+	s := make([]string, 0, 6)
+	s = append(s, "&pb.SChatVoiceLeft{")
+	s = append(s, "Seat: "+fmt.Sprintf("%#v", this.Seat)+",\n")
+	s = append(s, "Error: "+fmt.Sprintf("%#v", this.Error)+",\n")
 	s = append(s, "}")
 	return strings.Join(s, "")
 }
@@ -996,6 +1477,223 @@ func (m *Notice) MarshalTo(dAtA []byte) (int, error) {
 	return i, nil
 }
 
+func (m *CChatLaunchVote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CChatLaunchVote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *SChatLaunchVote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SChatLaunchVote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *CChatVote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CChatVote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Vote))
+	}
+	return i, nil
+}
+
+func (m *SChatVote) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SChatVote) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Vote))
+	}
+	if m.Seat != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x18
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *SChatVoteResult) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SChatVoteResult) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Vote))
+	}
+	return i, nil
+}
+
+func (m *CChatVoiceJoin) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CChatVoiceJoin) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *SChatVoiceJoin) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SChatVoiceJoin) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
+func (m *CChatVoiceLeft) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *CChatVoiceLeft) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	return i, nil
+}
+
+func (m *SChatVoiceLeft) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalTo(dAtA)
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *SChatVoiceLeft) MarshalTo(dAtA []byte) (int, error) {
+	var i int
+	_ = i
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		dAtA[i] = 0x8
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		dAtA[i] = 0x10
+		i++
+		i = encodeVarintGameChat(dAtA, i, uint64(m.Error))
+	}
+	return i, nil
+}
+
 func encodeVarintGameChat(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -1150,6 +1848,93 @@ func (m *Notice) Size() (n int) {
 	return n
 }
 
+func (m *CChatLaunchVote) Size() (n int) {
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SChatLaunchVote) Size() (n int) {
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		n += 1 + sovGameChat(uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameChat(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *CChatVote) Size() (n int) {
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		n += 1 + sovGameChat(uint64(m.Vote))
+	}
+	return n
+}
+
+func (m *SChatVote) Size() (n int) {
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		n += 1 + sovGameChat(uint64(m.Vote))
+	}
+	if m.Seat != 0 {
+		n += 1 + sovGameChat(uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameChat(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *SChatVoteResult) Size() (n int) {
+	var l int
+	_ = l
+	if m.Vote != 0 {
+		n += 1 + sovGameChat(uint64(m.Vote))
+	}
+	return n
+}
+
+func (m *CChatVoiceJoin) Size() (n int) {
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SChatVoiceJoin) Size() (n int) {
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		n += 1 + sovGameChat(uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameChat(uint64(m.Error))
+	}
+	return n
+}
+
+func (m *CChatVoiceLeft) Size() (n int) {
+	var l int
+	_ = l
+	return n
+}
+
+func (m *SChatVoiceLeft) Size() (n int) {
+	var l int
+	_ = l
+	if m.Seat != 0 {
+		n += 1 + sovGameChat(uint64(m.Seat))
+	}
+	if m.Error != 0 {
+		n += 1 + sovGameChat(uint64(m.Error))
+	}
+	return n
+}
+
 func sovGameChat(x uint64) (n int) {
 	for {
 		n++
@@ -1265,6 +2050,98 @@ func (this *Notice) String() string {
 		`Content:` + fmt.Sprintf("%v", this.Content) + `,`,
 		`Time:` + fmt.Sprintf("%v", this.Time) + `,`,
 		`ExpireTime:` + fmt.Sprintf("%v", this.ExpireTime) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CChatLaunchVote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CChatLaunchVote{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SChatLaunchVote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SChatLaunchVote{`,
+		`Seat:` + fmt.Sprintf("%v", this.Seat) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CChatVote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CChatVote{`,
+		`Vote:` + fmt.Sprintf("%v", this.Vote) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SChatVote) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SChatVote{`,
+		`Vote:` + fmt.Sprintf("%v", this.Vote) + `,`,
+		`Seat:` + fmt.Sprintf("%v", this.Seat) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SChatVoteResult) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SChatVoteResult{`,
+		`Vote:` + fmt.Sprintf("%v", this.Vote) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CChatVoiceJoin) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CChatVoiceJoin{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SChatVoiceJoin) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SChatVoiceJoin{`,
+		`Seat:` + fmt.Sprintf("%v", this.Seat) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *CChatVoiceLeft) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&CChatVoiceLeft{`,
+		`}`,
+	}, "")
+	return s
+}
+func (this *SChatVoiceLeft) String() string {
+	if this == nil {
+		return "nil"
+	}
+	s := strings.Join([]string{`&SChatVoiceLeft{`,
+		`Seat:` + fmt.Sprintf("%v", this.Seat) + `,`,
+		`Error:` + fmt.Sprintf("%v", this.Error) + `,`,
 		`}`,
 	}, "")
 	return s
@@ -2348,6 +3225,665 @@ func (m *Notice) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+func (m *CChatLaunchVote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CChatLaunchVote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CChatLaunchVote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SChatLaunchVote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SChatLaunchVote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SChatLaunchVote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Seat", wireType)
+			}
+			m.Seat = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Seat |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CChatVote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CChatVote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CChatVote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+			}
+			m.Vote = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Vote |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SChatVote) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SChatVote: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SChatVote: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+			}
+			m.Vote = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Vote |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Seat", wireType)
+			}
+			m.Seat = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Seat |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 3:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SChatVoteResult) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SChatVoteResult: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SChatVoteResult: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Vote", wireType)
+			}
+			m.Vote = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Vote |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CChatVoiceJoin) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CChatVoiceJoin: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CChatVoiceJoin: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SChatVoiceJoin) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SChatVoiceJoin: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SChatVoiceJoin: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Seat", wireType)
+			}
+			m.Seat = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Seat |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *CChatVoiceLeft) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: CChatVoiceLeft: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: CChatVoiceLeft: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *SChatVoiceLeft) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowGameChat
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= (uint64(b) & 0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: SChatVoiceLeft: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: SChatVoiceLeft: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Seat", wireType)
+			}
+			m.Seat = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Seat |= (uint32(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		case 2:
+			if wireType != 0 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Error", wireType)
+			}
+			m.Error = 0
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowGameChat
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				m.Error |= (ErrCode(b) & 0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+		default:
+			iNdEx = preIndex
+			skippy, err := skipGameChat(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if skippy < 0 {
+				return ErrInvalidLengthGameChat
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
 func skipGameChat(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2456,30 +3992,36 @@ var (
 func init() { proto.RegisterFile("game_chat.proto", fileDescriptorGameChat) }
 
 var fileDescriptorGameChat = []byte{
-	// 396 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x53, 0x3f, 0x8b, 0xdb, 0x30,
-	0x14, 0xb7, 0xfc, 0x27, 0xc6, 0x2f, 0xa4, 0x2d, 0xa2, 0x14, 0xd3, 0x41, 0xa4, 0x86, 0x96, 0x0c,
-	0x25, 0x43, 0x4a, 0xbf, 0x40, 0x4c, 0xd6, 0x50, 0xec, 0xd0, 0xb5, 0x55, 0x6c, 0x35, 0x31, 0x34,
-	0x96, 0x91, 0x65, 0x48, 0xb7, 0x4e, 0x37, 0xdf, 0xc7, 0xb8, 0x8f, 0x72, 0x63, 0xc6, 0x1b, 0x2f,
-	0xbe, 0xe5, 0xc6, 0x7c, 0x84, 0xc3, 0xb2, 0x7d, 0x49, 0x0e, 0x9c, 0xf1, 0xb6, 0xf7, 0x7e, 0xef,
-	0xe9, 0xf7, 0x47, 0x42, 0xf0, 0x76, 0x45, 0x37, 0xec, 0x57, 0xb4, 0xa6, 0x72, 0x9c, 0x09, 0x2e,
-	0x39, 0xd6, 0xb3, 0xe5, 0xc7, 0x06, 0xe4, 0x31, 0xab, 0x41, 0xef, 0x33, 0x38, 0xbe, 0xbf, 0xa6,
-	0x72, 0xc1, 0xb6, 0x12, 0xbb, 0x60, 0x47, 0x3c, 0x95, 0x2c, 0x95, 0x2e, 0x1a, 0xa2, 0x91, 0x13,
-	0xb4, 0xad, 0x27, 0xc1, 0x09, 0x9f, 0xd7, 0x30, 0x98, 0x39, 0xa3, 0xf5, 0xce, 0x20, 0x50, 0x35,
-	0xfe, 0x00, 0xbd, 0x22, 0x67, 0x22, 0x89, 0x5d, 0x5d, 0x9d, 0x6c, 0xba, 0x53, 0x4a, 0xe3, 0x8c,
-	0x12, 0x7f, 0x02, 0x8b, 0x09, 0xc1, 0x85, 0x6b, 0x0e, 0xd1, 0xe8, 0xcd, 0xa4, 0x3f, 0xce, 0x96,
-	0xe3, 0x99, 0x10, 0x3e, 0x8f, 0x59, 0x50, 0x4f, 0xbc, 0x2f, 0x00, 0xca, 0xdc, 0x4f, 0x9e, 0x44,
-	0xec, 0x82, 0xbb, 0x02, 0x20, 0x3c, 0xee, 0xbd, 0x9a, 0xbd, 0x39, 0x40, 0x38, 0x15, 0x9c, 0xc6,
-	0x11, 0xcd, 0x25, 0x7e, 0x0f, 0x96, 0x90, 0xff, 0x32, 0xd6, 0xe8, 0xd6, 0x0d, 0x7e, 0x07, 0x46,
-	0x5a, 0x6c, 0x94, 0xea, 0x20, 0xa8, 0xca, 0x6e, 0x49, 0xef, 0x3b, 0xd8, 0xfe, 0x9c, 0xcb, 0x26,
-	0x43, 0x46, 0x57, 0x2d, 0x97, 0xaa, 0xbb, 0x32, 0x78, 0xbf, 0xc1, 0x0e, 0x2f, 0x1c, 0x23, 0x60,
-	0xfe, 0x4d, 0x72, 0xe9, 0xea, 0x43, 0x63, 0xd4, 0x9f, 0x40, 0x95, 0xa3, 0xde, 0x0e, 0x14, 0x7e,
-	0x0c, 0x6a, 0x74, 0x06, 0x9d, 0x41, 0x3f, 0xfc, 0x51, 0xe4, 0xeb, 0x46, 0x85, 0x80, 0x99, 0xa4,
-	0x7f, 0xb8, 0x52, 0x79, 0xc1, 0x58, 0xe1, 0x9d, 0x46, 0xaf, 0x10, 0xf4, 0x1a, 0x8a, 0xb3, 0xcb,
-	0xb2, 0xda, 0xcb, 0x72, 0xc1, 0xa6, 0x91, 0x54, 0xb8, 0xae, 0xf0, 0xb6, 0xbd, 0xf0, 0x4e, 0x18,
-	0x4c, 0x99, 0x6c, 0x98, 0x7a, 0x26, 0x27, 0x50, 0x35, 0x26, 0x00, 0x6c, 0x9b, 0x25, 0x82, 0x2d,
-	0xaa, 0x89, 0xa5, 0x26, 0x27, 0xc8, 0xf4, 0xeb, 0x6e, 0x4f, 0xb4, 0xbb, 0x3d, 0xd1, 0x0e, 0x7b,
-	0x82, 0xfe, 0x97, 0x04, 0xdd, 0x94, 0x04, 0xdd, 0x96, 0x04, 0xed, 0x4a, 0x82, 0xee, 0x4b, 0x82,
-	0x1e, 0x4b, 0xa2, 0x1d, 0x4a, 0x82, 0xae, 0x1f, 0x88, 0xb6, 0xec, 0xa9, 0x9f, 0xf2, 0xed, 0x29,
-	0x00, 0x00, 0xff, 0xff, 0xb0, 0x07, 0xf9, 0xe4, 0x51, 0x03, 0x00, 0x00,
+	// 494 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xbc, 0x54, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xce, 0x3a, 0x7f, 0xca, 0x44, 0x4d, 0xca, 0x0a, 0x21, 0x8b, 0xc3, 0x12, 0x56, 0x2a, 0xca,
+	0x01, 0xe5, 0x50, 0xc4, 0x0b, 0x34, 0xaa, 0x40, 0xa8, 0xaa, 0x90, 0x5d, 0xe5, 0x0a, 0x1b, 0x67,
+	0xdb, 0x58, 0x6a, 0xbc, 0xd6, 0x7a, 0x8c, 0xca, 0x8d, 0x13, 0x67, 0x1e, 0x83, 0x47, 0xe1, 0xd8,
+	0x23, 0x47, 0x62, 0x2e, 0x1c, 0xfb, 0x08, 0xc8, 0xeb, 0x75, 0x52, 0xa3, 0x38, 0x87, 0x1e, 0xb8,
+	0xcd, 0x7c, 0x3b, 0xfe, 0xbe, 0xf9, 0x66, 0x76, 0x0d, 0xc3, 0x2b, 0xb1, 0x92, 0x1f, 0x82, 0xa5,
+	0xc0, 0x49, 0xac, 0x15, 0x2a, 0xea, 0xc4, 0xf3, 0xa7, 0x16, 0x54, 0x0b, 0x59, 0x80, 0xfc, 0x08,
+	0x7a, 0xd3, 0xe9, 0x52, 0xe0, 0x85, 0xbc, 0x41, 0xea, 0x42, 0x37, 0x50, 0x11, 0xca, 0x08, 0x5d,
+	0x32, 0x22, 0xe3, 0x9e, 0x57, 0xa6, 0x1c, 0xa1, 0xe7, 0x6f, 0xca, 0x28, 0xb4, 0x12, 0x29, 0x8a,
+	0x9a, 0x03, 0xcf, 0xc4, 0xf4, 0x09, 0x74, 0xd2, 0x44, 0xea, 0x70, 0xe1, 0x3a, 0xe6, 0x4b, 0x9b,
+	0xdd, 0xa7, 0x6c, 0x56, 0x28, 0xe9, 0x73, 0x68, 0x4b, 0xad, 0x95, 0x76, 0x5b, 0x23, 0x32, 0x1e,
+	0x1c, 0xf7, 0x27, 0xf1, 0x7c, 0x72, 0xaa, 0xf5, 0x54, 0x2d, 0xa4, 0x57, 0x9c, 0xf0, 0x17, 0x00,
+	0xa6, 0xb9, 0x99, 0x0a, 0x03, 0xb9, 0xa7, 0xbb, 0x14, 0xc0, 0xdf, 0xd6, 0xfd, 0xb7, 0xf6, 0xce,
+	0x01, 0xfc, 0x13, 0xad, 0xc4, 0x22, 0x10, 0x09, 0xd2, 0xc7, 0xd0, 0xd6, 0xf8, 0x39, 0x96, 0x56,
+	0xb7, 0x48, 0xe8, 0x21, 0x34, 0xa3, 0x74, 0x65, 0x54, 0x0f, 0xbc, 0x3c, 0xac, 0x97, 0xe4, 0xaf,
+	0xa1, 0x3b, 0x3d, 0x57, 0x68, 0x3d, 0xc4, 0xe2, 0xaa, 0xe4, 0x32, 0x71, 0x9d, 0x07, 0xfe, 0x11,
+	0xba, 0xfe, 0x9e, 0xcf, 0x18, 0xb4, 0xae, 0xc3, 0x04, 0x5d, 0x67, 0xd4, 0x1c, 0xf7, 0x8f, 0x21,
+	0xf7, 0x51, 0x54, 0x7b, 0x06, 0xdf, 0x1a, 0x6d, 0xd6, 0x1a, 0x3d, 0x85, 0xbe, 0xff, 0x3e, 0x4d,
+	0x96, 0x56, 0x85, 0x41, 0x2b, 0x8c, 0x2e, 0x95, 0x51, 0xf9, 0x87, 0x31, 0xc7, 0x6b, 0x1b, 0xfd,
+	0x4a, 0xa0, 0x63, 0x29, 0x2a, 0xc3, 0x6a, 0x97, 0xc3, 0x72, 0xa1, 0x2b, 0x02, 0x34, 0xb8, 0x63,
+	0xf0, 0x32, 0xdd, 0xb3, 0x27, 0x0a, 0x2d, 0x0c, 0x57, 0xd2, 0xac, 0xa9, 0xe7, 0x99, 0x98, 0x32,
+	0x00, 0x79, 0x13, 0x87, 0x5a, 0x5e, 0xe4, 0x27, 0x6d, 0x73, 0x72, 0x0f, 0xe1, 0x8f, 0x60, 0x68,
+	0xee, 0xd5, 0x99, 0x48, 0xa3, 0x60, 0x39, 0x53, 0x28, 0xf9, 0x5b, 0x18, 0xfa, 0x55, 0x68, 0xe7,
+	0x3d, 0xda, 0x0c, 0xcb, 0xa9, 0x1d, 0xd6, 0x33, 0xfb, 0xa2, 0x4a, 0x8e, 0x4f, 0x0a, 0x37, 0x0b,
+	0xc9, 0x63, 0x3e, 0xb3, 0x6f, 0xa9, 0xae, 0x60, 0x23, 0xec, 0xec, 0x12, 0xae, 0xdf, 0xd2, 0x91,
+	0xb5, 0x90, 0xf3, 0x7a, 0x32, 0x49, 0xaf, 0x71, 0xa7, 0xfc, 0x21, 0x0c, 0xb6, 0x8f, 0xea, 0x9d,
+	0x0a, 0x23, 0xfe, 0x06, 0x06, 0x7e, 0x05, 0x79, 0xa8, 0xf5, 0x0a, 0xf5, 0x99, 0xbc, 0xc4, 0x2a,
+	0x75, 0x8e, 0x3c, 0x90, 0xfa, 0xe4, 0xe5, 0xed, 0x9a, 0x35, 0x7e, 0xae, 0x59, 0xe3, 0x6e, 0xcd,
+	0xc8, 0x97, 0x8c, 0x91, 0xef, 0x19, 0x23, 0x3f, 0x32, 0x46, 0x6e, 0x33, 0x46, 0x7e, 0x65, 0x8c,
+	0xfc, 0xc9, 0x58, 0xe3, 0x2e, 0x63, 0xe4, 0xdb, 0x6f, 0xd6, 0x98, 0x77, 0xcc, 0xcf, 0xed, 0xd5,
+	0xdf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x6b, 0x64, 0x04, 0xcc, 0x04, 0x05, 0x00, 0x00,
 }

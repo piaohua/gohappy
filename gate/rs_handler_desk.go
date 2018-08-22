@@ -141,6 +141,14 @@ func (rs *RoleActor) enterdDeskMsg(msg *pb.EnteredDesk, ctx actor.Context) bool 
 		default:
 			glog.Errorf("enterdDesk match fail %#v", msg)
 		}
+	case int32(pb.LHD):
+		switch msg.Rtype {
+		case int32(pb.ROOM_TYPE2): //百人
+			msg2 := new(pb.CLHFreeEnterRoom) //加入消息
+			rs.gamePid.Request(msg2, ctx.Self())
+		default:
+			glog.Errorf("enterdDesk match fail %#v", msg)
+		}
 	default:
 		glog.Errorf("enterdDesk match fail %#v", msg)
 	}

@@ -89,6 +89,11 @@ var protosUnpack = map[string][]proto{
 		{code: 1062, name: "CAgentProfitManage"},
 		{code: 1063, name: "CSetAgentNote"},
 		{code: 1064, name: "CAgentDayProfit"},
+		//voice
+		{code: 1065, name: "CChatLaunchVote"},
+		{code: 1066, name: "CChatVote"},
+		{code: 1067, name: "CChatVoiceJoin"},
+		{code: 1068, name: "CChatVoiceLeft"},
 	},
 	//niu
 	"niu": {
@@ -266,6 +271,12 @@ var protosPacket = map[string][]proto{
 		{code: 1562, name: "SAgentProfitManage"},
 		{code: 1563, name: "SSetAgentNote"},
 		{code: 1564, name: "SAgentDayProfit"},
+		//voice
+		{code: 1565, name: "SChatLaunchVote"},
+		{code: 1566, name: "SChatVote"},
+		{code: 1567, name: "SChatVoteResult"},
+		{code: 1068, name: "SChatVoiceJoin"},
+		{code: 1069, name: "SChatVoiceLeft"},
 	},
 	//niu
 	"niu": {

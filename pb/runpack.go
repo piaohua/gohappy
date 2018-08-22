@@ -202,6 +202,26 @@ func Runpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(SAgentDayProfit)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1565:
+		msg := new(SChatLaunchVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1566:
+		msg := new(SChatVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1567:
+		msg := new(SChatVoteResult)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1068:
+		msg := new(SChatVoiceJoin)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1069:
+		msg := new(SChatVoiceLeft)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 2500:
 		msg := new(SNNCoinEnterRoom)
 		err := msg.Unmarshal(b)

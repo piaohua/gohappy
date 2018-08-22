@@ -43,6 +43,10 @@ msgID = {
 	CAgentProfitManage = 1062,
 	CSetAgentNote = 1063,
 	CAgentDayProfit = 1064,
+	CChatLaunchVote = 1065,
+	CChatVote = 1066,
+	CChatVoiceJoin = 1067,
+	CChatVoiceLeft = 1068,
 
 	SBuy = 1500,
 	SWxpayOrder = 1501,
@@ -92,4 +96,9 @@ msgID = {
 	SAgentProfitManage = 1562,
 	SSetAgentNote = 1563,
 	SAgentDayProfit = 1564,
+	SChatLaunchVote = 1565,
+	SChatVote = 1566,
+	SChatVoteResult = 1567,
+	SChatVoiceJoin = 1068,
+	SChatVoiceLeft = 1069,
 }

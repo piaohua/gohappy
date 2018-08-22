@@ -194,6 +194,9 @@ func PackRankMsg() (msg *pb.SRank) {
 		if val, ok := v["sign"]; ok {
 			msg2.Sign = val.(string)
 		}
+		if val, ok := v["weixin"]; ok {
+			msg2.Weixin = val.(string)
+		}
 		if msg2.Userid == "" {
 			continue
 		}

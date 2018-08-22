@@ -154,6 +154,21 @@ func Packet(msg interface{}) (uint32, uint32, []byte, error) {
 	case *SAgentDayProfit:
 		b, err := msg.(*SAgentDayProfit).Marshal()
 		return 1564, 0, b, err
+	case *SChatLaunchVote:
+		b, err := msg.(*SChatLaunchVote).Marshal()
+		return 1565, 0, b, err
+	case *SChatVote:
+		b, err := msg.(*SChatVote).Marshal()
+		return 1566, 0, b, err
+	case *SChatVoteResult:
+		b, err := msg.(*SChatVoteResult).Marshal()
+		return 1567, 0, b, err
+	case *SChatVoiceJoin:
+		b, err := msg.(*SChatVoiceJoin).Marshal()
+		return 1068, 0, b, err
+	case *SChatVoiceLeft:
+		b, err := msg.(*SChatVoiceLeft).Marshal()
+		return 1069, 0, b, err
 	case *SNNCoinEnterRoom:
 		b, err := msg.(*SNNCoinEnterRoom).Marshal()
 		return 2500, 1, b, err

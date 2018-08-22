@@ -30,6 +30,7 @@ message SEBEnterRoom
     EBRoomVote voteinfo = 3;//发起投票的信息
     repeated EBRoomBets betsinfo = 4;//下注倍数
     ErrCode error= 5;//错误码 ,0:正常
+    EBRoomVoice voiceinfo = 6;//语音房间投票的信息
 }
 
 // 创建房间

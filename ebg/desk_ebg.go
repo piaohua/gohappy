@@ -28,6 +28,8 @@ func (t *Desk) privEnterMsg(userid string) *pb.SEBEnterRoom {
 	msg.Betsinfo = t.coinBetsMsg()
 	//投票信息
 	msg.Voteinfo = t.voteInfoMsg()
+	//投票信息
+	msg.Voiceinfo = t.voiceInfoMsg()
 	return msg
 }
 
@@ -46,6 +48,181 @@ func (t *Desk) voteInfoMsg() (msg *pb.EBRoomVote) {
 		} else if v.Vote == 2 {
 			msg.Disagree = append(msg.Disagree, k)
 		}
+	}
+	return
+}
+
+//语音房间投票信息
+func (t *Desk) voiceInfoMsg() (msg *pb.EBRoomVoice) {
+	msg = new(pb.EBRoomVoice)
+	if t.DeskGame != nil {
+		msg.Seat = t.DeskGame.VoiceSeat
+	}
+	if msg.Seat == 0 {
+		return
+	}
+	for k, v := range t.seats {
+		if v.Voice == 1 {
+			msg.Agree = append(msg.Agree, k)
+		} else if v.Voice == 2 {
+			msg.Disagree = append(msg.Disagree, k)
+		}
+	}
+	return
+}
+
+//.
+
+//'语音房间投票
+
+func (t *Desk) checkVoteVoice() pb.ErrCode {
+	if t.isFree() {
+		return pb.OperateError
+	}
+	if t.DeskGame == nil {
+		return pb.OperateError
+	}
+	return pb.OK
+}
+
+//发起投票
+func (t *Desk) launchVoteVoice(userid string, vote uint32) (msg *pb.SChatLaunchVote) {
+	msg = new(pb.SChatLaunchVote)
+	errcode := t.checkVoteVoice()
+	if errcode != pb.OK {
+		msg.Error = errcode
+		return
+	}
+	if t.DeskGame.VoiceSeat != 0 {
+		msg.Error = pb.VotingCantLaunchVote
+		return
+	}
+	seat := t.getSeat(userid)
+	if v, ok := t.seats[seat]; ok {
+		v.Voice = vote //投票
+	}
+	//发起投票者
+	t.DeskGame.VoiceSeat = seat
+	//超时设置(1分钟)
+	glog.Debugf("VoteTime: %d, %d, %s", seat, vote, userid)
+	t.DeskGame.VoiceTime = utils.Timestamp() + 60
+	msg.Seat = seat
+	t.broadcast(msg)
+	t.pushVote(seat, vote)
+	t.dismissVoice(false)
+	return
+}
+
+func (t *Desk) voteVoiceTimeout() {
+	errcode := t.checkVoteVoice()
+	if errcode != pb.OK {
+		return
+	}
+	if t.DeskGame.VoiceSeat == 0 {
+		return
+	}
+	var now = utils.Timestamp()
+	if now >= t.DeskGame.VoiceTime {
+		t.dismissVoice(true)
+	}
+}
+
+//投票
+func (t *Desk) privVoteVoice(userid string, vote uint32) (msg *pb.SChatVote) {
+	msg = new(pb.SChatVote)
+	errcode := t.checkVoteVoice()
+	if errcode != pb.OK {
+		msg.Error = errcode
+		return
+	}
+	if t.DeskGame.VoiceSeat == 0 {
+		msg.Error = pb.NotVoteTime
+		return
+	}
+	seat := t.getSeat(userid)
+	if v, ok := t.seats[seat]; ok {
+		v.Voice = vote //投票
+	}
+	t.pushVoteVoice(seat, vote)
+	t.dismissVoice(false)
+	return
+}
+
+//广播投票消息
+func (t *Desk) pushVoteVoice(seat, vote uint32) {
+	msg := &pb.SChatVote{
+		Seat: seat,
+		Vote: vote,
+	}
+	t.broadcast(msg)
+}
+
+//广播投票消息
+func (t *Desk) pushVoteResultVoice(vote uint32) {
+	msg := &pb.SNNVoteResult{
+		Vote: vote,
+	}
+	t.broadcast(msg)
+}
+
+//投票解散,agree >= unagree
+func (t *Desk) dismissVoice(force bool) {
+	var agree = 0
+	var unagree = 0
+	var voted = 0
+	for _, v := range t.seats {
+		if v.Voice == 1 {
+			agree++
+		} else {
+			unagree++
+		}
+		if v.Voice != 0 {
+			voted++
+		}
+	}
+	glog.Debugf("dismissVoice force %t, vote %d, len %d",
+		force, t.DeskPriv.VoteSeat, len(t.seats))
+	glog.Debugf("dismissVoice voted %d,agree %d, unagree %d",
+		voted, agree, unagree)
+	//一半以上通过即可
+	if agree >= unagree {
+		//0解散,1不解散
+		t.pushVoteResultVoice(0)
+	} else if force || voted == len(t.seats) {
+		//结束投票
+		t.pushVoteResultVoice(1)
+		//重置
+		for _, v := range t.seats {
+			v.Voice = 0
+		}
+		//发起投票者
+		t.DeskGame.VoiceSeat = 0
+		t.DeskGame.VoiceTime = 0
+	}
+}
+
+//加入语音房间
+func (t *Desk) chatVoiceJoin(userid string) (msg *pb.SChatVoiceJoin) {
+	seat := t.getSeat(userid)
+	msg = new(pb.SChatVoiceJoin)
+	msg.Seat = seat
+	if v, ok := t.seats[seat]; ok {
+		v.Voice = 1
+	} else {
+		msg.Error = pb.NoPosition
+	}
+	return
+}
+
+//离开语音房间
+func (t *Desk) chatVoiceLeft(userid string) (msg *pb.SChatVoiceLeft) {
+	seat := t.getSeat(userid)
+	msg = new(pb.SChatVoiceLeft)
+	msg.Seat = seat
+	if v, ok := t.seats[seat]; ok {
+		v.Voice = 0
+	} else {
+		msg.Error = pb.NoPosition
 	}
 	return
 }
@@ -230,6 +407,7 @@ func (t *Desk) coinTimeout() {
 func (t *Desk) privTimeout() {
 	t.checkPubOver2()
 	t.voteTimeout()
+	t.voteVoiceTimeout()
 	switch t.state {
 	case int32(pb.STATE_READY):
 		//过期关闭

@@ -142,6 +142,18 @@ func Rpacket(msg interface{}) (uint32, []byte, error) {
 	case *CAgentDayProfit:
 		b, err := msg.(*CAgentDayProfit).Marshal()
 		return 1064, b, err
+	case *CChatLaunchVote:
+		b, err := msg.(*CChatLaunchVote).Marshal()
+		return 1065, b, err
+	case *CChatVote:
+		b, err := msg.(*CChatVote).Marshal()
+		return 1066, b, err
+	case *CChatVoiceJoin:
+		b, err := msg.(*CChatVoiceJoin).Marshal()
+		return 1067, b, err
+	case *CChatVoiceLeft:
+		b, err := msg.(*CChatVoiceLeft).Marshal()
+		return 1068, b, err
 	case *CNNCoinEnterRoom:
 		b, err := msg.(*CNNCoinEnterRoom).Marshal()
 		return 2000, b, err

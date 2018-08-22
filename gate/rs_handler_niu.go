@@ -189,6 +189,46 @@ func (rs *RoleActor) handlerNiu(msg interface{}, ctx actor.Context) {
 			return
 		}
 		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CChatLaunchVote:
+		arg := msg.(*pb.CChatLaunchVote)
+		glog.Debugf("CChatLaunchVote %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SChatLaunchVote)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CChatVote:
+		arg := msg.(*pb.CChatVote)
+		glog.Debugf("CChatVote %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SChatVote)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CChatVoiceJoin:
+		arg := msg.(*pb.CChatVoiceJoin)
+		glog.Debugf("CChatVoiceJoin %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SChatVoiceJoin)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
+	case *pb.CChatVoiceLeft:
+		arg := msg.(*pb.CChatVoiceLeft)
+		glog.Debugf("CChatVoiceLeft %#v", arg)
+		if rs.gamePid == nil {
+			rsp := new(pb.SChatVoiceLeft)
+			rsp.Error = pb.NotInRoom
+			rs.Send(rsp)
+			return
+		}
+		rs.gamePid.Request(arg, ctx.Self())
 	case *pb.CNNCoinChangeRoom:
 		arg := msg.(*pb.CNNCoinChangeRoom)
 		glog.Debugf("CNNCoinChangeRoom %#v", arg)

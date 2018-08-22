@@ -17,6 +17,7 @@ message SEBCoinEnterRoom
     repeated EBRoomUser  userinfo = 2;//已在房间的玩家基础信息
     repeated EBRoomBets  betsinfo = 3;//下注倍数
     ErrCode error= 4;//错误码 ,0:正常
+    EBRoomVoice voiceinfo = 5;//语音房间投票的信息
 }
 
 // 结算广播接口，游戏结束

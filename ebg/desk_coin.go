@@ -92,6 +92,8 @@ func (t *Desk) coinEnterMsg(userid string) *pb.SEBCoinEnterRoom {
 	msg.Userinfo = t.coinSeatBetsMsg(userid)
 	//位置下注信息
 	msg.Betsinfo = t.coinBetsMsg()
+	//投票信息
+	msg.Voiceinfo = t.voiceInfoMsg()
 	return msg
 }
 

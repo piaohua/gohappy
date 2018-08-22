@@ -242,6 +242,7 @@
 		EBCoinOver
 		EBOverList
 		EBRoomVote
+		EBRoomVoice
 		EBDealerList
 		EBFreeTrend
 		EBFreeWiner
@@ -336,6 +337,15 @@
 		SNotice
 		SPushNotice
 		Notice
+		CChatLaunchVote
+		SChatLaunchVote
+		CChatVote
+		SChatVote
+		SChatVoteResult
+		CChatVoiceJoin
+		SChatVoiceJoin
+		CChatVoiceLeft
+		SChatVoiceLeft
 		CLogin
 		SLogin
 		CRegist
@@ -544,6 +554,7 @@
 		NNCoinOver
 		NNOverList
 		NNRoomVote
+		NNRoomVoice
 		NNDealerList
 		NNFreeTrend
 		NNFreeWiner

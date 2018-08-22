@@ -296,13 +296,14 @@ func GetRank() ([]bson.M, error) {
 	pageSize := 20 //取前20条
 	skipNum, sortFieldR := parsePageAndSort(1, pageSize, "coin", false)
 	var list []bson.M
-	selector := make(bson.M, 5)
+	selector := make(bson.M, 6)
 	selector["sign"] = true
 	selector["coin"] = true
 	selector["nickname"] = true
 	selector["photo"] = true
+	selector["weixin"] = true
 	selector["_id"] = true
-	q := bson.M{"coin": bson.M{"$gt": 0}}
+	q := bson.M{"coin": bson.M{"$gt": 0}, "robot": false} //去掉机器人展示
 	err := PlayerUsers.
 		Find(q).Select(selector).
 		Sort(sortFieldR).

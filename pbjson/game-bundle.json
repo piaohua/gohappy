@@ -303,7 +303,8 @@
             "AgentJoinLimit": 112,
             "AgentSetLimit": 113,
             "ActidError": 114,
-            "ActRepeatJoin": 115
+            "ActRepeatJoin": 115,
+            "NoPosition": 116
           }
         },
         "SitType": {
@@ -453,6 +454,83 @@
             "expireTime": {
               "type": "string",
               "id": 5
+            }
+          }
+        },
+        "CChatLaunchVote": {
+          "fields": {}
+        },
+        "SChatLaunchVote": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CChatVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "SChatVote": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            },
+            "seat": {
+              "type": "uint32",
+              "id": 2
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 3
+            }
+          }
+        },
+        "SChatVoteResult": {
+          "fields": {
+            "vote": {
+              "type": "uint32",
+              "id": 1
+            }
+          }
+        },
+        "CChatVoiceJoin": {
+          "fields": {}
+        },
+        "SChatVoiceJoin": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
+            }
+          }
+        },
+        "CChatVoiceLeft": {
+          "fields": {}
+        },
+        "SChatVoiceLeft": {
+          "fields": {
+            "seat": {
+              "type": "uint32",
+              "id": 1
+            },
+            "error": {
+              "type": "ErrCode",
+              "id": 2
             }
           }
         },
@@ -1152,6 +1230,10 @@
             "sign": {
               "type": "string",
               "id": 5
+            },
+            "weixin": {
+              "type": "string",
+              "id": 6
             }
           }
         },

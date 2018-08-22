@@ -62,6 +62,7 @@ type DeskSeat struct {
 	Power    uint32   //牌力
 	Vote     uint32   //投票解散1同意,2反对
 	Niu      bool     //提交操作
+	Voice    uint32	  //投票语音房间1同意,2反对
 }
 
 //DeskGame 私人局牌桌当局数据
@@ -71,6 +72,9 @@ type DeskGame struct {
 	BetNum     int64    //当前局下注总数/总底池
 	Dealer     string   //庄家
 	DealerSeat uint32   //庄家的座位
+	//
+	VoiceSeat uint32 //语音房间投票发起者座位号
+	VoiceTime int64  //语音房间结束投票时间
 }
 
 //DeskHua 金花数据, TODO 按轮记数

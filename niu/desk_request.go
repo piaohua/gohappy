@@ -178,6 +178,45 @@ func (a *Desk) handlerRequest(msg interface{}, ctx actor.Context) {
 			return
 		}
 		ctx.Respond(rsp)
+	case *pb.CChatLaunchVote:
+		arg := msg.(*pb.CChatLaunchVote)
+		glog.Debugf("CChatLaunchVote %#v", arg)
+		userid := a.getRouter(ctx)
+		rsp := a.launchVoteVoice(userid, 1)
+		if rsp.Error == pb.OK {
+			return
+		}
+		ctx.Respond(rsp)
+	case *pb.CChatVote:
+		arg := msg.(*pb.CChatVote)
+		glog.Debugf("CChatVote %#v", arg)
+		userid := a.getRouter(ctx)
+		var vote uint32 = arg.GetVote()
+		rsp := a.privVoteVoice(userid, vote)
+		if rsp.Error == pb.OK {
+			return
+		}
+		ctx.Respond(rsp)
+	case *pb.CChatVoiceJoin:
+		arg := msg.(*pb.CChatVoiceJoin)
+		glog.Debugf("CChatVoiceJoin %#v", arg)
+		userid := a.getRouter(ctx)
+		rsp := a.chatVoiceJoin(userid)
+		if rsp.Error == pb.OK {
+			a.broadcast(rsp)
+			return
+		}
+		ctx.Respond(rsp)
+	case *pb.CChatVoiceLeft:
+		arg := msg.(*pb.CChatVoiceLeft)
+		glog.Debugf("CChatVoiceLeft %#v", arg)
+		userid := a.getRouter(ctx)
+		rsp := a.chatVoiceLeft(userid)
+		if rsp.Error == pb.OK {
+			a.broadcast(rsp)
+			return
+		}
+		ctx.Respond(rsp)
 	case *pb.CNNCoinChangeRoom:
 		arg := msg.(*pb.CNNCoinChangeRoom)
 		glog.Debugf("CNNCoinChangeRoom %#v", arg)

@@ -186,6 +186,22 @@ func Unpack(id uint32, b []byte) (interface{}, error) {
 		msg := new(CAgentDayProfit)
 		err := msg.Unmarshal(b)
 		return msg, err
+	case 1065:
+		msg := new(CChatLaunchVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1066:
+		msg := new(CChatVote)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1067:
+		msg := new(CChatVoiceJoin)
+		err := msg.Unmarshal(b)
+		return msg, err
+	case 1068:
+		msg := new(CChatVoiceLeft)
+		err := msg.Unmarshal(b)
+		return msg, err
 	case 2000:
 		msg := new(CNNCoinEnterRoom)
 		err := msg.Unmarshal(b)

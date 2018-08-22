@@ -375,7 +375,8 @@
             "AgentJoinLimit": 112,
             "AgentSetLimit": 113,
             "ActidError": 114,
-            "ActRepeatJoin": 115
+            "ActRepeatJoin": 115,
+            "NoPosition": 116
           }
         },
         "SitType": {

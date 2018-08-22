@@ -122,6 +122,7 @@ enum ErrCode {
     AgentSetLimit          =113; //设置代理区域限制(有效玩家3个以上)
     ActidError             =114; //活动id错误
     ActRepeatJoin          =115; //重复参加活动
+    NoPosition             =116; //没有坐下,没有位置
 }
 
 enum SitType {

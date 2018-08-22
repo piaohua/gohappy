@@ -43,6 +43,10 @@
 	1062:{type:"room",		sendType:"pb.CAgentProfitManage",		revType:"",		},
 	1063:{type:"room",		sendType:"pb.CSetAgentNote",		revType:"",		},
 	1064:{type:"room",		sendType:"pb.CAgentDayProfit",		revType:"",		},
+	1065:{type:"room",		sendType:"pb.CChatLaunchVote",		revType:"",		},
+	1066:{type:"room",		sendType:"pb.CChatVote",		revType:"",		},
+	1067:{type:"room",		sendType:"pb.CChatVoiceJoin",		revType:"",		},
+	1068:{type:"room",		sendType:"pb.CChatVoiceLeft",		revType:"pb.SChatVoiceJoin",		},
 	1500:{type:"room",		sendType:"",		revType:"pb.SBuy",		},
 	1501:{type:"room",		sendType:"",		revType:"pb.SWxpayOrder",		},
 	1502:{type:"room",		sendType:"",		revType:"pb.SJtpayOrder",		},
@@ -90,5 +94,10 @@
 	1561:{type:"room",		sendType:"",		revType:"pb.SGetAgent",		},
 	1562:{type:"room",		sendType:"",		revType:"pb.SAgentProfitManage",		},
 	1563:{type:"room",		sendType:"",		revType:"pb.SSetAgentNote",		},
-	1564:{type:"room",		sendType:"",		revType:"pb.SAgentDayProfit",		}
+	1564:{type:"room",		sendType:"",		revType:"pb.SAgentDayProfit",		},
+	1565:{type:"room",		sendType:"",		revType:"pb.SChatLaunchVote",		},
+	1566:{type:"room",		sendType:"",		revType:"pb.SChatVote",		},
+	1567:{type:"room",		sendType:"",		revType:"pb.SChatVoteResult",		},
+	1068:{type:"room",		sendType:"pb.CChatVoiceLeft",		revType:"pb.SChatVoiceJoin",		},
+	1069:{type:"room",		sendType:"",		revType:"pb.SChatVoiceLeft",		}
 }

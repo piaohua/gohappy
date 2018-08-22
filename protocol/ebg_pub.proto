@@ -176,6 +176,14 @@ message EBRoomVote
     repeated uint32 disagree=3;//不同意
 }
 
+// 语音房间投票的信息
+message EBRoomVoice
+{
+    uint32 seat    =1;//发起投票的玩家座位号
+    repeated uint32 agree   =2;//同意
+    repeated uint32 disagree=3;//不同意
+}
+
 // 上庄列表
 message EBDealerList
 {
