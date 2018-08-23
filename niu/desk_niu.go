@@ -108,7 +108,7 @@ func (t *Desk) launchVoteVoice(userid string, vote uint32) (msg *pb.SChatLaunchV
 	t.DeskGame.VoiceTime = utils.Timestamp() + 60
 	msg.Seat = seat
 	t.broadcast(msg)
-	t.pushVote(seat, vote)
+	t.pushVoteVoice(seat, vote)
 	t.dismissVoice(false)
 	return
 }
@@ -119,6 +119,9 @@ func (t *Desk) voteVoiceTimeout() {
 		return
 	}
 	if t.DeskGame.VoiceSeat == 0 {
+		return
+	}
+	if t.DeskGame.VoiceTime == 0 {
 		return
 	}
 	var now = utils.Timestamp()
@@ -159,7 +162,7 @@ func (t *Desk) pushVoteVoice(seat, vote uint32) {
 
 //广播投票消息
 func (t *Desk) pushVoteResultVoice(vote uint32) {
-	msg := &pb.SNNVoteResult{
+	msg := &pb.SChatVoteResult{
 		Vote: vote,
 	}
 	t.broadcast(msg)
@@ -191,6 +194,7 @@ func (t *Desk) dismissVoice(force bool) {
 	if agree >= 2 {
 		//0解散,1不解散
 		t.pushVoteResultVoice(0)
+		t.DeskGame.VoiceTime = 0
 	} else if force || voted == len(t.seats) {
 		//结束投票
 		t.pushVoteResultVoice(1)
@@ -224,6 +228,9 @@ func (t *Desk) chatVoiceLeft(userid string) (msg *pb.SChatVoiceLeft) {
 	msg.Seat = seat
 	if v, ok := t.seats[seat]; ok {
 		v.Voice = 0
+		if len(t.seats) <= 1 {
+			t.DeskGame.VoiceSeat = 0
+		}
 	} else {
 		msg.Error = pb.NoPosition
 	}

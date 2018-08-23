@@ -286,6 +286,8 @@ func (t *Desk) userLeaveDeskMsg(userid string) {
 //离开状态消息
 func (t *Desk) userLeaveDesk(userid string) {
 	if v, ok := t.roles[userid]; ok {
+		//离开语音房间
+		t.chatVoiceLeft(userid)
 		//离开状态消息
 		msg1 := new(pb.SNNLeave)
 		msg1.Seat = v.Seat
