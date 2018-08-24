@@ -72,7 +72,7 @@ func PackAgentManageMsg(arg *pb.CAgentManage) (msg *pb.SAgentManage) {
 		if val, ok := v["address"]; ok {
 			msg2.Address = val.(string)
 		}
-		if val, ok := v["profit_rate"]; ok {
+		if val, ok := v["profit_rate_sum"]; ok {
 			msg2.Rate = uint32(val.(int))
 		}
 		if msg2.Agentid == "" {
@@ -108,7 +108,7 @@ func PackAgentProfitManageMsg(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfitM
 		if val, ok := v["agent_note"]; ok {
 			msg2.Agentnote = val.(string)
 		}
-		if val, ok := v["profit_rate"]; ok {
+		if val, ok := v["profit_rate_sum"]; ok {
 			msg2.Rate = uint32(val.(int))
 		}
 		if val, ok := v["bring_profit"]; ok {
@@ -170,7 +170,7 @@ func PackAgentProfitManageMsg2(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfit
 		if val, ok := v["agent_level"]; ok {
 			msg2.Level = uint32(val.(int))
 		}
-		if val, ok := v["profit_rate"]; ok {
+		if val, ok := v["profit_rate_sum"]; ok {
 			msg2.Rate = uint32(val.(int))
 		}
 		if val, ok := v["nickname"]; ok {
@@ -456,10 +456,49 @@ func GetAgentTitle(user *data.User) int32 {
 	if user.GetAgent() == "" || user.AgentLevel == 1 {
 		return 1
 	}
-	if user.ProfitRate != 0 {
+	if user.ProfitRateSum != 0 {
 		return 2
 	}
 	return 3
+}
+
+//GetChildProfitRate 通过下级获取当前线分佣比例
+func GetChildProfitRate(userid string, user *data.User) uint32 {
+	if IsNotAgent(user) {
+		return 0
+	}
+	if user.ProfitRate != nil {
+		if val, ok := user.ProfitRate[userid]; ok {
+			return val
+		}
+	}
+	return user.ProfitRateSum //如果userid没有设置时默认为总数
+}
+
+//SetChildProfitRate 设置下级当前线分佣比例
+func SetChildProfitRate(userid string, rate uint32, user *data.User) {
+	if IsNotAgent(user) {
+		return
+	}
+	if user.ProfitRate == nil {
+		user.ProfitRate = make(map[string]uint32)
+		user.ProfitRate[userid] = rate
+		return
+	}
+	user.ProfitRate[userid] = rate
+}
+
+//SetAgentProfitRate 设置代理分佣比例，递增
+func SetAgentProfitRate(rate uint32, user *data.User) {
+	if IsNotAgent(user) {
+		return
+	}
+	user.ProfitRateSum += rate
+	if user.ProfitRate != nil {
+		for k := range user.ProfitRate {
+			user.ProfitRate[k] += rate
+		}
+	}
 }
 
 func agentTitle(AgentLevel, AgentState uint32, Agent string, ProfitRate int64) int32 {
@@ -535,7 +574,7 @@ func AgentProfitMonthSendLog(arg *pb.AgentProfitMonthSend, user *data.User) (msg
 		return
 	}
 	msg2 = LogProfitMsg(arg.Userid, arg.Userid, user.GetNickname(), user.GetAgentNote(),
-		0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRate, arg.GetProfit())
+		0, int32(pb.LOG_TYPE54), user.AgentLevel, user.ProfitRateSum, arg.GetProfit())
 	return
 }
 
@@ -571,14 +610,15 @@ func agentProfitMonthSendCheck2(user *data.User) (msg3 *pb.LogProfit, msg5 *pb.A
 //AddProfitMonth 区域奖励
 func AddProfitMonth(arg *pb.AgentProfitMonthInfo, user *data.User) (msg1 *pb.AgentProfitMonthInfo,
 	msg2, msg3 *pb.LogProfit, msg4 *pb.AgentProfitMonthUpdate, msg5 *pb.AgentProfitMonthSend, msg6 *pb.AgentBringProfitNum) {
-	profit := int64(math.Trunc(float64(user.ProfitRate) / float64(100) * float64(arg.Profit))) //区域奖励
+	profitRate := GetChildProfitRate(arg.GetUserid(), user)
+	profit := int64(math.Trunc(float64(profitRate) / float64(100) * float64(arg.Profit))) //区域奖励
 	if profit > 0 {
 		msg3, msg5 = agentProfitMonthSendCheck2(user)
 		user.AddProfitMonth(profit)
-		glog.Debugf("AddProfitMonth profit %d, rate %d, arg %#v", profit, user.ProfitRate, arg)
+		glog.Debugf("AddProfitMonth profit %d, rate %d, arg %#v", profit, profitRate, arg)
 		//区域奖金日志消息
 		msg2 = LogProfitMsg(arg.Agentid, arg.Userid, arg.GetNickname(), arg.GetAgentnote(),
-			arg.Gtype, int32(pb.LOG_TYPE53), arg.Level, user.ProfitRate, profit)
+			arg.Gtype, int32(pb.LOG_TYPE53), arg.Level, profitRate, profit)
 		//更新消息
 		msg4 = &pb.AgentProfitMonthUpdate{
 			Userid: user.GetUserid(),

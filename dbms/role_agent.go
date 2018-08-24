@@ -361,7 +361,7 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 	if user.GetAgent() != arg.GetSelfid() {
 		rsp.Error = pb.AgentSetLimit
 	}
-	if user.ProfitRate != 0 {
+	if user.ProfitRateSum != 0 {
 		//rsp.Error = pb.AlreadySetRate
 	}
 	if !handler.IsVaild(user) {
@@ -376,11 +376,13 @@ func (a *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.Co
 	}
 	agent := a.getUserById(arg.GetSelfid())
 	if agent != nil {
-		if agent.ProfitRate > arg.GetRate() {
-			agent.ProfitRate -= arg.GetRate()
+		agentProfitRate := handler.GetChildProfitRate(arg.GetUserid(), agent)
+		if agentProfitRate > arg.GetRate() {
+			agentProfitRate -= arg.GetRate()
+			handler.SetChildProfitRate(arg.GetUserid(), agentProfitRate, agent)
 		} else {
-			glog.Errorf("CSetAgentProfitRate filed %#v, rate %d", arg, agent.ProfitRate)
-			agent.ProfitRate = 1
+			glog.Errorf("CSetAgentProfitRate filed %#v, rate %#v", arg, agent.ProfitRate)
+			handler.SetChildProfitRate(arg.GetUserid(), 1, agent)
 		}
 		agent.UpdateAgentProfitRate()
 	}
@@ -394,9 +396,7 @@ func (a *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate) {
 	}
 	agent := a.getUserById(arg.GetUserid())
 	if agent != nil {
-		agent.ProfitRate += arg.GetRate()
-		agent.ProfitRateSum += arg.GetRate()
-		agent.UpdateAgentProfitRate()
+		handler.SetAgentProfitRate(arg.GetRate(), agent)
 	}
 }
 

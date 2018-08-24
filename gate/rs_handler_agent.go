@@ -485,7 +485,8 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		rs.Send(rsp)
 		return
 	}
-	if rs.User.ProfitRate < (arg.GetRate() + 5) { //保留5%
+	profitRate := handler.GetChildProfitRate(arg.GetUserid(), rs.User)
+	if profitRate < (arg.GetRate() + 5) { //保留5%
 		rsp.Error = pb.ProfitRateNotEnough
 		rs.Send(rsp)
 		return
@@ -507,11 +508,12 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 			}
 			rs.rolePid.Tell(msg1)
 			//rs.User.ProfitRate -= arg.GetRate() //TODO 优化为消息同步
-			if rs.User.ProfitRate > arg.GetRate() {
-				rs.User.ProfitRate -= arg.GetRate()
+			if profitRate > arg.GetRate() {
+				profitRate -= arg.GetRate()
+				handler.SetChildProfitRate(arg.GetUserid(), profitRate, rs.User)
 			} else {
-				glog.Errorf("CSetAgentProfitRate filed %#v, rate %d", arg, rs.User.ProfitRate)
-				rs.User.ProfitRate = 1
+				glog.Errorf("CSetAgentProfitRate filed %#v, rate %#v", arg, rs.User.ProfitRate)
+				handler.SetChildProfitRate(arg.GetUserid(), 1, rs.User)
 			}
 		}
 	}
@@ -520,8 +522,7 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 
 //设置区域收益
 func (rs *RoleActor) agentProfitRate(arg *pb.SetAgentProfitRate, ctx actor.Context) {
-	rs.User.ProfitRate += arg.GetRate()
-	rs.User.ProfitRateSum += arg.GetRate()
+	handler.SetAgentProfitRate(arg.GetRate(), rs.User)
 }
 
 //奖励发放更新收益
@@ -655,7 +656,8 @@ func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Co
 		Agentid:    rs.User.GetUserid(),
 		Nickname:   rs.User.GetNickname(),
 		Agentnote:  rs.User.AgentNote,
-		Rate:       rs.User.ProfitRate,
+		//Rate:       rs.User.ProfitRate,
+		Rate:       rs.User.ProfitRateSum,
 	}
 	for _, v := range arg.List {
 		if v.GetAgentTitle() == 4 || v.GetAgentid() == rs.User.GetUserid() {

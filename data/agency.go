@@ -13,6 +13,7 @@ import (
 
 //代理管理(代理ID为游戏内ID)
 type Agency struct {
+	//ID bson.ObjectId `bson:"_id,omitempty" json:"id,omitempty"`
 	Id         string    `bson:"_id" json:"id"`                  // AUTO_INCREMENT, PRIMARY KEY (`id`),
 	UserName   string    `bson:"user_name" json:"user_name"`     // 用户名, UNIQUE KEY `user_name` (`user_name`)
 	Password   string    `bson:"password" json:"password"`       // 密码
@@ -88,7 +89,7 @@ func GetAgentManage(arg *pb.CAgentManage) ([]bson.M, error) {
 	skipNum, sortFieldR := parsePageAndSort(int(arg.Page), pageSize, "build", false)
 	var list []bson.M
 	selector := make(bson.M, 6)
-	selector["profit_rate"] = true
+	selector["profit_rate_sum"] = true
 	selector["profit"] = true
 	selector["build"] = true
 	selector["agent_level"] = true
@@ -125,7 +126,7 @@ func GetAgentProfitManage(arg *pb.CAgentProfitManage) ([]bson.M, error) {
 	var list []bson.M
 	selector := make(bson.M, 6)
 	selector["bring_profit"] = true
-	selector["profit_rate"] = true
+	selector["profit_rate_sum"] = true
 	selector["nickname"] = true
 	selector["agent_level"] = true
 	selector["agent_note"] = true
@@ -140,7 +141,7 @@ func GetAgentProfitManage(arg *pb.CAgentProfitManage) ([]bson.M, error) {
 		q["agent_note"] = bson.M{"$eq": arg.GetAgentnote()}
 	}
 	if arg.GetRate() != 0 {
-		q["profit_rate"] = bson.M{"$eq": arg.GetRate()}
+		q["profit_rate_sum"] = bson.M{"$eq": arg.GetRate()}
 	}
 	err := PlayerUsers.
 		Find(q).Select(selector).
@@ -165,7 +166,7 @@ func GetAgentProfitManage2(ids []string) ([]bson.M, error) {
 	var list []bson.M
 	selector := make(bson.M, 5)
 	selector["agent_level"] = true
-	selector["profit_rate"] = true
+	selector["profit_rate_sum"] = true
 	selector["nickname"] = true
 	selector["agent_note"] = true
 	selector["_id"] = true

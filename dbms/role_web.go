@@ -142,7 +142,7 @@ func (a *RoleActor) setRate(arg *pb.SetAgentProfitRate) error {
 	if arg.GetRate() > 38 || arg.GetRate() == 0 {
 		return fmt.Errorf("rate %d error", arg.GetRate())
 	}
-	if agent.ProfitRate != 0 {
+	if agent.ProfitRateSum != 0 {
 		//return fmt.Errorf("AlreadySetRate")
 	}
 	if !handler.IsVaild(agent) {

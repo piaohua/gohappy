@@ -13,8 +13,8 @@ type User struct {
 	Nickname string `bson:"nickname" json:"nickname"`         // 用户昵称
 	Photo    string `bson:"photo" json:"photo"`               // 头像
 	Wxuid    string `bson:"wxuid" json:"wxuid"`               // 微信uid
-	OpenID   string `bson:"openid" json:"openid,omitempty"`   //微信openid nolint
-	UnionID  string `bson:"unionid" json:"unionid,omitempty"` //微信unionid nolint
+	OpenID   string `bson:"openid" json:"openid"`   //微信openid nolint
+	UnionID  string `bson:"unionid" json:"unionid"` //微信unionid nolint
 	Sex      uint32 `bson:"sex" json:"sex"`                   // 用户性别,男1 女2 非男非女3
 	Phone    string `bson:"phone" json:"phone"`               // 绑定的手机号码
 	Tourist  string `bson:"tourist" json:"tourist"`           // 游客
@@ -57,7 +57,7 @@ type User struct {
 	RealName         string    `bson:"real_name" json:"real_name"`                   // 真实姓名
 	Weixin           string    `bson:"weixin" json:"weixin"`                         // 微信
 	ProfitRateSum    uint32    `bson:"profit_rate_sum" json:"profit_rate_sum"`      // 分佣比例总数
-	ProfitRate       uint32    `bson:"profit_rate" json:"profit_rate"`               // 分佣比例
+	ProfitRate       map[string]uint32    `bson:"profit_rate,omitempty" json:"profit_rate,omitempty"`               // 多线分佣比例
 	Profit           int64     `bson:"profit" json:"profit"`                         // 收益
 	ProfitMonth      int64     `bson:"profit_month" json:"profit_month"`             // 月收益
 	ProfitLastMonth  int64     `bson:"profit_last_month" json:"profit_last_month"`             // 上月收益
@@ -90,8 +90,8 @@ type User struct {
 	Lng     string `bson:"lng" json:"lng"`         //Longitude
 	Address string `bson:"address" json:"address"` //Address
 	//任务
-	Task map[string]TaskInfo `bson:"task" json:"task"` // 已经完成或者还在继续的任务
-	Lucky map[string]LuckyInfo `bson:"lucky" json:"lucky"` // 幸运星
+	Task map[string]TaskInfo `bson:"task,omitempty" json:"task,omitempty"` // 已经完成或者还在继续的任务
+	Lucky map[string]LuckyInfo `bson:"lucky,omitempty" json:"lucky,omitempty"` // 幸运星
 }
 
 // 数据库操作

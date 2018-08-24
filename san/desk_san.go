@@ -631,8 +631,7 @@ func (t *Desk) pailiOver3(score map[uint32]int64) (uint32, map[uint32]int64) {
 	return seat, score
 }
 
-//积分结算
-func (t *Desk) over3(win, lose uint32, v int64,
+func (t *Desk) over4(win, lose uint32, v int64,
 	score map[uint32]int64) map[uint32]int64 {
 	user := t.getUserBySeat(lose)
 	if user != nil {
@@ -640,6 +639,14 @@ func (t *Desk) over3(win, lose uint32, v int64,
 			v = user.GetCoin() //不足赔付
 		}
 	}
+	score[win] += v
+	score[lose] -= v
+	return score
+}
+
+//积分结算, 结算时不足赔付时按比例分配，否则其它人可能获得为0
+func (t *Desk) over3(win, lose uint32, v int64,
+	score map[uint32]int64) map[uint32]int64 {
 	score[win] += v
 	score[lose] -= v
 	return score

@@ -10,6 +10,7 @@ import (
 
 //Game 游戏金币房间配置
 type Game struct {
+	//ID bson.ObjectId `bson:"_id,omitempty" json:"id,omitempty"`
 	Id     string    `bson:"_id" json:"id"`        //unique ID
 	Gtype  int32     `bson:"gtype" json:"gtype"`   //游戏类型1 niu,2 san,3 jiu
 	Rtype  int32     `bson:"rtype" json:"rtype"`   //房间类型0免佣,1抽佣
