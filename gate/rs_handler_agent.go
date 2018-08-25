@@ -660,15 +660,27 @@ func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Co
 		//Rate:       rs.User.ProfitRate,
 		Rate:       rs.User.ProfitRateSum,
 	}
+	msg3 := new(pb.AgentProfitManage)
+	*msg3 = *msg2
 	for _, v := range arg.List {
 		if v.GetAgentTitle() == 4 || v.GetAgentid() == rs.User.GetUserid() {
 			msg2.BringProfit += v.GetBringProfit()
+			msg2.Count++
+			continue
+		} else if v.GetAgentTitle() == 3 && v.GetVaild() >= 3 {
+			msg3.BringProfit += v.GetBringProfit()
+			msg3.Count++
 			continue
 		}
 		list = append(list, v)
 	}
 	if msg2.BringProfit != 0 {
+		msg2.AgentTitle = 4
 		list = append(list, msg2)
+	}
+	if msg3.BringProfit != 0 {
+		msg3.AgentTitle = 5
+		list = append(list, msg3)
 	}
 	arg.List = list
 	rs.Send(arg)

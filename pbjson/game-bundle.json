@@ -1848,6 +1848,14 @@
             "bringProfit": {
               "type": "int64",
               "id": 7
+            },
+            "vaild": {
+              "type": "uint32",
+              "id": 8
+            },
+            "count": {
+              "type": "uint32",
+              "id": 9
             }
           }
         },

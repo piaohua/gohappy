@@ -164,7 +164,8 @@ func GetAgentProfitManage2(ids []string) ([]bson.M, error) {
 		return nil, errors.New("none record")
 	}
 	var list []bson.M
-	selector := make(bson.M, 5)
+	selector := make(bson.M, 6)
+	selector["build_vaild"] = true
 	selector["agent_level"] = true
 	selector["profit_rate_sum"] = true
 	selector["nickname"] = true

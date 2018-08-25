@@ -170,6 +170,9 @@ func PackAgentProfitManageMsg2(arg *pb.CAgentProfitManage) (msg *pb.SAgentProfit
 		if val, ok := v["agent_level"]; ok {
 			msg2.Level = uint32(val.(int))
 		}
+		if val, ok := v["build_vaild"]; ok {
+			msg2.Vaild = uint32(val.(int))
+		}
 		if val, ok := v["profit_rate_sum"]; ok {
 			msg2.Rate = uint32(val.(int))
 		}

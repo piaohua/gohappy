@@ -103,8 +103,10 @@ message AgentProfitManage
     string agentnote = 3;//备注
     uint32 rate = 4;//区域收益百分比
     uint32 level = 5;//代理等级
-    int32 AgentTitle = 6;//代理头衔4玩家，3普通，2大代理，1合伙人
+    int32 AgentTitle = 6;//代理头衔4玩家，3普通，2大代理，1合伙人,5未合格代理
     int64 bringProfit = 7;//贡献收益
+    uint32 vaild = 8;//有效绑定数量
+    uint32 count = 9;//合并数量
 }
 
 // 代理备注

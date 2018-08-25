@@ -228,11 +228,24 @@ func (t *Desk) chatVoiceLeft(userid string) (msg *pb.SChatVoiceLeft) {
 	msg.Seat = seat
 	if v, ok := t.seats[seat]; ok {
 		v.Voice = 0
-		if len(t.seats) <= 2 {
+		join, left := t.chatVoiceCount()
+		glog.Debugf("voice join %d, left %d", join, left)
+		if join <= 2 {
 			t.DeskGame.VoiceSeat = 0
 		}
 	} else {
 		msg.Error = pb.NoPosition
+	}
+	return
+}
+
+func (t *Desk) chatVoiceCount() (join, left int) {
+	for _, v := range t.seats {
+		if v.Voice == 0 {
+			left++
+		} else {
+			join++
+		}
 	}
 	return
 }
