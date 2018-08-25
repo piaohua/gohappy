@@ -486,7 +486,8 @@ func (rs *RoleActor) setAgentProfitRate(arg *pb.CSetAgentProfitRate, ctx actor.C
 		return
 	}
 	profitRate := handler.GetChildProfitRate(arg.GetUserid(), rs.User)
-	if profitRate < (arg.GetRate() + 5) { //保留5%
+	title := handler.GetAgentTitle(rs.User)
+	if !((profitRate >= (arg.GetRate() + 5) && title == 2) || (profitRate >= (arg.GetRate() + 3) && title == 1)) { //保留5%
 		rsp.Error = pb.ProfitRateNotEnough
 		rs.Send(rsp)
 		return
