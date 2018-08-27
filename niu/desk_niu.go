@@ -98,6 +98,10 @@ func (t *Desk) launchVoteVoice(userid string, vote uint32) (msg *pb.SChatLaunchV
 		return
 	}
 	seat := t.getSeat(userid)
+	if seat == 0 {
+		msg.Error = pb.NoPosition
+		return
+	}
 	if v, ok := t.seats[seat]; ok {
 		v.Voice = vote //投票
 	}
@@ -143,6 +147,10 @@ func (t *Desk) privVoteVoice(userid string, vote uint32) (msg *pb.SChatVote) {
 		return
 	}
 	seat := t.getSeat(userid)
+	if seat == 0 {
+		msg.Error = pb.NoPosition
+		return
+	}
 	if v, ok := t.seats[seat]; ok {
 		v.Voice = vote //投票
 	}
@@ -187,7 +195,7 @@ func (t *Desk) dismissVoice(force bool) {
 		}
 	}
 	glog.Debugf("dismissVoice force %t, vote %d, len %d",
-		force, t.DeskPriv.VoteSeat, len(t.seats))
+		force, t.DeskGame.VoiceSeat, len(t.seats))
 	glog.Debugf("dismissVoice voted %d,agree %d, unagree %d",
 		voted, agree, unagree)
 	//一半以上通过即可
@@ -391,6 +399,7 @@ func (t *Desk) dismiss(force bool) {
 //' 超时处理
 func (t *Desk) coinTimeout() {
 	t.checkPubOver2()
+	t.voteVoiceTimeout()
 	switch t.state {
 	case int32(pb.STATE_READY):
 		var num int = t.readyNum()

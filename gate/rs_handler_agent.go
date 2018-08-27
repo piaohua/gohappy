@@ -675,11 +675,9 @@ func (rs *RoleActor) agentProfitManage2(arg *pb.SAgentProfitManage, ctx actor.Co
 		list = append(list, v)
 	}
 	if msg2.BringProfit != 0 {
-		msg2.AgentTitle = 4
 		list = append(list, msg2)
 	}
 	if msg3.BringProfit != 0 {
-		msg3.AgentTitle = 5
 		list = append(list, msg3)
 	}
 	arg.List = list
